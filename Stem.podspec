@@ -41,6 +41,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'UIButton' do |ss|
     ss.source_files = 'Sources/UIButton/**'
+    ss.dependency 'Stem/Core'
   end
   
   s.subspec 'UICell' do |ss|
@@ -68,6 +69,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'UIStoryboard' do |ss|
     ss.source_files = 'Sources/UIStoryboard/**'
+    ss.dependency 'Stem/Core'
   end
   
   s.subspec 'UINavigationBar' do |ss|
