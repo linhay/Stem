@@ -1,0 +1,77 @@
+PODS:
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
+  - SnapKit (4.2.0)
+  - Stem (0.0.1):
+    - Stem/CALayer (= 0.0.1)
+    - Stem/CGRect (= 0.0.1)
+    - Stem/Core (= 0.0.1)
+    - Stem/Foundation (= 0.0.1)
+    - Stem/NSLayoutConstraint (= 0.0.1)
+    - Stem/UIApplication (= 0.0.1)
+    - Stem/UIButton (= 0.0.1)
+    - Stem/UICell (= 0.0.1)
+    - Stem/UIColor (= 0.0.1)
+    - Stem/UIControl (= 0.0.1)
+    - Stem/UIImage (= 0.0.1)
+    - Stem/UIImageView (= 0.0.1)
+    - Stem/UILabel (= 0.0.1)
+    - Stem/UINavigationBar (= 0.0.1)
+    - Stem/UIStoryboard (= 0.0.1)
+    - Stem/UITextField (= 0.0.1)
+    - Stem/UIView (= 0.0.1)
+    - Stem/UIViewController (= 0.0.1)
+  - Stem/CALayer (0.0.1)
+  - Stem/CGRect (0.0.1)
+  - Stem/Core (0.0.1)
+  - Stem/Foundation (0.0.1)
+  - Stem/NSLayoutConstraint (0.0.1)
+  - Stem/UIApplication (0.0.1)
+  - Stem/UIButton (0.0.1)
+  - Stem/UICell (0.0.1):
+    - Stem/Core
+  - Stem/UIColor (0.0.1)
+  - Stem/UIControl (0.0.1)
+  - Stem/UIImage (0.0.1):
+    - Stem/Core
+  - Stem/UIImageView (0.0.1):
+    - Stem/Core
+  - Stem/UILabel (0.0.1):
+    - Stem/Core
+  - Stem/UINavigationBar (0.0.1)
+  - Stem/UIStoryboard (0.0.1)
+  - Stem/UITextField (0.0.1)
+  - Stem/UIView (0.0.1):
+    - Stem/Core
+  - Stem/UIViewController (0.0.1):
+    - Stem/Core
+  - Then (2.4.0)
+
+DEPENDENCIES:
+  - FBSnapshotTestCase (~> 2.1.4)
+  - SnapKit
+  - Stem (from `../`)
+  - Then
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FBSnapshotTestCase
+    - SnapKit
+    - Then
+
+EXTERNAL SOURCES:
+  Stem:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  Stem: 94fe8bb1733000358f5198be825ed54a9439bb29
+  Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
+
+PODFILE CHECKSUM: 3be306c932c64102808ae432ea8f3d8cf97fa02a
+
+COCOAPODS: 1.5.3
