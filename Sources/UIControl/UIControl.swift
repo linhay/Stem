@@ -22,7 +22,24 @@
 
 import UIKit
 
-// MARK: - <#Description#>
+// MARK: - runtime keys
+extension UIControl {
+  
+  private static let swizzing: Void = {
+    StemRuntime.exchangeMethod(selector: #selector(UIControl.sendAction(_:to:for:)),
+                               replace: #selector(UIControl.st_sendAction(action:to:forEvent:)),
+                               class: UIControl.self)
+    
+  }()
+  
+  private struct ActionKey {
+    static var action = UnsafeRawPointer(bitPattern: "uicontrol_action_block".hashValue)
+    static var time = UnsafeRawPointer(bitPattern: "uicontrol_event_time".hashValue)
+    static var interval = UnsafeRawPointer(bitPattern: "uicontrol_event_interval".hashValue)
+  }
+}
+
+
 public extension UIControl {
   
   /// 添加响应事件
@@ -43,39 +60,6 @@ public extension UIControl {
 }
 
 
-// MARK: - runtime keys
-extension UIControl {
-  fileprivate static var once: Bool = false
-  
-  fileprivate class func swizzing() {
-    if once == false {
-      once = true
-      let select1 = #selector(UIControl.sendAction(_:to:for:))
-      let select2 = #selector(UIControl.sp_sendAction(action:to:forEvent:))
-      let classType = UIControl.self
-      let select1Method = class_getInstanceMethod(classType, select1)
-      let select2Method = class_getInstanceMethod(classType, select2)
-      let didAddMethod  = class_addMethod(classType,
-                                          select1,
-                                          method_getImplementation(select2Method!),
-                                          method_getTypeEncoding(select2Method!))
-      if didAddMethod {
-        class_replaceMethod(classType,
-                            select2,
-                            method_getImplementation(select1Method!),
-                            method_getTypeEncoding(select1Method!))
-      }else {
-        method_exchangeImplementations(select1Method!, select2Method!)
-      }
-    }
-  }
-  
-  fileprivate struct ActionKey {
-    static var action = UnsafeRawPointer(bitPattern: "uicontrol_action_block".hashValue)
-    static var time = UnsafeRawPointer(bitPattern: "uicontrol_event_time".hashValue)
-    static var interval = UnsafeRawPointer(bitPattern: "uicontrol_event_interval".hashValue)
-  }
-}
 
 // MARK: - time
 extension UIControl {
@@ -100,7 +84,7 @@ extension UIControl {
       return 0
     }
     set {
-      UIControl.swizzing()
+      UIControl.swizzing
       objc_setAssociatedObject(self,
                                UIControl.ActionKey.interval!,
                                newValue as TimeInterval,
@@ -117,7 +101,7 @@ extension UIControl {
       return 1.0
     }
     set {
-      UIControl.swizzing()
+      UIControl.swizzing
       objc_setAssociatedObject(self,
                                UIControl.ActionKey.time!,
                                newValue as TimeInterval,
@@ -125,16 +109,16 @@ extension UIControl {
     }
   }
   
-  @objc fileprivate func sp_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
+  @objc fileprivate func st_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
     if systemActions.contains(action.description) || eventInterval <= 0 {
-      self.sp_sendAction(action: action, to: target, forEvent: event)
+      self.st_sendAction(action: action, to: target, forEvent: event)
       return
     }
     
     let nowTime = Date().timeIntervalSince1970
     if nowTime - lastEventTime < eventInterval { return }
     if eventInterval > 0 { lastEventTime = nowTime }
-    self.sp_sendAction(action: action, to: target, forEvent: event)
+    self.st_sendAction(action: action, to: target, forEvent: event)
   }
   
 }

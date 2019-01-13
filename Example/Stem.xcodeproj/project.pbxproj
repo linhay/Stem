@@ -293,7 +293,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FBSnapshotTestCase/FBSnapshotTestCase.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -304,7 +304,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		69171A057386EE5CD7FCF0AE /* [CP] Check Pods Manifest.lock */ = {
@@ -337,7 +337,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Stem/Stem.framework",
 				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
@@ -352,7 +352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D53736D19D43CE2477EFC3AA /* [CP] Check Pods Manifest.lock */ = {

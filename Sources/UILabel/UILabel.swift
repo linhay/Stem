@@ -22,6 +22,20 @@
 
 import UIKit
 
+// MARK: - runtime and swizzling
+fileprivate extension UILabel {
+  
+  private static let swizzing: Void = {
+    StemRuntime.exchangeMethod(selector: #selector(UILabel.drawText(in:)),
+                               replace: #selector(UILabel.st_drawText(in:)),
+                               class: UILabel.self)
+  }()
+  
+  fileprivate struct SwzzlingKeys {
+    static var textInset = UnsafeRawPointer(bitPattern: "label_textInset".hashValue)
+  }
+}
+
 // MARK: - UILabel 属性扩展
 extension UILabel {
   
@@ -34,7 +48,7 @@ extension UILabel {
       return UIEdgeInsets.zero
     }
     set {
-      UILabel.swizzig()
+      UILabel.swizzing
       objc_setAssociatedObject(self,
                                UILabel.SwzzlingKeys.textInset!,
                                newValue as UIEdgeInsets,
@@ -43,12 +57,12 @@ extension UILabel {
     }
   }
   
-  @objc fileprivate func sp_drawText(in rect: CGRect) {
+  @objc fileprivate func st_drawText(in rect: CGRect) {
     let rect = CGRect(x: bounds.origin.x + textInset.left,
                       y: bounds.origin.y + textInset.top,
                       width: bounds.size.width - textInset.left - textInset.right,
                       height: bounds.size.height - textInset.top - textInset.bottom)
-    sp_drawText(in: rect)
+    st_drawText(in: rect)
   }
   
 }
@@ -63,34 +77,3 @@ public extension Stem where Base: UILabel {
   
 }
 
-// MARK: - runtime and swizzling
-fileprivate extension UILabel {
-  fileprivate static var once: Bool = false
-  fileprivate class func swizzig() {
-    if once == false {
-      once = true
-      
-      let select1 = #selector(UILabel.drawText(in:))
-      let select2 = #selector(UILabel.sp_drawText(in:))
-      let classType = UILabel.self
-      let select1Method = class_getInstanceMethod(classType, select1)
-      let select2Method = class_getInstanceMethod(classType, select2)
-      let didAddMethod  = class_addMethod(classType,
-                                          select1,
-                                          method_getImplementation(select2Method!),
-                                          method_getTypeEncoding(select2Method!))
-      if didAddMethod {
-        class_replaceMethod(classType,
-                            select2,
-                            method_getImplementation(select1Method!),
-                            method_getTypeEncoding(select1Method!))
-      }else {
-        method_exchangeImplementations(select1Method!, select2Method!)
-      }
-    }
-  }
-  
-  fileprivate struct SwzzlingKeys {
-    static var textInset = UnsafeRawPointer(bitPattern: "label_textInset".hashValue)
-  }
-}

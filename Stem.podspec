@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Stem'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'A set of useful categories for Foundation and UIKit.'
   
   
@@ -55,6 +55,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'UIControl' do |ss|
     ss.source_files = 'Sources/UIControl/**'
+    ss.dependency 'Stem/Core'
   end
   
   s.subspec 'UIImage' do |ss|

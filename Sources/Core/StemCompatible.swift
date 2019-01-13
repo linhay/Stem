@@ -22,9 +22,14 @@
 
 import UIKit
 
-public struct Stem<Base> {
-  public let base: Base
-  public init(_ base: Base) {
-    self.base = base
-  }
+public protocol StemCompatible {
+  associatedtype CompatibleType
+  var st: CompatibleType { get }
 }
+
+public extension StemCompatible {
+  public var st: Stem<Self> { return Stem(self) }
+}
+
+
+extension NSObject: StemCompatible { }

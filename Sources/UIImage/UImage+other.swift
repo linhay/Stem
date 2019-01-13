@@ -56,21 +56,39 @@ public extension UIImage{
 
 #endif
 
+public extension UIImage{
+  
+  public convenience init?(named: String, in bundle: Bundle) {
+    let manager = FileManager.default
+    guard let res = manager.enumerator(atPath: bundle.bundlePath)?
+      .allObjects
+      .compactMap({ (item) -> String? in
+        return item as? String
+      }).first(where: { (item) -> Bool in
+        return item.components(separatedBy: "/").last?.components(separatedBy: ".").first == .some(named)
+      }),
+      let bundle = Bundle(path: bundle.bundlePath + res)
+      else { return nil }
+    self.init(named: named, in: bundle, compatibleWith: nil)
+  }
+  
+}
+
 public extension Stem where Base: UIImage {
-
-//  /// 高斯模糊
-//  ///
-//  /// - Parameter value: 0 ~ 100, 0为不模糊
-//  func blur(value: Double) -> UIImage? {
-//    let ciImage = CIImage(image: base)
-//    let filter = CIFilter(name: "CIGaussianBlur")
-//    filter?.setValue(ciImage, forKey: kCIInputImageKey)
-//    filter?.setValue(value, forKey: "inputRadius")
-//    guard let output = filter?.value(forKey: kCIOutputImageKey) as? CIImage else { return nil }
-//    let context = CIContext()
-//    guard let cgImage = context.createCGImage(output, from: output.extent) else { return nil }
-//    let image = UIImage(cgImage: cgImage)
-//    return image
-//  }
-
+  
+  //  /// 高斯模糊
+  //  ///
+  //  /// - Parameter value: 0 ~ 100, 0为不模糊
+  //  func blur(value: Double) -> UIImage? {
+  //    let ciImage = CIImage(image: base)
+  //    let filter = CIFilter(name: "CIGaussianBlur")
+  //    filter?.setValue(ciImage, forKey: kCIInputImageKey)
+  //    filter?.setValue(value, forKey: "inputRadius")
+  //    guard let output = filter?.value(forKey: kCIOutputImageKey) as? CIImage else { return nil }
+  //    let context = CIContext()
+  //    guard let cgImage = context.createCGImage(output, from: output.extent) else { return nil }
+  //    let image = UIImage(cgImage: cgImage)
+  //    return image
+  //  }
+  
 }

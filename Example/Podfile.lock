@@ -30,11 +30,13 @@ PODS:
   - Stem/Foundation (0.0.1)
   - Stem/NSLayoutConstraint (0.0.1)
   - Stem/UIApplication (0.0.1)
-  - Stem/UIButton (0.0.1)
+  - Stem/UIButton (0.0.1):
+    - Stem/Core
   - Stem/UICell (0.0.1):
     - Stem/Core
   - Stem/UIColor (0.0.1)
-  - Stem/UIControl (0.0.1)
+  - Stem/UIControl (0.0.1):
+    - Stem/Core
   - Stem/UIImage (0.0.1):
     - Stem/Core
   - Stem/UIImageView (0.0.1):
@@ -42,7 +44,8 @@ PODS:
   - Stem/UILabel (0.0.1):
     - Stem/Core
   - Stem/UINavigationBar (0.0.1)
-  - Stem/UIStoryboard (0.0.1)
+  - Stem/UIStoryboard (0.0.1):
+    - Stem/Core
   - Stem/UITextField (0.0.1)
   - Stem/UIView (0.0.1):
     - Stem/Core
@@ -69,9 +72,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: 94fe8bb1733000358f5198be825ed54a9439bb29
+  Stem: f8be79acd9b418b3d0aaa180b704f8e0aef50e6e
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
 PODFILE CHECKSUM: 3be306c932c64102808ae432ea8f3d8cf97fa02a
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.2
