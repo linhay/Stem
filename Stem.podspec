@@ -19,82 +19,38 @@ Pod::Spec.new do |s|
     ss.source_files = 'Sources/Core/**'
   end
   
-  s.subspec 'Foundation' do |ss|
-    ss.source_files = 'Sources/Foundation/**'
-  end
+  list = [
+  'Foundation',
+  'CALayer',
+  'CGRect',
+  'TableView',
+  'UIColor',
+  'UILabel',
+  'UIImage',
+  'UIControl',
+  'NSLayoutConstraint',
+  'UIApplication',
+  'UIStoryboard',
+  'UINavigationBar',
+  'UITextField',
+  'UIViewController',
+  'UIImageView',
+  'UIView',
+  'UICell',
+  'GestureRecognizer'
+  ]
   
-  s.subspec 'CALayer' do |ss|
-    ss.source_files = 'Sources/CALayer/**'
-  end
-  
-  s.subspec 'CGRect' do |ss|
-    ss.source_files = 'Sources/CGRect/**'
-  end
-  
-  s.subspec 'NSLayoutConstraint' do |ss|
-    ss.source_files = 'Sources/NSLayoutConstraint/**'
-  end
-  
-  s.subspec 'UIApplication' do |ss|
-    ss.source_files = 'Sources/UIApplication/**'
+  for name in list
+    s.subspec name do |ss|
+      ss.source_files = 'Sources/' + name + '/*.swift'
+      ss.dependency 'Stem/Core'
+    end
   end
   
   s.subspec 'UIButton' do |ss|
     ss.source_files = 'Sources/UIButton/**'
     ss.dependency 'Stem/Core'
+    ss.dependency 'Stem/UIControl'
   end
-  
-  s.subspec 'UICell' do |ss|
-    ss.source_files = 'Sources/UICell/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UIColor' do |ss|
-    ss.source_files = 'Sources/UIColor/**'
-  end
-  
-  s.subspec 'UIControl' do |ss|
-    ss.source_files = 'Sources/UIControl/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UIImage' do |ss|
-    ss.source_files = 'Sources/UIImage/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UILabel' do |ss|
-    ss.source_files = 'Sources/UILabel/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UIStoryboard' do |ss|
-    ss.source_files = 'Sources/UIStoryboard/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UINavigationBar' do |ss|
-    ss.source_files = 'Sources/UINavigationBar/**'
-  end
-  
-  s.subspec 'UITextField' do |ss|
-    ss.source_files = 'Sources/UITextField/**'
-  end
-  
-  s.subspec 'UIView' do |ss|
-    ss.source_files = 'Sources/UIView/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UIImageView' do |ss|
-    ss.source_files = 'Sources/UIImageView/**'
-    ss.dependency 'Stem/Core'
-  end
-  
-  s.subspec 'UIViewController' do |ss|
-    ss.source_files = 'Sources/UIViewController/**'
-    ss.dependency 'Stem/Core'
-  end
-  
   
 end
