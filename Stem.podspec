@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
   
   for name in list
     s.subspec name do |ss|
-      ss.source_files = 'Sources/' + name + '/*.swift'
+      ss.source_files = 'Sources/' + name + '/**'
       ss.dependency 'Stem/Core'
     end
   end
