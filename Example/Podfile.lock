@@ -6,65 +6,68 @@ PODS:
     - FBSnapshotTestCase/Core
   - SnapKit (4.2.0)
   - Stem (0.0.2):
+    - Stem/Application (= 0.0.2)
     - Stem/CALayer (= 0.0.2)
+    - Stem/Cell (= 0.0.2)
     - Stem/CGRect (= 0.0.2)
+    - Stem/Color (= 0.0.2)
+    - Stem/Control (= 0.0.2)
     - Stem/Core (= 0.0.2)
+    - Stem/Font (= 0.0.2)
     - Stem/Foundation (= 0.0.2)
     - Stem/GestureRecognizer (= 0.0.2)
+    - Stem/Image (= 0.0.2)
+    - Stem/ImageView (= 0.0.2)
+    - Stem/Label (= 0.0.2)
+    - Stem/NavigationBar (= 0.0.2)
     - Stem/NSLayoutConstraint (= 0.0.2)
+    - Stem/Storyboard (= 0.0.2)
     - Stem/TableView (= 0.0.2)
-    - Stem/UIApplication (= 0.0.2)
+    - Stem/TextField (= 0.0.2)
     - Stem/UIButton (= 0.0.2)
-    - Stem/UICell (= 0.0.2)
-    - Stem/UIColor (= 0.0.2)
-    - Stem/UIControl (= 0.0.2)
-    - Stem/UIImage (= 0.0.2)
-    - Stem/UIImageView (= 0.0.2)
-    - Stem/UILabel (= 0.0.2)
-    - Stem/UINavigationBar (= 0.0.2)
-    - Stem/UIStoryboard (= 0.0.2)
-    - Stem/UITextField (= 0.0.2)
-    - Stem/UIView (= 0.0.2)
-    - Stem/UIViewController (= 0.0.2)
+    - Stem/View (= 0.0.2)
+    - Stem/ViewController (= 0.0.2)
+  - Stem/Application (0.0.2):
+    - Stem/Core
   - Stem/CALayer (0.0.2):
+    - Stem/Core
+  - Stem/Cell (0.0.2):
     - Stem/Core
   - Stem/CGRect (0.0.2):
     - Stem/Core
+  - Stem/Color (0.0.2):
+    - Stem/Core
+  - Stem/Control (0.0.2):
+    - Stem/Core
   - Stem/Core (0.0.2)
+  - Stem/Font (0.0.2):
+    - Stem/Core
   - Stem/Foundation (0.0.2):
     - Stem/Core
   - Stem/GestureRecognizer (0.0.2):
     - Stem/Core
+  - Stem/Image (0.0.2):
+    - Stem/Core
+  - Stem/ImageView (0.0.2):
+    - Stem/Core
+  - Stem/Label (0.0.2):
+    - Stem/Core
+  - Stem/NavigationBar (0.0.2):
+    - Stem/Core
   - Stem/NSLayoutConstraint (0.0.2):
+    - Stem/Core
+  - Stem/Storyboard (0.0.2):
     - Stem/Core
   - Stem/TableView (0.0.2):
     - Stem/Core
-  - Stem/UIApplication (0.0.2):
+  - Stem/TextField (0.0.2):
     - Stem/Core
   - Stem/UIButton (0.0.2):
+    - Stem/Control
     - Stem/Core
-    - Stem/UIControl
-  - Stem/UICell (0.0.2):
+  - Stem/View (0.0.2):
     - Stem/Core
-  - Stem/UIColor (0.0.2):
-    - Stem/Core
-  - Stem/UIControl (0.0.2):
-    - Stem/Core
-  - Stem/UIImage (0.0.2):
-    - Stem/Core
-  - Stem/UIImageView (0.0.2):
-    - Stem/Core
-  - Stem/UILabel (0.0.2):
-    - Stem/Core
-  - Stem/UINavigationBar (0.0.2):
-    - Stem/Core
-  - Stem/UIStoryboard (0.0.2):
-    - Stem/Core
-  - Stem/UITextField (0.0.2):
-    - Stem/Core
-  - Stem/UIView (0.0.2):
-    - Stem/Core
-  - Stem/UIViewController (0.0.2):
+  - Stem/ViewController (0.0.2):
     - Stem/Core
   - Then (2.4.0)
 
@@ -87,7 +90,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: c885c0e724d52cb2569674adaa2626a738d3c64a
+  Stem: 371e2dd256528937ce8cdb3e68c2138d81d562dd
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
 PODFILE CHECKSUM: 3be306c932c64102808ae432ea8f3d8cf97fa02a

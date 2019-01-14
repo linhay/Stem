@@ -24,19 +24,20 @@ Pod::Spec.new do |s|
   'CALayer',
   'CGRect',
   'TableView',
-  'UIColor',
-  'UILabel',
-  'UIImage',
-  'UIControl',
+  'Color',
+  'Label',
+  'Font',
+  'Image',
+  'Control',
   'NSLayoutConstraint',
-  'UIApplication',
-  'UIStoryboard',
-  'UINavigationBar',
-  'UITextField',
-  'UIViewController',
-  'UIImageView',
-  'UIView',
-  'UICell',
+  'Application',
+  'Storyboard',
+  'NavigationBar',
+  'TextField',
+  'ViewController',
+  'ImageView',
+  'View',
+  'Cell',
   'GestureRecognizer'
   ]
   
@@ -50,7 +51,7 @@ Pod::Spec.new do |s|
   s.subspec 'UIButton' do |ss|
     ss.source_files = 'Sources/UIButton/**'
     ss.dependency 'Stem/Core'
-    ss.dependency 'Stem/UIControl'
+    ss.dependency 'Stem/Control'
   end
   
 end
