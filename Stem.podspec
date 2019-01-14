@@ -49,7 +49,7 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'Button' do |ss|
-    ss.source_files = 'Sources/UIButton/**'
+    ss.source_files = 'Sources/Button/**'
     ss.dependency 'Stem/Core'
     ss.dependency 'Stem/Control'
   end
