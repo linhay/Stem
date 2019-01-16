@@ -21,8 +21,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
 import UIKit
-// MARK: - open
+
 public extension UIApplication {
+  
+ public static let info = Info()
+  
+ public struct Info {
+    /// 获取App版本号
+    public let version: String = {
+      return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+    }()
+    
+    /// 获取App构建版本号
+    public let bundleVersion: String = {
+      return Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
+    }()
+  }
+  
+}
+
+
+// MARK: - open
+public extension Stem where Base: UIApplication {
   
   /// 打开链接 (会判断 能否打开)
   ///
@@ -53,6 +73,7 @@ public extension UIApplication {
       UIApplication.shared.openURL(url)
     }
   }
+  
   
 }
 
