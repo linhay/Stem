@@ -9,7 +9,7 @@ import UIKit
 
 #if canImport(AVFoundation)
 import AVFoundation
-extension Stem where Base: UIDevice {
+public extension Stem where Base: UIDevice {
   
   /// 开启/关闭 手电筒
   public func torch(level: Double) {
@@ -27,7 +27,7 @@ extension Stem where Base: UIDevice {
   /// 在有 Taptic Engine 的设备上触发一个轻微的振动
   ///
   /// - Parameter params: level  (number)  0 ~ 3 表示振动等级
-  public func taptic(level: Int, isSupportTaptic: Bool) {
+  public func taptic(level: Int, isSupportTaptic: Bool = true) {
     if #available(iOS 10.0, *),
       isSupportTaptic,
       let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
