@@ -22,6 +22,19 @@
 
 import UIKit
 
+extension Stem where Base: UITextField {
+
+  var selectedRange: NSRange? {
+    guard let selectedTextRange = base.selectedTextRange else { return nil }
+    let location = base.offset(from: base.beginningOfDocument, to: selectedTextRange.start)
+    let length = base.offset(from: selectedTextRange.start, to: selectedTextRange.end)
+    return NSRange(location: location, length: length)
+  }
+  
+  var clearButton: UIButton? { return base.value(forKey: "clearButton") as? UIButton }
+  
+}
+  
 public extension UITextField{
   
   /// 占位文字颜色

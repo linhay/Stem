@@ -19,12 +19,12 @@ PODS:
     - Stem/GestureRecognizer (= 0.0.4)
     - Stem/Image (= 0.0.4)
     - Stem/ImageView (= 0.0.4)
+    - Stem/InputView (= 0.0.4)
     - Stem/Label (= 0.0.4)
     - Stem/NavigationBar (= 0.0.4)
     - Stem/NSLayoutConstraint (= 0.0.4)
     - Stem/Storyboard (= 0.0.4)
     - Stem/TableView (= 0.0.4)
-    - Stem/TextField (= 0.0.4)
     - Stem/View (= 0.0.4)
     - Stem/ViewController (= 0.0.4)
   - Stem/Application (0.0.4):
@@ -54,6 +54,9 @@ PODS:
   - Stem/ImageView (0.0.4):
     - Stem/Core
     - Stem/Image
+  - Stem/InputView (0.0.4):
+    - Stem/CGRect
+    - Stem/Core
   - Stem/Label (0.0.4):
     - Stem/Core
   - Stem/NavigationBar (0.0.4):
@@ -63,8 +66,6 @@ PODS:
   - Stem/Storyboard (0.0.4):
     - Stem/Core
   - Stem/TableView (0.0.4):
-    - Stem/Core
-  - Stem/TextField (0.0.4):
     - Stem/Core
   - Stem/View (0.0.4):
     - Stem/Core
@@ -91,9 +92,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: 77530e757e404bd664bfbb017d05aa5a3b9dbf0f
+  Stem: 19b9b8ecbdbca786f0dcb240d37517f7a0c91e3a
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
 PODFILE CHECKSUM: 3be306c932c64102808ae432ea8f3d8cf97fa02a
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.7.0.beta.1
