@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Stem
 
 class TestImageController: BaseViewController {
   

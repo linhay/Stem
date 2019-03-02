@@ -22,32 +22,6 @@
 
 import UIKit
 
-extension UIScrollView {
-  
-  public enum ScrollDirection: CaseIterable {
-    case top
-    case bottom
-    case left
-    case right
-  }
-  
-}
-
-public extension Stem where Base: UIScrollView {
-  
-  func scroll(to: UIScrollView.ScrollDirection, animated: Bool = true) {
-    var off = base.contentOffset
-    switch to {
-    case .top:
-      off.y = 0 - base.contentInset.top
-    case .right:
-      off.x = base.contentSize.width - base.bounds.size.width + base.contentInset.right
-    case .left:
-      off.x = 0 - base.contentInset.left
-    case .bottom:
-      off.y = base.contentSize.height - base.bounds.size.height + base.contentInset.bottom
-    }
-    base.setContentOffset(off, animated: animated)
-  }
+extension Stem where Base: UIWindow {
   
 }

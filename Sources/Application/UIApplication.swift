@@ -24,22 +24,32 @@ import UIKit
 
 public extension UIApplication {
   
- public static let info = Info()
-  
  public struct Info {
-    /// 获取App版本号
-    public let version: String = {
-      return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-    }()
-    
-    /// 获取App构建版本号
-    public let bundleVersion: String = {
-      return Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
-    }()
+    /// App版本号
+    public let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+    /// App构建版本号
+    public let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
+    public let bundleName = Bundle.main.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String ?? ""
+    public let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? ""
+  }
+  
+  struct Path {
+    var documentsURL: URL? { return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last }
+    var documentsPath: String? { return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first }
+    var cachesURL: URL? { return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last }
+    var cachesPath: String? { return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first }
+    var libraryURL: URL? { return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last }
+    var libraryPath: String? { return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first }
   }
   
 }
 
+public extension Stem where Base: UIApplication {
+
+  var info: UIApplication.Info { return UIApplication.Info() }
+  var path: UIApplication.Path { return UIApplication.Path() }
+  
+}
 
 // MARK: - open
 public extension Stem where Base: UIApplication {

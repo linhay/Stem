@@ -22,7 +22,6 @@
 
 import UIKit
 
-
 // MARK: - UIImage
 public extension Stem where Base: UIImage{
   
@@ -132,7 +131,6 @@ public extension Stem where Base: UIImage{
     let image = UIGraphicsGetImageFromCurrentImageContext()
     return image ?? base
   }
-  
   
   /// 缩放至指定高度
   ///

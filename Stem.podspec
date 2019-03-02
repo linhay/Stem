@@ -15,43 +15,37 @@ Pod::Spec.new do |s|
   s.frameworks = ['UIKit']
   s.requires_arc = true
   
-  s.subspec 'Core' do |ss|
-    ss.source_files = 'Sources/Core/**'
-  end
+  dict = {
+    'Core' => [],
+    'Foundation' => ['Stem/Core'],
+    'CALayer' => ['Stem/Core'],
+    'CGRect' => ['Stem/Core'],
+    'TableView' => ['Stem/Core'],
+    'Color' => ['Stem/Core'],
+    'Label' => ['Stem/Core'],
+    'Font' => ['Stem/Core'],
+    'Image' => ['Stem/Core'],
+    'ImageView' => ['Stem/Core', 'Stem/Image'],
+    'Control' => ['Stem/Core'],
+    'NSLayoutConstraint' => ['Stem/Core'],
+    'Application' => ['Stem/Core'],
+    'Storyboard' => ['Stem/Core'],
+    'NavigationBar' => ['Stem/Core'],
+    'TextField' => ['Stem/Core'],
+    'ViewController' => ['Stem/Core'],
+    'View' => ['Stem/Core'],
+    'Cell' => ['Stem/Core'],
+    'GestureRecognizer' => ['Stem/Core'],
+    'Button' => ['Stem/Core', 'Stem/Control']
+  }
   
-  list = [
-  'Foundation',
-  'CALayer',
-  'CGRect',
-  'TableView',
-  'Color',
-  'Label',
-  'Font',
-  'Image',
-  'Control',
-  'NSLayoutConstraint',
-  'Application',
-  'Storyboard',
-  'NavigationBar',
-  'TextField',
-  'ViewController',
-  'ImageView',
-  'View',
-  'Cell',
-  'GestureRecognizer'
-  ]
-  
-  for name in list
-    s.subspec name do |ss|
-      ss.source_files = 'Sources/' + name + '/**'
-      ss.dependency 'Stem/Core'
+  dict.each { |key, value|
+    s.subspec key do |ss|
+      ss.source_files = 'Sources/' + key + '/**'
+      for name in value
+        ss.dependency name
+      end
     end
-  end
-  
-  s.subspec 'Button' do |ss|
-    ss.source_files = 'Sources/Button/**'
-    ss.dependency 'Stem/Core'
-    ss.dependency 'Stem/Control'
-  end
+  }
   
 end

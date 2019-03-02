@@ -25,6 +25,18 @@ import UIKit
 // MARK: - UILabel 函数扩展
 public extension Stem where Base: UIImageView {
   
+  /// 异步解码
+  ///
+  /// - Parameter image: 待解码图片
+  func setImage(async image: UIImage) {
+    DispatchQueue.global().async {
+      DispatchQueue.main.async {
+        self.base.image = image
+      }
+    }
+  }
+  
+  
   /// 从网络上下载图片
   ///
   /// - Parameters:
