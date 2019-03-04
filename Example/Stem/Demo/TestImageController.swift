@@ -41,7 +41,7 @@ class TestImageController: BaseViewController {
     })
     
     items.append(TableElement(title: "裁剪对应区域", subtitle: "image.st.crop(bound: CGRect)") {
-      let image = self.image.st.crop(bound: CGRect(x: 0,
+      let image = self.image.st.cropped(to: CGRect(x: 0,
                                                    y: 0,
                                                    width: self.image.size.width * 0.5,
                                                    height: self.image.size.height * 0.5))

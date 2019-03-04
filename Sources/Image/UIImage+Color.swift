@@ -14,17 +14,17 @@ public extension UIImage{
   /// - Parameters:
   ///   - color: UIColor
   ///   - size: 图片大小
-  public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
-    if size.width <= 0 || size.height <= 0 { return nil }
-    let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-    UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
-    guard let context = UIGraphicsGetCurrentContext() else { return nil }
-    context.setFillColor(color.cgColor)
-    context.fill(rect)
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-    guard let cgImg = image?.cgImage else { return nil }
-    self.init(cgImage: cgImg)
+  public convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+    UIGraphicsBeginImageContextWithOptions(size, false, 1)
+    defer { UIGraphicsEndImageContext() }
+    color.setFill()
+    UIRectFill(CGRect(origin: .zero, size: size))
+    
+    guard let aCgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
+      self.init()
+      return
+    }
+    self.init(cgImage: aCgImage)
   }
 }
 
@@ -50,5 +50,22 @@ public extension Stem where Base: UIImage{
     base.draw(in: bounds, blendMode: .overlay, alpha: 1)
     base.draw(in: bounds, blendMode: .destinationIn, alpha: 1)
     return UIGraphicsGetImageFromCurrentImageContext() ?? base
+  }
+  
+  /// 修改单色系图片颜色
+  ///
+  /// - Parameter color: 颜色
+  /// - Returns: 新图
+  public func tint(_ color: UIColor, blendMode: CGBlendMode) -> UIImage {
+    let drawRect = CGRect(x: 0.0, y: 0.0, width: base.size.width, height: base.size.height)
+    UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
+    let context = UIGraphicsGetCurrentContext()
+    context!.clip(to: drawRect, mask: base.cgImage!)
+    color.setFill()
+    UIRectFill(drawRect)
+    base.draw(in: drawRect, blendMode: blendMode, alpha: 1.0)
+    let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return tintedImage!
   }
 }

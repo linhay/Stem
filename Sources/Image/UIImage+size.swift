@@ -50,14 +50,13 @@ public extension Stem where Base: UIImage{
   ///
   /// - Parameter bound: 裁剪区域
   /// - Returns: 新图
-  public func crop(bound: CGRect) -> UIImage {
-    let scaledBounds = CGRect(x: bound.origin.x * base.scale,
-                              y: bound.origin.y * base.scale,
-                              width: bound.size.width * base.scale,
-                              height: bound.size.height * base.scale)
-    guard let cgImage = base.cgImage?.cropping(to: scaledBounds) else { return base }
-    return UIImage(cgImage: cgImage, scale: base.scale, orientation: .up)
+  public func cropped(to rect: CGRect) -> UIImage {
+    guard rect.size.width < base.size.width && rect.size.height < base.size.height,
+      let image: CGImage = base.cgImage?.cropping(to: rect)
+      else { return base }
+    return UIImage(cgImage: image)
   }
+  
   
   /// 返回圆形图片
   public func rounded() -> UIImage {
@@ -163,6 +162,56 @@ public extension Stem where Base: UIImage{
     let newImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return newImage
+  }
+  
+  /// 压缩至指定字节大小
+  ///
+  /// - Parameters:
+  ///   - limit: 字节大小
+  ///   - leeway: 精度
+  /// - Returns: data
+  public func compress(withMB limit: Int, leeway: CGFloat = 0.3) -> Data? {
+   return compress(withB: limit * 1000)
+  }
+  
+  /// 压缩至指定字节大小
+  ///
+  /// - Parameters:
+  ///   - limit: 字节大小
+  ///   - leeway: 精度
+  /// - Returns: data
+  public func compress(withKB limit: Int, leeway: CGFloat = 0.3) -> Data? {
+   return compress(withB: limit * 1000 * 1000)
+  }
+  
+  
+  /// 压缩至指定字节大小
+  ///
+  /// - Parameters:
+  ///   - limit: 字节大小
+  ///   - leeway: 精度
+  /// - Returns: data
+  public func compress(withB limit: Int, leeway: CGFloat = 0.3) -> Data? {
+    var compression: CGFloat = 1
+    guard var data = base.jpegData(compressionQuality: compression) else { return nil }
+    if data.count <= limit { return data }
+    
+    var max: CGFloat = 1
+    var min: CGFloat = 0
+    
+    while data.count > limit || (max - min) > leeway {
+      let mid = (max + min) * 0.5
+      compression = mid
+      guard var temp = base.jpegData(compressionQuality: compression) else { return nil }
+      data = temp
+      if temp.count > limit {
+        max = mid
+      }else{
+        min = mid
+      }
+    }
+    
+    return data
   }
   
 }
