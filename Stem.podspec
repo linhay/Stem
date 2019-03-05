@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Stem'
-  s.version          = '0.0.6'
+  s.version          = '0.0.7'
   s.summary          = 'A set of useful categories for Foundation and UIKit.'
   
   
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
     'Core' => [],
     'Foundation' => ['Stem/Core'],
     'CALayer' => ['Stem/Core'],
-    'CGRect' => ['Stem/Core'],
+    'CGGeometry' => ['Stem/Core'],
     'TableView' => ['Stem/Core'],
     'Color' => ['Stem/Core'],
     'Label' => ['Stem/Core'],
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     'Application' => ['Stem/Core'],
     'Storyboard' => ['Stem/Core'],
     'NavigationBar' => ['Stem/Core'],
-    'InputView' => ['Stem/Core', 'Stem/CGRect'],
+    'InputView' => ['Stem/Core', 'Stem/CGGeometry'],
     'ViewController' => ['Stem/Core'],
     'View' => ['Stem/Core'],
     'Cell' => ['Stem/Core'],

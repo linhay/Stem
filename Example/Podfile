@@ -2,12 +2,12 @@ use_frameworks!
 
 target 'Stem_Example' do
   pod 'Stem', :path => '../'
-pod 'SnapKit'
-pod 'Then'
-
+  pod 'SnapKit'
+  pod 'Then'
+  
   target 'Stem_Tests' do
     inherit! :search_paths
-
+    
     pod 'FBSnapshotTestCase' , '~> 2.1.4'
   end
 end
