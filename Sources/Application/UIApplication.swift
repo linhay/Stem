@@ -24,7 +24,7 @@ import UIKit
 
 public extension UIApplication {
   
- public struct Info {
+  public struct Info {
     /// App版本号
     public let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     /// App构建版本号
@@ -42,10 +42,31 @@ public extension UIApplication {
     var libraryPath: String? { return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first }
   }
   
+  public enum OpenURLType {
+    case tel(number: String)
+    case sms(number: String)
+    case telprompt(number: String)
+    case safari(url: URL)
+    case mailto(email: String)
+    case appSettings
+    
+    public var url: URL {
+      switch self {
+      case .tel(number: let value): return URL(string: "tel://" + value)!
+      case .sms(number: let value): return URL(string: "sms://" + value)!
+      case .telprompt(number: let value): return URL(string: "telprompt://" + value)!
+      case .safari(url: let value):  return value
+      case .mailto(email: let value): return URL(string: "mailto://" + value)!
+      case .appSettings: return URL(string: UIApplication.openSettingsURLString)!
+      }
+    }
+    
+  }
+  
 }
 
 public extension Stem where Base: UIApplication {
-
+  
   var info: UIApplication.Info { return UIApplication.Info() }
   var path: UIApplication.Path { return UIApplication.Path() }
   
@@ -54,33 +75,50 @@ public extension Stem where Base: UIApplication {
 // MARK: - open
 public extension Stem where Base: UIApplication {
   
-  /// 打开链接 (会判断 能否打开)
+  /// 打开特定链接
   ///
-  /// - Parameter url: url
-  public func open(url: String) {
-    guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-      let url = URL(string: str),
-      UIApplication.shared.canOpenURL(url) else{ return }
-    unsafeOpen(url: url)
+  /// - Parameters:
+  ///   - url: url
+  ///   - completionHandler: 完成回调
+  public func open(type: UIApplication.OpenURLType, completionHandler: ((Bool) -> Void)? = nil) {
+    open(url: type.url, completionHandler: completionHandler)
   }
   
-  /// 打开链接 (不会判断 能否打开)
+  /// 打开链接
   ///
-  /// - Parameter url: url
-  public func unsafeOpen(url: String) {
-    guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-      let url = URL(string: str) else { return }
-    unsafeOpen(url: url)
+  /// - Parameters:
+  ///   - url: url
+  ///   - isSafe: 会判断 能否打开 | default: true
+  ///   - options: UIApplication.OpenExternalURLOptionsKey
+  ///   - completionHandler: 完成回调
+  public func open(url: String,
+                   isSafe: Bool = true,
+                   options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
+                   completionHandler: ((Bool) -> Void)? = nil) {
+    guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) else{ return }
+    open(url: url, isSafe: isSafe, options: options, completionHandler: completionHandler)
   }
   
-  /// 打开链接 (不会判断 能否打开)
+  /// 打开链接
   ///
-  /// - Parameter url: url
-  public func unsafeOpen(url: URL) {
+  /// - Parameters:
+  ///   - url: url
+  ///   - isSafe: 会判断 能否打开 | default: true
+  ///   - options: UIApplication.OpenExternalURLOptionsKey
+  ///   - completionHandler: 完成回调
+  public func open(url: URL,
+                   isSafe: Bool = true,
+                   options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
+                   completionHandler: ((Bool) -> Void)? = nil) {
+    if isSafe, !UIApplication.shared.canOpenURL(url) { return }
     if #available(iOS 10.0, *) {
-      UIApplication.shared.open(url, completionHandler: nil)
+      UIApplication.shared.open(url, options: options, completionHandler: completionHandler)
     } else {
-      UIApplication.shared.openURL(url)
+      // https://stackoverflow.com/questions/19356488/openurl-freezes-app-for-over-10-seconds
+      // 解决打开 其他 app 慢
+      DispatchQueue.main.async {
+        completionHandler?(UIApplication.shared.openURL(url))
+      }
     }
   }
   

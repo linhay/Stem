@@ -20,7 +20,13 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-import Foundation
+import UIKit
+
+public extension CGFloat {
+  
+ static var max = Float.greatestFiniteMagnitude
+  
+}
 
 public extension Float{
   public var cgFloat: CGFloat { return CGFloat(self) }
@@ -43,7 +49,7 @@ public extension CGFloat{
   public var floor: CGFloat { return Foundation.floor(self) }
   
   public var string: String { return description }
-		
+  
   public var int: Int { return Int(self) }
   public var float: Float { return Float(self) }
 }

@@ -22,71 +22,78 @@
 
 import UIKit
 
-// MARK: - runtime keys
-extension UIControl {
-  
-  private static let swizzing: Void = {
-    StemRuntime.exchangeMethod(selector: #selector(UIControl.sendAction(_:to:for:)),
-                               replace: #selector(UIControl.st_sendAction(action:to:forEvent:)),
-                               class: UIControl.self)
-    
-  }()
-  
-  private struct ActionKey {
-    static var action = UnsafeRawPointer(bitPattern: "uicontrol_action_block".hashValue)
-    static var time = UnsafeRawPointer(bitPattern: "uicontrol_event_time".hashValue)
-    static var interval = UnsafeRawPointer(bitPattern: "uicontrol_event_interval".hashValue)
-  }
-}
-
-
-public extension UIControl {
+extension Stem where Base: UIControl {
   
   /// 添加响应事件
   ///
   /// - Parameters:
   ///   - event: 响应事件类型
   ///   - action: 响应事件
-  public func add(for event: UIControl.Event, action: @escaping () -> ()) {
-    guard let selector = selector(event: event) else { return }
-    let act = ActionBlock(key: event.rawValue, action: action)
-    actionBlocks = actionBlocks.filter { (item) -> Bool in
-      return item.key != act.key
-    }
-    actionBlocks.append(act)
-    self.addTarget(self, action: selector, for: event)
+  public func add(for event: UIControl.Event, action: @escaping (_: UIControl) -> ()) {
+    guard let selector = base.selector(event: event) else { return }
+    UIControl.swizzing
+    base.actionStore[event.rawValue] = action
+    base.addTarget(base, action: selector, for: event)
+  }
+  
+  /// 移除响应事件
+  ///
+  /// - Parameter event: 响应事件类型
+  public func remove(for event: UIControl.Event) {
+    guard let selector = base.selector(event: event) else { return }
+    base.actionStore[event.rawValue] = nil
+    base.removeTarget(base, action: selector, for: event)
+  }
+  
+  /// 获取/设置 点击时间间隔
+  ///
+  /// - Parameter newValue: 时间间隔
+  @discardableResult
+  public func interval(_ newValue: TimeInterval? = nil) -> TimeInterval {
+    if let value = newValue { base.eventInterval = value }
+    return base.eventInterval
+  }
+  
+  /// 系统响应事件(该列表内值为true的事件将不受 `interval` 点击时间间隔的影响)
+  ///
+  /// - Parameter newValue: 添加 系统响应事件
+  /// - Returns: 系统响应事件列表
+  @discardableResult
+  public static func systemActions(_ newValue: (key: String, value: Bool)? = nil) -> [String: Bool] {
+    if let value = newValue { UIControl.systemActions.updateValue(value.value, forKey: value.key) }
+    return UIControl.systemActions
   }
   
 }
 
 
-
 // MARK: - time
 extension UIControl {
   
-  /// 系统响应事件
-  fileprivate var systemActions: [String] {
-    return ["_handleShutterButtonReleased:",
-            "cameraShutterPressed:",
-            "_tappedBottomBarCancelButton:",
-            "_tappedBottomBarDoneButton:",
-            "recordStart:",
-            "btnTouchUp:withEvent:"]
+  fileprivate static let swizzing: Void = {
+    StemRuntime.exchangeMethod(selector: #selector(UIControl.sendAction(_:to:for:)),
+                               replace: #selector(UIControl.st_sendAction(action:to:forEvent:)),
+                               class: UIControl.self)
+    
+  }()
+  
+  fileprivate struct ActionKey {
+    static var action = UnsafeRawPointer(bitPattern: "uicontrol_action_block".hashValue)!
+    static var time = UnsafeRawPointer(bitPattern: "uicontrol_event_time".hashValue)!
+    static var interval = UnsafeRawPointer(bitPattern: "uicontrol_event_interval".hashValue)!
   }
   
+  /// 系统响应事件
+  fileprivate static var systemActions = ["_handleShutterButtonReleased:": true, "cameraShutterPressed:": true,
+                                          "_tappedBottomBarCancelButton:": true, "_tappedBottomBarDoneButton:": true,
+                                          "recordStart:": true, "btnTouchUp:withEvent:": true]
+  
   // 重复点击的间隔
-  public var eventInterval: TimeInterval {
-    get {
-      if let eventInterval = objc_getAssociatedObject(self,
-                                                      UIControl.ActionKey.interval!) as? TimeInterval {
-        return eventInterval
-      }
-      return 0
-    }
+  fileprivate var eventInterval: TimeInterval {
+    get { return objc_getAssociatedObject(self, UIControl.ActionKey.interval) as? TimeInterval ?? 0 }
     set {
-      UIControl.swizzing
       objc_setAssociatedObject(self,
-                               UIControl.ActionKey.interval!,
+                               UIControl.ActionKey.interval,
                                newValue as TimeInterval,
                                .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
@@ -94,23 +101,18 @@ extension UIControl {
   
   /// 上次事件响应时间
   fileprivate var lastEventTime: TimeInterval {
-    get {
-      if let eventTime = objc_getAssociatedObject(self, UIControl.ActionKey.time!) as? TimeInterval {
-        return eventTime
-      }
-      return 1.0
-    }
+    get { return objc_getAssociatedObject(self, UIControl.ActionKey.time) as? TimeInterval ?? TimeInterval.infinity }
     set {
-      UIControl.swizzing
       objc_setAssociatedObject(self,
-                               UIControl.ActionKey.time!,
+                               UIControl.ActionKey.time,
                                newValue as TimeInterval,
                                .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
   }
   
   @objc fileprivate func st_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
-    if systemActions.contains(action.description) || eventInterval <= 0 {
+    let value = (UIControl.systemActions[action.description] ?? false) == false
+    if  value || eventInterval <= 0 {
       self.st_sendAction(action: action, to: target, forEvent: event)
       return
     }
@@ -126,26 +128,25 @@ extension UIControl {
 // MARK: - target
 extension UIControl {
   
-  fileprivate struct ActionBlock {
-    var key: UInt
-    var action: ()->()
-  }
-  
-  fileprivate var actionBlocks: [ActionBlock] {
-    get { return objc_getAssociatedObject(self,UIControl.ActionKey.action!) as? [ActionBlock] ?? [] }
+  fileprivate var actionStore: [UInt: (_: UIControl) -> Void] {
+    get {
+      if let value = objc_getAssociatedObject(self,UIControl.ActionKey.action) as? [UInt: (_: UIControl) -> Void] {
+        return value
+      }else {
+        self.actionStore = [:]
+        return self.actionStore
+      }
+    }
     set { objc_setAssociatedObject(self,
-                                   UIControl.ActionKey.action!,
-                                   newValue as [ActionBlock],
+                                   UIControl.ActionKey.action,
+                                   newValue as [UInt: (_: UIControl) -> Void],
                                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
   }
   
   fileprivate func triggerAction(for: UIControl, event: UIControl.Event){
-    let action = actionBlocks.filter { (item) -> Bool
-      in return item.key == event.rawValue
-      }.first
-    guard let act = action else { return }
-    act.action()
+    guard let action = actionStore[event.rawValue] else { return }
+    action(self)
   }
   
   fileprivate func selector(event: UIControl.Event) -> Selector? {

@@ -54,6 +54,17 @@ public extension UIColor{
     )
   }
   
+  /// 设置RGBA颜色
+  ///
+  /// - Parameters:
+  ///   - r: red    0 - 255
+  ///   - g: green  0 - 255
+  ///   - b: blue   0 - 255
+  ///   - a: alpha  0 - 255
+  convenience init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
+    self.init(red: r / 255, green: g / 255, blue: b / 255, alpha: a)
+  }
+  
   /// 十六进制色: 0x666666
   ///
   /// - Parameter str: "#666666" / "0X666666" / "0x666666"

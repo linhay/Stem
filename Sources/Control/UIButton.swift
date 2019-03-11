@@ -22,19 +22,10 @@
 
 import UIKit
 
-private extension UIButton {
-  
- private static let swizzing: Void = {
-    StemRuntime.exchangeMethod(selector: #selector(UIButton.layoutSubviews),
-                               replace: #selector(UIButton.st_layoutSubviews),
-                               class: UIButton.self)
-  }()
-
-}
 
 // MARK: - UIButton 扩展函数
-public extension UIButton {
-
+public extension Stem where Base: UIButton{
+  
   /// 设置背景颜色
   ///
   /// - Parameters:
@@ -46,21 +37,8 @@ public extension UIButton {
     UIGraphicsGetCurrentContext()?.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
     let colorImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
-    self.setBackgroundImage(colorImage, for: forState)
+    base.setBackgroundImage(colorImage, for: forState)
   }
-  
-  
-
-  @objc fileprivate func st_layoutSubviews() {
-    st_layoutSubviews()
-
-  }
-  
-}
-
-
-// MARK: - UIButton 扩展函数
-public extension Stem where Base: UIButton{
 
   
   /// 文字与图片水平居中

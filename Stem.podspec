@@ -18,9 +18,8 @@ Pod::Spec.new do |s|
   dict = {
     'Core' => [],
     'Foundation' => ['Stem/Core'],
-    'CALayer' => ['Stem/Core'],
     'CGGeometry' => ['Stem/Core'],
-    'TableView' => ['Stem/Core'],
+    'ListView' => ['Stem/Core'],
     'Color' => ['Stem/Core'],
     'Label' => ['Stem/Core'],
     'Font' => ['Stem/Core'],
@@ -34,9 +33,7 @@ Pod::Spec.new do |s|
     'InputView' => ['Stem/Core', 'Stem/CGGeometry'],
     'ViewController' => ['Stem/Core'],
     'View' => ['Stem/Core'],
-    'Cell' => ['Stem/Core'],
     'GestureRecognizer' => ['Stem/Core'],
-    'Button' => ['Stem/Core', 'Stem/Control']
   }
   
   dict.each { |key, value|
