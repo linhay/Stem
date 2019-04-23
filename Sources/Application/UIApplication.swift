@@ -23,105 +23,105 @@
 import UIKit
 
 public extension UIApplication {
-  
-  public struct Info {
-    /// App版本号
-    public let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-    /// App构建版本号
-    public let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
-    public let bundleName = Bundle.main.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String ?? ""
-    public let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? ""
-  }
-  
-  struct Path {
-    var documentsURL: URL? { return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last }
-    var documentsPath: String? { return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first }
-    var cachesURL: URL? { return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last }
-    var cachesPath: String? { return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first }
-    var libraryURL: URL? { return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last }
-    var libraryPath: String? { return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first }
-  }
-  
-  public enum OpenURLType {
-    case tel(number: String)
-    case sms(number: String)
-    case telprompt(number: String)
-    case safari(url: URL)
-    case mailto(email: String)
-    case appSettings
     
-    public var url: URL {
-      switch self {
-      case .tel(number: let value): return URL(string: "tel://" + value)!
-      case .sms(number: let value): return URL(string: "sms://" + value)!
-      case .telprompt(number: let value): return URL(string: "telprompt://" + value)!
-      case .safari(url: let value):  return value
-      case .mailto(email: let value): return URL(string: "mailto://" + value)!
-      case .appSettings: return URL(string: UIApplication.openSettingsURLString)!
-      }
+    struct Info {
+        /// App版本号
+        public let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        /// App构建版本号
+        public let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
+        public let bundleName = Bundle.main.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String ?? ""
+        public let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? ""
     }
     
-  }
-  
+    struct Path {
+        var documentsURL: URL? { return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last }
+        var documentsPath: String? { return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first }
+        var cachesURL: URL? { return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last }
+        var cachesPath: String? { return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first }
+        var libraryURL: URL? { return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last }
+        var libraryPath: String? { return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first }
+    }
+    
+    enum OpenURLType {
+        case tel(number: String)
+        case sms(number: String)
+        case telprompt(number: String)
+        case safari(url: URL)
+        case mailto(email: String)
+        case appSettings
+        
+        public var url: URL {
+            switch self {
+            case .tel(number: let value): return URL(string: "tel://" + value)!
+            case .sms(number: let value): return URL(string: "sms://" + value)!
+            case .telprompt(number: let value): return URL(string: "telprompt://" + value)!
+            case .safari(url: let value):  return value
+            case .mailto(email: let value): return URL(string: "mailto://" + value)!
+            case .appSettings: return URL(string: UIApplication.openSettingsURLString)!
+            }
+        }
+        
+    }
+    
 }
 
 public extension Stem where Base: UIApplication {
-  
-  var info: UIApplication.Info { return UIApplication.Info() }
-  var path: UIApplication.Path { return UIApplication.Path() }
-  
+    
+    var info: UIApplication.Info { return UIApplication.Info() }
+    var path: UIApplication.Path { return UIApplication.Path() }
+    
 }
 
 // MARK: - open
 public extension Stem where Base: UIApplication {
-  
-  /// 打开特定链接
-  ///
-  /// - Parameters:
-  ///   - url: url
-  ///   - completionHandler: 完成回调
-  public func open(type: UIApplication.OpenURLType, completionHandler: ((Bool) -> Void)? = nil) {
-    open(url: type.url, completionHandler: completionHandler)
-  }
-  
-  /// 打开链接
-  ///
-  /// - Parameters:
-  ///   - url: url
-  ///   - isSafe: 会判断 能否打开 | default: true
-  ///   - options: UIApplication.OpenExternalURLOptionsKey
-  ///   - completionHandler: 完成回调
-  public func open(url: String,
-                   isSafe: Bool = true,
-                   options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
-                   completionHandler: ((Bool) -> Void)? = nil) {
-    guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) else{ return }
-    open(url: url, isSafe: isSafe, options: options, completionHandler: completionHandler)
-  }
-  
-  /// 打开链接
-  ///
-  /// - Parameters:
-  ///   - url: url
-  ///   - isSafe: 会判断 能否打开 | default: true
-  ///   - options: UIApplication.OpenExternalURLOptionsKey
-  ///   - completionHandler: 完成回调
-  public func open(url: URL,
-                   isSafe: Bool = true,
-                   options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
-                   completionHandler: ((Bool) -> Void)? = nil) {
-    if isSafe, !UIApplication.shared.canOpenURL(url) { return }
-    if #available(iOS 10.0, *) {
-      UIApplication.shared.open(url, options: options, completionHandler: completionHandler)
-    } else {
-      // https://stackoverflow.com/questions/19356488/openurl-freezes-app-for-over-10-seconds
-      // 解决打开 其他 app 慢
-      DispatchQueue.main.async {
-        completionHandler?(UIApplication.shared.openURL(url))
-      }
+    
+    /// 打开特定链接
+    ///
+    /// - Parameters:
+    ///   - url: url
+    ///   - completionHandler: 完成回调
+    func open(type: UIApplication.OpenURLType, completionHandler: ((Bool) -> Void)? = nil) {
+        open(url: type.url, completionHandler: completionHandler)
     }
-  }
-  
-  
+    
+    /// 打开链接
+    ///
+    /// - Parameters:
+    ///   - url: url
+    ///   - isSafe: 会判断 能否打开 | default: true
+    ///   - options: UIApplication.OpenExternalURLOptionsKey
+    ///   - completionHandler: 完成回调
+    func open(url: String,
+              isSafe: Bool = true,
+              options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
+              completionHandler: ((Bool) -> Void)? = nil) {
+        guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) else{ return }
+        open(url: url, isSafe: isSafe, options: options, completionHandler: completionHandler)
+    }
+    
+    /// 打开链接
+    ///
+    /// - Parameters:
+    ///   - url: url
+    ///   - isSafe: 会判断 能否打开 | default: true
+    ///   - options: UIApplication.OpenExternalURLOptionsKey
+    ///   - completionHandler: 完成回调
+    func open(url: URL,
+              isSafe: Bool = true,
+              options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
+              completionHandler: ((Bool) -> Void)? = nil) {
+        if isSafe, !UIApplication.shared.canOpenURL(url) { return }
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: options, completionHandler: completionHandler)
+        } else {
+            // https://stackoverflow.com/questions/19356488/openurl-freezes-app-for-over-10-seconds
+            // 解决打开 其他 app 慢
+            DispatchQueue.main.async {
+                completionHandler?(UIApplication.shared.openURL(url))
+            }
+        }
+    }
+    
+    
 }
 

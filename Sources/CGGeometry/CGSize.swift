@@ -24,6 +24,6 @@ import UIKit
 
 public extension CGSize {
   
-  public static var max = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+   static var max = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
   
 }

@@ -24,14 +24,14 @@ import UIKit
 
 // MARK: - UIStoryboard 扩展
 public extension Stem where Base: UIStoryboard{
-  
-  /// 尝试使用 AnyClass 初始化视图控制器
-  ///
-  /// - Parameter with: 视图控制器类型
-  /// - Returns: 视图控制器 | nil
-  public static func viewController<T: UIViewController>(with: T.Type) -> T? {
-    let vcName = String(describing: T.self)
-    return UIStoryboard(name: vcName, bundle: nil).instantiateInitialViewController() as? T
-  }
-  
+
+    /// 尝试使用 AnyClass 初始化视图控制器
+    ///
+    /// - Parameter with: 视图控制器类型
+    /// - Returns: 视图控制器 | nil
+    static func viewController<T: UIViewController>(with: T.Type) -> T? {
+        let vcName = String(describing: T.self)
+        return UIStoryboard(name: vcName, bundle: nil).instantiateInitialViewController() as? T
+    }
+
 }

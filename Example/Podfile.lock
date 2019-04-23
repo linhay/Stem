@@ -5,61 +5,61 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - SnapKit (4.2.0)
-  - Stem (0.0.8):
-    - Stem/Application (= 0.0.8)
-    - Stem/CGGeometry (= 0.0.8)
-    - Stem/Color (= 0.0.8)
-    - Stem/Control (= 0.0.8)
-    - Stem/Core (= 0.0.8)
-    - Stem/Font (= 0.0.8)
-    - Stem/Foundation (= 0.0.8)
-    - Stem/GestureRecognizer (= 0.0.8)
-    - Stem/Image (= 0.0.8)
-    - Stem/ImageView (= 0.0.8)
-    - Stem/InputView (= 0.0.8)
-    - Stem/Label (= 0.0.8)
-    - Stem/ListView (= 0.0.8)
-    - Stem/NavigationBar (= 0.0.8)
-    - Stem/NSLayoutConstraint (= 0.0.8)
-    - Stem/Storyboard (= 0.0.8)
-    - Stem/View (= 0.0.8)
-    - Stem/ViewController (= 0.0.8)
-  - Stem/Application (0.0.8):
+  - Stem (0.0.9):
+    - Stem/Application (= 0.0.9)
+    - Stem/CGGeometry (= 0.0.9)
+    - Stem/Color (= 0.0.9)
+    - Stem/Control (= 0.0.9)
+    - Stem/Core (= 0.0.9)
+    - Stem/Font (= 0.0.9)
+    - Stem/Foundation (= 0.0.9)
+    - Stem/GestureRecognizer (= 0.0.9)
+    - Stem/Image (= 0.0.9)
+    - Stem/ImageView (= 0.0.9)
+    - Stem/InputView (= 0.0.9)
+    - Stem/Label (= 0.0.9)
+    - Stem/ListView (= 0.0.9)
+    - Stem/NavigationBar (= 0.0.9)
+    - Stem/NSLayoutConstraint (= 0.0.9)
+    - Stem/Storyboard (= 0.0.9)
+    - Stem/View (= 0.0.9)
+    - Stem/ViewController (= 0.0.9)
+  - Stem/Application (0.0.9):
     - Stem/Core
-  - Stem/CGGeometry (0.0.8):
+  - Stem/CGGeometry (0.0.9):
     - Stem/Core
-  - Stem/Color (0.0.8):
+  - Stem/Color (0.0.9):
     - Stem/Core
-  - Stem/Control (0.0.8):
+  - Stem/Control (0.0.9):
     - Stem/Core
-  - Stem/Core (0.0.8)
-  - Stem/Font (0.0.8):
+  - Stem/Core (0.0.9)
+  - Stem/Font (0.0.9):
     - Stem/Core
-  - Stem/Foundation (0.0.8):
+  - Stem/Foundation (0.0.9):
     - Stem/Core
-  - Stem/GestureRecognizer (0.0.8):
+  - Stem/GestureRecognizer (0.0.9):
     - Stem/Core
-  - Stem/Image (0.0.8):
+  - Stem/Image (0.0.9):
     - Stem/Core
-  - Stem/ImageView (0.0.8):
+  - Stem/ImageView (0.0.9):
     - Stem/Core
     - Stem/Image
-  - Stem/InputView (0.0.8):
+  - Stem/InputView (0.0.9):
     - Stem/CGGeometry
     - Stem/Core
-  - Stem/Label (0.0.8):
+  - Stem/Label (0.0.9):
     - Stem/Core
-  - Stem/ListView (0.0.8):
+  - Stem/ListView (0.0.9):
     - Stem/Core
-  - Stem/NavigationBar (0.0.8):
+  - Stem/NavigationBar (0.0.9):
     - Stem/Core
-  - Stem/NSLayoutConstraint (0.0.8):
+  - Stem/NSLayoutConstraint (0.0.9):
     - Stem/Core
-  - Stem/Storyboard (0.0.8):
+  - Stem/Storyboard (0.0.9):
     - Stem/Core
-  - Stem/View (0.0.8):
+  - Stem/View (0.0.9):
     - Stem/Core
-  - Stem/ViewController (0.0.8):
+  - Stem/ViewController (0.0.9):
     - Stem/Core
   - Then (2.4.0)
 
@@ -82,7 +82,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: ef57c6820e33811ae19b73b7a3f25b9d963eac6b
+  Stem: 5de92cd52f02c197e6336bab512e45883beef1f9
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
 PODFILE CHECKSUM: 2fcb6305d4a47b3acc751a4fa6fa2f098f8613a6

@@ -23,33 +23,33 @@
 import UIKit
 
 public extension CGFloat {
-  
- static var max = Float.greatestFiniteMagnitude
-  
+    
+    static var max = Float.greatestFiniteMagnitude
+    
 }
 
 public extension Float{
-  public var cgFloat: CGFloat { return CGFloat(self) }
+    var cgFloat: CGFloat { return CGFloat(self) }
 }
 
 public extension Double {
-  public var cgFloat: CGFloat { return CGFloat(self) }
+    var cgFloat: CGFloat { return CGFloat(self) }
 }
 
 public extension Int {
-  public var cgFloat: CGFloat { return CGFloat(self) }
+    var cgFloat: CGFloat { return CGFloat(self) }
 }
 
 public extension CGFloat{
-  /// 绝对值
-  public var abs: CGFloat { return Swift.abs(self) }
-  /// 向上取整
-  public var ceil: CGFloat { return Foundation.ceil(self) }
-  /// 向下取整
-  public var floor: CGFloat { return Foundation.floor(self) }
-  
-  public var string: String { return description }
-  
-  public var int: Int { return Int(self) }
-  public var float: Float { return Float(self) }
+    /// 绝对值
+    var abs: CGFloat { return Swift.abs(self) }
+    /// 向上取整
+    var ceil: CGFloat { return Foundation.ceil(self) }
+    /// 向下取整
+    var floor: CGFloat { return Foundation.floor(self) }
+    
+    var string: String { return description }
+    
+    var int: Int { return Int(self) }
+    var float: Float { return Float(self) }
 }

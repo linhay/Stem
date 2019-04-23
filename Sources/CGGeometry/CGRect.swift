@@ -23,26 +23,26 @@
 import UIKit
 
 public extension CGRect {
-  
-  public static var max = CGRect(origin: CGPoint.zero, size: CGSize.max)
-  
-  /// X
-  public var x: CGFloat {
-    set { self.origin.x = newValue }
-    get { return self.origin.x }
-  }
-  
-  /// Y
-  public var y: CGFloat {
-    set { self.origin.y = newValue }
-    get { return self.origin.y }
-  }
-  
-  /// 判断一个 CGRect 是否合法（例如不带无穷大的值、不带非法数字）
-  var isValidated: Bool {
-    guard !self.isNull, !self.isInfinite else { return false }
-    return true
-  }
+    
+    static var max = CGRect(origin: CGPoint.zero, size: CGSize.max)
+    
+    /// X
+    var x: CGFloat {
+        set { self.origin.x = newValue }
+        get { return self.origin.x }
+    }
+    
+    /// Y
+    var y: CGFloat {
+        set { self.origin.y = newValue }
+        get { return self.origin.y }
+    }
+    
+    /// 判断一个 CGRect 是否合法（例如不带无穷大的值、不带非法数字）
+    var isValidated: Bool {
+        guard !self.isNull, !self.isInfinite else { return false }
+        return true
+    }
 }
 
 

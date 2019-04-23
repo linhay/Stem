@@ -34,7 +34,7 @@ public extension String{
  ///   - fontSize: 字体大小
  ///   - colorHex: 字体颜色
  /// - Returns: 富文本
- public func htmlAttributedString(with fontName: String, fontSize: Int, colorHex: String) -> NSAttributedString? {
+    func htmlAttributedString(with fontName: String, fontSize: Int, colorHex: String) -> NSAttributedString? {
     do {
       let cssPrefix = "<style>* { font-family: \(fontName); color: #\(colorHex); font-size: \(fontSize); }</style>"
       let html = cssPrefix + self
@@ -51,7 +51,7 @@ public extension String{
   ///   - font: 字体大小
   ///   - size: 字符串长宽限制
   /// - Returns: 字符串的Bounds
-  public func bounds(font: UIFont,size: CGSize) -> CGRect {
+    func bounds(font: UIFont,size: CGSize) -> CGRect {
     if self.isEmpty { return CGRect.zero }
     let attributes = [NSAttributedString.Key.font: font]
     let option = NSStringDrawingOptions.usesLineFragmentOrigin
@@ -68,7 +68,7 @@ public extension String{
   /// - parameter space:   内部间距
   ///
   /// - returns: 字符串的Bounds
-  public func size(with font: UIFont,
+    func size(with font: UIFont,
                    size: CGSize,
                    margins: CGFloat = 0,
                    space: CGFloat = 0) -> CGSize {
@@ -86,7 +86,7 @@ public extension String{
   ///   - font: 字体
   ///   - width: 最大宽度
   /// - Returns: 行数
-  public func rows(font: UIFont,width: CGFloat) -> CGFloat {
+    func rows(font: UIFont,width: CGFloat) -> CGFloat {
     if self.isEmpty { return 0 }
     // 获取单行时候的内容的size
     let singleSize = (self as NSString).size(withAttributes: [NSAttributedString.Key.font:font])
