@@ -94,7 +94,7 @@ public extension Stem where Base: UICollectionView {
         }
     }
 
-    func dequeueSupplementaryView<T: UIView>(elementKind: String, indexPath: IndexPath) -> T where T: STCellProtocol {
+    func dequeueSupplementaryView<T: UICollectionReusableView>(elementKind: String, indexPath: IndexPath) -> T where T: STCellProtocol {
         return base.dequeueReusableSupplementaryView(ofKind: elementKind,
                                                      withReuseIdentifier: T.id,
                                                      for: indexPath) as! T
