@@ -99,6 +99,17 @@ public extension UIImage{
 }
 
 public extension Stem where Base: UIImage {
+
+    /// 叠加图片
+    ///
+    /// - Returns: 覆盖至上方图片
+    func overlay(image: UIImage) -> UIImage {
+        UIGraphicsBeginImageContext(base.size)
+        defer { UIGraphicsEndImageContext() }
+        base.draw(in: CGRect(origin: .zero, size: image.size))
+        image.draw(in: CGRect(origin: .zero, size: image.size))
+        return UIGraphicsGetImageFromCurrentImageContext() ?? base
+    }
     
     //  /// 高斯模糊
     //  ///
