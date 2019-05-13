@@ -23,7 +23,7 @@
 import UIKit
 
 public extension CGVector { 
-  
-  public static var max = CGVector(dx: CGFloat.greatestFiniteMagnitude, dy: CGFloat.greatestFiniteMagnitude)
-  
+    
+    static var max = CGVector(dx: CGFloat.greatestFiniteMagnitude, dy: CGFloat.greatestFiniteMagnitude)
+    
 }
