@@ -58,6 +58,7 @@ extension UILabel {
     }
     
     @objc fileprivate func st_drawText(in rect: CGRect) {
+        guard  textInset != .zero else { return }
         let rect = CGRect(x: bounds.origin.x + textInset.left,
                           y: bounds.origin.y + textInset.top,
                           width: bounds.size.width - textInset.left - textInset.right,

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Stem'
-  s.version          = '0.0.10'
+  s.version          = '0.0.11'
   s.summary          = 'A set of useful categories for Foundation and UIKit.'
   
   
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/linhay/Stem.git', :tag => s.version.to_s }
   
   s.ios.deployment_target = '8.0'
-  s.swift_version = '4.2'
+  s.swift_version = '5.0'
   
   s.frameworks = ['UIKit']
   s.requires_arc = true

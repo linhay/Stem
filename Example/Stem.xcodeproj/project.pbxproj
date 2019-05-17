@@ -19,6 +19,7 @@
 		CD45272D21E9D090009BF1FF /* TestImageColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272521E9D090009BF1FF /* TestImageColorController.swift */; };
 		CD45272E21E9D090009BF1FF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272621E9D090009BF1FF /* ViewController.swift */; };
 		CD45273021E9D090009BF1FF /* TestImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272821E9D090009BF1FF /* TestImageController.swift */; };
+		CDB7050E228EE45F00F96007 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = CDB7050D228EE45F00F96007 /* .travis.yml */; };
 		EA8D40A19F4396FC3B3E1EB0 /* Pods_Stem_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472AF920E186682E041F8371 /* Pods_Stem_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		CD45272521E9D090009BF1FF /* TestImageColorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageColorController.swift; sourceTree = "<group>"; };
 		CD45272621E9D090009BF1FF /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CD45272821E9D090009BF1FF /* TestImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageController.swift; sourceTree = "<group>"; };
+		CDB7050D228EE45F00F96007 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
+				CDB7050D228EE45F00F96007 /* .travis.yml */,
 				A2EF403DF6F417A32EFC9131 /* Stem.podspec */,
 				C199E0054A17A5F1AA994DD9 /* README.md */,
 				CA4CF4F96CE45747010A0BDB /* LICENSE */,
@@ -272,6 +275,7 @@
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				CDB7050E228EE45F00F96007 /* .travis.yml in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

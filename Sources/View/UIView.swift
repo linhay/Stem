@@ -23,47 +23,11 @@
 import UIKit
 
 // MARK: - UIView 原生属性扩展
-public extension UIView{
-    
-//    /// 圆角
-//    var cornerRadius: CGFloat {
-//        get{ return self.layer.cornerRadius }
-//        set{
-//            self.layer.cornerRadius = newValue
-//            self.layer.masksToBounds = true
-//        }
-//    }
-//    
-//    /// 边框宽度
-//    var borderWidth: CGFloat {
-//        get{ return self.layer.borderWidth }
-//        set{ self.layer.borderWidth = newValue }
-//    }
-//    
-//    /// 边框颜色
-//    var borderColor: UIColor  {
-//        get{
-//            guard let temp: CGColor = self.layer.borderColor else {
-//                return UIColor.clear
-//            }
-//            return UIColor(cgColor: temp)
-//        }
-//        set { self.layer.borderColor = newValue.cgColor }
-//    }
-    
-    /// 背景图片
-    var cgImage: UIImage {
-        get{
-            guard let temp: Any = self.layer.contents else {
-                return UIImage()
-            }
-            return UIImage.init(cgImage: temp as! CGImage)
-        }
-        set { self.layer.contents = newValue.cgImage }
-    }
-    
-}
+public extension Stem where Base: UIView {
 
+
+
+}
 
 
 // MARK: - UIView 属性扩展

@@ -102,12 +102,15 @@ public extension Stem where Base: UIImage {
 
     /// 叠加图片
     ///
-    /// - Returns: 覆盖至上方图片
-    func overlay(image: UIImage) -> UIImage {
+    /// - Parameters:
+    ///   - image: 覆盖至上方图片
+    ///   - offset: 覆盖图片偏移 正值向下向右
+    /// - Returns: 新图
+    func overlay(image: UIImage, offset: UIOffset = UIOffset.zero) -> UIImage {
         UIGraphicsBeginImageContext(base.size)
         defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(origin: .zero, size: image.size))
-        image.draw(in: CGRect(origin: .zero, size: image.size))
+        image.draw(in: CGRect(origin: CGPoint(x: offset.horizontal, y: offset.vertical), size: image.size))
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }
     

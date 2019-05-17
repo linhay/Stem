@@ -43,14 +43,6 @@ public extension STNibProtocol {
 // MARK: - UITableView
 public extension Stem where Base: UITableView{
 
-    /// 批量注册 `STCellProtocol` 类型的 UITableViewCell
-    ///
-    /// - Parameter cells: UITableViewCell 数组
-    func register<T: UITableViewCell>(_ cells: [T.Type]) where T: STCellProtocol {
-        cells.forEach({ register($0 )})
-    }
-
-
     /// 注册 `STCellProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
@@ -68,14 +60,6 @@ public extension Stem where Base: UITableView{
     /// - Returns: 具体类型的 `UITableViewCell`
     func dequeueCell<T: STCellProtocol>(_ indexPath: IndexPath) -> T {
         return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
-    }
-
-
-    /// 批量注册 `STCellProtocol` 类型的 UITableViewHeaderFooterView
-    ///
-    /// - Parameter cells: UITableViewHeaderFooterView 数组
-    func registerHeaderFooterView<T: UITableViewHeaderFooterView>(_ views: [T.Type]) where T: STCellProtocol {
-        views.forEach({ registerHeaderFooterView($0) })
     }
 
     /// 注册 `STCellProtocol` 类型的 UITableViewHeaderFooterView
@@ -114,13 +98,6 @@ public extension UICollectionView {
 }
 
 public extension Stem where Base: UICollectionView {
-
-    /// 批量注册 `STCellProtocol` 类型的 UICollectionViewCell
-    ///
-    /// - Parameter cells: UICollectionViewCell 数组
-    func register<T: UICollectionViewCell>(_ cells: [T.Type]) where T: STCellProtocol {
-        cells.forEach({ register($0 )})
-    }
 
     /// 注册 `STCellProtocol` 类型的 UICollectionViewCell
     ///
