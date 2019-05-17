@@ -22,213 +22,80 @@
 
 import UIKit
 
-// MARK: - 文本区域
-public extension String{
-  
- /// 解析HTML样式
- ///
- /// https://github.com/Luur/SwiftTips#57-render-html-within-a-uilabel
- ///
- /// - Parameters:
- ///   - fontName: 字体名称
- ///   - fontSize: 字体大小
- ///   - colorHex: 字体颜色
- /// - Returns: 富文本
-    func htmlAttributedString(with fontName: String, fontSize: Int, colorHex: String) -> NSAttributedString? {
-    do {
-      let cssPrefix = "<style>* { font-family: \(fontName); color: #\(colorHex); font-size: \(fontSize); }</style>"
-      let html = cssPrefix + self
-      guard let data = html.data(using: String.Encoding.utf8) else {  return nil }
-      return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
-    } catch {
-      return nil
-    }
-  }
-  
-  /// 获取字符串的Bounds
-  ///
-  /// - Parameters:
-  ///   - font: 字体大小
-  ///   - size: 字符串长宽限制
-  /// - Returns: 字符串的Bounds
-    func bounds(font: UIFont,size: CGSize) -> CGRect {
-    if self.isEmpty { return CGRect.zero }
-    let attributes = [NSAttributedString.Key.font: font]
-    let option = NSStringDrawingOptions.usesLineFragmentOrigin
-    let rect = self.boundingRect(with: size, options: option, attributes: attributes, context: nil)
-    return rect
-  }
-  
-  
-  /// 获取字符串的Bounds
-  ///
-  /// - parameter font:    字体大小
-  /// - parameter size:    字符串长宽限制
-  /// - parameter margins: 头尾间距
-  /// - parameter space:   内部间距
-  ///
-  /// - returns: 字符串的Bounds
-    func size(with font: UIFont,
-                   size: CGSize,
-                   margins: CGFloat = 0,
-                   space: CGFloat = 0) -> CGSize {
-    if self.isEmpty { return CGSize.zero }
-    var bound = self.bounds(font: font, size: size)
-    let rows = self.rows(font: font, width: size.width)
-    bound.size.height += margins * 2
-    bound.size.height += space * (rows - 1)
-    return bound.size
-  }
-  
-  /// 文本行数
-  ///
-  /// - Parameters:
-  ///   - font: 字体
-  ///   - width: 最大宽度
-  /// - Returns: 行数
-    func rows(font: UIFont,width: CGFloat) -> CGFloat {
-    if self.isEmpty { return 0 }
-    // 获取单行时候的内容的size
-    let singleSize = (self as NSString).size(withAttributes: [NSAttributedString.Key.font:font])
-    // 获取多行时候,文字的size
-    let textSize = self.bounds(font: font, size: CGSize(width: width, height: CGFloat(MAXFLOAT))).size
-    // 返回计算的行数
-    return ceil(textSize.height / singleSize.height);
-  }
-  
-}
+extension String: StemCompatible { }
 
+public extension Stem where Base == String {
 
-public extension String {
-
-    func attributes(_ attributes: [NSAttributedString.Key : Any]? = nil) -> NSAttributedString {
-       return NSAttributedString(string: self, attributes: attributes)
-    }
-
-
-}
-
-
-public extension NSAttributedString {
-
-    /// 初始化函数
+    /// 解析HTML样式
+    ///
+    /// https://github.com/Luur/SwiftTips#57-render-html-within-a-uilabel
     ///
     /// - Parameters:
-    ///   - string: f字符串
-    ///   - attributes: 富文本属性
-    convenience init(string: String, attributes: Attribute...) {
-       let attributes = attributes.reduce([NSAttributedString.Key: Any]()) { (dict, item) -> [NSAttributedString.Key: Any] in
-            var dict = dict
-            dict[item.rawValue.key] = item.rawValue.value
-            return dict
-        }
-        self.init(string: string, attributes: attributes)
-    }
-
-    /// 富文本属性
-    ///
-    /// - font: 字体, [default: Helvetica(Neue) 12]
-    /// - paragraphStyle: 段落属性, [default: NSParagraphStyle.default]
-    /// - foregroundColor: 文本前景颜色 [default: blackColor]
-    /// - backgroundColor: 文本背景颜色 [default nil]
-    /// - ligature: 连体属性
-    /// - kern: 字距，负值间距变窄，正值间距变宽
-    /// - strikethroughStyle: 删除线样式
-    /// - strikethroughColor: 删除线颜色
-    /// - underlineColor: 下划线颜色
-    /// - underlineStyle: 下划线样式
-    /// - strokeColor: 笔刷颜色
-    /// - strokeWidth: 笔刷样式
-    /// - shadow: 阴影 [default: nil]
-    /// - verticalGlyphForm: 文字排版方向
-    /// - textEffect: 文本特殊效果
-    /// - attachment: 文本附件
-    /// - link: 超链接
-    /// - baselineOffset: 基线偏移值 正值上偏，负值下偏 [default: 0]
-    /// - obliqueness: 设置字体倾斜度，正值右倾，负值左倾
-    /// - expansion: 字体的横向拉伸，正值拉伸，负值压缩
-    /// - writingDirection: 文字的书写方向
-    enum Attribute {
-        case font(_ : UIFont)
-        case paragraphStyle(_: NSParagraphStyle)
-        case foregroundColor(_: UIColor)
-        case backgroundColor(_: UIColor)
-        case ligature(_: AttributeLigatureType)
-        case kern(_: CGFloat)
-        case strikethroughStyle(_: NSUnderlineStyle)
-        case strikethroughColor(_: UIColor)
-        case underlineColor(_: UIColor)
-        case underlineStyle(_: NSUnderlineStyle)
-        case strokeColor(_: UIColor)
-        case strokeWidth(_: CGFloat)
-        case shadow(_: NSShadow)
-        case verticalGlyphForm(_: VerticalGlyphFormStyle)
-        case textEffect(_: TextEffectStyle)
-        case attachment(_: NSTextAttachment)
-        case link(_: Any)
-        case baselineOffset(_: CGFloat)
-        case obliqueness(_: CGFloat)
-        case expansion(_: CGFloat)
-        case writingDirection(_: [NSWritingDirection])
-
-        var rawValue: (key: NSAttributedString.Key,value: Any?) {
-            switch self {
-            case .font(let value):                return (NSAttributedString.Key.font,value)
-            case .paragraphStyle(let value):      return (NSAttributedString.Key.paragraphStyle,value)
-            case .foregroundColor(let value):     return (NSAttributedString.Key.foregroundColor,value)
-            case .backgroundColor(let value):     return (NSAttributedString.Key.backgroundColor,value)
-            case .ligature(let value):            return (NSAttributedString.Key.ligature,value)
-            case .kern(let value):                return (NSAttributedString.Key.kern,value)
-            case .strikethroughStyle(let value):  return (NSAttributedString.Key.strikethroughStyle,value)
-            case .strikethroughColor(let value):  return (NSAttributedString.Key.strikethroughColor,value)
-            case .underlineColor(let value):      return (NSAttributedString.Key.underlineColor,value)
-            case .underlineStyle(let value):      return (NSAttributedString.Key.underlineStyle,value)
-            case .strokeColor(let value):         return (NSAttributedString.Key.strokeColor,value)
-            case .strokeWidth(let value):         return (NSAttributedString.Key.strokeWidth,value)
-            case .shadow(let value):              return (NSAttributedString.Key.shadow,value)
-            case .verticalGlyphForm(let value):   return (NSAttributedString.Key.verticalGlyphForm,value)
-            case .textEffect(let value):          return (NSAttributedString.Key.textEffect,value)
-            case .attachment(let value):          return (NSAttributedString.Key.attachment,value)
-            case .link(let value):                return (NSAttributedString.Key.link,value)
-            case .baselineOffset(let value):      return (NSAttributedString.Key.baselineOffset,value)
-            case .obliqueness(let value):         return (NSAttributedString.Key.obliqueness,value)
-            case .expansion(let value):           return (NSAttributedString.Key.expansion,value)
-            case .writingDirection(let value):    return (NSAttributedString.Key.writingDirection,value)
-            }
+    ///   - fontName: 字体名称
+    ///   - fontSize: 字体大小
+    ///   - colorHex: 字体颜色
+    /// - Returns: 富文本
+    func htmlAttributedString(font: UIFont, color hex: String) -> NSAttributedString? {
+        do {
+            let cssPrefix = "<style>* { font-family: \(font.fontName); color: #\(hex); font-size: \(font.pointSize); }</style>"
+            let html = cssPrefix + base
+            guard let data = html.data(using: String.Encoding.utf8) else {  return nil }
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            return nil
         }
     }
 
-    /// 文字排版方向
+    /// 获取字符串的Bounds
     ///
-    /// - horizontal: 横排文本 [default]
-    /// - vertical: 竖排文本 [iOS 不支持]
-    enum VerticalGlyphFormStyle: Int {
-        case horizontal = 0
-        case vertical = 1
+    /// - Parameters:
+    ///   - font: 字体大小
+    ///   - size: 字符串长宽限制
+    /// - Returns: 字符串的Bounds
+    func bounds(attributes: [NSAttributedString.Attribute], size: CGSize, option: NSStringDrawingOptions = []) -> CGRect {
+        if base.isEmpty { return CGRect.zero }
+        return base.boundingRect(with: size, options: option, attributes: attributes.attributes, context: nil)
     }
 
-    /// 连字符
+    /// 文本行数
     ///
-    /// - none: 没有连体字符
-    /// - `default`: 默认的连体字符 [default]
-    /// - all: 所有连体符号 [iOS 不支持]
-    enum AttributeLigatureType: Int {
-        case none = 0
-        case `default` = 1
-        case all = 2
-    }
-
-
-    static func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
-        let attr = NSMutableAttributedString(attributedString: lhs)
-        attr.append(rhs)
-        return attr
-    }
-
-    static func +=(lhs: NSMutableAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
-        lhs.append(rhs)
-        return lhs
+    /// - Parameters:
+    ///   - font: 字体
+    ///   - width: 最大宽度
+    /// - Returns: 行数
+    func rows(font: UIFont, width: CGFloat) -> CGFloat {
+        if base.isEmpty { return 0 }
+        // 获取单行时候的内容的size
+        let totalWidth = self.bounds(attributes: [.font(font)], size: CGSize(width: CGFloat(CGFloat.max), height: font.lineHeight))
+        // 返回计算的行数
+        return ceil(totalWidth.width / font.lineHeight)
     }
 
 }
+
+
+
+
+
+
+public extension Stem where Base == String {
+
+    ///  获取富文本类型字符串
+    ///
+    /// - Parameter attributes: 富文本属性
+    /// - Returns: 富文本类型字符串
+    func attributes(_ attributes: NSAttributedString.Attribute...) -> NSAttributedString {
+       return NSAttributedString(string: base, attributes: attributes)
+    }
+
+    ///  获取富文本类型字符串
+    ///
+    /// - Parameter attributes: 富文本属性
+    /// - Returns: 富文本类型字符串
+    func attributes(_ attributes: [NSAttributedString.Attribute]) -> NSAttributedString {
+        return NSAttributedString(string: base, attributes: attributes)
+    }
+
+}
+
 
