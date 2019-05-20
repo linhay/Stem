@@ -23,8 +23,8 @@
 import UIKit
 
 public protocol StemCompatible {
-    associatedtype CompatibleType
-    var st: CompatibleType { get }
+    associatedtype StemCompatibleType
+    var st: StemCompatibleType { get }
 }
 
 public extension StemCompatible {

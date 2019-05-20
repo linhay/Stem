@@ -47,10 +47,10 @@ public extension Stem where Base: UIButton{
     func horizontalCenterTitleAndImage(spacing: CGFloat) {
         let imageSize = base.imageView?.frame.size ?? .zero
         var titleSize = CGSize.zero
-        if let label = base.titleLabel, let text = label.text {
+        if let label = base.titleLabel, let text = label.text, let font = label.font {
             titleSize = (text as NSString).boundingRect(with: base.bounds.size,
                                                         options: [.usesLineFragmentOrigin],
-                                                        attributes: [NSAttributedString.Key.font : label.font],
+                                                        attributes: [NSAttributedString.Key.font : font],
                                                         context: nil).size
         }
         
@@ -65,10 +65,10 @@ public extension Stem where Base: UIButton{
     func verticalCenterImageAndTitle(spacing: CGFloat) {
         let imageSize = base.imageView?.frame.size ?? .zero
         var titleSize = CGSize.zero
-        if let label = base.titleLabel, let text = label.text {
+        if let label = base.titleLabel, let text = label.text, let font = label.font {
             titleSize = (text as NSString).boundingRect(with: base.bounds.size,
                                                         options: [.usesLineFragmentOrigin],
-                                                        attributes: [NSAttributedString.Key.font : label.font],
+                                                        attributes: [NSAttributedString.Key.font : font],
                                                         context: nil).size
         }
         

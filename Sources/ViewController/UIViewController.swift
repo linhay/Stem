@@ -92,7 +92,7 @@ public extension Stem where Base: UIViewController {
             base.navigationController?.pushViewController(vc, animated: animated)
             if isRemove {
                 guard let vcs = base.navigationController?.viewControllers else{ return }
-                guard let flags = vcs.index(of: base.self) else { return }
+                guard let flags = vcs.firstIndex(of: base.self) else { return }
                 base.navigationController?.viewControllers.remove(at: flags)
             }
         }
