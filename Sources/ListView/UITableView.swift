@@ -30,16 +30,16 @@ public extension Stem where Base: UITableView {
     base.endUpdates()
   }
   
-  func scroll(to row: Int,in section: Int,at position: UITableView.ScrollPosition,animated: Bool) {
+  func scroll(to row: Int,in section: Int, at position: UITableView.ScrollPosition,animated: Bool) {
     let indexPath = IndexPath(row: row, section: section)
     base.scrollToRow(at: indexPath, at: position, animated: animated)
   }
   
-  func insertRow(at indexPath: IndexPath,with animation: UITableView.RowAnimation) {
+  func insertRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) {
     base.insertRows(at: [indexPath], with: animation)
   }
   
-  func insert(row: Int, in section: Int,with animation: UITableView.RowAnimation) {
+  func insert(row: Int, in section: Int, with animation: UITableView.RowAnimation) {
     let indexPath = IndexPath(row: row, section: section)
     base.insertRows(at: [indexPath], with: animation)
   }
@@ -57,7 +57,7 @@ public extension Stem where Base: UITableView {
     base.deleteRows(at: [indexPath], with: animation)
   }
   
-  func deleteRow(row: Int, in section: Int,with animation: UITableView.RowAnimation) {
+  func deleteRow(row: Int, in section: Int, with animation: UITableView.RowAnimation) {
     let indexPath = IndexPath(row: row, section: section)
     base.deleteRows(at: [indexPath], with: animation)
   }

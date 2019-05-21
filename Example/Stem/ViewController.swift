@@ -43,6 +43,17 @@ class ViewController: BaseViewController {
             let vc = TestButtonViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         })
+
+        items.append(TableElement(title: "Gesture", subtitle: "") {
+            let vc = TestGestureViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        })
+
+        items.append(TableElement(title: "CALayer", subtitle: "") {
+            let vc = TestCALayerViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        })
+
     }
 
 }

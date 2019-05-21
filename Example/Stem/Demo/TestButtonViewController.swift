@@ -41,6 +41,7 @@ class TestButtonViewController: BaseViewController {
                               subtitle: "button.st.horizontalCenterTitleAndImage(spacing: 5)") {
       self.button.st.horizontalCenterTitleAndImage(spacing: 5)
     })
+
   }
   
 }

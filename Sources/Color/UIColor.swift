@@ -22,7 +22,7 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
 
     /// 随机色
     static var random: UIColor {

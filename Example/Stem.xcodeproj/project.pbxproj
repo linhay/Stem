@@ -13,12 +13,14 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		B9C3836500AA527ED5C33308 /* Pods_Stem_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ED39D011F46CD73E3AB2B2D /* Pods_Stem_Example.framework */; };
+		CD416B5022940FB70046D1B3 /* TestCALayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD416B4F22940FB70046D1B3 /* TestCALayerViewController.swift */; };
 		CD45272A21E9D090009BF1FF /* TestButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272221E9D090009BF1FF /* TestButtonViewController.swift */; };
 		CD45272B21E9D090009BF1FF /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272321E9D090009BF1FF /* BaseViewController.swift */; };
 		CD45272C21E9D090009BF1FF /* TestImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272421E9D090009BF1FF /* TestImageViewController.swift */; };
 		CD45272D21E9D090009BF1FF /* TestImageColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272521E9D090009BF1FF /* TestImageColorController.swift */; };
 		CD45272E21E9D090009BF1FF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272621E9D090009BF1FF /* ViewController.swift */; };
 		CD45273021E9D090009BF1FF /* TestImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD45272821E9D090009BF1FF /* TestImageController.swift */; };
+		CD68EE042293C22500B063AC /* TestGestureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD68EE032293C22500B063AC /* TestGestureViewController.swift */; };
 		CDB7050E228EE45F00F96007 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = CDB7050D228EE45F00F96007 /* .travis.yml */; };
 		EA8D40A19F4396FC3B3E1EB0 /* Pods_Stem_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472AF920E186682E041F8371 /* Pods_Stem_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -52,12 +54,14 @@
 		A2EF403DF6F417A32EFC9131 /* Stem.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C199E0054A17A5F1AA994DD9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		CA4CF4F96CE45747010A0BDB /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		CD416B4F22940FB70046D1B3 /* TestCALayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCALayerViewController.swift; sourceTree = "<group>"; };
 		CD45272221E9D090009BF1FF /* TestButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestButtonViewController.swift; sourceTree = "<group>"; };
 		CD45272321E9D090009BF1FF /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		CD45272421E9D090009BF1FF /* TestImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageViewController.swift; sourceTree = "<group>"; };
 		CD45272521E9D090009BF1FF /* TestImageColorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageColorController.swift; sourceTree = "<group>"; };
 		CD45272621E9D090009BF1FF /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CD45272821E9D090009BF1FF /* TestImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageController.swift; sourceTree = "<group>"; };
+		CD68EE032293C22500B063AC /* TestGestureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestGestureViewController.swift; sourceTree = "<group>"; };
 		CDB7050D228EE45F00F96007 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +180,8 @@
 		CD45272121E9D090009BF1FF /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				CD416B4F22940FB70046D1B3 /* TestCALayerViewController.swift */,
+				CD68EE032293C22500B063AC /* TestGestureViewController.swift */,
 				CD45272221E9D090009BF1FF /* TestButtonViewController.swift */,
 				CD45272321E9D090009BF1FF /* BaseViewController.swift */,
 				CD45272421E9D090009BF1FF /* TestImageViewController.swift */,
@@ -381,12 +387,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD68EE042293C22500B063AC /* TestGestureViewController.swift in Sources */,
 				CD45273021E9D090009BF1FF /* TestImageController.swift in Sources */,
 				CD45272E21E9D090009BF1FF /* ViewController.swift in Sources */,
 				CD45272C21E9D090009BF1FF /* TestImageViewController.swift in Sources */,
 				CD45272B21E9D090009BF1FF /* BaseViewController.swift in Sources */,
 				CD45272D21E9D090009BF1FF /* TestImageColorController.swift in Sources */,
 				CD45272A21E9D090009BF1FF /* TestButtonViewController.swift in Sources */,
+				CD416B5022940FB70046D1B3 /* TestCALayerViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
