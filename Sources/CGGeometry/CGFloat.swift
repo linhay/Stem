@@ -24,7 +24,7 @@ import UIKit
 
 public extension CGFloat {
     
-    static var max = Float.greatestFiniteMagnitude
+    static var max = CGFloat.greatestFiniteMagnitude
     
 }
 
