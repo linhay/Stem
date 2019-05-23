@@ -60,12 +60,5 @@ fileprivate extension CALayer {
                                         height: self.bounds.height - inset.top - inset.bottom)
             }
         })
-
     }
-
-
-
-
-
-
 }

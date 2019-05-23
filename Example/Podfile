@@ -8,6 +8,5 @@ target 'Stem_Example' do
   target 'Stem_Tests' do
     inherit! :search_paths
     
-    pod 'FBSnapshotTestCase' , '~> 2.1.4'
   end
 end

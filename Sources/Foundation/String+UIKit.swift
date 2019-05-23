@@ -25,7 +25,7 @@ import UIKit
 extension String: StemCompatible { }
 
 public extension Stem where Base == String {
-
+    
     /// 解析HTML样式
     ///
     /// https://github.com/Luur/SwiftTips#57-render-html-within-a-uilabel
@@ -45,7 +45,7 @@ public extension Stem where Base == String {
             return nil
         }
     }
-
+    
     /// 获取字符串的Bounds
     ///
     /// - Parameters:
@@ -56,7 +56,20 @@ public extension Stem where Base == String {
         if base.isEmpty { return CGRect.zero }
         return base.boundingRect(with: size, options: option, attributes: attributes.attributes, context: nil)
     }
-
+    
+    /// 获取字符串的CGSize
+    ///
+    /// - Parameters:
+    ///   - font: 字体大小
+    ///   - size: 字符串长宽限制
+    /// - Returns: 字符串的Bounds
+    func size(attributes: [NSAttributedString.Attribute],
+              size: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
+                                    height: CGFloat.greatestFiniteMagnitude),
+              option: NSStringDrawingOptions = []) -> CGSize {
+        return self.bounds(attributes: attributes, size: size, option: option).size
+    }
+    
     /// 文本行数
     ///
     /// - Parameters:
@@ -66,11 +79,15 @@ public extension Stem where Base == String {
     func rows(font: UIFont, width: CGFloat) -> CGFloat {
         if base.isEmpty { return 0 }
         // 获取单行时候的内容的size
-        let totalWidth = self.bounds(attributes: [.font(font)], size: CGSize(width: CGFloat(CGFloat.greatestFiniteMagnitude), height: font.lineHeight))
+        let singleSize = (base as NSString).size(withAttributes: [NSAttributedString.Key.font:font])
+        // 获取多行时候,文字的size
+        let textSize = self.size(attributes: [NSAttributedString.Attribute.font(font)],
+                                 size: CGSize(width: width,
+                                              height: CGFloat.greatestFiniteMagnitude))
         // 返回计算的行数
-        return ceil(totalWidth.width / font.lineHeight)
+        return ceil(textSize.height / singleSize.height)
     }
-
+    
 }
 
 
@@ -79,15 +96,15 @@ public extension Stem where Base == String {
 
 
 public extension Stem where Base == String {
-
+    
     ///  获取富文本类型字符串
     ///
     /// - Parameter attributes: 富文本属性
     /// - Returns: 富文本类型字符串
     func attributes(_ attributes: NSAttributedString.Attribute...) -> NSAttributedString {
-       return NSAttributedString(string: base, attributes: attributes)
+        return NSAttributedString(string: base, attributes: attributes)
     }
-
+    
     ///  获取富文本类型字符串
     ///
     /// - Parameter attributes: 富文本属性
@@ -95,7 +112,7 @@ public extension Stem where Base == String {
     func attributes(_ attributes: [NSAttributedString.Attribute]) -> NSAttributedString {
         return NSAttributedString(string: base, attributes: attributes)
     }
-
+    
 }
 
 
