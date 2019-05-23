@@ -66,7 +66,7 @@ public extension Stem where Base == String {
     func rows(font: UIFont, width: CGFloat) -> CGFloat {
         if base.isEmpty { return 0 }
         // 获取单行时候的内容的size
-        let totalWidth = self.bounds(attributes: [.font(font)], size: CGSize(width: CGFloat(CGFloat.max), height: font.lineHeight))
+        let totalWidth = self.bounds(attributes: [.font(font)], size: CGSize(width: CGFloat(CGFloat.greatestFiniteMagnitude), height: font.lineHeight))
         // 返回计算的行数
         return ceil(totalWidth.width / font.lineHeight)
     }
