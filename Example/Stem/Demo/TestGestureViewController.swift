@@ -32,12 +32,14 @@ class TestGestureViewController: BaseViewController {
     }
     
     items.append(TableElement(title: "UITapGestureRecognizer",
-                              subtitle: "gesture.st.add({ (item) in ...})") {
+                              subtitle: "gesture.st.add({ (item) in ... })") { [weak self] in
 
+guard let base = self else { return }
+                                base.testView.st.removeGestureRecognizers()
                                 let ges = UITapGestureRecognizer()
-                                self.testView.addGestureRecognizer(ges)
+                                base.testView.addGestureRecognizer(ges)
                                 ges.st.add({ (gesture) in
-                                    self.testView.backgroundColor = UIColor.random
+                                    base.testView.backgroundColor = UIColor.random
                                 })
 
     })

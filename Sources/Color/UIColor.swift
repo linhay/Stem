@@ -56,17 +56,62 @@ public extension UIColor {
 
 public extension UIColor{
 
+
+    /// 十六进制色: 0x666666
+    ///
+    /// - Parameter str: "#666666" / "0X666666" / "0x666666"
+    convenience init(str: String){
+        var cString = str.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
+        if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
+        if cString.count != 6 {
+            self.init(red: 1, green: 1, blue: 1, alpha: 1)
+            return
+        }
+
+        var r: UInt32 = 0x0
+        Scanner(string: String(cString)).scanHexInt32(&r)
+        self.init(value: UInt(r))
+    }
+
+    /// 十六进制色: 0x666666
+    ///
+    /// - Parameter str: "#666666" / "0X666666" / "0x666666"
+    convenience init(sRGB str: String){
+        var cString = str.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
+        if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
+        if cString.count != 6 {
+            self.init(red: 1, green: 1, blue: 1, alpha: 1)
+            return
+        }
+
+        var r: UInt32 = 0x0
+        Scanner(string: String(cString)).scanHexInt32(&r)
+        self.init(sRGB: UInt(r))
+    }
+
+
     /// 十六进制色: 0x666666
     ///
     /// - Parameter RGBValue: 十六进制颜色
     convenience init(value: UInt) {
-        self.init(
-            red: CGFloat((value & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((value & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(value & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
+        self.init(r: CGFloat((value & 0xFF0000) >> 16),
+                  g: CGFloat((value & 0x00FF00) >> 8),
+                  b: CGFloat(value & 0x0000FF))
     }
+
+    /// 十六进制色: 0x666666
+    ///
+    /// - Parameter RGBValue: 十六进制颜色
+    convenience init(sRGB value: UInt) {
+        self.init(sRGB: CGFloat((value & 0xFF0000) >> 16),
+                  g: CGFloat((value & 0x00FF00) >> 8),
+                  b: CGFloat(value & 0x0000FF))
+    }
+
 
     /// 设置RGBA颜色
     ///
@@ -92,24 +137,6 @@ public extension UIColor{
         } else {
             self.init(red: r / 255, green: g / 255, blue: b / 255, alpha: a)
         }
-    }
-
-    /// 十六进制色: 0x666666
-    ///
-    /// - Parameter str: "#666666" / "0X666666" / "0x666666"
-    convenience init(str: String){
-        var cString = str.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
-        if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
-        if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
-        if cString.count != 6 {
-            self.init(red: 1, green: 1, blue: 1, alpha: 1)
-            return
-        }
-
-        var r: UInt32 = 0x0
-        Scanner(string: String(cString)).scanHexInt32(&r)
-        self.init(value: UInt(r))
     }
 
 }

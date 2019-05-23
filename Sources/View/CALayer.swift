@@ -14,6 +14,10 @@ public extension Stem where Base: CALayer {
         get { return base.inset }
     }
 
+    func addSublayers(_ layers: CALayer...) {
+        layers.forEach({ base.addSublayer($0) })
+    }
+
 }
 
 
@@ -33,6 +37,7 @@ fileprivate extension CALayer {
     }()
 
 
+    /// 自适应边距布局(针对于父控件)
     var inset: UIEdgeInsets? {
         get { return objc_getAssociatedObject(self, CALayer.ActionKey.inset) as? UIEdgeInsets }
         set {

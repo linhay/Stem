@@ -111,7 +111,12 @@ public extension Stem where Base: UIView{
     func snapshotImage(afterUpdates: Bool) -> UIImage? {
         return base.snapshotView(afterScreenUpdates: true)?.st.snapshot
     }
-    
+
+    @available(iOS 9.0, *)
+    func addLayoutGuides(_ layoutGuides: UILayoutGuide...) {
+        layoutGuides.forEach { base.addLayoutGuide($0) }
+    }
+
     /** 添加子控件
      
      示例:

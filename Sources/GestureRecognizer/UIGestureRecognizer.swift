@@ -24,13 +24,15 @@ fileprivate extension UIGestureRecognizer {
 
 public extension Stem where Base: UIGestureRecognizer {
 
-
     /// 获取当前手势直接作用到的 view
     var targetView: UIView? {
         let location = base.location(in: base.view)
         return base.view?.hitTest(location, with: nil)
     }
 
+    /// 添加事件
+    ///
+    /// - Parameter action: 添加事件
     func add(_ action: @escaping ((_: Base) -> Void)) {
         base.target = STGestureTarget<Base>(ges: base, action: action)
     }
@@ -55,7 +57,4 @@ fileprivate class STGestureTarget<Base: UIGestureRecognizer>: NSObject {
         if let ges = ges { action?(ges) }
     }
 
-    deinit {
-        print("---")
-    }
 }

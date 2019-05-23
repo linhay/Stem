@@ -24,14 +24,16 @@ class ViewController: BaseViewController {
 
         })
 
-        items.append(TableElement(title: "UIImageView", subtitle: "") {
+        items.append(TableElement(title: "UIImageView", subtitle: "") {[weak self] in
+            guard let base = self else { return }
             let vc = TestImageViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            base.navigationController?.pushViewController(vc, animated: true)
         })
 
-        items.append(TableElement(title: "UIImage", subtitle: "") {
+        items.append(TableElement(title: "UIImage", subtitle: "") { [weak self] in
+            guard let base = self else { return }
             let vc = TestImageController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            base.navigationController?.pushViewController(vc, animated: true)
         })
 
         items.append(TableElement(title: "UIImage-UIColor", subtitle: "") {
