@@ -76,7 +76,40 @@ public extension Stem where Base: UIViewController {
         guard let vc = UIViewController.current else { return false }
         return vc == base || vc.tabBarController == base || vc.navigationController == base
     }
-    
+
+
+    /// 父控制器
+    var parents: [UIViewController] {
+        var list = [UIViewController]()
+        var vc: UIViewController = base
+        while let parent = vc.parent {
+            list.append(parent)
+            vc = parent
+        }
+        return list
+    }
+
+    /// 惰性查询父控制器
+    ///
+    /// - Parameter where: 条件
+    /// - Returns: 父控制器
+    func first(parent where: (_: UIViewController) -> Bool) -> UIViewController? {
+        var vc: UIViewController = base
+        while let parent = vc.parent {
+            if `where`(parent) { return parent }
+            vc = parent
+        }
+        return nil
+    }
+
+
+    /// 添加子控制器
+    ///
+    /// - Parameter childs: 子控制器
+    func addChilds(_ childs: UIViewController...) {
+        childs.forEach({base.addChild($0)})
+    }
+
     /// 前进至指定控制器
     ///
     /// - Parameters:

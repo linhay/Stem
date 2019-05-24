@@ -117,6 +117,19 @@ public extension Stem where Base: UIView{
         layoutGuides.forEach { base.addLayoutGuide($0) }
     }
 
+    /// 惰性查询父视图
+    ///
+    /// - Parameter where: 条件
+    /// - Returns: 父视图
+     func first(superview `where`: (_: UIView) -> Bool) -> UIView? {
+        var view: UIView = base
+        while let superview = view.superview {
+            if `where`(superview) { return superview }
+            view = superview
+        }
+        return nil
+    }
+
     /** 添加子控件
      
      示例:
@@ -129,7 +142,6 @@ public extension Stem where Base: UIView{
      
      - Parameter subviews: 子控件数组
      */
-    
     func addSubviews(_ subviews: UIView...) {
         subviews.forEach { base.addSubview($0) }
     }
