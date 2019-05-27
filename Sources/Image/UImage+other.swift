@@ -119,10 +119,10 @@ public extension Stem where Base: UIImage {
       /// - Parameter value: 0 ~ 100, 0为不模糊
       func blur(value: Double) -> UIImage? {
         let ciImage = CIImage(image: base)
-        let filter = CIFilter(name: "CIGaussianBlur")
-        filter?.setValue(ciImage, forKey: kCIInputImageKey)
-        filter?.setValue(value, forKey: "inputRadius")
-        guard let output = filter?.value(forKey: kCIOutputImageKey) as? CIImage else { return nil }
+        let filter = CIFilter(blur: .gaussianBlur)
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        filter.setValue(value, forKey: "inputRadius")
+        guard let output = filter.value(forKey: kCIOutputImageKey) as? CIImage else { return nil }
         let context = CIContext()
         guard let cgImage = context.createCGImage(output, from: output.extent) else { return nil }
         let image = UIImage(cgImage: cgImage)
