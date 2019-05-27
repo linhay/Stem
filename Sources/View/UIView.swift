@@ -50,6 +50,20 @@ public extension Stem where Base: UIView{
         }while next != nil
         return nil
     }
+
+
+    /// 惰性查询父视图
+    ///
+    /// - Parameter where: 条件
+    /// - Returns: 父视图
+    func first(superview `where`: (_: UIView) -> Bool) -> UIView? {
+        var view: UIView = base
+        while let superview = view.superview {
+            if `where`(superview) { return superview }
+            view = superview
+        }
+        return nil
+    }
     
     /** 视图中层级关系描述
      
@@ -91,16 +105,6 @@ public extension Stem where Base: UIView{
         return UIGraphicsGetImageFromCurrentImageContext()
     }
     
-    /// 设置LayerShadow,offset,radius
-    func setShadow(color: UIColor, offset: CGSize, radius: CGFloat) {
-        base.layer.shadowColor = color.cgColor
-        base.layer.shadowOffset = offset
-        base.layer.shadowRadius = radius
-        base.layer.shadowOpacity = 1
-        base.layer.shouldRasterize = true
-        base.layer.rasterizationScale = UIScreen.main.scale
-    }
-    
 }
 
 
@@ -115,19 +119,6 @@ public extension Stem where Base: UIView{
     @available(iOS 9.0, *)
     func addLayoutGuides(_ layoutGuides: UILayoutGuide...) {
         layoutGuides.forEach { base.addLayoutGuide($0) }
-    }
-
-    /// 惰性查询父视图
-    ///
-    /// - Parameter where: 条件
-    /// - Returns: 父视图
-     func first(superview `where`: (_: UIView) -> Bool) -> UIView? {
-        var view: UIView = base
-        while let superview = view.superview {
-            if `where`(superview) { return superview }
-            view = superview
-        }
-        return nil
     }
 
     /** 添加子控件
