@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../Stem.playground">
+   </FileRef>
+   <FileRef
       location = "group:Stem.xcodeproj">
    </FileRef>
    <FileRef

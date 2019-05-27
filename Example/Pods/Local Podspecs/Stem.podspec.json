@@ -1,6 +1,6 @@
 {
   "name": "Stem",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "summary": "A set of useful categories for Foundation and UIKit.",
   "homepage": "https://github.com/linhay/Stem.git",
   "license": {
@@ -12,12 +12,12 @@
   },
   "source": {
     "git": "https://github.com/linhay/Stem.git",
-    "tag": "0.0.12"
+    "tag": "0.0.13"
   },
   "platforms": {
     "ios": "8.0"
   },
-  "swift_versions": "5.0",
+  "swift_version": "5.0",
   "frameworks": [
     "UIKit"
   ],
@@ -26,6 +26,15 @@
     {
       "name": "Core",
       "source_files": "Sources/Core/**"
+    },
+    {
+      "name": "UIDevice",
+      "source_files": "Sources/UIDevice/**",
+      "dependencies": {
+        "Stem/Core": [
+
+        ]
+      }
     },
     {
       "name": "Foundation",
@@ -186,6 +195,5 @@
         ]
       }
     }
-  ],
-  "swift_version": "5.0"
+  ]
 }

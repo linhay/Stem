@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   
   dict = {
     'Core' => [],
+    'UIDevice' => ['Stem/Core'],
     'Foundation' => ['Stem/Core'],
     'CGGeometry' => ['Stem/Core'],
     'ListView' => ['Stem/Core'],

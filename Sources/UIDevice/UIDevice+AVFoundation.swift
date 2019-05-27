@@ -25,7 +25,7 @@ import UIKit
 #if canImport(AVFoundation)
 import AVFoundation
 public extension Stem where Base: UIDevice {
-    
+
     /// 闪光灯 亮度等级
     var torchLevel: Double {
         guard let device = AVCaptureDevice.default(for: .video) else { return 0 }

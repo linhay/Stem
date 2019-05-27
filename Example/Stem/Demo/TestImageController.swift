@@ -89,6 +89,11 @@ class TestImageController: BaseViewController {
                                     base.imageView.image = image
         })
 
+        items.append(TableElement(title: "毛玻璃效果", subtitle: "imageView.st.blur()") {[weak self] in
+            guard let base = self else { return }
+            base.imageView.image = base.image.st.blur(value: 5)
+        })
+
 
     }
     
