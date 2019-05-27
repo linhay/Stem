@@ -109,7 +109,6 @@ public extension Stem where Base: UIImage {
     func overlay(image: UIImage, offset: UIOffset = UIOffset.zero) -> UIImage {
         UIGraphicsBeginImageContext(base.size)
         defer { UIGraphicsEndImageContext() }
-        print(base.size)
         base.draw(in: CGRect(origin: .zero, size: base.size))
         image.draw(in: CGRect(origin: .init(x: offset.horizontal, y: offset.vertical), size: image.size))
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
