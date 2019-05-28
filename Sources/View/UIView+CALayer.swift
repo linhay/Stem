@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension Stem where Base: UIView {
+public extension Stem where Base: UIView {
 
     /// 设置LayerShadow,offset,radius
     func setShadow(color: UIColor, offset: CGSize, radius: CGFloat) {

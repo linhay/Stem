@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Stem'
-  s.version          = '0.0.14'
+  s.version          = '0.0.15'
   s.summary          = 'A set of useful categories for Foundation and UIKit.'
   
   
