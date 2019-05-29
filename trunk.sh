@@ -21,4 +21,4 @@ diff=${version}
 fi 
 git tag -a ${version} -m ${diff}
 git push origin ${version}
-pod trunk push ${file} --allow-warnings
+bundle exec pod trunk push ${file} --allow-warnings

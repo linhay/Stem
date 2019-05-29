@@ -12,6 +12,18 @@ class MyViewController : UIViewController {
                 backgroundColor: UIColor) -> NSAttributedString {
         let textLayer = CATextLayer()
         let size = string.boundingRect(with: CGSize.max, options: [], context: nil).size
+        let string = NSMutableAttributedString(attributedString: string)
+        string.addAttribute(NSAttributedString.Key.strikethroughStyle,
+                            value: 1,
+                            range: NSRange(location: 0, length: string.length))
+
+        string.addAttribute(NSAttributedString.Key.strikethroughColor,
+                            value: UIColor.blue,
+                            range: NSRange(location: 0, length: string.length))
+
+        string.addAttribute(NSAttributedString.Key.baselineOffset,
+                            value: 0,
+                            range: NSRange(location: 0, length: string.length))
         textLayer.string = string
         textLayer.frame = CGRect(x: edgeInsets.left,
                                  y: edgeInsets.top,
@@ -43,14 +55,14 @@ class MyViewController : UIViewController {
     override func loadView() {
         let view = UILabel()
         view.attributedText = setTag(string: NSAttributedString(string: "库存紧张",
-                                                       attributes: [.font(UIFont.systemFont(ofSize: 30)),
-                                                                    .foregroundColor(UIColor.white)]),
-                            edgeInsets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
-                            backgroundColor: UIColor(sRGB: 255, g: 60, b: 80)) + setTag(string: NSAttributedString(string: "库存紧张",
-                                                                                                                   attributes: [.font(UIFont.systemFont(ofSize: 30)),
-                                                                                                                                .foregroundColor(UIColor.white)]),
-                                                                                        edgeInsets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
-                                                                                        backgroundColor: UIColor(sRGB: 255, g: 60, b: 80))
+                                                                attributes: [.font(UIFont.systemFont(ofSize: 30)),
+                                                                             .foregroundColor(UIColor.white)]),
+                                     edgeInsets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
+                                     backgroundColor: UIColor(sRGB: 255, g: 60, b: 80)) + setTag(string: NSAttributedString(string: "库存紧张",
+                                                                                                                            attributes: [.font(UIFont.systemFont(ofSize: 30)),
+                                                                                                                                         .foregroundColor(UIColor.white)]),
+                                                                                                 edgeInsets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
+                                                                                                 backgroundColor: UIColor(sRGB: 255, g: 60, b: 80))
 
         self.view = view
     }
