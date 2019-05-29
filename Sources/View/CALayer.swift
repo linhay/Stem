@@ -18,6 +18,22 @@ public extension Stem where Base: CALayer {
         layers.forEach({ base.addSublayer($0) })
     }
 
+    /** 获取视图显示内容
+
+     示例:
+
+     ```
+     UIImageView(image: CALayer().st.snapshot)
+     ```
+     */
+    var snapshot: UIImage? {
+        UIGraphicsBeginImageContextWithOptions(base.bounds.size, base.isOpaque, 0)
+        defer { UIGraphicsEndImageContext() }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        base.render(in: context)
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+
 }
 
 
