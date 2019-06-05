@@ -4,9 +4,12 @@ target 'Stem_Example' do
   pod 'Stem', :path => '../'
   pod 'SnapKit'
   pod 'Then'
+  pod 'BLFoundation'
   
   target 'Stem_Tests' do
     inherit! :search_paths
-    
+    pod 'BLFoundation'
+    pod 'Stem', :path => '../'
+
   end
 end

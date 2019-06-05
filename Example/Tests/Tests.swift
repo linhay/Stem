@@ -1,5 +1,10 @@
 import XCTest
 import Stem
+import BLFoundation
+
+class TestViewController: UIViewController {
+
+}
 
 class Tests: XCTestCase {
     
@@ -14,6 +19,10 @@ class Tests: XCTestCase {
     }
     
     func testExample() {
+
+       print(RunTime.print.ivars(from: UIStoryboard.self))
+
+        UIStoryboard(name: "a", bundle: nil).st.viewController(with: TestViewController.self)
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
     }

@@ -1,73 +1,96 @@
 PODS:
+  - BLFoundation (0.9.1):
+    - BLFoundation/Coder (= 0.9.1)
+    - BLFoundation/Custom (= 0.9.1)
+    - BLFoundation/Data (= 0.9.1)
+    - BLFoundation/Date (= 0.9.1)
+    - BLFoundation/Device (= 0.9.1)
+    - BLFoundation/Dispatch (= 0.9.1)
+    - BLFoundation/NSObject (= 0.9.1)
+    - BLFoundation/Stdlib (= 0.9.1)
+    - BLFoundation/String (= 0.9.1)
+    - BLFoundation/URL (= 0.9.1)
+  - BLFoundation/Coder (0.9.1)
+  - BLFoundation/Custom (0.9.1)
+  - BLFoundation/Data (0.9.1)
+  - BLFoundation/Date (0.9.1)
+  - BLFoundation/Device (0.9.1)
+  - BLFoundation/Dispatch (0.9.1)
+  - BLFoundation/NSObject (0.9.1)
+  - BLFoundation/Stdlib (0.9.1)
+  - BLFoundation/String (0.9.1)
+  - BLFoundation/URL (0.9.1)
   - SnapKit (4.2.0)
-  - Stem (0.0.14):
-    - Stem/Application (= 0.0.14)
-    - Stem/CGGeometry (= 0.0.14)
-    - Stem/Color (= 0.0.14)
-    - Stem/Control (= 0.0.14)
-    - Stem/Core (= 0.0.14)
-    - Stem/Font (= 0.0.14)
-    - Stem/Foundation (= 0.0.14)
-    - Stem/GestureRecognizer (= 0.0.14)
-    - Stem/Image (= 0.0.14)
-    - Stem/ImageView (= 0.0.14)
-    - Stem/InputView (= 0.0.14)
-    - Stem/Label (= 0.0.14)
-    - Stem/ListView (= 0.0.14)
-    - Stem/NavigationBar (= 0.0.14)
-    - Stem/NSLayoutConstraint (= 0.0.14)
-    - Stem/Storyboard (= 0.0.14)
-    - Stem/UIDevice (= 0.0.14)
-    - Stem/View (= 0.0.14)
-    - Stem/ViewController (= 0.0.14)
-  - Stem/Application (0.0.14):
+  - Stem (0.0.18):
+    - Stem/Application (= 0.0.18)
+    - Stem/CGGeometry (= 0.0.18)
+    - Stem/Color (= 0.0.18)
+    - Stem/Control (= 0.0.18)
+    - Stem/Core (= 0.0.18)
+    - Stem/Font (= 0.0.18)
+    - Stem/Foundation (= 0.0.18)
+    - Stem/GestureRecognizer (= 0.0.18)
+    - Stem/Image (= 0.0.18)
+    - Stem/ImageView (= 0.0.18)
+    - Stem/InputView (= 0.0.18)
+    - Stem/Label (= 0.0.18)
+    - Stem/ListView (= 0.0.18)
+    - Stem/NavigationBar (= 0.0.18)
+    - Stem/NSLayoutConstraint (= 0.0.18)
+    - Stem/Storyboard (= 0.0.18)
+    - Stem/UIDevice (= 0.0.18)
+    - Stem/View (= 0.0.18)
+    - Stem/ViewController (= 0.0.18)
+  - Stem/Application (0.0.18):
     - Stem/Core
-  - Stem/CGGeometry (0.0.14):
+  - Stem/CGGeometry (0.0.18):
     - Stem/Core
-  - Stem/Color (0.0.14):
+  - Stem/Color (0.0.18):
     - Stem/Core
-  - Stem/Control (0.0.14):
+  - Stem/Control (0.0.18):
     - Stem/Core
-  - Stem/Core (0.0.14)
-  - Stem/Font (0.0.14):
+  - Stem/Core (0.0.18)
+  - Stem/Font (0.0.18):
     - Stem/Core
-  - Stem/Foundation (0.0.14):
+  - Stem/Foundation (0.0.18):
     - Stem/Core
-  - Stem/GestureRecognizer (0.0.14):
+  - Stem/GestureRecognizer (0.0.18):
     - Stem/Core
-  - Stem/Image (0.0.14):
+  - Stem/Image (0.0.18):
     - Stem/Core
-  - Stem/ImageView (0.0.14):
+  - Stem/ImageView (0.0.18):
     - Stem/Core
     - Stem/Image
-  - Stem/InputView (0.0.14):
+  - Stem/InputView (0.0.18):
     - Stem/CGGeometry
     - Stem/Core
-  - Stem/Label (0.0.14):
+  - Stem/Label (0.0.18):
     - Stem/Core
-  - Stem/ListView (0.0.14):
+  - Stem/ListView (0.0.18):
     - Stem/Core
-  - Stem/NavigationBar (0.0.14):
+  - Stem/NavigationBar (0.0.18):
     - Stem/Core
-  - Stem/NSLayoutConstraint (0.0.14):
+  - Stem/NSLayoutConstraint (0.0.18):
     - Stem/Core
-  - Stem/Storyboard (0.0.14):
+  - Stem/Storyboard (0.0.18):
     - Stem/Core
-  - Stem/UIDevice (0.0.14):
+  - Stem/UIDevice (0.0.18):
     - Stem/Core
-  - Stem/View (0.0.14):
+  - Stem/View (0.0.18):
     - Stem/Core
-  - Stem/ViewController (0.0.14):
+  - Stem/ViewController (0.0.18):
     - Stem/Core
   - Then (2.4.0)
 
 DEPENDENCIES:
+  - BLFoundation
   - SnapKit
   - Stem (from `../`)
   - Then
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - BLFoundation
     - SnapKit
     - Then
 
@@ -76,10 +99,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
+  BLFoundation: 3e79484ff3cc6d741e4e39dd8afa495493cfbe0a
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: 8c4ad1d5414b326cbcea2c8e747560c664f05404
+  Stem: 746c23ff972b628e1a473b2ef6424d4221caf1d7
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
-PODFILE CHECKSUM: 13985b348f2ed09e416de79eef8c00ea69d6d14b
+PODFILE CHECKSUM: bf45eb2d41205515c41e5aec6af6f470126dd836
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.7.0
