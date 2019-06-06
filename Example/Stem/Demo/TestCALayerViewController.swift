@@ -22,7 +22,7 @@ class TestCALayerViewController: BaseViewController {
                                     self.noneLayer.removeFromSuperlayer()
                                     self.noneLayer.backgroundColor = UIColor.random.cgColor
                                     self.contentView.layer.addSublayer(self.noneLayer)
-                                    self.noneLayer.st.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+//                                    self.noneLayer.st.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         })
 
         items.append(TableElement(title: "contentView.frame.size.height += 10", subtitle: "") {

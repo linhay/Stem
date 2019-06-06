@@ -29,6 +29,11 @@ public extension UIStoryboard {
         self.init(name: name, bundle: bundle)
     }
 
+    convenience init<T: UIViewController>(vc: T.Type, in bundle: Bundle? = nil) {
+        let name = String(describing: T.self)
+        self.init(name: name, in: bundle)
+    }
+
 }
 
 // MARK: - UIStoryboard 扩展

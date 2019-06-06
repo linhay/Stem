@@ -28,3 +28,13 @@ public class Stem<Base> {
     self.base = base
   }
 }
+
+
+public class StemSetChain<Base> {
+    public let base: Base
+    public init(_ base: Base) {
+        self.base = base
+    }
+}
+
+

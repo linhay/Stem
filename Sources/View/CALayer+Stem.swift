@@ -83,7 +83,6 @@ fileprivate extension CALayer {
 
     @objc func st_layoutSublayers() {
         st_layoutSublayers()
-        CALayer().st.inset = .zero
         self.sublayers?.forEach({ (sublayer) in
             if let inset = sublayer.inset{
                 sublayer.frame = CGRect(x: inset.left,

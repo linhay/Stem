@@ -18,6 +18,7 @@
 		CD3D4F8222A8DDA200A63348 /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8022A8DDA200A63348 /* Gemfile */; };
 		CD3D4F8322A8DDA200A63348 /* Gemfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8122A8DDA200A63348 /* Gemfile.lock */; };
 		CD3D4F8522A8DE7400A63348 /* trunk.sh in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8422A8DE7400A63348 /* trunk.sh */; };
+		CD3D4F8822A8FA8300A63348 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		CD6ABC88229BDFD80017C6ED /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = CD6ABC87229BDFD80017C6ED /* .travis.yml */; };
 		CDC823792296F99800E654A6 /* TestCALayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823722296F99800E654A6 /* TestCALayerViewController.swift */; };
 		CDC8237A2296F99800E654A6 /* TestButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823732296F99800E654A6 /* TestButtonViewController.swift */; };
@@ -304,6 +305,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD3D4F8822A8FA8300A63348 /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

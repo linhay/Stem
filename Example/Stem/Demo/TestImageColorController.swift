@@ -8,6 +8,7 @@
 
 import UIKit
 import Accelerate.vImage
+import Stem
 
 class TestImageColorController: BaseViewController {
 
@@ -19,7 +20,8 @@ class TestImageColorController: BaseViewController {
     
     override func viewDidLoad() {
       super.viewDidLoad()
-      contentView.addSubview(imageView)
+        contentView.layer.masksToBounds = true
+        contentView.addSubview(imageView)
       
       imageView.do { (item) in
         item.snp.makeConstraints({ (make) in

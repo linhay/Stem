@@ -1,54 +1,64 @@
-import XCTest
-import Stem
-import BLFoundation
+//
+//  Stem
+//
+//  Copyright (c) 2017 linhay - https://github.com/linhay
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-class TestViewController: UIViewController {
+
+import UIKit
+
+public extension Stem where Base: CALayer {
+
+    var set: StemSetChain<Base> { return StemSetChain(base) }
 
 }
 
-class Tests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
+public extension StemSetChain where Base: CALayer {
 
-        print(RunTime.print.ivars(from: UINib.self))
-//        let nib = UINib(nibName: "LaunchScreen")
-//        print(nib.value(forKey: "storage"))
-
-        //        UIStoryboard(name: "a", bundle: nil).st.viewController(with: TestViewController.self)
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-
-
-    func testCode() {
-
-        let code = """
     /* The bounds of the layer. Defaults to CGRectZero. Animatable. */
 
     /** Geometry and layer hierarchy properties. **/
-    open var bounds: CGRect
+    @discardableResult
+    func bounds(_ value: CGRect) -> StemSetChain<Base> {
+        base.bounds = value
+        return StemSetChain(base)
+    }
 
 
     /* The position in the superlayer that the anchor point of the layer's
      * bounds rect is aligned to. Defaults to the zero point. Animatable. */
 
-    open var position: CGPoint
+    @discardableResult
+    func position(_ value: CGPoint) -> StemSetChain<Base> {
+        base.position = value
+        return StemSetChain(base)
+    }
 
 
     /* The Z component of the layer's position in its superlayer. Defaults
      * to zero. Animatable. */
 
-    open var zPosition: CGFloat
+    @discardableResult
+    func zPosition(_ value: CGFloat) -> StemSetChain<Base> {
+        base.zPosition = value
+        return StemSetChain(base)
+    }
 
 
     /* Defines the anchor point of the layer's bounds rect, as a point in
@@ -56,47 +66,73 @@ class Tests: XCTestCase {
      * the bounds rect, '(1, 1)' is the top right corner. Defaults to
      * '(0.5, 0.5)', i.e. the center of the bounds rect. Animatable. */
 
-    open var anchorPoint: CGPoint
+    @discardableResult
+    func anchorPoint(_ value: CGPoint) -> StemSetChain<Base> {
+        base.anchorPoint = value
+        return StemSetChain(base)
+    }
 
 
     /* The Z component of the layer's anchor point (i.e. reference point for
      * position and transform). Defaults to zero. Animatable. */
 
-    open var anchorPointZ: CGFloat
+    @discardableResult
+    func anchorPointZ(_ value: CGFloat) -> StemSetChain<Base> {
+        base.anchorPointZ = value
+        return StemSetChain(base)
+    }
 
 
     /* A transform applied to the layer relative to the anchor point of its
      * bounds rect. Defaults to the identity transform. Animatable. */
 
-    open var transform: CATransform3D
+    @discardableResult
+    func transform(_ value: CATransform3D) -> StemSetChain<Base> {
+        base.transform = value
+        return StemSetChain(base)
+    }
 
 
     /* Convenience methods for accessing the `transform' property as an
      * affine transform. */
 
-    open func affineTransform() -> CGAffineTransform
+    // open func affineTransform() -> CGAffineTransform
 
-    open func setAffineTransform(_ m: CGAffineTransform)
-
+    func setAffineTransform(_ value: CGAffineTransform) -> StemSetChain<Base> {
+        base.setAffineTransform(value)
+        return StemSetChain(base)
+    }
 
     /* Unlike NSView, each Layer in the hierarchy has an implicit frame
      * rectangle, a function of the `position', `bounds', `anchorPoint',
      * and `transform' properties. When setting the frame the `position'
      * and `bounds.size' are changed to match the given frame. */
 
-    open var frame: CGRect
+    @discardableResult
+    func frame(_ value: CGRect) -> StemSetChain<Base> {
+        base.frame = value
+        return StemSetChain(base)
+    }
 
 
     /* When true the layer and its sublayers are not displayed. Defaults to
      * NO. Animatable. */
 
-    open var isHidden: Bool
+    @discardableResult
+    func isHidden(_ value: Bool) -> StemSetChain<Base> {
+        base.isHidden = value
+        return StemSetChain(base)
+    }
 
 
     /* When false layers facing away from the viewer are hidden from view.
      * Defaults to YES. Animatable. */
 
-    open var isDoubleSided: Bool
+    @discardableResult
+    func isDoubleSided(_ value: Bool) -> StemSetChain<Base> {
+        base.isDoubleSided = value
+        return StemSetChain(base)
+    }
 
 
     /* Whether or not the geometry of the layer (and its sublayers) is
@@ -105,7 +141,11 @@ class Tests: XCTestCase {
      * stored in the `contents' property will display the same with both
      * flipped=NO and flipped=YES, assuming no transform on the layer). */
 
-    open var isGeometryFlipped: Bool
+    @discardableResult
+    func isGeometryFlipped(_ value: Bool) -> StemSetChain<Base> {
+        base.isGeometryFlipped = value
+        return StemSetChain(base)
+    }
 
 
     /* Returns true if the contents of the contents property of the layer
@@ -118,19 +158,22 @@ class Tests: XCTestCase {
      * -display method will have been y- flipped (and rectangles passed to
      * -setNeedsDisplayInRect: will be similarly flipped). */
 
-    open func contentsAreFlipped() -> Bool
+    // open func contentsAreFlipped() -> Bool
 
 
     /* The receiver's superlayer object. Implicitly changed to match the
      * hierarchy described by the `sublayers' properties. */
 
-    open var superlayer: CALayer? { get }
+    // open var superlayer: CALayer? { get }
 
 
     /* Removes the layer from its superlayer, works both if the receiver is
      * in its superlayer's `sublayers' array or set as its `mask' value. */
 
-    open func removeFromSuperlayer()
+    func removeFromSuperlayer() -> StemSetChain<Base> {
+        base.removeFromSuperlayer()
+        return StemSetChain(base)
+    }
 
 
     /* The array of sublayers of this layer. The layers are listed in back
@@ -139,36 +182,55 @@ class Tests: XCTestCase {
      * the behavior is undefined. Note that the returned array is not
      * guaranteed to retain its elements. */
 
-    open var sublayers: [CALayer]?
+    @discardableResult
+    func sublayers(_ value: [CALayer]?) -> StemSetChain<Base> {
+        base.sublayers = value
+        return StemSetChain(base)
+    }
 
 
     /* Add 'layer' to the end of the receiver's sublayers array. If 'layer'
      * already has a superlayer, it will be removed before being added. */
 
-    open func addSublayer(_ layer: CALayer)
+    func addSublayer(_ layer: CALayer) -> StemSetChain<Base> {
+        base.addSublayer(layer)
+        return StemSetChain(base)
+    }
 
 
     /* Insert 'layer' at position 'idx' in the receiver's sublayers array.
      * If 'layer' already has a superlayer, it will be removed before being
      * inserted. */
 
-    open func insertSublayer(_ layer: CALayer, at idx: UInt32)
+    func insertSublayer(_ layer: CALayer, at idx: UInt32) -> StemSetChain<Base> {
+        base.insertSublayer(layer, at: idx)
+        return StemSetChain(base)
+    }
 
 
     /* Insert 'layer' either above or below the specified layer in the
      * receiver's sublayers array. If 'layer' already has a superlayer, it
      * will be removed before being inserted. */
 
-    open func insertSublayer(_ layer: CALayer, below sibling: CALayer?)
+    func insertSublayer(_ layer: CALayer, below sibling: CALayer?) -> StemSetChain<Base> {
+        base.insertSublayer(layer, below: sibling)
+        return StemSetChain(base)
+    }
 
-    open func insertSublayer(_ layer: CALayer, above sibling: CALayer?)
+    func insertSublayer(_ layer: CALayer, above sibling: CALayer?) -> StemSetChain<Base> {
+        base.insertSublayer(layer, above: sibling)
+        return StemSetChain(base)
+    }
 
 
     /* Remove 'oldLayer' from the sublayers array of the receiver and insert
      * 'newLayer' if non-nil in its position. If the superlayer of 'oldLayer'
      * is not the receiver, the behavior is undefined. */
 
-    open func replaceSublayer(_ oldLayer: CALayer, with newLayer: CALayer)
+    func replaceSublayer(_ oldLayer: CALayer, with newLayer: CALayer) -> StemSetChain<Base> {
+        base.replaceSublayer(oldLayer, with: newLayer)
+        return StemSetChain(base)
+    }
 
 
     /* A transform applied to each member of the `sublayers' array while
@@ -176,7 +238,11 @@ class Tests: XCTestCase {
      * the projection matrix to add perspective and other viewing effects
      * into the model. Defaults to identity. Animatable. */
 
-    open var sublayerTransform: CATransform3D
+    @discardableResult
+    func sublayerTransform(_ value: CATransform3D) -> StemSetChain<Base> {
+        base.sublayerTransform = value
+        return StemSetChain(base)
+    }
 
 
     /* A layer whose alpha channel is used as a mask to select between the
@@ -188,7 +254,11 @@ class Tests: XCTestCase {
      * undefined. Nested masks (mask layers with their own masks) are
      * unsupported. */
 
-    open var mask: CALayer?
+    @discardableResult
+    func mask(_ value: CALayer?) -> StemSetChain<Base> {
+        base.mask = value
+        return StemSetChain(base)
+    }
 
 
     /* When true an implicit mask matching the layer bounds is applied to
@@ -197,23 +267,27 @@ class Tests: XCTestCase {
      * multiplied to get the actual mask values. Defaults to NO.
      * Animatable. */
 
-    open var masksToBounds: Bool
+    @discardableResult
+    func masksToBounds(_ value: Bool) -> StemSetChain<Base> {
+        base.masksToBounds = value
+        return StemSetChain(base)
+    }
 
 
 
     /** Mapping between layer coordinate and time spaces. **/
-    open func convert(_ p: CGPoint, from l: CALayer?) -> CGPoint
-
-    open func convert(_ p: CGPoint, to l: CALayer?) -> CGPoint
-
-    open func convert(_ r: CGRect, from l: CALayer?) -> CGRect
-
-    open func convert(_ r: CGRect, to l: CALayer?) -> CGRect
-
-
-    open func convertTime(_ t: CFTimeInterval, from l: CALayer?) -> CFTimeInterval
-
-    open func convertTime(_ t: CFTimeInterval, to l: CALayer?) -> CFTimeInterval
+    //    open func convert(_ p: CGPoint, from l: CALayer?) -> CGPoint
+    //
+    //    open func convert(_ p: CGPoint, to l: CALayer?) -> CGPoint
+    //
+    //    open func convert(_ r: CGRect, from l: CALayer?) -> CGRect
+    //
+    //    open func convert(_ r: CGRect, to l: CALayer?) -> CGRect
+    //
+    //
+    //    open func convertTime(_ t: CFTimeInterval, from l: CALayer?) -> CFTimeInterval
+    //
+    //    open func convertTime(_ t: CFTimeInterval, to l: CALayer?) -> CFTimeInterval
 
 
 
@@ -224,14 +298,15 @@ class Tests: XCTestCase {
      * coordinate space in which the point could be specified). */
 
     /** Hit testing methods. **/
-    open func hitTest(_ p: CGPoint) -> CALayer?
+    func hitTest(_ p: CGPoint) -> StemSetChain<Base>? {
+        guard let layer: Base = base.hitTest(p) as? Base else { return nil }
+        return StemSetChain(layer)
+    }
 
 
     /* Returns true if the bounds of the layer contains point 'p'. */
 
-    open func contains(_ p: CGPoint) -> Bool
-
-
+    // open func contains(_ p: CGPoint) -> Bool
 
     /* An object providing the contents of the layer, typically a CGImageRef,
      * but may be something else. (For example, NSImage objects are
@@ -239,7 +314,11 @@ class Tests: XCTestCase {
      * Animatable. */
 
     /** Layer content properties and methods. **/
-    open var contents: Any?
+    @discardableResult
+    func contents(_ value: Any?) -> StemSetChain<Base> {
+        base.contents = value
+        return StemSetChain(base)
+    }
 
 
     /* A rectangle in normalized image coordinates defining the
@@ -249,7 +328,11 @@ class Tests: XCTestCase {
      * rectangle is provided, the results are undefined. Defaults to the
      * unit rectangle [0 0 1 1]. Animatable. */
 
-    open var contentsRect: CGRect
+    @discardableResult
+    func contentsRect(_ value: CGRect) -> StemSetChain<Base> {
+        base.contentsRect = value
+        return StemSetChain(base)
+    }
 
 
     /* A string defining how the contents of the layer is mapped into its
@@ -259,7 +342,11 @@ class Tests: XCTestCase {
      * `resize'. Note that "bottom" always means "Minimum Y" and "top"
      * always means "Maximum Y". */
 
-    open var contentsGravity: CALayerContentsGravity
+    @discardableResult
+    func contentsGravity(_ value: CALayerContentsGravity) -> StemSetChain<Base> {
+        base.contentsGravity = value
+        return StemSetChain(base)
+    }
 
 
     /* Defines the scale factor applied to the contents of the layer. If
@@ -271,7 +358,11 @@ class Tests: XCTestCase {
      * as large as the layer bounds). Defaults to one. Animatable. */
 
     @available(iOS 4.0, *)
-    open var contentsScale: CGFloat
+    @discardableResult
+    func contentsScale(_ value: CGFloat) -> StemSetChain<Base> {
+        base.contentsScale = value
+        return StemSetChain(base)
+    }
 
 
     /* A rectangle in normalized image coordinates defining the scaled
@@ -293,7 +384,11 @@ class Tests: XCTestCase {
      * rectangle extends outside the [0 0 1 1] unit rectangle the result is
      * undefined. Animatable. */
 
-    open var contentsCenter: CGRect
+    @discardableResult
+    func contentsCenter(_ value: CGRect) -> StemSetChain<Base> {
+        base.contentsCenter = value
+        return StemSetChain(base)
+    }
 
 
     /* A hint for the desired storage format of the layer contents provided by
@@ -301,7 +396,11 @@ class Tests: XCTestCase {
      * does not affect the interpretation of the `contents' property directly. */
 
     @available(iOS 10.0, *)
-    open var contentsFormat: CALayerContentsFormat
+    @discardableResult
+    func contentsFormat(_ value: CALayerContentsFormat) -> StemSetChain<Base> {
+        base.contentsFormat = value
+        return StemSetChain(base)
+    }
 
 
     /* The filter types to use when rendering the `contents' property of
@@ -310,55 +409,87 @@ class Tests: XCTestCase {
      * image data. Currently the allowed values are `nearest' and `linear'.
      * Both properties default to `linear'. */
 
-    open var minificationFilter: CALayerContentsFilter
+    @discardableResult
+    func minificationFilter(_ value: CALayerContentsFilter) -> StemSetChain<Base> {
+        base.minificationFilter = value
+        return StemSetChain(base)
+    }
 
-    open var magnificationFilter: CALayerContentsFilter
+    @discardableResult
+    func magnificationFilter(_ value: CALayerContentsFilter) -> StemSetChain<Base> {
+        base.magnificationFilter = value
+        return StemSetChain(base)
+    }
 
 
     /* The bias factor added when determining which levels of detail to use
      * when minifying using trilinear filtering. The default value is 0.
      * Animatable. */
 
-    open var minificationFilterBias: Float
+    @discardableResult
+    func minificationFilterBias(_ value: Float) -> StemSetChain<Base> {
+        base.minificationFilterBias = value
+        return StemSetChain(base)
+    }
 
 
     /* A hint marking that the layer contents provided by -drawInContext:
      * is completely opaque. Defaults to NO. Note that this does not affect
      * the interpretation of the `contents' property directly. */
 
-    open var isOpaque: Bool
+    @discardableResult
+    func isOpaque(_ value: Bool) -> StemSetChain<Base> {
+        base.isOpaque = value
+        return StemSetChain(base)
+    }
 
 
     /* Reload the content of this layer. Calls the -drawInContext: method
      * then updates the `contents' property of the layer. Typically this is
      * not called directly. */
 
-    open func display()
+    func display() -> StemSetChain<Base> {
+        base.display()
+        return StemSetChain(base)
+    }
 
 
     /* Marks that -display needs to be called before the layer is next
      * committed. If a region is specified, only that region of the layer
      * is invalidated. */
 
-    open func setNeedsDisplay()
+    func setNeedsDisplay() -> StemSetChain<Base> {
+        base.setNeedsDisplay()
+        return StemSetChain(base)
+    }
 
-    open func setNeedsDisplay(_ r: CGRect)
+    func setNeedsDisplay(_ r: CGRect) -> StemSetChain<Base> {
+        base.setNeedsDisplay(r)
+        return StemSetChain(base)
+    }
 
 
     /* Returns true when the layer is marked as needing redrawing. */
 
-    open func needsDisplay() -> Bool
+    // open func needsDisplay() -> Bool
 
 
     /* Call -display if receiver is marked as needing redrawing. */
 
-    open func displayIfNeeded()
+    func displayIfNeeded() -> StemSetChain<Base> {
+        base.displayIfNeeded()
+        return StemSetChain(base)
+    }
 
 
     /* When true -setNeedsDisplay will automatically be called when the
      * bounds of the layer changes. Default value is NO. */
 
-    open var needsDisplayOnBoundsChange: Bool
+    @discardableResult
+    func needsDisplayOnBoundsChange(_ value: Bool) -> StemSetChain<Base> {
+        base.needsDisplayOnBoundsChange = value
+        return StemSetChain(base)
+    }
 
 
     /* When true, the CGContext object passed to the -drawInContext: method
@@ -369,7 +500,11 @@ class Tests: XCTestCase {
      * default value is NO. */
 
     @available(iOS 6.0, *)
-    open var drawsAsynchronously: Bool
+    @discardableResult
+    func drawsAsynchronously(_ value: Bool) -> StemSetChain<Base> {
+        base.drawsAsynchronously = value
+        return StemSetChain(base)
+    }
 
 
     /* Called via the -display method when the `contents' property is being
@@ -377,7 +512,10 @@ class Tests: XCTestCase {
      * clipped to protect valid layer content. Subclasses that wish to find
      * the actual region to draw can call CGContextGetClipBoundingBox(). */
 
-    open func draw(in ctx: CGContext)
+    func draw(in ctx: CGContext) -> StemSetChain<Base> {
+        base.draw(in: ctx)
+        return StemSetChain(base)
+    }
 
 
 
@@ -389,7 +527,10 @@ class Tests: XCTestCase {
      * CoreAnimation composition model, use with caution. */
 
     /** Rendering properties and methods. **/
-    open func render(in ctx: CGContext)
+    func render(in ctx: CGContext) -> StemSetChain<Base> {
+        base.render(in: ctx)
+        return StemSetChain(base)
+    }
 
 
     /* Defines how the edges of the layer are rasterized. For each of the
@@ -399,7 +540,11 @@ class Tests: XCTestCase {
      * eliminate the seams that would otherwise occur. The default value is
      * for all edges to be antialiased. */
 
-    open var edgeAntialiasingMask: CAEdgeAntialiasingMask
+    @discardableResult
+    func edgeAntialiasingMask(_ value: CAEdgeAntialiasingMask) -> StemSetChain<Base> {
+        base.edgeAntialiasingMask = value
+        return StemSetChain(base)
+    }
 
 
     /* When true this layer is allowed to antialias its edges, as requested
@@ -410,27 +555,43 @@ class Tests: XCTestCase {
      * the Info.plist the default value is NO. */
 
     @available(iOS 2.0, *)
-    open var allowsEdgeAntialiasing: Bool
+    @discardableResult
+    func allowsEdgeAntialiasing(_ value: Bool) -> StemSetChain<Base> {
+        base.allowsEdgeAntialiasing = value
+        return StemSetChain(base)
+    }
 
 
     /* The background color of the layer. Default value is nil. Colors
      * created from tiled patterns are supported. Animatable. */
 
-    open var backgroundColor: CGColor?
+    @discardableResult
+    func backgroundColor(_ value: CGColor?) -> StemSetChain<Base> {
+        base.backgroundColor = value
+        return StemSetChain(base)
+    }
 
 
     /* When positive, the background of the layer will be drawn with
      * rounded corners. Also effects the mask generated by the
      * `masksToBounds' property. Defaults to zero. Animatable. */
 
-    open var cornerRadius: CGFloat
+    @discardableResult
+    func cornerRadius(_ value: CGFloat) -> StemSetChain<Base> {
+        base.cornerRadius = value
+        return StemSetChain(base)
+    }
 
 
     /* Defines which of the four corners receives the masking when using
      * `cornerRadius' property. Defaults to all four corners. */
 
     @available(iOS 11.0, *)
-    open var maskedCorners: CACornerMask
+    @discardableResult
+    func maskedCorners(_ value: CACornerMask) -> StemSetChain<Base> {
+        base.maskedCorners = value
+        return StemSetChain(base)
+    }
 
 
     /* The width of the layer's border, inset from the layer bounds. The
@@ -438,20 +599,32 @@ class Tests: XCTestCase {
      * includes the effects of the `cornerRadius' property. Defaults to
      * zero. Animatable. */
 
-    open var borderWidth: CGFloat
+    @discardableResult
+    func borderWidth(_ value: CGFloat) -> StemSetChain<Base> {
+        base.borderWidth = value
+        return StemSetChain(base)
+    }
 
 
     /* The color of the layer's border. Defaults to opaque black. Colors
      * created from tiled patterns are supported. Animatable. */
 
-    open var borderColor: CGColor?
+    @discardableResult
+    func borderColor(_ value: CGColor?) -> StemSetChain<Base> {
+        base.borderColor = value
+        return StemSetChain(base)
+    }
 
 
     /* The opacity of the layer, as a value between zero and one. Defaults
      * to one. Specifying a value outside the [0,1] range will give undefined
      * results. Animatable. */
 
-    open var opacity: Float
+    @discardableResult
+    func opacity(_ value: Float) -> StemSetChain<Base> {
+        base.opacity = value
+        return StemSetChain(base)
+    }
 
 
     /* When true, and the layer's opacity property is less than one, the
@@ -466,7 +639,11 @@ class Tests: XCTestCase {
      * applications linked against an earlier SDK. */
 
     @available(iOS 2.0, *)
-    open var allowsGroupOpacity: Bool
+    @discardableResult
+    func allowsGroupOpacity(_ value: Bool) -> StemSetChain<Base> {
+        base.allowsGroupOpacity = value
+        return StemSetChain(base)
+    }
 
 
     /* A filter object used to composite the layer with its (possibly
@@ -480,19 +657,31 @@ class Tests: XCTestCase {
      * that the filter is attached to. (This also applies to the `filters'
      * and `backgroundFilters' properties.) */
 
-    open var compositingFilter: Any?
+    @discardableResult
+    func compositingFilter(_ value: Any?) -> StemSetChain<Base> {
+        base.compositingFilter = value
+        return StemSetChain(base)
+    }
 
 
     /* An array of filters that will be applied to the contents of the
      * layer and its sublayers. Defaults to nil. Animatable. */
 
-    open var filters: [Any]?
+    @discardableResult
+    func filters(_ value: [Any]?) -> StemSetChain<Base> {
+        base.filters = value
+        return StemSetChain(base)
+    }
 
 
     /* An array of filters that are applied to the background of the layer.
      * The root layer ignores this property. Animatable. */
 
-    open var backgroundFilters: [Any]?
+    @discardableResult
+    func backgroundFilters(_ value: [Any]?) -> StemSetChain<Base> {
+        base.backgroundFilters = value
+        return StemSetChain(base)
+    }
 
 
     /* When true, the layer is rendered as a bitmap in its local coordinate
@@ -511,14 +700,22 @@ class Tests: XCTestCase {
      *
      * Defaults to NO. Animatable. */
 
-    open var shouldRasterize: Bool
+    @discardableResult
+    func shouldRasterize(_ value: Bool) -> StemSetChain<Base> {
+        base.shouldRasterize = value
+        return StemSetChain(base)
+    }
 
 
     /* The scale at which the layer will be rasterized (when the
      * shouldRasterize property has been set to YES) relative to the
      * coordinate space of the layer. Defaults to one. Animatable. */
 
-    open var rasterizationScale: CGFloat
+    @discardableResult
+    func rasterizationScale(_ value: CGFloat) -> StemSetChain<Base> {
+        base.rasterizationScale = value
+        return StemSetChain(base)
+    }
 
 
 
@@ -526,23 +723,39 @@ class Tests: XCTestCase {
      * from patterns are currently NOT supported. Animatable. */
 
     /** Shadow properties. **/
-    open var shadowColor: CGColor?
+    @discardableResult
+    func shadowColor(_ value: CGColor?) -> StemSetChain<Base> {
+        base.shadowColor = value
+        return StemSetChain(base)
+    }
 
 
     /* The opacity of the shadow. Defaults to 0. Specifying a value outside the
      * [0,1] range will give undefined results. Animatable. */
 
-    open var shadowOpacity: Float
+    @discardableResult
+    func shadowOpacity(_ value: Float) -> StemSetChain<Base> {
+        base.shadowOpacity = value
+        return StemSetChain(base)
+    }
 
 
     /* The shadow offset. Defaults to (0, -3). Animatable. */
 
-    open var shadowOffset: CGSize
+    @discardableResult
+    func shadowOffset(_ value: CGSize) -> StemSetChain<Base> {
+        base.shadowOffset = value
+        return StemSetChain(base)
+    }
 
 
     /* The blur radius used to create the shadow. Defaults to 3. Animatable. */
 
-    open var shadowRadius: CGFloat
+    @discardableResult
+    func shadowRadius(_ value: CGFloat) -> StemSetChain<Base> {
+        base.shadowRadius = value
+        return StemSetChain(base)
+    }
 
 
     /* When non-null this path defines the outline used to construct the
@@ -553,7 +766,11 @@ class Tests: XCTestCase {
      * reference across multiple layers. Upon assignment the path is copied.
      * Defaults to null. Animatable. */
 
-    open var shadowPath: CGPath?
+    @discardableResult
+    func shadowPath(_ value: CGPath?) -> StemSetChain<Base> {
+        base.shadowPath = value
+        return StemSetChain(base)
+    }
 
 
 
@@ -564,7 +781,7 @@ class Tests: XCTestCase {
      * the superlayer. */
 
     /** Layout methods. **/
-    open func preferredFrameSize() -> CGSize
+    // open func preferredFrameSize() -> CGSize
 
 
     /* Marks that -layoutSublayers needs to be invoked on the receiver
@@ -578,18 +795,23 @@ class Tests: XCTestCase {
      * skipped if the layer is currently executing its -layoutSublayers
      * method. */
 
-    open func setNeedsLayout()
+    func setNeedsLayout() -> StemSetChain<Base> {
+        base.setNeedsLayout()
+        return StemSetChain(base)
+    }
 
 
     /* Returns true when the receiver is marked as needing layout. */
-
-    open func needsLayout() -> Bool
+    // open func needsLayout() -> Bool
 
 
     /* Traverse upwards from the layer while the superlayer requires layout.
      * Then layout the entire tree beneath that ancestor. */
 
-    open func layoutIfNeeded()
+    func layoutIfNeeded() -> StemSetChain<Base> {
+        base.layoutIfNeeded()
+        return StemSetChain(base)
+    }
 
 
     /* Called when the layer requires layout. The default implementation
@@ -598,9 +820,10 @@ class Tests: XCTestCase {
      * provide their own layout algorithm, which should set the frame of
      * each sublayer. */
 
-    open func layoutSublayers()
-
-
+    func layoutSublayers() -> StemSetChain<Base> {
+        base.layoutSublayers()
+        return StemSetChain(base)
+    }
 
     /* An "action" is an object that responds to an "event" via the
      * CAAction protocol (see below). Events are named using standard
@@ -637,7 +860,7 @@ class Tests: XCTestCase {
      * otherwise. */
 
     /** Action methods. **/
-    open class func defaultAction(forKey event: String) -> CAAction?
+    // open class func defaultAction(forKey event: String) -> CAAction?
 
 
     /* Returns the action object associated with the event named by the
@@ -653,14 +876,16 @@ class Tests: XCTestCase {
      * following steps are ignored. If the final result is an instance of
      * NSNull, it is converted to `nil'. */
 
-    open func action(forKey event: String) -> CAAction?
+    // open func action(forKey event: String) -> CAAction?
 
 
     /* A dictionary mapping keys to objects implementing the CAAction
      * protocol. Default value is nil. */
-
-    open var actions: [String : CAAction]?
-
+    @discardableResult
+    func actions(_ value: [String : CAAction]?) -> StemSetChain<Base> {
+        base.actions = value
+        return StemSetChain(base)
+    }
 
 
     /* Attach an animation object to the layer. Typically this is implicitly
@@ -679,45 +904,55 @@ class Tests: XCTestCase {
      * added to another layer. */
 
     /** Animation methods. **/
-    open func add(_ anim: CAAnimation, forKey key: String?)
+    func add(_ anim: CAAnimation, forKey key: String?) -> StemSetChain<Base> {
+        base.add(anim, forKey: key)
+        return StemSetChain(base)
+    }
 
 
     /* Remove all animations attached to the layer. */
-
-    open func removeAllAnimations()
-
+    func removeAllAnimations() -> StemSetChain<Base> {
+        base.removeAllAnimations()
+        return StemSetChain(base)
+    }
 
     /* Remove any animation attached to the layer for 'key'. */
-
-    open func removeAnimation(forKey key: String)
+    func removeAnimation(forKey key: String) -> StemSetChain<Base> {
+        base.removeAnimation(forKey: key)
+        return StemSetChain(base)
+    }
 
 
     /* Returns an array containing the keys of all animations currently
      * attached to the receiver. The order of the array matches the order
      * in which animations will be applied. */
 
-    open func animationKeys() -> [String]?
+    // open func animationKeys() -> [String]?
 
 
     /* Returns the animation added to the layer with identifier 'key', or nil
      * if no such animation exists. Attempting to modify any properties of
      * the returned object will result in undefined behavior. */
 
-    open func animation(forKey key: String) -> CAAnimation?
+    // open func animation(forKey key: String) -> CAAnimation?
 
 
 
     /* The name of the layer. Used by some layout managers. Defaults to nil. */
 
     /** Miscellaneous properties. **/
-    open var name: String?
+    @discardableResult
+    func name(_ value: String?) -> StemSetChain<Base> {
+        base.name = value
+        return StemSetChain(base)
+    }
 
 
     /* An object that will receive the CALayer delegate methods defined
      * below (for those that it implements). The value of this property is
      * not retained. Default value is nil. */
 
-    weak open var delegate: CALayerDelegate?
+    // weak open var delegate: CALayerDelegate?
 
 
     /* When non-nil, a dictionary dereferenced to find property values that
@@ -729,35 +964,10 @@ class Tests: XCTestCase {
      * Note that if the dictionary or any of its ancestors are modified,
      * the values of the layer's properties are undefined until the `style'
      * property is reset. */
-
-    open var style: [AnyHashable : Any]?
-"""
-
-        let new = code.components(separatedBy: "\n").map { (line) -> String in
-            var line = line.trimmingCharacters(in: .whitespaces)
-            if line.hasPrefix("open"), !line.contains("func ") {
-                var words = line.replacingOccurrences(of: ":", with: "").components(separatedBy: " ")
-                if words.count != 4 { return line }
-                return """
-                @discardableResult
-                func \(words[2])(_ value: \(words[3])) -> StemSetChain<Base> {
-                base.\(words[2]) = value
-                return StemSetChain(base)
-                }
-                """
-            }
-            return line
-            }.joined(separator: "\n")
-
-        print(new)
-
+    @discardableResult
+    func style(_ value: [AnyHashable : Any]?) -> StemSetChain<Base> {
+        base.style = value
+        return StemSetChain(base)
     }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure() {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
+
 }

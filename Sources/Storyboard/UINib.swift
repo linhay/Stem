@@ -20,27 +20,19 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
+
 import UIKit
 
-public protocol StemCompatible {
-    associatedtype StemCompatibleType
-    var st: StemCompatibleType { get }
+// MARK: - convenience init
+public extension UINib {
+
+    convenience init(name: String, in bundle: Bundle? = nil) {
+        self.init(nibName: name, bundle: bundle)
+    }
+
+    convenience init<T: UIView>(vc: T.Type, in bundle: Bundle? = nil) {
+        let name = String(describing: T.self)
+        self.init(name: name, in: bundle)
+    }
+
 }
-
-public extension StemCompatible {
-    var st: Stem<Self> { return Stem(self) }
-}
-
-extension NSObject: StemCompatible { }
-
-
-public protocol StemSetChainCompatible {
-    associatedtype StemSetChainCompatible
-    var set: StemSetChainCompatible { get }
-}
-
-public extension StemSetChainCompatible {
-    var set: StemSetChain<Self> { return StemSetChain(self) }
-}
-
-
