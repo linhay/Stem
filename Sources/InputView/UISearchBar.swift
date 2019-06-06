@@ -22,7 +22,9 @@
 
 import UIKit
 
-extension Stem where Base: UISearchBar {
+public extension Stem where Base: UISearchBar {
 
+    /// 输入控件
+      var searchField: UITextField? { return base.value(forKey: "_searchField") as? UITextField }
 
 }

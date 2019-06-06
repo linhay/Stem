@@ -32,74 +32,86 @@ extension Stem where Base: UITextField {
     }
     
     var clearButton: UIButton? { return base.value(forKey: "clearButton") as? UIButton }
-    
+
 }
 
-public extension UITextField{
-    
+// MARK: - Padding
+extension Stem where Base: UITextField {
+
+    /// 左边间距
+    var leftPadding: CGFloat {
+        get {
+            return base.leftView?.frame.size.width ?? 0
+        }
+        set {
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: newValue, height: base.frame.size.height))
+            base.leftView = view
+            base.leftViewMode = .always
+        }
+    }
+
+    /// 右边间距
+    var rightPadding: CGFloat {
+        get {
+            return base.rightView?.frame.size.width ?? 0
+        }
+        set {
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: newValue, height: base.frame.size.height))
+            base.rightView = view
+            base.rightViewMode = .always
+        }
+    }
+}
+
+// MARK: - placeholder
+extension Stem where Base: UITextField {
+
+    /// 占位文本控件
+    var placeholderLabel: UILabel? { return base.value(forKey: "_placeholderLabel") as? UILabel }
+
     /// 占位文字颜色
     var placeholderColor: UIColor? {
         get{
-            guard var attr = attributedPlaceholder?.attributes(at: 0, effectiveRange: nil),
-                let color = attr[NSAttributedString.Key.foregroundColor] as? UIColor else{ return textColor }
+            guard var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil)
+                , let color = attr[NSAttributedString.Key.foregroundColor] as? UIColor
+                else { return base.textColor }
             return color
         }
         set {
-            guard let placeholder = self.placeholder, let color = newValue else { return }
-            if var attr = attributedPlaceholder?.attributes(at: 0, effectiveRange: nil) {
+            guard let placeholder = base.placeholder
+                , let color = newValue
+                else { return }
+            if var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil) {
                 attr[NSAttributedString.Key.foregroundColor] = newValue
-                attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
+                base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
                 return
             }
-            
+
             let attr = [NSAttributedString.Key.foregroundColor: color]
-            attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
+            base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
         }
     }
-    
+
     /// 占位文字字体
     var placeholderFont: UIFont? {
         get{
-            guard var attr = attributedPlaceholder?.attributes(at: 0, effectiveRange: nil),
-                let ft = attr[.font] as? UIFont else{ return font }
+            guard var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil)
+                , let ft = attr[.font] as? UIFont
+                else{ return base.font }
             return ft
         }
         set {
-            guard let placeholder = self.placeholder, let font = newValue else { return }
-            if var attr = attributedPlaceholder?.attributes(at: 0, effectiveRange: nil) {
+            guard let placeholder = base.placeholder
+                , let font = newValue
+                else { return }
+            if var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil) {
                 attr[NSAttributedString.Key.font] = newValue
-                attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
+                base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
                 return
             }
             let attr = [NSAttributedString.Key.font: font]
-            attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
+            base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
         }
     }
-    
-    
-    /// 左边间距
-    @IBInspectable var leftPadding: CGFloat {
-        get {
-            return leftView?.frame.size.width ?? 0
-        }
-        set {
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: newValue, height: frame.size.height))
-            leftView = view
-            leftViewMode = .always
-        }
-    }
-    
-    /// 右边间距
-    @IBInspectable var rightPadding: CGFloat {
-        get {
-            return rightView?.frame.size.width ?? 0
-        }
-        set {
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: newValue, height: frame.size.height))
-            rightView = view
-            rightViewMode = .always
-        }
-    }
-    
-}
 
+}
