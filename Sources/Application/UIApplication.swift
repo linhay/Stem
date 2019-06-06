@@ -22,6 +22,17 @@
 
 import UIKit
 
+
+public extension Stem where Base: UIApplication {
+
+    /// 是否已开启推送
+    var isOpenNotification: Bool {
+        if let type = UIApplication.shared.currentUserNotificationSettings?.types, type == .init(rawValue: 0) { return false}
+        else { return true }
+    }
+
+}
+
 public extension UIApplication {
     
     struct Info {
