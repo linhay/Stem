@@ -19,7 +19,13 @@
 		CD3D4F8322A8DDA200A63348 /* Gemfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8122A8DDA200A63348 /* Gemfile.lock */; };
 		CD3D4F8522A8DE7400A63348 /* trunk.sh in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8422A8DE7400A63348 /* trunk.sh */; };
 		CD3D4F8822A8FA8300A63348 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		CD3D4F9F22A956DD00A63348 /* UILabel in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F9E22A956DD00A63348 /* UILabel */; };
+		CD3D4FA122A9570500A63348 /* CALayer in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA022A9570500A63348 /* CALayer */; };
+		CD3D4FA522A95E6600A63348 /* UIView in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA422A95E6600A63348 /* UIView */; };
+		CD3D4FA722A961C400A63348 /* temp in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA622A961C400A63348 /* temp */; };
+		CD3D4FAB22A974B900A63348 /* NSMutableParagraphStyle in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */; };
 		CD6ABC88229BDFD80017C6ED /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = CD6ABC87229BDFD80017C6ED /* .travis.yml */; };
+		CD77388422ABE15C0032C3CC /* NSShadow in Resources */ = {isa = PBXBuildFile; fileRef = CD77388322ABE15C0032C3CC /* NSShadow */; };
 		CDC823792296F99800E654A6 /* TestCALayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823722296F99800E654A6 /* TestCALayerViewController.swift */; };
 		CDC8237A2296F99800E654A6 /* TestButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823732296F99800E654A6 /* TestButtonViewController.swift */; };
 		CDC8237B2296F99800E654A6 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823742296F99800E654A6 /* BaseViewController.swift */; };
@@ -61,7 +67,13 @@
 		CD3D4F8022A8DDA200A63348 /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile; path = ../Gemfile; sourceTree = "<group>"; };
 		CD3D4F8122A8DDA200A63348 /* Gemfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile.lock; path = ../Gemfile.lock; sourceTree = "<group>"; };
 		CD3D4F8422A8DE7400A63348 /* trunk.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = trunk.sh; path = ../trunk.sh; sourceTree = "<group>"; };
+		CD3D4F9E22A956DD00A63348 /* UILabel */ = {isa = PBXFileReference; lastKnownFileType = text; path = UILabel; sourceTree = "<group>"; };
+		CD3D4FA022A9570500A63348 /* CALayer */ = {isa = PBXFileReference; lastKnownFileType = text; path = CALayer; sourceTree = "<group>"; };
+		CD3D4FA422A95E6600A63348 /* UIView */ = {isa = PBXFileReference; lastKnownFileType = text; path = UIView; sourceTree = "<group>"; };
+		CD3D4FA622A961C400A63348 /* temp */ = {isa = PBXFileReference; lastKnownFileType = text; path = temp; sourceTree = "<group>"; };
+		CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSMutableParagraphStyle; sourceTree = "<group>"; };
 		CD6ABC87229BDFD80017C6ED /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
+		CD77388322ABE15C0032C3CC /* NSShadow */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSShadow; sourceTree = "<group>"; };
 		CDC823722296F99800E654A6 /* TestCALayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCALayerViewController.swift; sourceTree = "<group>"; };
 		CDC823732296F99800E654A6 /* TestButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestButtonViewController.swift; sourceTree = "<group>"; };
 		CDC823742296F99800E654A6 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -161,6 +173,12 @@
 			children = (
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				CD3D4FA022A9570500A63348 /* CALayer */,
+				CD3D4F9E22A956DD00A63348 /* UILabel */,
+				CD3D4FA422A95E6600A63348 /* UIView */,
+				CD77388322ABE15C0032C3CC /* NSShadow */,
+				CD3D4FA622A961C400A63348 /* temp */,
+				CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -291,13 +309,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD77388422ABE15C0032C3CC /* NSShadow in Resources */,
 				CD3D4F8322A8DDA200A63348 /* Gemfile.lock in Resources */,
+				CD3D4FAB22A974B900A63348 /* NSMutableParagraphStyle in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				CD3D4FA122A9570500A63348 /* CALayer in Resources */,
 				CD3D4F8222A8DDA200A63348 /* Gemfile in Resources */,
+				CD3D4FA522A95E6600A63348 /* UIView in Resources */,
 				CD6ABC88229BDFD80017C6ED /* .travis.yml in Resources */,
+				CD3D4FA722A961C400A63348 /* temp in Resources */,
 				CD3D4F8522A8DE7400A63348 /* trunk.sh in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				CD3D4F9F22A956DD00A63348 /* UILabel in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

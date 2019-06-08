@@ -25,11 +25,17 @@
   "subspecs": [
     {
       "name": "Core",
-      "source_files": "Sources/Core/**"
+      "source_files": [
+        "Sources/Core/**",
+        "Sources/Core/*/**"
+      ]
     },
     {
       "name": "UIDevice",
-      "source_files": "Sources/UIDevice/**",
+      "source_files": [
+        "Sources/UIDevice/**",
+        "Sources/UIDevice/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -38,7 +44,10 @@
     },
     {
       "name": "Foundation",
-      "source_files": "Sources/Foundation/**",
+      "source_files": [
+        "Sources/Foundation/**",
+        "Sources/Foundation/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -47,7 +56,10 @@
     },
     {
       "name": "CGGeometry",
-      "source_files": "Sources/CGGeometry/**",
+      "source_files": [
+        "Sources/CGGeometry/**",
+        "Sources/CGGeometry/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -56,7 +68,10 @@
     },
     {
       "name": "ListView",
-      "source_files": "Sources/ListView/**",
+      "source_files": [
+        "Sources/ListView/**",
+        "Sources/ListView/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -65,7 +80,10 @@
     },
     {
       "name": "Color",
-      "source_files": "Sources/Color/**",
+      "source_files": [
+        "Sources/Color/**",
+        "Sources/Color/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -74,7 +92,10 @@
     },
     {
       "name": "Label",
-      "source_files": "Sources/Label/**",
+      "source_files": [
+        "Sources/Label/**",
+        "Sources/Label/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -83,7 +104,10 @@
     },
     {
       "name": "Font",
-      "source_files": "Sources/Font/**",
+      "source_files": [
+        "Sources/Font/**",
+        "Sources/Font/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -92,7 +116,10 @@
     },
     {
       "name": "Image",
-      "source_files": "Sources/Image/**",
+      "source_files": [
+        "Sources/Image/**",
+        "Sources/Image/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -101,7 +128,10 @@
     },
     {
       "name": "ImageView",
-      "source_files": "Sources/ImageView/**",
+      "source_files": [
+        "Sources/ImageView/**",
+        "Sources/ImageView/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -113,7 +143,10 @@
     },
     {
       "name": "Control",
-      "source_files": "Sources/Control/**",
+      "source_files": [
+        "Sources/Control/**",
+        "Sources/Control/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -122,7 +155,10 @@
     },
     {
       "name": "NSLayoutConstraint",
-      "source_files": "Sources/NSLayoutConstraint/**",
+      "source_files": [
+        "Sources/NSLayoutConstraint/**",
+        "Sources/NSLayoutConstraint/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -131,7 +167,10 @@
     },
     {
       "name": "Application",
-      "source_files": "Sources/Application/**",
+      "source_files": [
+        "Sources/Application/**",
+        "Sources/Application/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -140,7 +179,10 @@
     },
     {
       "name": "Storyboard",
-      "source_files": "Sources/Storyboard/**",
+      "source_files": [
+        "Sources/Storyboard/**",
+        "Sources/Storyboard/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -149,7 +191,10 @@
     },
     {
       "name": "NavigationBar",
-      "source_files": "Sources/NavigationBar/**",
+      "source_files": [
+        "Sources/NavigationBar/**",
+        "Sources/NavigationBar/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -158,7 +203,10 @@
     },
     {
       "name": "InputView",
-      "source_files": "Sources/InputView/**",
+      "source_files": [
+        "Sources/InputView/**",
+        "Sources/InputView/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -170,7 +218,10 @@
     },
     {
       "name": "ViewController",
-      "source_files": "Sources/ViewController/**",
+      "source_files": [
+        "Sources/ViewController/**",
+        "Sources/ViewController/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -179,7 +230,10 @@
     },
     {
       "name": "View",
-      "source_files": "Sources/View/**",
+      "source_files": [
+        "Sources/View/**",
+        "Sources/View/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 
@@ -188,7 +242,10 @@
     },
     {
       "name": "GestureRecognizer",
-      "source_files": "Sources/GestureRecognizer/**",
+      "source_files": [
+        "Sources/GestureRecognizer/**",
+        "Sources/GestureRecognizer/*/**"
+      ],
       "dependencies": {
         "Stem/Core": [
 

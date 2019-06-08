@@ -30,8 +30,10 @@ public extension Stem where Base: CALayer {
         get { return base.inset }
     }
 
-    func addSublayers(_ layers: CALayer...) {
+    @discardableResult
+    func addSublayers(_ layers: CALayer...) -> Stem<Base> {
         layers.forEach({ base.addSublayer($0) })
+        return self
     }
 
     /** 获取视图显示内容

@@ -35,8 +35,12 @@ public extension Stem where Base: UIDevice {
     /// 开启/关闭 闪光灯
     ///
     /// - Parameter level: 亮度等级 0 ~ 1
-    func torch(level: Double) {
-        guard level >= 0, level <= 1, let device = AVCaptureDevice.default(for: .video) else { return }
+    @discardableResult
+    func torch(level: Double) -> Stem<Base> {
+        guard level >= 0
+            , level <= 1
+            , let device = AVCaptureDevice.default(for: .video)
+            else { return self }
         do {
             try device.lockForConfiguration()
             if level == 0 {
@@ -49,33 +53,30 @@ public extension Stem where Base: UIDevice {
         }catch{
             print(error.localizedDescription)
         }
+        return self
     }
     
     /// 在有 Taptic Engine 的设备上触发一个轻微的振动
     ///
     /// - Parameter params: level  (number)  0 ~ 3 表示振动等级
-    func taptic(level: Int, isSupportTaptic: Bool = true) {
+    @discardableResult
+    func taptic(level: Int, isSupportTaptic: Bool = true) -> Stem<Base> {
         if #available(iOS 10.0, *),
-            isSupportTaptic,
-            let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
+            isSupportTaptic
+            , let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
             let tapticEngine = UIImpactFeedbackGenerator(style: style)
             tapticEngine.prepare()
             tapticEngine.impactOccurred()
-        }else{
-            switch level {
-            case 3:
-                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-            case 2:
-                // 连续三次短震
-                AudioServicesPlaySystemSound(1521)
-            case 1:
-                // 普通短震，3D Touch 中 Pop 震动反馈
-                AudioServicesPlaySystemSound(1520)
-            default:
-                // 普通短震，3D Touch 中 Peek 震动反馈
-                AudioServicesPlaySystemSound(1519)
-            }
+            return self
         }
+        switch level {
+        case 3:  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        case 2:  AudioServicesPlaySystemSound(1521) // 连续三次短震
+        case 1:  AudioServicesPlaySystemSound(1520) // 普通短震，3D Touch 中 Pop 震动反馈
+        default: AudioServicesPlaySystemSound(1519) // 普通短震，3D Touch 中 Peek 震动反馈
+
+        }
+        return self
     }
     
 }

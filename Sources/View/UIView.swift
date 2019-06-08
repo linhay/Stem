@@ -48,8 +48,6 @@ public extension Stem where Base: UIView{
         }while next != nil
         return nil
     }
-
-
     /// 惰性查询父视图
     ///
     /// - Parameter where: 条件
@@ -114,9 +112,10 @@ public extension Stem where Base: UIView{
         return base.snapshotView(afterScreenUpdates: true)?.st.snapshot
     }
 
-    @available(iOS 9.0, *)
-    func addLayoutGuides(_ layoutGuides: UILayoutGuide...) {
+    @available(iOS 9.0, *) @discardableResult
+    func addLayoutGuides(_ layoutGuides: UILayoutGuide...) -> Stem<Base> {
         layoutGuides.forEach { base.addLayoutGuide($0) }
+        return self
     }
 
     /** 添加子控件
@@ -131,14 +130,18 @@ public extension Stem where Base: UIView{
      
      - Parameter subviews: 子控件数组
      */
-    func addSubviews(_ subviews: UIView...) {
+    @discardableResult
+    func addSubviews(_ subviews: UIView...) -> Stem<Base> {
         subviews.forEach { base.addSubview($0) }
+        return self
     }
     
     
     /// 移除全部子控件
-    func removeSubviews() {
+    @discardableResult
+    func removeSubviews() -> Stem<Base> {
         base.subviews.forEach{ $0.removeFromSuperview() }
+        return self
     }
     
     
@@ -154,13 +157,17 @@ public extension Stem where Base: UIView{
      
      - Parameter subviews: 手势对象数组
      */
-    func addGestureRecognizers(_ gestureRecognizers: UIGestureRecognizer...) {
+    @discardableResult
+    func addGestureRecognizers(_ gestureRecognizers: UIGestureRecognizer...) -> Stem<Base> {
         gestureRecognizers.forEach { base.addGestureRecognizer($0) }
+        return self
     }
     
     /// 移除全部手势
-    func removeGestureRecognizers() {
+    @discardableResult
+    func removeGestureRecognizers() -> Stem<Base> {
         base.gestureRecognizers?.forEach{ base.removeGestureRecognizer($0) }
+        return self
     }
     
 }

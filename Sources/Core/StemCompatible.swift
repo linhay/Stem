@@ -33,14 +33,3 @@ public extension StemCompatible {
 
 extension NSObject: StemCompatible { }
 
-
-public protocol StemSetChainCompatible {
-    associatedtype StemSetChainCompatible
-    var set: StemSetChainCompatible { get }
-}
-
-public extension StemSetChainCompatible {
-    var set: StemSetChain<Self> { return StemSetChain(self) }
-}
-
-

@@ -5,7 +5,6 @@ import PlaygroundSupport
 import Stem
 
 
-
 class MyViewController : UIViewController {
 
 
@@ -13,19 +12,14 @@ class MyViewController : UIViewController {
                 edgeInsets: UIEdgeInsets,
                 backgroundColor: UIColor) -> NSAttributedString {
         let textLayer = CATextLayer()
+
+        string.st.set
+            .strikethroughStyle(.patternDash)
+            .strikethroughColor(.blue)
+            .baselineOffset(0)
+
         let size = string.boundingRect(with: CGSize.max, options: [], context: nil).size
-        let string = NSMutableAttributedString(attributedString: string)
-        string.addAttribute(NSAttributedString.Key.strikethroughStyle,
-                            value: 1,
-                            range: NSRange(location: 0, length: string.length))
 
-        string.addAttribute(NSAttributedString.Key.strikethroughColor,
-                            value: UIColor.blue,
-                            range: NSRange(location: 0, length: string.length))
-
-        string.addAttribute(NSAttributedString.Key.baselineOffset,
-                            value: 0,
-                            range: NSRange(location: 0, length: string.length))
         textLayer.string = string
         textLayer.frame = CGRect(x: edgeInsets.left,
                                  y: edgeInsets.top,
@@ -38,14 +32,15 @@ class MyViewController : UIViewController {
         textLayer.backgroundColor = UIColor.green.cgColor
 
         let bglayer = CALayer()
-        bglayer.frame = CGRect(x: 0,
-                               y: 0,
-                               width: textLayer.frame.width + edgeInsets.left + edgeInsets.right,
-                               height: textLayer.frame.height + edgeInsets.top + edgeInsets.bottom)
+        bglayer.st.set
+            .frame(CGRect(x: 0,
+                          y: 0,
+                          width: textLayer.frame.width + edgeInsets.left + edgeInsets.right,
+                          height: textLayer.frame.height + edgeInsets.top + edgeInsets.bottom))
+            .backgroundColor(backgroundColor.cgColor)
+            .cornerRadius(3)
+            .addSublayer(textLayer)
 
-        bglayer.backgroundColor = backgroundColor.cgColor
-        bglayer.cornerRadius = 3
-        bglayer.addSublayer(textLayer)
 
         let attach = NSTextAttachment()
         attach.image  = bglayer.st.snapshot

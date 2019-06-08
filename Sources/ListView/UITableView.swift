@@ -23,67 +23,87 @@
 import UIKit
 
 public extension Stem where Base: UITableView {
-  
-  func update(_ colusre: (_ tableView: UITableView) -> Void) {
-    base.beginUpdates()
-    colusre(base)
-    base.endUpdates()
-  }
-  
-  func scroll(to row: Int,in section: Int, at position: UITableView.ScrollPosition,animated: Bool) {
-    let indexPath = IndexPath(row: row, section: section)
-    base.scrollToRow(at: indexPath, at: position, animated: animated)
-  }
-  
-  func insertRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) {
-    base.insertRows(at: [indexPath], with: animation)
-  }
-  
-  func insert(row: Int, in section: Int, with animation: UITableView.RowAnimation) {
-    let indexPath = IndexPath(row: row, section: section)
-    base.insertRows(at: [indexPath], with: animation)
-  }
-  
-  func reloadRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) {
-    base.reloadRows(at: [indexPath], with: animation)
-  }
-  
-  func reloadRow(row: Int, in section: Int,with animation: UITableView.RowAnimation) {
-    let indexPath = IndexPath(row: row, section: section)
-    base.insertRows(at: [indexPath], with: animation)
-  }
-  
-  func deleteRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) {
-    base.deleteRows(at: [indexPath], with: animation)
-  }
-  
-  func deleteRow(row: Int, in section: Int, with animation: UITableView.RowAnimation) {
-    let indexPath = IndexPath(row: row, section: section)
-    base.deleteRows(at: [indexPath], with: animation)
-  }
-  
-  
-  func insert(section: Int, with animation: UITableView.RowAnimation) {
-    let set = IndexSet(integer: section)
-    base.insertSections(set, with: animation)
-  }
-  
-  
-  func delete(section: Int, with animation: UITableView.RowAnimation) {
-    let set = IndexSet(integer: section)
-    base.deleteSections(set, with: animation)
-  }
-  
-  
-  func reload(section: Int, with animation: UITableView.RowAnimation) {
-    let set = IndexSet(integer: section)
-    base.reloadSections(set, with: animation)
-  }
-  
-  func clearSelectedRows(animated: Bool) {
-    base.indexPathsForSelectedRows?.forEach({ (indexPath) in
-      base.deselectRow(at: indexPath, animated: animated)
-    })
-  }
-  
+    @discardableResult
+    func update(_ colusre: (_ tableView: UITableView) -> Void) -> Stem<Base> {
+        base.beginUpdates()
+        colusre(base)
+        base.endUpdates()
+        return self
+    }
+
+    @discardableResult
+    func scroll(to row: Int,in section: Int, at position: UITableView.ScrollPosition,animated: Bool) -> Stem<Base> {
+        let indexPath = IndexPath(row: row, section: section)
+        base.scrollToRow(at: indexPath, at: position, animated: animated)
+        return self
+    }
+
+    @discardableResult
+    func insertRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        base.insertRows(at: [indexPath], with: animation)
+        return self
+    }
+
+    @discardableResult
+    func insert(row: Int, in section: Int, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        let indexPath = IndexPath(row: row, section: section)
+        base.insertRows(at: [indexPath], with: animation)
+        return self
+    }
+
+    @discardableResult
+    func reloadRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        base.reloadRows(at: [indexPath], with: animation)
+        return self
+    }
+
+    @discardableResult
+    func reloadRow(row: Int, in section: Int,with animation: UITableView.RowAnimation) -> Stem<Base> {
+        let indexPath = IndexPath(row: row, section: section)
+        base.insertRows(at: [indexPath], with: animation)
+        return self
+    }
+
+    @discardableResult
+    func deleteRow(at indexPath: IndexPath, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        base.deleteRows(at: [indexPath], with: animation)
+        return self
+    }
+
+    @discardableResult
+    func deleteRow(row: Int, in section: Int, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        let indexPath = IndexPath(row: row, section: section)
+        base.deleteRows(at: [indexPath], with: animation)
+        return self
+    }
+
+    @discardableResult
+    func insert(section: Int, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        let set = IndexSet(integer: section)
+        base.insertSections(set, with: animation)
+        return self
+    }
+
+    @discardableResult
+    func delete(section: Int, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        let set = IndexSet(integer: section)
+        base.deleteSections(set, with: animation)
+        return self
+    }
+
+    @discardableResult
+    func reload(section: Int, with animation: UITableView.RowAnimation) -> Stem<Base> {
+        let set = IndexSet(integer: section)
+        base.reloadSections(set, with: animation)
+        return self
+    }
+
+    @discardableResult
+    func clearSelectedRows(animated: Bool) -> Stem<Base> {
+        base.indexPathsForSelectedRows?.forEach({ (indexPath) in
+            base.deselectRow(at: indexPath, animated: animated)
+        })
+        return self
+    }
+
 }

@@ -22,7 +22,7 @@ public extension Stem where Base: UITextView {
     }
 
     /// 占位颜色
-    var placeholderColor: UIColor{
+    var placeholderColor: UIColor {
         set{ self.placeholderLabel.textColor = newValue }
         get{ return self.placeholderLabel.textColor }
     }
@@ -59,20 +59,27 @@ public extension Stem where Base: UITextView {
         return base.textRange(from: startPosition, to: endPosition)
     }
 
-    func setTextKeepingSelectedRange(text: String) {
+    @discardableResult
+    func setTextKeepingSelectedRange(text: String) -> Stem<Base> {
         let selectedTextRange = base.selectedTextRange
         base.text = text
         base.selectedTextRange = selectedTextRange
+        return self
     }
 
-    func setAttributedTextKeepingSelectedRange(attributedText: NSAttributedString) {
+    @discardableResult
+    func setAttributedTextKeepingSelectedRange(attributedText: NSAttributedString) -> Stem<Base> {
         let selectedTextRange = base.selectedTextRange
         base.attributedText = attributedText
         base.selectedTextRange = selectedTextRange
+        return self
     }
 
-    func scrollRangeToVisible(range: NSRange) {
-        guard !base.bounds.isEmpty, let textRange = convertUITextRange(from: range) else { return }
+    @discardableResult
+    func scrollRangeToVisible(range: NSRange) -> Stem<Base> {
+        guard !base.bounds.isEmpty
+            , let textRange = convertUITextRange(from: range)
+            else { return self }
         let selectionRects = base.selectionRects(for: textRange)
         var rect = CGRect.zero
 
@@ -86,22 +93,32 @@ public extension Stem where Base: UITextView {
             }
         }
 
-        guard !rect.isEmpty else { return }
+        guard !rect.isEmpty else { return self }
 
         rect = base.convert(rect, from: base.textInputView)
         _scrollRectToVisible(rect: rect, animated: true)
+        return self
     }
 
     /// 将光标移动至可视区域
     ///
     /// - Parameter animated: 是否执行动画
-    func scrollCaretVisible(animated: Bool) {
-        guard !base.bounds.isEmpty, let position = base.selectedTextRange?.end else { return }
+    @discardableResult
+    func scrollCaretVisible(animated: Bool) -> Stem<Base> {
+        guard !base.bounds.isEmpty
+            , let position = base.selectedTextRange?.end
+            else { return self }
         let caretRect = base.caretRect(for: position)
         _scrollRectToVisible(rect: caretRect, animated: animated)
+        return self
     }
 
-    private func _scrollRectToVisible(rect: CGRect, animated: Bool) {
+}
+
+// MARK: - private
+private extension Stem where Base: UITextView {
+
+    func _scrollRectToVisible(rect: CGRect, animated: Bool) {
         guard rect.isValidated else { return }
         var contentOffsetY = base.contentOffset.y
 

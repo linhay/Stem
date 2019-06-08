@@ -34,12 +34,12 @@ Pod::Spec.new do |s|
     'InputView' => ['Stem/Core', 'Stem/CGGeometry'],
     'ViewController' => ['Stem/Core'],
     'View' => ['Stem/Core'],
-    'GestureRecognizer' => ['Stem/Core'],
+    'GestureRecognizer' => ['Stem/Core']
   }
   
   dict.each { |key, value|
     s.subspec key do |ss|
-      ss.source_files = 'Sources/' + key + '/**'
+      ss.source_files = ['Sources/' + key + '/**', 'Sources/' + key + '/*/**']
       for name in value
         ss.dependency name
       end

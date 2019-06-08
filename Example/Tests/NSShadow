@@ -1,0 +1,15 @@
+
+open class NSShadow : NSObject, NSCopying, NSSecureCoding {
+
+
+public init()
+
+public init?(coder aDecoder: NSCoder)
+
+
+open var shadowOffset: CGSize // offset in user space of the shadow from the original drawing
+
+open var shadowBlurRadius: CGFloat // blur radius of the shadow in default user space units
+
+open var shadowColor: Any? // color used for the shadow (default is black with an alpha value of 1/3)
+}

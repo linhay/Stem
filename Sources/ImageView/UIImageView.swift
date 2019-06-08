@@ -28,12 +28,14 @@ public extension Stem where Base: UIImageView {
     /// 异步解码
     ///
     /// - Parameter image: 待解码图片
-    func setImage(async image: UIImage) {
+    @discardableResult
+    func setImage(async image: UIImage) -> Stem<Base>  {
         DispatchQueue.global().async {
             DispatchQueue.main.async {
                 self.base.image = image
             }
         }
+        return self
     }
     
     
@@ -44,19 +46,23 @@ public extension Stem where Base: UIImageView {
     ///   - contentMode: 内容模式
     ///   - placeholder: 占位图片
     ///   - completionHandler: 完成回调
+    @discardableResult
     func download(from url: URL,
                   contentMode: UIView.ContentMode = .scaleAspectFit,
                   placeholder: UIImage? = nil,
-                  completionHandler: ((UIImage?) -> Void)? = nil) {
+                  completionHandler: ((UIImage?) -> Void)? = nil) -> Stem<Base> {
         
         base.image = placeholder
         base.contentMode = contentMode
+
         URLSession.shared.dataTask(with: url) { (data, response, _) in
             guard
-                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-                let data = data,
-                let image = UIImage(data: data)
+                let httpURLResponse = response as? HTTPURLResponse
+                , httpURLResponse.statusCode == 200
+                , let mimeType = response?.mimeType
+                , mimeType.hasPrefix("image")
+                , let data = data
+                , let image = UIImage(data: data)
                 else {
                     completionHandler?(nil)
                     return
@@ -66,19 +72,23 @@ public extension Stem where Base: UIImageView {
                 completionHandler?(image)
             }
             }.resume()
+
+        return self
     }
     
     
     /// 毛玻璃效果
     ///
     /// - Parameter style: 毛玻璃样式
-    func blur(withStyle style: UIBlurEffect.Style = .light) {
+    @discardableResult
+    func blur(withStyle style: UIBlurEffect.Style = .light) -> Stem<Base> {
         let blurEffect = UIBlurEffect(style: style)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = base.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         base.addSubview(blurEffectView)
         base.clipsToBounds = true
+        return self
     }
     
     

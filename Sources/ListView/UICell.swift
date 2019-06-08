@@ -22,6 +22,7 @@
 
 import UIKit
 
+
 public protocol STCellProtocol: class {
     static var id: String { get }
     static  var nib: UINib? { get }
@@ -42,7 +43,7 @@ public extension STNibProtocol {
 
 // MARK: - UITableView
 public extension Stem where Base: UITableView{
-
+    
     /// 注册 `STCellProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
@@ -53,7 +54,7 @@ public extension Stem where Base: UITableView{
             base.register(T.self, forCellReuseIdentifier: T.id)
         }
     }
-
+    
     /// 从缓存池取出 Cell
     ///
     /// - Parameter indexPath: IndexPath
@@ -61,7 +62,7 @@ public extension Stem where Base: UITableView{
     func dequeueCell<T: STCellProtocol>(_ indexPath: IndexPath) -> T {
         return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
     }
-
+    
     /// 注册 `STCellProtocol` 类型的 UITableViewHeaderFooterView
     ///
     /// - Parameter _: UITableViewHeaderFooterView
@@ -72,7 +73,7 @@ public extension Stem where Base: UITableView{
             base.register(T.self, forHeaderFooterViewReuseIdentifier: T.id)
         }
     }
-
+    
     /// 从缓存池取出 UITableViewHeaderFooterView
     ///
     /// - Returns: 具体类型的 `UITableViewCell`
@@ -82,23 +83,31 @@ public extension Stem where Base: UITableView{
 }
 
 public extension UICollectionView {
-
-    enum KindType: String {
+    
+    /// SupplementaryView regist type
+    ///
+    /// - header: header
+    /// - footer: footer
+    /// - custom: custom
+    enum KindType: Equatable {
+        
         case header
         case footer
-
+        case custom(_ value: String)
+        
         public var rawValue: String {
             switch self {
             case .header: return UICollectionView.elementKindSectionHeader
             case .footer: return UICollectionView.elementKindSectionFooter
+            case .custom(let value): return value
             }
         }
     }
-
+    
 }
 
 public extension Stem where Base: UICollectionView {
-
+    
     /// 注册 `STCellProtocol` 类型的 UICollectionViewCell
     ///
     /// - Parameter cell: UICollectionViewCell
@@ -109,7 +118,7 @@ public extension Stem where Base: UICollectionView {
             base.register(T.self, forCellWithReuseIdentifier: T.id)
         }
     }
-
+    
     /// 从缓存池取出 Cell
     ///
     /// - Parameter indexPath: IndexPath
@@ -117,11 +126,11 @@ public extension Stem where Base: UICollectionView {
     func dequeueCell<T: UICollectionViewCell>(_ indexPath: IndexPath) -> T where T: STCellProtocol {
         return base.dequeueReusableCell(withReuseIdentifier: T.id, for: indexPath) as! T
     }
-
+    
     func registerSupplementaryView<T: STCellProtocol>(kind: UICollectionView.KindType, _ view: T.Type) {
         registerSupplementaryView(elementKind: kind.rawValue, view)
     }
-
+    
     func registerSupplementaryView<T: STCellProtocol>(elementKind: String, _: T.Type) {
         if let nib = T.nib {
             base.register(nib,
@@ -133,11 +142,11 @@ public extension Stem where Base: UICollectionView {
                           withReuseIdentifier: T.id)
         }
     }
-
+    
     func dequeueSupplementaryView<T: UICollectionReusableView>(kind: UICollectionView.KindType, indexPath: IndexPath) -> T where T: STCellProtocol {
         return dequeueSupplementaryView(elementKind: kind.rawValue, indexPath: indexPath)
     }
-
+    
     func dequeueSupplementaryView<T: UICollectionReusableView>(elementKind: String, indexPath: IndexPath) -> T where T: STCellProtocol {
         return base.dequeueReusableSupplementaryView(ofKind: elementKind,
                                                      withReuseIdentifier: T.id,

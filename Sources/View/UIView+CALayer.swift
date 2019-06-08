@@ -26,7 +26,8 @@ import UIKit
 public extension Stem where Base: UIView {
 
     /// 设置LayerShadow,offset,radius
-    func setShadow(color: UIColor, offset: CGSize, radius: CGFloat) {
+    @discardableResult
+    func setShadow(color: UIColor, offset: CGSize, radius: CGFloat) -> Stem<Base> {
         base.layoutIfNeeded()
         DispatchQueue.main.async {
             self.base.layer.shadowColor = color.cgColor
@@ -36,6 +37,7 @@ public extension Stem where Base: UIView {
             self.base.layer.shouldRasterize = true
             self.base.layer.rasterizationScale = UIScreen.main.scale
         }
+        return self
     }
 
     /// 设置 shadows (适用于 Zeplin)
@@ -47,12 +49,13 @@ public extension Stem where Base: UIView {
     ///   - offset: 偏移
     ///   - blur: 高斯模糊
     ///   - spread: spread
+    @discardableResult
     func setShadows(radius: CGFloat = 0,
                     color: UIColor,
                     opacity: Float,
                     offset: CGPoint = CGPoint.zero,
                     blur: CGFloat,
-                    spread: CGFloat = 0) {
+                    spread: CGFloat = 0) -> Stem<Base> {
         base.layoutIfNeeded()
         DispatchQueue.main.async {
             self.base.layer.cornerRadius = radius
@@ -63,6 +66,7 @@ public extension Stem where Base: UIView {
             let rect = self.base.bounds.insetBy(dx: -spread, dy: -spread)
             self.base.layer.shadowPath = UIBezierPath(roundedRect: rect, cornerRadius: radius).cgPath
         }
+        return self
     }
 
 
