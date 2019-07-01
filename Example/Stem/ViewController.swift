@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Stem
 
 class ViewController: BaseViewController {
 
@@ -27,33 +28,43 @@ class ViewController: BaseViewController {
         items.append(TableElement(title: "UIImageView", subtitle: "") {[weak self] in
             guard let base = self else { return }
             let vc = TestImageViewController()
-            base.navigationController?.pushViewController(vc, animated: true)
+            base.st.push(vc: vc)
         })
 
         items.append(TableElement(title: "UIImage", subtitle: "") { [weak self] in
             guard let base = self else { return }
             let vc = TestImageController()
-            base.navigationController?.pushViewController(vc, animated: true)
+            base.st.push(vc: vc)
         })
 
-        items.append(TableElement(title: "UIImage-UIColor", subtitle: "") {
+        items.append(TableElement(title: "UIImage-UIColor", subtitle: "") {[weak self] in
+            guard let base = self else { return }
             let vc = TestImageColorController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            base.st.push(vc: vc)
         })
 
-        items.append(TableElement(title: "UIButton", subtitle: "") {
+        items.append(TableElement(title: "UIButton", subtitle: "") {[weak self] in
+            guard let base = self else { return }
             let vc = TestButtonViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            base.st.push(vc: vc)
         })
 
-        items.append(TableElement(title: "Gesture", subtitle: "") {
+        items.append(TableElement(title: "Gesture", subtitle: "") {[weak self] in
+            guard let base = self else { return }
             let vc = TestGestureViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            base.st.push(vc: vc)
         })
 
-        items.append(TableElement(title: "CALayer", subtitle: "") {
+        items.append(TableElement(title: "CALayer", subtitle: "") {[weak self] in
+            guard let base = self else { return }
             let vc = TestCALayerViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
+            base.st.push(vc: vc)
+        })
+
+        items.append(TableElement(title: "Video", subtitle: "") {[weak self] in
+            guard let base = self else { return }
+            let vc = TestVideoViewController()
+            base.st.push(vc: vc)
         })
 
     }

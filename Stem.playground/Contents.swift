@@ -7,61 +7,15 @@ import Stem
 
 class MyViewController : UIViewController {
 
-
-    func setTag(string: NSAttributedString,
-                edgeInsets: UIEdgeInsets,
-                backgroundColor: UIColor) -> NSAttributedString {
-        let textLayer = CATextLayer()
-
-        string.st.set
-            .strikethroughStyle(.patternDash)
-            .strikethroughColor(.blue)
-            .baselineOffset(0)
-
-        let size = string.boundingRect(with: CGSize.max, options: [], context: nil).size
-
-        textLayer.string = string
-        textLayer.frame = CGRect(x: edgeInsets.left,
-                                 y: edgeInsets.top,
-                                 width: size.width,
-                                 height: size.height)
-
-        textLayer.contentsScale = UIScreen.main.scale
-        textLayer.alignmentMode = .center
-
-        textLayer.backgroundColor = UIColor.green.cgColor
-
-        let bglayer = CALayer()
-        bglayer.st.set
-            .frame(CGRect(x: 0,
-                          y: 0,
-                          width: textLayer.frame.width + edgeInsets.left + edgeInsets.right,
-                          height: textLayer.frame.height + edgeInsets.top + edgeInsets.bottom))
-            .backgroundColor(backgroundColor.cgColor)
-            .cornerRadius(3)
-            .addSublayer(textLayer)
-
-
-        let attach = NSTextAttachment()
-        attach.image  = bglayer.st.snapshot
-        attach.bounds = bglayer.bounds
-
-        return NSAttributedString(attachment: attach)
-    }
-
     override func loadView() {
-        let view = UILabel()
-        view.attributedText = setTag(string: NSAttributedString(string: "库存紧张",
-                                                                attributes: [.font(UIFont.systemFont(ofSize: 30)),
-                                                                             .foregroundColor(UIColor.white)]),
-                                     edgeInsets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
-                                     backgroundColor: UIColor(sRGB: 255, g: 60, b: 80)) + setTag(string: NSAttributedString(string: "库存紧张",
-                                                                                                                            attributes: [.font(UIFont.systemFont(ofSize: 30)),
-                                                                                                                                         .foregroundColor(UIColor.white)]),
-                                                                                                 edgeInsets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
-                                                                                                 backgroundColor: UIColor(sRGB: 255, g: 60, b: 80))
-
-        self.view = view
+       let image = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100)).image { (ctx) in
+            let ctx = ctx.cgContext
+            let path = UIBezierPath(rect: CGRect(x: 20,y: 20,width: 80,height: 80))
+            UIColor.blue.with(alpha: 0.5).setFill()
+            path.fill()
+        ctx.draw(UIImage(color: UIColor.red.with(alpha: 0.5)).cgImage!, in: CGRect(x: 0, y: 0, width: 80, height: 80))
+        }
+        self.view = UIImageView(image: image)
     }
 }
 
