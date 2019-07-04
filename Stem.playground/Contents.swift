@@ -1,25 +1,24 @@
-//: A UIKit based Playground for presenting user interface
+//: Playground - noun: a place where people can play
 
 import UIKit
+import AVKit
 import PlaygroundSupport
-import Stem
 
 
-class MyViewController : UIViewController {
+let v1 = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
+v1.backgroundColor = .yellow
 
-    override func loadView() {
-       let image = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100)).image { (ctx) in
-            let ctx = ctx.cgContext
-            let path = UIBezierPath(rect: CGRect(x: 20,y: 20,width: 80,height: 80))
-            UIColor.blue.with(alpha: 0.5).setFill()
-            path.fill()
-        ctx.draw(UIImage(color: UIColor.red.with(alpha: 0.5)).cgImage!, in: CGRect(x: 0, y: 0, width: 80, height: 80))
-        }
-        self.view = UIImageView(image: image)
-    }
+let v2 = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 50, height: 50)))
+v2.backgroundColor = .red
+
+PlaygroundPage.current.liveView = v1
+PlaygroundPage.current.needsIndefiniteExecution = true
+
+UIView.transition(with: v1, duration: 3, options: .curveEaseOut, animations: {
+    v1.addSubview(v2)
+}, completion: nil)
+
+UIView.animate(withDuration: 10) {
+    v1.frame.size.width += 200
+    v1.backgroundColor = UIColor.red
 }
-
-PlaygroundPage.current.liveView = MyViewController()
-
-
-
