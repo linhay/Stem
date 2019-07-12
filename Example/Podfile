@@ -1,4 +1,5 @@
 use_frameworks!
+install! 'cocoapods', :generate_multiple_pod_projects => true
 
 target 'Stem_Example' do
   pod 'Stem', :path => '../'

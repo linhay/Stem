@@ -21,64 +21,64 @@ PODS:
   - BLFoundation/String (0.9.1)
   - BLFoundation/URL (0.9.1)
   - SnapKit (4.2.0)
-  - Stem (0.0.19):
-    - Stem/Application (= 0.0.19)
-    - Stem/CGGeometry (= 0.0.19)
-    - Stem/Color (= 0.0.19)
-    - Stem/Control (= 0.0.19)
-    - Stem/Core (= 0.0.19)
-    - Stem/Font (= 0.0.19)
-    - Stem/Foundation (= 0.0.19)
-    - Stem/GestureRecognizer (= 0.0.19)
-    - Stem/Image (= 0.0.19)
-    - Stem/ImageView (= 0.0.19)
-    - Stem/InputView (= 0.0.19)
-    - Stem/Label (= 0.0.19)
-    - Stem/ListView (= 0.0.19)
-    - Stem/NavigationBar (= 0.0.19)
-    - Stem/NSLayoutConstraint (= 0.0.19)
-    - Stem/Storyboard (= 0.0.19)
-    - Stem/UIDevice (= 0.0.19)
-    - Stem/View (= 0.0.19)
-    - Stem/ViewController (= 0.0.19)
-  - Stem/Application (0.0.19):
+  - Stem (0.0.20):
+    - Stem/Application (= 0.0.20)
+    - Stem/CGGeometry (= 0.0.20)
+    - Stem/Color (= 0.0.20)
+    - Stem/Control (= 0.0.20)
+    - Stem/Core (= 0.0.20)
+    - Stem/Font (= 0.0.20)
+    - Stem/Foundation (= 0.0.20)
+    - Stem/GestureRecognizer (= 0.0.20)
+    - Stem/Image (= 0.0.20)
+    - Stem/ImageView (= 0.0.20)
+    - Stem/InputView (= 0.0.20)
+    - Stem/Label (= 0.0.20)
+    - Stem/ListView (= 0.0.20)
+    - Stem/NavigationBar (= 0.0.20)
+    - Stem/NSLayoutConstraint (= 0.0.20)
+    - Stem/Storyboard (= 0.0.20)
+    - Stem/UIDevice (= 0.0.20)
+    - Stem/View (= 0.0.20)
+    - Stem/ViewController (= 0.0.20)
+  - Stem/Application (0.0.20):
     - Stem/Core
-  - Stem/CGGeometry (0.0.19):
+  - Stem/CGGeometry (0.0.20):
     - Stem/Core
-  - Stem/Color (0.0.19):
+  - Stem/Color (0.0.20):
     - Stem/Core
-  - Stem/Control (0.0.19):
+  - Stem/Control (0.0.20):
     - Stem/Core
-  - Stem/Core (0.0.19)
-  - Stem/Font (0.0.19):
+  - Stem/Core (0.0.20)
+  - Stem/Font (0.0.20):
     - Stem/Core
-  - Stem/Foundation (0.0.19):
+  - Stem/Foundation (0.0.20):
     - Stem/Core
-  - Stem/GestureRecognizer (0.0.19):
+  - Stem/GestureRecognizer (0.0.20):
     - Stem/Core
-  - Stem/Image (0.0.19):
+  - Stem/Image (0.0.20):
     - Stem/Core
-  - Stem/ImageView (0.0.19):
+  - Stem/ImageView (0.0.20):
     - Stem/Core
     - Stem/Image
-  - Stem/InputView (0.0.19):
+  - Stem/InputView (0.0.20):
     - Stem/CGGeometry
     - Stem/Core
-  - Stem/Label (0.0.19):
+  - Stem/Label (0.0.20):
     - Stem/Core
-  - Stem/ListView (0.0.19):
+  - Stem/ListView (0.0.20):
     - Stem/Core
-  - Stem/NavigationBar (0.0.19):
+  - Stem/NavigationBar (0.0.20):
     - Stem/Core
-  - Stem/NSLayoutConstraint (0.0.19):
+  - Stem/NSLayoutConstraint (0.0.20):
     - Stem/Core
-  - Stem/Storyboard (0.0.19):
+  - Stem/Storyboard (0.0.20):
     - Stem/Core
-  - Stem/UIDevice (0.0.19):
+  - Stem/UIDevice (0.0.20):
     - Stem/Core
-  - Stem/View (0.0.19):
+  - Stem/View (0.0.20):
     - Stem/Core
-  - Stem/ViewController (0.0.19):
+  - Stem/ViewController (0.0.20):
     - Stem/Core
   - Then (2.4.0)
 
@@ -101,9 +101,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   BLFoundation: 3e79484ff3cc6d741e4e39dd8afa495493cfbe0a
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: 715b3e6c7842e5813b40c148280b2f3152cb70ba
+  Stem: cff4a9158ff12b976012373c2d63c097a68cd07f
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
-PODFILE CHECKSUM: bf45eb2d41205515c41e5aec6af6f470126dd836
+PODFILE CHECKSUM: 2e2de9bdb6cad79e74c5a422164b4df6b66ce24d
 
 COCOAPODS: 1.7.1
