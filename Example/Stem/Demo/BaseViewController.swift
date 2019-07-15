@@ -45,7 +45,7 @@ class BaseViewController: UIViewController {
                 make.top.equalTo(self.topLayoutGuide.snp.bottom).offset(8)
                 make.left.equalToSuperview().offset(8)
                 make.right.equalToSuperview().offset(-8)
-                make.height.equalTo(item.snp.width).multipliedBy(9.0 / 16.0)
+                make.height.equalTo(item.snp.width).multipliedBy(9.0 / 16.0).priorityMedium()
             })
         }
         

@@ -33,6 +33,7 @@
 		CDC8237D2296F99800E654A6 /* TestImageColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823762296F99800E654A6 /* TestImageColorController.swift */; };
 		CDC8237E2296F99800E654A6 /* TestGestureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823772296F99800E654A6 /* TestGestureViewController.swift */; };
 		CDC8237F2296F99800E654A6 /* TestImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823782296F99800E654A6 /* TestImageController.swift */; };
+		CDEB8AB522DC1EAB0021BBD8 /* TestInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEB8AB422DC1EAB0021BBD8 /* TestInputViewController.swift */; };
 		CDECD17022C5B9FF00015160 /* TestVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDECD16F22C5B9FF00015160 /* TestVideoViewController.swift */; };
 		CDECD17222C5C52500015160 /* test-video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CDECD17122C5BB9000015160 /* test-video.mp4 */; };
 /* End PBXBuildFile section */
@@ -83,6 +84,7 @@
 		CDC823762296F99800E654A6 /* TestImageColorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageColorController.swift; sourceTree = "<group>"; };
 		CDC823772296F99800E654A6 /* TestGestureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestGestureViewController.swift; sourceTree = "<group>"; };
 		CDC823782296F99800E654A6 /* TestImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestImageController.swift; sourceTree = "<group>"; };
+		CDEB8AB422DC1EAB0021BBD8 /* TestInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestInputViewController.swift; sourceTree = "<group>"; };
 		CDECD16F22C5B9FF00015160 /* TestVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVideoViewController.swift; sourceTree = "<group>"; };
 		CDECD17122C5BB9000015160 /* test-video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video.mp4"; sourceTree = "<group>"; };
 		D1ECD002EB1D2D6C8A4DCA57 /* Stem.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -221,6 +223,7 @@
 				CDC823772296F99800E654A6 /* TestGestureViewController.swift */,
 				CDC823782296F99800E654A6 /* TestImageController.swift */,
 				CDECD16F22C5B9FF00015160 /* TestVideoViewController.swift */,
+				CDEB8AB422DC1EAB0021BBD8 /* TestInputViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BLFoundation/BLFoundation.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Stem/Stem.framework",
 				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
@@ -358,6 +362,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BLFoundation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stem.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Then.framework",
@@ -439,6 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDC8237F2296F99800E654A6 /* TestImageController.swift in Sources */,
+				CDEB8AB522DC1EAB0021BBD8 /* TestInputViewController.swift in Sources */,
 				CDC8237E2296F99800E654A6 /* TestGestureViewController.swift in Sources */,
 				CDC8237C2296F99800E654A6 /* TestImageViewController.swift in Sources */,
 				CDC8237B2296F99800E654A6 /* BaseViewController.swift in Sources */,

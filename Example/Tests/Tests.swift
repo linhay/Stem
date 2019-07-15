@@ -28,6 +28,7 @@ class Tests: XCTestCase {
     }
 
     func testUIApplication() {
+        RunTime.print.properties(from: UITextField.self).forEach({ print($0) })
         print(UIApplication.shared.st.info)
     }
     

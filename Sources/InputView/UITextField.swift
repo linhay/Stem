@@ -22,7 +22,7 @@
 
 import UIKit
 
-extension Stem where Base: UITextField {
+public extension Stem where Base: UITextField {
     
     var selectedRange: NSRange? {
         guard let selectedTextRange = base.selectedTextRange else { return nil }
@@ -31,12 +31,10 @@ extension Stem where Base: UITextField {
         return NSRange(location: location, length: length)
     }
     
-    var clearButton: UIButton? { return base.value(forKey: "clearButton") as? UIButton }
-
 }
 
 // MARK: - Padding
-extension Stem where Base: UITextField {
+public extension Stem where Base: UITextField {
 
     /// 左边间距
     var leftPadding: CGFloat {
@@ -64,54 +62,21 @@ extension Stem where Base: UITextField {
 }
 
 // MARK: - placeholder
-extension Stem where Base: UITextField {
+public extension Stem where Base: UITextField {
 
     /// 占位文本控件
-    var placeholderLabel: UILabel? { return base.value(forKey: "_placeholderLabel") as? UILabel }
+    var placeholderLabel: UILabel? { return self.ivar(for: "_placeholderLabel") as? UILabel }
 
     /// 占位文字颜色
     var placeholderColor: UIColor? {
-        get{
-            guard var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil)
-                , let color = attr[NSAttributedString.Key.foregroundColor] as? UIColor
-                else { return base.textColor }
-            return color
-        }
-        set {
-            guard let placeholder = base.placeholder
-                , let color = newValue
-                else { return }
-            if var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil) {
-                attr[NSAttributedString.Key.foregroundColor] = newValue
-                base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
-                return
-            }
-
-            let attr = [NSAttributedString.Key.foregroundColor: color]
-            base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
-        }
+        get{ return placeholderLabel?.textColor }
+        set{ placeholderLabel?.textColor = newValue }
     }
 
     /// 占位文字字体
     var placeholderFont: UIFont? {
-        get{
-            guard var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil)
-                , let ft = attr[.font] as? UIFont
-                else{ return base.font }
-            return ft
-        }
-        set {
-            guard let placeholder = base.placeholder
-                , let font = newValue
-                else { return }
-            if var attr = base.attributedPlaceholder?.attributes(at: 0, effectiveRange: nil) {
-                attr[NSAttributedString.Key.font] = newValue
-                base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
-                return
-            }
-            let attr = [NSAttributedString.Key.font: font]
-            base.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attr)
-        }
+        get{ return placeholderLabel?.font }
+        set{ placeholderLabel?.font = newValue }
     }
 
 }

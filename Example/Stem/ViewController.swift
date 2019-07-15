@@ -67,6 +67,12 @@ class ViewController: BaseViewController {
             base.st.push(vc: vc)
         })
 
+        items.append(TableElement(title: "Input", subtitle: "") {[weak self] in
+            guard let base = self else { return }
+            let vc = TestInputViewController()
+            base.st.push(vc: vc)
+        })
+
     }
 
 }

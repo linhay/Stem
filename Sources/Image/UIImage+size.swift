@@ -202,7 +202,7 @@ public extension Stem where Base: UIImage{
         while data.count > limit || (max - min) > leeway {
             let mid = (max + min) * 0.5
             compression = mid
-            guard var temp = base.jpegData(compressionQuality: compression) else { return nil }
+            guard let temp = base.jpegData(compressionQuality: compression) else { return nil }
             data = temp
             if temp.count > limit {
                 max = mid

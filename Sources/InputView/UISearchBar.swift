@@ -25,6 +25,23 @@ import UIKit
 public extension Stem where Base: UISearchBar {
 
     /// 输入控件
-      var searchField: UITextField? { return base.value(forKey: "_searchField") as? UITextField }
+    var searchField: UITextField? { return base.searchTextField }
+
+    /// 占位文本控件
+    var placeholderLabel: UILabel? { return searchField?.st.ivar(for: "_placeholderLabel") as? UILabel }
+    
+}
+
+
+public extension Stem where Base: UISearchBar {
+
+    var selectedRange: NSRange? {
+        guard let selectedTextRange = searchField?.selectedTextRange, let searchField = searchField else { return nil }
+        let location = searchField.offset(from: searchField.beginningOfDocument, to: selectedTextRange.start)
+        let length = searchField.offset(from: selectedTextRange.start, to: selectedTextRange.end)
+        return NSRange(location: location, length: length)
+    }
+
+    var clearButton: UIButton? { return searchField?.value(forKey: "clearButton") as? UIButton }
 
 }
