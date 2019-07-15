@@ -169,7 +169,7 @@ public extension Stem where Base: UIView{
 
 extension UIView {
 
-    struct ActionKey {
+    fileprivate struct ActionKey {
         static var tap = UnsafeRawPointer(bitPattern: "view.stem.tap".hashValue)!
         static var tapGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.tapGestureRecognizer".hashValue)!
         static var pan = UnsafeRawPointer(bitPattern: "view.stem.pan".hashValue)!
@@ -210,9 +210,9 @@ public extension Stem where Base: UIView {
         }
     }
 
-
-    func set(tap: ((UITapGestureRecognizer) -> Void)?) {
+    func set(tap: ((UITapGestureRecognizer) -> Void)?) -> Stem<Base> {
         self.tap = tap
+        return self
     }
 
 }
@@ -242,9 +242,9 @@ public extension Stem where Base: UIView {
         }
     }
 
-
-    func set(pan: ((UIPanGestureRecognizer) -> Void)?) {
+    func set(pan: ((UIPanGestureRecognizer) -> Void)?) -> Stem<Base> {
         self.pan = pan
+        return self
     }
 
 }

@@ -25,13 +25,11 @@ import UIKit
 // MARK: - 设置ViewFarme相关属性
 public extension UIView{
 
-    /// view的x
     var x: CGFloat{
         get{ return frame.origin.x }
         set{ self.frame.origin.x = newValue }
     }
 
-    /// view的y
     var y: CGFloat{
         get{ return frame.origin.y }
         set{ self.frame.origin.y = newValue }
