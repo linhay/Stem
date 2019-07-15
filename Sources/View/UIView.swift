@@ -22,14 +22,8 @@
 
 import UIKit
 
-// MARK: - UIView 原生属性扩展
-public extension Stem where Base: UIView {
-
-}
-
-
 // MARK: - UIView 属性扩展
-public extension Stem where Base: UIView{
+public extension Stem where Base: UIView {
     
     /** 返回视图所在的视图控制器
      
@@ -170,4 +164,87 @@ public extension Stem where Base: UIView{
         return self
     }
     
+}
+
+
+extension UIView {
+
+    struct ActionKey {
+        static var tap = UnsafeRawPointer(bitPattern: "view.stem.tap".hashValue)!
+        static var tapGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.tapGestureRecognizer".hashValue)!
+        static var pan = UnsafeRawPointer(bitPattern: "view.stem.pan".hashValue)!
+        static var panGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.panGestureRecognizer".hashValue)!
+    }
+
+    @objc fileprivate func stem_view_tapGesture_event(ges: UITapGestureRecognizer) {
+        self.st.tap?(ges)
+    }
+
+    @objc fileprivate func stem_view_panGesture_event(ges: UIPanGestureRecognizer) {
+        self.st.pan?(ges)
+    }
+}
+
+// MARK: - UIView: UITapGestureRecognizer
+public extension Stem where Base: UIView {
+
+    var tapGestureRecognizer: UITapGestureRecognizer? {
+        get { return objc_getAssociatedObject(base, UIView.ActionKey.tapGestureRecognizer) as? UITapGestureRecognizer }
+        set { objc_setAssociatedObject(base, UIView.ActionKey.tapGestureRecognizer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
+    var tap: ((UITapGestureRecognizer) -> Void)? {
+        get { return objc_getAssociatedObject(base, UIView.ActionKey.tap) as? (UITapGestureRecognizer) -> Void }
+        set {
+            if newValue != nil, tapGestureRecognizer == nil {
+                tapGestureRecognizer = UITapGestureRecognizer(target: base, action: #selector(UIView.stem_view_tapGesture_event(ges:)))
+                base.addGestureRecognizer(tapGestureRecognizer!)
+            }
+
+            if newValue == nil, let ges = tapGestureRecognizer {
+                base.removeGestureRecognizer(ges)
+                tapGestureRecognizer = nil
+            }
+
+            objc_setAssociatedObject(base, UIView.ActionKey.tap, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+
+    func set(tap: ((UITapGestureRecognizer) -> Void)?) {
+        self.tap = tap
+    }
+
+}
+
+// MARK: - UIView: UIPanGestureRecognizer
+public extension Stem where Base: UIView {
+
+    var panGestureRecognizer: UIPanGestureRecognizer? {
+        get { return objc_getAssociatedObject(base, UIView.ActionKey.panGestureRecognizer) as? UIPanGestureRecognizer }
+        set { objc_setAssociatedObject(base, UIView.ActionKey.panGestureRecognizer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
+    var pan: ((UIPanGestureRecognizer) -> Void)? {
+        get { return objc_getAssociatedObject(base, UIView.ActionKey.pan) as? (UIPanGestureRecognizer) -> Void }
+        set {
+            if newValue != nil, panGestureRecognizer == nil {
+                panGestureRecognizer = UIPanGestureRecognizer(target: base, action: #selector(UIView.stem_view_panGesture_event(ges:)))
+                base.addGestureRecognizer(panGestureRecognizer!)
+            }
+
+            if newValue == nil, let ges = panGestureRecognizer {
+                base.removeGestureRecognizer(ges)
+                panGestureRecognizer = nil
+            }
+
+            objc_setAssociatedObject(base, UIView.ActionKey.pan, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+
+    func set(pan: ((UIPanGestureRecognizer) -> Void)?) {
+        self.pan = pan
+    }
+
 }

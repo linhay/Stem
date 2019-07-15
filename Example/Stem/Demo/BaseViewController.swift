@@ -48,7 +48,7 @@ class BaseViewController: UIViewController {
                 make.height.equalTo(item.snp.width).multipliedBy(9.0 / 16.0).priorityMedium()
             })
         }
-        
+
         tableView.do { (item) in
             
             tableView.delegate = self

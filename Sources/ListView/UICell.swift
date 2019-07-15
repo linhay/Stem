@@ -25,7 +25,7 @@ import UIKit
 
 public protocol STCellProtocol: class {
     static var id: String { get }
-    static  var nib: UINib? { get }
+    static var nib: UINib? { get }
 }
 
 public extension STCellProtocol {
@@ -43,7 +43,34 @@ public extension STNibProtocol {
 
 // MARK: - UITableView
 public extension Stem where Base: UITableView{
-    
+
+    /// 注册 `STCellProtocol` 类型的 UITableViewCell
+    ///
+    /// - Parameter cell: UITableViewCell
+    func registers(_ views: STCellProtocol.Type...) {
+        views.forEach { (item) in
+            if let nib = item.nib {
+                switch item {
+                case is UITableViewCell.Type:
+                    base.register(nib, forCellReuseIdentifier: item.id)
+                case is UITableViewHeaderFooterView.Type:
+                    base.register(nib, forHeaderFooterViewReuseIdentifier: item.id)
+                default:
+                    break
+                }
+            } else {
+                switch item {
+                case is UITableViewCell.Type:
+                    base.register(item, forCellReuseIdentifier: item.id)
+                case is UITableViewHeaderFooterView.Type:
+                    base.register(item, forHeaderFooterViewReuseIdentifier: item.id)
+                default:
+                    break
+                }
+            }
+        }
+    }
+
     /// 注册 `STCellProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
@@ -54,7 +81,7 @@ public extension Stem where Base: UITableView{
             base.register(T.self, forCellReuseIdentifier: T.id)
         }
     }
-    
+
     /// 从缓存池取出 Cell
     ///
     /// - Parameter indexPath: IndexPath
@@ -62,7 +89,7 @@ public extension Stem where Base: UITableView{
     func dequeueCell<T: STCellProtocol>(_ indexPath: IndexPath) -> T {
         return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
     }
-    
+
     /// 注册 `STCellProtocol` 类型的 UITableViewHeaderFooterView
     ///
     /// - Parameter _: UITableViewHeaderFooterView
@@ -73,7 +100,7 @@ public extension Stem where Base: UITableView{
             base.register(T.self, forHeaderFooterViewReuseIdentifier: T.id)
         }
     }
-    
+
     /// 从缓存池取出 UITableViewHeaderFooterView
     ///
     /// - Returns: 具体类型的 `UITableViewCell`

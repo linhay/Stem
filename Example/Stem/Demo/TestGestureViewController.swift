@@ -8,6 +8,7 @@
 
 import UIKit
 import Stem
+import SVProgressHUD
 
 class TestGestureViewController: BaseViewController {
     
@@ -32,18 +33,24 @@ class TestGestureViewController: BaseViewController {
         }
         
         items.append(TableElement(title: "UITapGestureRecognizer",
-                                  subtitle: "gesture.st.add({ (item) in ... })") { [weak self] in
+                                  subtitle: "testView.st.set(tap: ((UITapGestureRecognizer) -> Void)?)") { [weak self] in
                                     guard let base = self else { return }
-                                    base.testView.st.removeGestureRecognizers()
-                                    let ges = UITapGestureRecognizer()
-                                    base.testView.addGestureRecognizer(ges)
-                                    ges.st.add({ [weak self] (gesture) in
-                                        guard let base = self else { return }
-                                        base.testView.backgroundColor = UIColor.random
-                                    })
-
+                                    if base.testView.st.tapGestureRecognizer == nil {
+                                        base.testView.st.set(tap: { (ges) in
+                                            SVProgressHUD.showSuccess(withStatus: "Tap: " + ges.location(in: base.testView).debugDescription)
+                                        })
+                                    }
         })
-        
+
+        items.append(TableElement(title: "UIPanGestureRecognizer",
+                                  subtitle: "testView.st.set(tap: ((UIPanGestureRecognizer) -> Void)?)") { [weak self] in
+                                    guard let base = self else { return }
+                                    if base.testView.st.panGestureRecognizer == nil {
+                                        base.testView.st.set(pan: { (ges) in
+                                            SVProgressHUD.showSuccess(withStatus: "Pan: " + ges.location(in: base.testView).debugDescription)
+                                        })
+                                    }
+        })
     }
     
 }
