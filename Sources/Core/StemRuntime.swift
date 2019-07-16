@@ -59,4 +59,13 @@ public extension Stem where Base: NSObject {
         return object_getIvar(base, ivar)
     }
 
+    func setAssociated<T>(value: T, associatedKey: UnsafeRawPointer, policy: objc_AssociationPolicy = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC) -> Void {
+        objc_setAssociatedObject(base, associatedKey, value, policy)
+    }
+
+    func getAssociated<T>(associatedKey: UnsafeRawPointer) -> T? {
+        let value = objc_getAssociatedObject(base, associatedKey) as? T
+        return value
+    }
+
 }

@@ -45,33 +45,35 @@ extension Stem where Base: UIControl {
         base.removeTarget(base, action: selector, for: event)
     }
 
-    /// 系统响应事件(该列表内值为true的事件将不受 `interval` 点击时间间隔的影响)
-    ///
-    /// - Parameter newValue: 添加 系统响应事件
-    /// - Returns: 系统响应事件列表
-    @discardableResult
-    public static func systemActions(_ newValue: (key: String, value: Bool)? = nil) -> [String: Bool] {
-        if let value = newValue { UIControl.systemActions.updateValue(value.value, forKey: value.key) }
-        return UIControl.systemActions
-    }
-
 }
-
 
 public extension Stem where Base: UIControl {
 
     /// 上次事件响应时间
     var lastEventTime: TimeInterval {
-        get { return objc_getAssociatedObject(base, UIControl.ActionKey.lastEventTime) as? TimeInterval ?? TimeInterval.infinity }
-        set { objc_setAssociatedObject(base, UIControl.ActionKey.lastEventTime, newValue as TimeInterval, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        get { return getAssociated(associatedKey: UIControl.ActionKey.lastEventTime) ?? TimeInterval.infinity }
+        set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.lastEventTime) }
     }
 
     // 重复点击的间隔
     var eventInterval: TimeInterval {
-        get { return objc_getAssociatedObject(base, UIControl.ActionKey.eventInterval) as? TimeInterval ?? 0 }
-        set { objc_setAssociatedObject(base, UIControl.ActionKey.eventInterval, newValue as TimeInterval, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        get { return getAssociated(associatedKey: UIControl.ActionKey.eventInterval) ?? TimeInterval.infinity }
+        set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.eventInterval) }
     }
 
+    // 超时事件
+    var timeoutEvent: ((UIControl) -> Void)? {
+        get { return getAssociated(associatedKey: UIControl.ActionKey.timeoutEvent) }
+        set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.timeoutEvent) }
+    }
+
+    /// 设置超时事件
+    /// - Parameter timeoutEvent: 超时事件
+    @discardableResult
+    func set(timeoutEvent:  ((UIControl) -> Void)?) -> Stem<Base> {
+        self.timeoutEvent = timeoutEvent
+        return self
+    }
 }
 
 
@@ -80,7 +82,7 @@ extension UIControl {
 
     fileprivate static let swizzing: Void = {
         StemRuntime.exchangeMethod(selector: #selector(UIControl.sendAction(_:to:for:)),
-                                   replace: #selector(UIControl.st_sendAction(action:to:forEvent:)),
+                                   replace: #selector(UIControl.stem_control_sendAction(action:to:forEvent:)),
                                    class: UIControl.self)
 
     }()
@@ -89,27 +91,39 @@ extension UIControl {
         static var actionStore   = UnsafeRawPointer(bitPattern: "control.stem.actionStore".hashValue)!
         static var lastEventTime = UnsafeRawPointer(bitPattern: "control.stem.lastEventTime".hashValue)!
         static var eventInterval = UnsafeRawPointer(bitPattern: "control.stem.eventInterval".hashValue)!
+        static var timeoutEvent  = UnsafeRawPointer(bitPattern: "control.stem.timeoutEvent".hashValue)!
     }
 
     /// 系统响应事件
-    fileprivate static var systemActions = ["_handleShutterButtonReleased:": true,
-                                            "cameraShutterPressed:": true,
-                                            "_tappedBottomBarCancelButton:": true,
-                                            "_tappedBottomBarDoneButton:": true,
-                                            "recordStart:": true,
-                                            "btnTouchUp:withEvent:": true]
+    fileprivate static var systemActions = Set(arrayLiteral: "_handleShutterButtonReleased:",
+                                               "_handleShutterButtonReleased:",
+                                               "cameraShutterPressed:",
+                                               "_tappedBottomBarCancelButton:",
+                                               "_tappedBottomBarDoneButton:",
+                                               "recordStart:",
+                                               "btnTouchUp:withEvent:")
 
 
-    @objc fileprivate func st_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
-        if  st.eventInterval <= 0 || !(UIControl.systemActions[action.description] ?? false) {
-            self.st_sendAction(action: action, to: target, forEvent: event)
+    @objc fileprivate func stem_control_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
+        if st.eventInterval <= 0 || UIControl.systemActions.contains(action.description) {
+            self.stem_control_sendAction(action: action, to: target, forEvent: event)
             return
         }
 
-        let nowTime = Date().timeIntervalSince1970
-        if nowTime - st.lastEventTime < st.eventInterval { return }
-        if st.eventInterval > 0 { st.lastEventTime = nowTime }
-        self.st_sendAction(action: action, to: target, forEvent: event)
+        if st.lastEventTime == TimeInterval.infinity {
+            st.lastEventTime = ProcessInfo.processInfo.systemUptime
+            self.stem_control_sendAction(action: action, to: target, forEvent: event)
+            return
+        }
+
+        let t1 = ProcessInfo.processInfo.systemUptime
+        if t1 - st.lastEventTime >= st.eventInterval {
+            st.lastEventTime = t1
+            self.stem_control_sendAction(action: action, to: target, forEvent: event)
+            return
+        }
+
+        st.timeoutEvent?(self)
     }
 
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Stem
+import SVProgressHUD
 
 class TestButtonViewController: BaseViewController {
 
@@ -49,6 +50,14 @@ class TestButtonViewController: BaseViewController {
                                     })
         })
 
+        items.append(TableElement(title: "点击事件间隔",
+                                  subtitle: "button.st.eventInterval = 5") { [weak self] in
+                                    self?.button.st.eventInterval = 5
+                                    self?.button.st.set(timeoutEvent: { (item) in
+                                        SVProgressHUD.showSuccess(withStatus: item.st.lastEventTime.debugDescription)
+                                    })
+
+        })
     }
 
 }
