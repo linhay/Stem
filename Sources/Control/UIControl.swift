@@ -45,15 +45,6 @@ extension Stem where Base: UIControl {
         base.removeTarget(base, action: selector, for: event)
     }
 
-    /// 获取/设置 点击时间间隔
-    ///
-    /// - Parameter newValue: 时间间隔
-    @discardableResult
-    public func interval(_ newValue: TimeInterval? = nil) -> TimeInterval {
-        if let value = newValue { base.eventInterval = value }
-        return base.eventInterval
-    }
-
     /// 系统响应事件(该列表内值为true的事件将不受 `interval` 点击时间间隔的影响)
     ///
     /// - Parameter newValue: 添加 系统响应事件
@@ -62,6 +53,23 @@ extension Stem where Base: UIControl {
     public static func systemActions(_ newValue: (key: String, value: Bool)? = nil) -> [String: Bool] {
         if let value = newValue { UIControl.systemActions.updateValue(value.value, forKey: value.key) }
         return UIControl.systemActions
+    }
+
+}
+
+
+public extension Stem where Base: UIControl {
+
+    /// 上次事件响应时间
+    var lastEventTime: TimeInterval {
+        get { return objc_getAssociatedObject(base, UIControl.ActionKey.lastEventTime) as? TimeInterval ?? TimeInterval.infinity }
+        set { objc_setAssociatedObject(base, UIControl.ActionKey.lastEventTime, newValue as TimeInterval, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
+    // 重复点击的间隔
+    var eventInterval: TimeInterval {
+        get { return objc_getAssociatedObject(base, UIControl.ActionKey.eventInterval) as? TimeInterval ?? 0 }
+        set { objc_setAssociatedObject(base, UIControl.ActionKey.eventInterval, newValue as TimeInterval, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
 }
@@ -78,48 +86,29 @@ extension UIControl {
     }()
 
     fileprivate struct ActionKey {
-        static var action = UnsafeRawPointer(bitPattern: "uicontrol_action_block".hashValue)!
-        static var time = UnsafeRawPointer(bitPattern: "uicontrol_event_time".hashValue)!
-        static var interval = UnsafeRawPointer(bitPattern: "uicontrol_event_interval".hashValue)!
+        static var actionStore   = UnsafeRawPointer(bitPattern: "control.stem.actionStore".hashValue)!
+        static var lastEventTime = UnsafeRawPointer(bitPattern: "control.stem.lastEventTime".hashValue)!
+        static var eventInterval = UnsafeRawPointer(bitPattern: "control.stem.eventInterval".hashValue)!
     }
 
     /// 系统响应事件
-    fileprivate static var systemActions = ["_handleShutterButtonReleased:": true, "cameraShutterPressed:": true,
-                                            "_tappedBottomBarCancelButton:": true, "_tappedBottomBarDoneButton:": true,
-                                            "recordStart:": true, "btnTouchUp:withEvent:": true]
+    fileprivate static var systemActions = ["_handleShutterButtonReleased:": true,
+                                            "cameraShutterPressed:": true,
+                                            "_tappedBottomBarCancelButton:": true,
+                                            "_tappedBottomBarDoneButton:": true,
+                                            "recordStart:": true,
+                                            "btnTouchUp:withEvent:": true]
 
-    // 重复点击的间隔
-    fileprivate var eventInterval: TimeInterval {
-        get { return objc_getAssociatedObject(self, UIControl.ActionKey.interval) as? TimeInterval ?? 0 }
-        set {
-            objc_setAssociatedObject(self,
-                                     UIControl.ActionKey.interval,
-                                     newValue as TimeInterval,
-                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-
-    /// 上次事件响应时间
-    fileprivate var lastEventTime: TimeInterval {
-        get { return objc_getAssociatedObject(self, UIControl.ActionKey.time) as? TimeInterval ?? TimeInterval.infinity }
-        set {
-            objc_setAssociatedObject(self,
-                                     UIControl.ActionKey.time,
-                                     newValue as TimeInterval,
-                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
 
     @objc fileprivate func st_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
-        let value = (UIControl.systemActions[action.description] ?? false) == false
-        if  value || eventInterval <= 0 {
+        if  st.eventInterval <= 0 || !(UIControl.systemActions[action.description] ?? false) {
             self.st_sendAction(action: action, to: target, forEvent: event)
             return
         }
 
         let nowTime = Date().timeIntervalSince1970
-        if nowTime - lastEventTime < eventInterval { return }
-        if eventInterval > 0 { lastEventTime = nowTime }
+        if nowTime - st.lastEventTime < st.eventInterval { return }
+        if st.eventInterval > 0 { st.lastEventTime = nowTime }
         self.st_sendAction(action: action, to: target, forEvent: event)
     }
 
@@ -130,18 +119,14 @@ extension UIControl {
 
     fileprivate var actionStore: [UInt: (_: UIControl) -> Void] {
         get {
-            if let value = objc_getAssociatedObject(self,UIControl.ActionKey.action) as? [UInt: (_: UIControl) -> Void] {
+            if let value = objc_getAssociatedObject(self,UIControl.ActionKey.actionStore) as? [UInt: (_: UIControl) -> Void] {
                 return value
             }else {
                 self.actionStore = [:]
                 return self.actionStore
             }
         }
-        set { objc_setAssociatedObject(self,
-                                       UIControl.ActionKey.action,
-                                       newValue as [UInt: (_: UIControl) -> Void],
-                                       .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+        set { objc_setAssociatedObject(self, UIControl.ActionKey.actionStore, newValue as [UInt: (_: UIControl) -> Void], .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
     fileprivate func triggerAction(for: UIControl, event: UIControl.Event){

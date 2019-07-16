@@ -41,12 +41,12 @@ public extension Stem where Base: UIStoryboard{
 
     var bundle: Bundle? {
         // set{ base.setValue(newValue, forKey: "bundle") }
-        get{ return base.value(forKey: "bundle") as? Bundle }
+        get{ return ivar(for: "bundle") as? Bundle }
     }
 
     var name: String {
         // set{ base.setValue(newValue, forKey: "storyboardFileName") }
-        get{ return base.value(forKey: "storyboardFileName") as? String ?? "" }
+        get{ return ivar(for: "storyboardFileName") as? String ?? "" }
     }
 
     /// 尝试使用 AnyClass 初始化视图控制器

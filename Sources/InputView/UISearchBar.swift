@@ -42,6 +42,4 @@ public extension Stem where Base: UISearchBar {
         return NSRange(location: location, length: length)
     }
 
-    var clearButton: UIButton? { return searchField?.value(forKey: "clearButton") as? UIButton }
-
 }
