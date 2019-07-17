@@ -112,6 +112,12 @@ public extension Stem where Base: UIView{
         return self
     }
 
+    @available(iOS 9.0, *) @discardableResult
+    func addLayoutGuides(_ layoutGuides: [UILayoutGuide]) -> Stem<Base> {
+        layoutGuides.forEach { base.addLayoutGuide($0) }
+        return self
+    }
+
     /** 添加子控件
      
      示例:
@@ -129,7 +135,12 @@ public extension Stem where Base: UIView{
         subviews.forEach { base.addSubview($0) }
         return self
     }
-    
+
+    @discardableResult
+    func addSubviews(_ subviews: [UIView]) -> Stem<Base> {
+        subviews.forEach { base.addSubview($0) }
+        return self
+    }
     
     /// 移除全部子控件
     @discardableResult

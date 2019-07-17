@@ -31,6 +31,12 @@ public extension Stem where Base: CALayer {
         return self
     }
 
+    @discardableResult
+    func addSublayers(_ layers: [CALayer]) -> Stem<Base> {
+        layers.forEach({ base.addSublayer($0) })
+        return self
+    }
+
     /** 获取视图显示内容
 
      示例:
