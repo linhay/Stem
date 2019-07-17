@@ -25,10 +25,10 @@ import UIKit
 public extension Stem where Base: UISearchBar {
 
     /// 输入控件
-    var searchField: UITextField? { return base.searchTextField }
+    var searchField: UITextField? { return self.ivar(for: "_searchField") }
 
     /// 占位文本控件
-    var placeholderLabel: UILabel? { return searchField?.st.ivar(for: "_placeholderLabel") as? UILabel }
+    var placeholderLabel: UILabel? { return searchField?.st.ivar(for: "_placeholderLabel") }
     
 }
 

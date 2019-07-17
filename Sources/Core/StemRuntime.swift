@@ -54,9 +54,9 @@ public final class StemRuntime {
 
 public extension Stem where Base: NSObject {
 
-    func ivar(for key: String) -> Any? {
+    func ivar<T>(for key: String) -> T? {
         guard let ivar = class_getInstanceVariable(type(of: base), key) else { return nil }
-        return object_getIvar(base, ivar)
+        return object_getIvar(base, ivar) as? T
     }
 
     func setAssociated<T>(value: T, associatedKey: UnsafeRawPointer, policy: objc_AssociationPolicy = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC) -> Void {

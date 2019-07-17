@@ -65,7 +65,7 @@ public extension Stem where Base: UITextField {
 public extension Stem where Base: UITextField {
 
     /// 占位文本控件
-    var placeholderLabel: UILabel? { return self.ivar(for: "_placeholderLabel") as? UILabel }
+    var placeholderLabel: UILabel? { return self.ivar(for: "_placeholderLabel") }
 
     /// 占位文字颜色
     var placeholderColor: UIColor? {

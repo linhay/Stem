@@ -11,7 +11,7 @@ public extension Stem where Base: UITextView {
 
     /// 占位文本控件
     var placeholderLabel: UILabel {
-        if let label = self.ivar(for:  "_placeholderLabel") as? UILabel { return label }
+        if let label = self.ivar(for:  "_placeholderLabel") as UILabel? { return label }
         let item = UILabel()
         item.numberOfLines = 0
         item.font = base.font
