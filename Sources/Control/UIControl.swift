@@ -51,13 +51,13 @@ public extension Stem where Base: UIControl {
 
     /// 上次事件响应时间
     var lastEventTime: TimeInterval {
-        get { return getAssociated(associatedKey: UIControl.ActionKey.lastEventTime) ?? TimeInterval.infinity }
+        get { return getAssociated(associatedKey: UIControl.ActionKey.lastEventTime) ?? 0 }
         set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.lastEventTime) }
     }
 
     // 重复点击的间隔
     var eventInterval: TimeInterval {
-        get { return getAssociated(associatedKey: UIControl.ActionKey.eventInterval) ?? TimeInterval.infinity }
+        get { return getAssociated(associatedKey: UIControl.ActionKey.eventInterval) ?? 0 }
         set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.eventInterval) }
     }
 
@@ -106,12 +106,6 @@ extension UIControl {
 
     @objc fileprivate func stem_control_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
         if st.eventInterval <= 0 || UIControl.systemActions.contains(action.description) {
-            self.stem_control_sendAction(action: action, to: target, forEvent: event)
-            return
-        }
-
-        if st.lastEventTime == TimeInterval.infinity {
-            st.lastEventTime = ProcessInfo.processInfo.systemUptime
             self.stem_control_sendAction(action: action, to: target, forEvent: event)
             return
         }

@@ -1,6 +1,6 @@
 {
   "name": "Stem",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "summary": "A set of useful categories for Foundation and UIKit.",
   "homepage": "https://github.com/linhay/Stem.git",
   "license": {
@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/linhay/Stem.git",
-    "tag": "0.0.22"
+    "tag": "0.0.23"
   },
   "platforms": {
     "ios": "8.0"
@@ -182,6 +182,18 @@
       "source_files": [
         "Sources/Storyboard/**",
         "Sources/Storyboard/*/**"
+      ],
+      "dependencies": {
+        "Stem/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "PopGesture",
+      "source_files": [
+        "Sources/PopGesture/**",
+        "Sources/PopGesture/*/**"
       ],
       "dependencies": {
         "Stem/Core": [

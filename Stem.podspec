@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Stem'
-  s.version          = '0.0.23'
+  s.version          = '0.0.24'
   s.summary          = 'A set of useful categories for Foundation and UIKit.'
   
   
@@ -30,6 +30,7 @@ Pod::Spec.new do |s|
     'NSLayoutConstraint' => ['Stem/Core'],
     'Application' => ['Stem/Core'],
     'Storyboard' => ['Stem/Core'],
+    'PopGesture' => ['Stem/Core'],
     'NavigationBar' => ['Stem/Core'],
     'InputView' => ['Stem/Core', 'Stem/CGGeometry'],
     'ViewController' => ['Stem/Core'],
