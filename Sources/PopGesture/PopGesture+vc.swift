@@ -11,22 +11,34 @@ public extension Stem where Base: UIViewController {
 
     var popGestureMaxLeftEdge: CGFloat {
         get{ return self.getAssociated(associatedKey: UIViewController.popGestureKey.maxLeftEdge) ?? 0 }
-        set{ self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.maxLeftEdge) }
+        set{
+            UIViewController.once
+            self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.maxLeftEdge)
+        }
     }
 
     var isSetNavHidden: Bool {
         get{ return self.getAssociated(associatedKey: UIViewController.popGestureKey.isSetNavHidden) ?? false }
-        set{ self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.isSetNavHidden) }
+        set{
+            UIViewController.once
+            self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.isSetNavHidden)
+        }
     }
 
     var popGestureDisabled: Bool {
         get{ return self.getAssociated(associatedKey: UIViewController.popGestureKey.disabled) ?? false }
-        set{ self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.disabled) }
+        set{
+            UIViewController.once
+            self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.disabled)
+        }
     }
 
     internal var popGestureClosure: ((_ vc: UIViewController,_ animated: Bool) -> ())? {
         get{ return self.getAssociated(associatedKey: UIViewController.popGestureKey.closure) }
-        set{ self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.closure) }
+        set{
+            UIViewController.once
+            self.setAssociated(value: newValue, associatedKey: UIViewController.popGestureKey.closure)
+        }
     }
 
 }
