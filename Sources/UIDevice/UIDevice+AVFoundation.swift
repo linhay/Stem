@@ -26,34 +26,28 @@ import UIKit
 import AVFoundation
 public extension Stem where Base: UIDevice {
 
-    /// 闪光灯 亮度等级
+    /// 闪光灯 亮度等级 0 ~ 1
     var torchLevel: Double {
-        guard let device = AVCaptureDevice.default(for: .video) else { return 0 }
-        return Double(device.torchLevel)
-    }
-    
-    /// 开启/关闭 闪光灯
-    ///
-    /// - Parameter level: 亮度等级 0 ~ 1
-    @discardableResult
-    func torch(level: Double) -> Stem<Base> {
-        guard level >= 0
-            , level <= 1
-            , let device = AVCaptureDevice.default(for: .video)
-            else { return self }
-        do {
-            try device.lockForConfiguration()
-            if level == 0 {
-                device.torchMode = .off
-            }else{
-                device.torchMode = .on
-                try device.setTorchModeOn(level: Float(level))
+        set{
+            let value = min(max(newValue, 0), 1)
+            guard let device = AVCaptureDevice.default(for: .video) else { return }
+            do {
+                try device.lockForConfiguration()
+                if value == 0 {
+                    device.torchMode = .off
+                }else{
+                    device.torchMode = .on
+                    try device.setTorchModeOn(level: Float(value))
+                }
+                device.unlockForConfiguration()
+            }catch{
+                debugPrint(error.localizedDescription)
             }
-            device.unlockForConfiguration()
-        }catch{
-            print(error.localizedDescription)
         }
-        return self
+        get{
+            guard let device = AVCaptureDevice.default(for: .video) else { return 0 }
+            return Double(device.torchLevel)
+        }
     }
     
     /// 在有 Taptic Engine 的设备上触发一个轻微的振动

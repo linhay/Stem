@@ -8,10 +8,10 @@
 import UIKit
 
 extension UIScrollView: UIGestureRecognizerDelegate {
-
-  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    if contentOffset.x <= 0 { return otherGestureRecognizer.delegate is PopGestureRecognizerDelegate }
-    return false
-  }
-
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if contentOffset.x <= 0 { return otherGestureRecognizer.delegate is PopGestureRecognizerDelegate }
+        return false
+    }
+    
 }
