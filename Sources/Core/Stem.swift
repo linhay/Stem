@@ -29,4 +29,15 @@ public class Stem<Base> {
   }
 }
 
+public protocol StemCompatible {
+    associatedtype StemCompatibleType
+    var st: StemCompatibleType { get }
+}
+
+public extension StemCompatible {
+    var st: Stem<Self> { return Stem(self) }
+    static var st: Stem<Self>.Type { return Stem<Self>.self }
+}
+
+extension NSObject: StemCompatible { }
 
