@@ -22,9 +22,9 @@
 
 import UIKit
 
-extension String: StemCompatible { }
+extension String: StemValueCompatible { }
 
-public extension Stem where Base == String {
+public extension StemValue where Base == String {
     
     /// 解析HTML样式
     ///
@@ -90,12 +90,7 @@ public extension Stem where Base == String {
     
 }
 
-
-
-
-
-
-public extension Stem where Base == String {
+public extension StemValue where Base == String {
     
     ///  获取富文本类型字符串
     ///

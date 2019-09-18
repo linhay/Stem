@@ -46,7 +46,7 @@ class TestButtonViewController: BaseViewController {
         items.append(TableElement(title: "点击事件",
                                   subtitle: "button.st.add(for: .touchUpInside, action: (btn) -> Void)") { [weak self] in
                                     self?.button.st.add(for: .touchUpInside, action: { (btn) in
-                                        self?.contentView.backgroundColor = UIColor.random
+                                        self?.contentView.backgroundColor = UIColor.st.random
                                     })
         })
 

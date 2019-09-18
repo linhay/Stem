@@ -28,8 +28,6 @@ class Tests: XCTestCase {
     }
 
     func testUIApplication() {
-        let a = UISearchBar().st.searchField
-        print(a)
         RunTime.print.ivars(from: UISearchBar.self).forEach({ print($0) })
         RunTime.properties(from: UISearchBar.self).forEach({
            let propertyAttributes = String(cString: property_getAttributes($0)!)

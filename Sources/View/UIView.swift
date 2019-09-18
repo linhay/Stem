@@ -220,6 +220,7 @@ public extension Stem where Base: UIView {
         }
     }
 
+    @discardableResult
     func set(tap: ((UITapGestureRecognizer) -> Void)?) -> Stem<Base> {
         self.tap = tap
         return self
@@ -252,6 +253,7 @@ public extension Stem where Base: UIView {
         }
     }
 
+    @discardableResult
     func set(pan: ((UIPanGestureRecognizer) -> Void)?) -> Stem<Base> {
         self.pan = pan
         return self

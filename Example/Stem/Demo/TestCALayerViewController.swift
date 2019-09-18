@@ -20,7 +20,7 @@ class TestCALayerViewController: BaseViewController {
         items.append(TableElement(title: "inset",
                                   subtitle: "gesture.st.add({ (item) in ...})") {
                                     self.noneLayer.removeFromSuperlayer()
-                                    self.noneLayer.backgroundColor = UIColor.random.cgColor
+                                    self.noneLayer.backgroundColor = UIColor.st.random.cgColor
                                     self.contentView.layer.addSublayer(self.noneLayer)
 //                                    self.noneLayer.st.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         })
