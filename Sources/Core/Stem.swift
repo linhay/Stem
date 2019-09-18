@@ -23,10 +23,10 @@
 import UIKit
 
 public class Stem<Base> {
-  public let base: Base
-  public init(_ base: Base) {
-    self.base = base
-  }
+    public let base: Base
+    public init(_ base: Base) {
+        self.base = base
+    }
 }
 
 public protocol StemCompatible {
@@ -41,3 +41,17 @@ public extension StemCompatible {
 
 extension NSObject: StemCompatible { }
 
+
+public struct SteValue<Base> {
+    public let base: Base
+}
+
+public protocol SteValueCompatible {
+    associatedtype StemCompatibleType
+    var st: StemCompatibleType { get }
+}
+
+public extension SteValueCompatible {
+    var st: Stem<Self> { return Stem(self) }
+    static var st: Stem<Self>.Type { return Stem<Self>.self }
+}

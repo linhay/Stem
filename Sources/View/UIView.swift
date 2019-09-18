@@ -101,9 +101,8 @@ public extension Stem where Base: UIView {
 // MARK: - UIView 函数扩展
 public extension Stem where Base: UIView{
     
-    
     func snapshotImage(afterUpdates: Bool) -> UIImage? {
-        return base.snapshotView(afterScreenUpdates: true)?.st.snapshot
+        return base.snapshotView(afterScreenUpdates: afterUpdates)?.st.snapshot
     }
 
     @available(iOS 9.0, *) @discardableResult
