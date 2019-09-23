@@ -29,11 +29,17 @@ extension Stem where Base: UIControl {
     /// - Parameters:
     ///   - event: 响应事件类型
     ///   - action: 响应事件
-    public func add(for event: UIControl.Event, action: @escaping (_: UIControl) -> ()) {
+    public func add(for event: UIControl.Event, action: ((_: UIControl) -> Void)?) {
         guard let selector = base.selector(event: event) else { return }
         UIControl.swizzing
         base.actionStore[event.rawValue] = action
-        base.addTarget(base, action: selector, for: event)
+
+        if action == nil {
+            base.removeTarget(base, action: selector, for: event)
+        } else if base.actions(forTarget: base, forControlEvent: event) == nil {
+            base.addTarget(base, action: selector, for: event)
+        }
+
     }
 
     /// 移除响应事件
