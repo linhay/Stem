@@ -635,6 +635,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C5BB2E0562DBB1DB3EDDC28E /* Pods-Stem_Tests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 8H2PX2432F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -657,6 +658,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5C12EAA7DF6A553C9469C96F /* Pods-Stem_Tests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 8H2PX2432F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
