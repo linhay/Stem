@@ -51,11 +51,16 @@ public extension Stem where Base: UIColor {
         }
     }
 
+    /// 获取hex
+    var hex: Int {
+        let value = rgb
+        return (Int)(value.red*255)<<16 | (Int)(value.green*255)<<8 | (Int)(value.blue*255)<<0
+    }
+
     /// 获取hex字符
     var hexString: String {
-        let value = rgb
-        let rgb: Int = (Int)(value.red*255)<<16 | (Int)(value.green*255)<<8 | (Int)(value.blue*255)<<0
-        return String(format: "#%06x", rgb)
+
+        return String(format: "#%06x", hex)
     }
 
 }
