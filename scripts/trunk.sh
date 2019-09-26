@@ -1,5 +1,7 @@
 #! /bin/bash
 
+#目录切换
+cd ..
 value=./*.podspec
 file=${value##*/}
 
@@ -22,4 +24,5 @@ fi
 git tag -a ${version} -m ${diff}
 git push origin ${version}
 bundle update
+bundle exec pod lib lint ${file} --allow-warnings
 bundle exec pod trunk push ${file} --allow-warnings

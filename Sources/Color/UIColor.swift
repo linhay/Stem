@@ -31,13 +31,6 @@ public extension Stem where Base: UIColor {
         get { return UIColor.isDisplayP3Enabled }
     }
 
-    static func hex(from red: CGFloat, green: CGFloat, blue: CGFloat) -> Int {
-        print(red)
-        print(green)
-        print(blue)
-        return Int(red*255)<<16 | Int(green*255)<<8 | Int(blue*255)<<0
-    }
-
     /// hex to RGB value
     /// - Parameter value: hex
     static func rgb(from value: UInt32) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
@@ -92,15 +85,15 @@ public extension Stem where Base: UIColor {
         return (red: r, green: g, blue: b, alpha: a)
     }
 
-    /// 获取hex
-    var hex: Int {
-        let value = rgb
-        return UIColor.st.hex(from: value.red, green: value.green, blue: value.blue)
-    }
-
     /// 获取hex字符
     var hexString: String {
-        return String(format: "#%06x", hex)
+        let rgb = self.rgb
+        if rgb.alpha == 1 {
+            return String(format: "#%02lX%02lX%02lX",Int(rgb.red),Int(rgb.green),Int(rgb.blue))
+        }
+        else {
+            return String(format: "#%02lX%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue), Int(rgb.alpha))
+        }
     }
 
 }
