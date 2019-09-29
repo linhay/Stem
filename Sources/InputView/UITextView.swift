@@ -11,7 +11,7 @@ public extension Stem where Base: UITextView {
 
     /// 占位文本控件
     var placeholderLabel: UILabel {
-        if let label = self.ivar(for:  "_placeholderLabel") as UILabel? { return label }
+        if let label = self.ivar(for: "_placeholderLabel") as UILabel? { return label }
         let item = UILabel()
         item.numberOfLines = 0
         item.font = base.font
@@ -23,20 +23,20 @@ public extension Stem where Base: UITextView {
 
     /// 占位颜色
     var placeholderColor: UIColor {
-        set{ self.placeholderLabel.textColor = newValue }
-        get{ return self.placeholderLabel.textColor }
+        set { self.placeholderLabel.textColor = newValue }
+        get { return self.placeholderLabel.textColor }
     }
 
     /// 占位富文本
     var attributedPlaceholder: NSAttributedString? {
-        set{ self.placeholderLabel.attributedText = newValue }
-        get{ return self.placeholderLabel.attributedText }
+        set { self.placeholderLabel.attributedText = newValue }
+        get { return self.placeholderLabel.attributedText }
     }
 
     /// 占位文本
     var placeholder: String? {
-        set{ self.placeholderLabel.text = newValue }
-        get{ return self.placeholderLabel.text }
+        set { self.placeholderLabel.text = newValue }
+        get { return self.placeholderLabel.text }
     }
 
 }
@@ -77,19 +77,15 @@ public extension Stem where Base: UITextView {
 
     @discardableResult
     func scrollRangeToVisible(range: NSRange) -> Stem<Base> {
-        guard !base.bounds.isEmpty
-            , let textRange = convertUITextRange(from: range)
-            else { return self }
+        guard !base.bounds.isEmpty, let textRange = convertUITextRange(from: range) else { return self }
         let selectionRects = base.selectionRects(for: textRange)
         var rect = CGRect.zero
 
-        for selectionRect in selectionRects {
-            if  !selectionRect.rect.isEmpty {
-                if rect.isEmpty {
-                    rect = selectionRect.rect
-                }else{
-                    rect = rect.union(selectionRect.rect)
-                }
+        for selectionRect in selectionRects where !selectionRect.rect.isEmpty {
+            if rect.isEmpty {
+                rect = selectionRect.rect
+            } else {
+                rect = rect.union(selectionRect.rect)
             }
         }
 
@@ -105,9 +101,7 @@ public extension Stem where Base: UITextView {
     /// - Parameter animated: 是否执行动画
     @discardableResult
     func scrollCaretVisible(animated: Bool) -> Stem<Base> {
-        guard !base.bounds.isEmpty
-            , let position = base.selectedTextRange?.end
-            else { return self }
+        guard !base.bounds.isEmpty, let position = base.selectedTextRange?.end else { return self }
         let caretRect = base.caretRect(for: position)
         _scrollRectToVisible(rect: caretRect, animated: animated)
         return self
@@ -130,11 +124,11 @@ private extension Stem where Base: UITextView {
         if rect.minY < base.contentOffset.y + base.textContainerInset.top {
             // 光标在可视区域上方，往下滚动
             contentOffsetY = rect.minY - base.textContainerInset.top - base.contentInset.top
-        }else if rect.maxY > base.contentOffset.y + base.bounds.height - base.textContainerInset.bottom - base.contentInset.bottom {
+        } else if rect.maxY > base.contentOffset.y + base.bounds.height - base.textContainerInset.bottom - base.contentInset.bottom {
             // 光标在可视区域下方，往上滚动
             contentOffsetY = rect.maxY - base.bounds.height + base.textContainerInset.bottom + base.contentInset.bottom
 
-        }else{
+        } else {
             // 光标在可视区域内，不用调整
             return
         }

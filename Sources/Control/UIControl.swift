@@ -31,10 +31,10 @@ extension Stem where Base: UIControl {
     ///   - action: 响应事件
     public func add(for event: UIControl.Event, action: ((_: UIControl) -> Void)?) {
         guard let selector = base.selector(event: event) else { return }
-        UIControl.swizzing
         base.actionStore[event.rawValue] = action
 
         if action == nil {
+            base.actionStore[event.rawValue] = nil
             base.removeTarget(base, action: selector, for: event)
         } else if base.actions(forTarget: base, forControlEvent: event) == nil {
             base.addTarget(base, action: selector, for: event)
@@ -46,84 +46,16 @@ extension Stem where Base: UIControl {
     ///
     /// - Parameter event: 响应事件类型
     public func remove(for event: UIControl.Event) {
-        guard let selector = base.selector(event: event) else { return }
-        base.actionStore[event.rawValue] = nil
-        base.removeTarget(base, action: selector, for: event)
+        self.add(for: event, action: nil)
     }
 
 }
 
-public extension Stem where Base: UIControl {
-
-    /// 上次事件响应时间
-    var lastEventTime: TimeInterval {
-        get { return getAssociated(associatedKey: UIControl.ActionKey.lastEventTime) ?? 0 }
-        set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.lastEventTime) }
-    }
-
-    // 重复点击的间隔
-    var eventInterval: TimeInterval {
-        get { return getAssociated(associatedKey: UIControl.ActionKey.eventInterval) ?? 0 }
-        set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.eventInterval) }
-    }
-
-    // 超时事件
-    var timeoutEvent: ((UIControl) -> Void)? {
-        get { return getAssociated(associatedKey: UIControl.ActionKey.timeoutEvent) }
-        set { setAssociated(value: newValue, associatedKey: UIControl.ActionKey.timeoutEvent) }
-    }
-
-    /// 设置超时事件
-    /// - Parameter timeoutEvent: 超时事件
-    @discardableResult
-    func set(timeoutEvent:  ((UIControl) -> Void)?) -> Stem<Base> {
-        self.timeoutEvent = timeoutEvent
-        return self
-    }
-}
-
-
-// MARK: - time
+// MARK: - ActionKey
 extension UIControl {
 
-    fileprivate static let swizzing: Void = {
-        StemRuntime.exchangeMethod(selector: #selector(UIControl.sendAction(_:to:for:)),
-                                   replace: #selector(UIControl.stem_control_sendAction(action:to:forEvent:)),
-                                   class: UIControl.self)
-
-    }()
-
     fileprivate struct ActionKey {
-        static var actionStore   = UnsafeRawPointer(bitPattern: "control.stem.actionStore".hashValue)!
-        static var lastEventTime = UnsafeRawPointer(bitPattern: "control.stem.lastEventTime".hashValue)!
-        static var eventInterval = UnsafeRawPointer(bitPattern: "control.stem.eventInterval".hashValue)!
-        static var timeoutEvent  = UnsafeRawPointer(bitPattern: "control.stem.timeoutEvent".hashValue)!
-    }
-
-    /// 系统响应事件
-    fileprivate static var systemActions = Set(arrayLiteral: "_handleShutterButtonReleased:",
-                                               "_handleShutterButtonReleased:",
-                                               "cameraShutterPressed:",
-                                               "_tappedBottomBarCancelButton:",
-                                               "_tappedBottomBarDoneButton:",
-                                               "recordStart:",
-                                               "btnTouchUp:withEvent:")
-
-
-    @objc fileprivate func stem_control_sendAction(action: Selector, to target: AnyObject?, forEvent event: UIEvent?) {
-        if st.eventInterval <= 0 || UIControl.systemActions.contains(action.description) {
-            self.stem_control_sendAction(action: action, to: target, forEvent: event)
-            return
-        }
-
-        let t1 = ProcessInfo.processInfo.systemUptime
-        if t1 - st.lastEventTime >= st.eventInterval {
-            st.lastEventTime = t1
-            self.stem_control_sendAction(action: action, to: target, forEvent: event)
-            return
-        }
-
-        st.timeoutEvent?(self)
+        static var actionStore = UnsafeRawPointer(bitPattern: "control.stem.actionStore".hashValue)!
     }
 
 }
@@ -133,17 +65,17 @@ extension UIControl {
 
     fileprivate var actionStore: [UInt: (_: UIControl) -> Void] {
         get {
-            if let value = objc_getAssociatedObject(self,UIControl.ActionKey.actionStore) as? [UInt: (_: UIControl) -> Void] {
+            if let value: [UInt: (_: UIControl) -> Void] = st.getAssociated(associatedKey: UIControl.ActionKey.actionStore) {
                 return value
-            }else {
+            } else {
                 self.actionStore = [:]
                 return self.actionStore
             }
         }
-        set { objc_setAssociatedObject(self, UIControl.ActionKey.actionStore, newValue as [UInt: (_: UIControl) -> Void], .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        set { st.setAssociated(value: newValue, associatedKey: UIControl.ActionKey.actionStore) }
     }
 
-    fileprivate func triggerAction(for: UIControl, event: UIControl.Event){
+    fileprivate func triggerAction(for: UIControl, event: UIControl.Event) {
         guard let action = actionStore[event.rawValue] else { return }
         action(self)
     }
@@ -185,63 +117,63 @@ extension UIControl {
         triggerAction(for: sender, event: .touchDown)
     }
     @objc fileprivate func touchDownRepeat(sender: UIControl) {
-        triggerAction(for:sender, event: .touchDownRepeat)
+        triggerAction(for: sender, event: .touchDownRepeat)
     }
     @objc fileprivate func touchDragInside(sender: UIControl) {
-        triggerAction(for:sender, event: .touchDragInside)
+        triggerAction(for: sender, event: .touchDragInside)
     }
     @objc fileprivate func touchDragOutside(sender: UIControl) {
-        triggerAction(for:sender, event: .touchDragOutside)
+        triggerAction(for: sender, event: .touchDragOutside)
     }
     @objc fileprivate func touchDragEnter(sender: UIControl) {
-        triggerAction(for:sender, event: .touchDragEnter)
+        triggerAction(for: sender, event: .touchDragEnter)
     }
     @objc fileprivate func touchDragExit(sender: UIControl) {
-        triggerAction(for:sender, event: .touchDragExit)
+        triggerAction(for: sender, event: .touchDragExit)
     }
     @objc fileprivate func touchUpInside(sender: UIControl) {
-        triggerAction(for:sender, event: .touchUpInside)
+        triggerAction(for: sender, event: .touchUpInside)
     }
     @objc fileprivate func touchUpOutside(sender: UIControl) {
-        triggerAction(for:sender, event: .touchUpOutside)
+        triggerAction(for: sender, event: .touchUpOutside)
     }
     @objc fileprivate func touchCancel(sender: UIControl) {
-        triggerAction(for:sender, event: .touchCancel)
+        triggerAction(for: sender, event: .touchCancel)
     }
     @objc fileprivate func valueChanged(sender: UIControl) {
-        triggerAction(for:sender, event: .valueChanged)
+        triggerAction(for: sender, event: .valueChanged)
     }
     @objc fileprivate func primaryActionTriggered(sender: UIControl) {
         if #available(iOS 9.0, *) {
-            triggerAction(for:sender, event: .primaryActionTriggered)
+            triggerAction(for: sender, event: .primaryActionTriggered)
         }
     }
     @objc fileprivate func editingDidBegin(sender: UIControl) {
-        triggerAction(for:sender, event: .editingDidBegin)
+        triggerAction(for: sender, event: .editingDidBegin)
     }
     @objc fileprivate func editingChanged(sender: UIControl) {
-        triggerAction(for:sender, event: .editingChanged)
+        triggerAction(for: sender, event: .editingChanged)
     }
     @objc fileprivate func editingDidEnd(sender: UIControl) {
-        triggerAction(for:sender, event: .editingDidEnd)
+        triggerAction(for: sender, event: .editingDidEnd)
     }
     @objc fileprivate func editingDidEndOnExit(sender: UIControl) {
-        triggerAction(for:sender, event: .editingDidEndOnExit)
+        triggerAction(for: sender, event: .editingDidEndOnExit)
     }
     @objc fileprivate func allTouchEvents(sender: UIControl) {
-        triggerAction(for:sender, event: .allTouchEvents)
+        triggerAction(for: sender, event: .allTouchEvents)
     }
     @objc fileprivate func allEditingEvents(sender: UIControl) {
-        triggerAction(for:sender, event: .allEditingEvents)
+        triggerAction(for: sender, event: .allEditingEvents)
     }
     @objc fileprivate func applicationReserved(sender: UIControl) {
-        triggerAction(for:sender, event: .applicationReserved)
+        triggerAction(for: sender, event: .applicationReserved)
     }
     @objc fileprivate func systemReserved(sender: UIControl) {
-        triggerAction(for:sender, event: .systemReserved)
+        triggerAction(for: sender, event: .systemReserved)
     }
     @objc fileprivate func allEvents(sender: UIControl) {
-        triggerAction(for:sender, event: .allEvents)
+        triggerAction(for: sender, event: .allEvents)
     }
 
 }

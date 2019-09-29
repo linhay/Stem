@@ -30,4 +30,3 @@ class PopGestureRecognizerDelegate: NSObject, UIGestureRecognizerDelegate {
     return true
   }
 }
-

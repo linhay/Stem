@@ -26,8 +26,8 @@ import UIKit
 fileprivate extension UILabel {
     
     private static let swizzing: Void = {
-        StemRuntime.exchangeMethod(selector: #selector(UILabel.drawText(in:)),
-                                   replace: #selector(UILabel.st_drawText(in:)),
+        StemRuntime.exchange(selector: #selector(UILabel.drawText(in:)),
+                                   by: #selector(UILabel.st_drawText(in:)),
                                    class: UILabel.self)
     }()
     
@@ -41,7 +41,7 @@ extension UILabel {
     
     /// 调整文字绘制区域
     public var textInset: UIEdgeInsets {
-        get{
+        get {
             if let eventInterval = objc_getAssociatedObject(self, UILabel.SwzzlingKeys.textInset!) as? UIEdgeInsets {
                 return eventInterval
             }
@@ -77,4 +77,3 @@ public extension Stem where Base: UILabel {
     }
     
 }
-

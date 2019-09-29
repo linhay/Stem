@@ -67,6 +67,11 @@ public extension Stem where Base: UIColor {
         return UIColor(r: r, g: g, b: b, a: 1.0)
     }
 
+    /// 透明度
+    var alpha: CGFloat {
+        return base.cgColor.alpha
+    }
+
     /// 设置透明度
     ///
     /// - Parameter alpha: 透明度
@@ -75,7 +80,7 @@ public extension Stem where Base: UIColor {
 
     /// 获取RGB色值
     var rgb: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
-        guard let components = base.cgColor.components else {
+        guard let components = base.cgColor.components, components.count >= 4 else {
             return (red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         }
         let r = components[0] * 255
@@ -89,11 +94,20 @@ public extension Stem where Base: UIColor {
     var hexString: String {
         let rgb = self.rgb
         if rgb.alpha == 1 {
-            return String(format: "#%02lX%02lX%02lX",Int(rgb.red),Int(rgb.green),Int(rgb.blue))
-        }
-        else {
+            return String(format: "#%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue))
+        } else {
             return String(format: "#%02lX%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue), Int(rgb.alpha))
         }
+    }
+
+    /// 获取颜色16进制
+    var uInt: UInt {
+        let rgb = self.rgb
+        var colorAsUInt32: UInt32 = 0
+        colorAsUInt32 += UInt32(rgb.red * 255.0) << 16
+        colorAsUInt32 += UInt32(rgb.green * 255.0) << 8
+        colorAsUInt32 += UInt32(rgb.blue * 255.0)
+        return UInt(colorAsUInt32)
     }
 
 }
@@ -112,7 +126,7 @@ public extension UIColor {
     /// 十六进制色: 0x666666
     ///
     /// - Parameter str: "#666666" / "0X666666" / "0x666666"
-    convenience init(_ str: String){
+    convenience init(_ str: String) {
         guard let value = UIColor.st.rgb(from: str) else {
             self.init(red: 1, green: 1, blue: 1, alpha: 1)
             return

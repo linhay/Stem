@@ -17,13 +17,13 @@
 		8A2480C3BFE8FC8B3E9849DD /* Pods_Stem_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1354FB75AD208DE3BD84A0A7 /* Pods_Stem_Tests.framework */; };
 		CD3D4F8222A8DDA200A63348 /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8022A8DDA200A63348 /* Gemfile */; };
 		CD3D4F8322A8DDA200A63348 /* Gemfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8122A8DDA200A63348 /* Gemfile.lock */; };
-		CD3D4F8522A8DE7400A63348 /* trunk.sh in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8422A8DE7400A63348 /* trunk.sh */; };
 		CD3D4F8822A8FA8300A63348 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		CD3D4F9F22A956DD00A63348 /* UILabel in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F9E22A956DD00A63348 /* UILabel */; };
 		CD3D4FA122A9570500A63348 /* CALayer in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA022A9570500A63348 /* CALayer */; };
 		CD3D4FA522A95E6600A63348 /* UIView in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA422A95E6600A63348 /* UIView */; };
 		CD3D4FA722A961C400A63348 /* temp in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA622A961C400A63348 /* temp */; };
 		CD3D4FAB22A974B900A63348 /* NSMutableParagraphStyle in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */; };
+		CD543C37233C6E9D00CFE10F /* TestUIViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD543C36233C6E9D00CFE10F /* TestUIViewViewController.swift */; };
 		CD6ABC88229BDFD80017C6ED /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = CD6ABC87229BDFD80017C6ED /* .travis.yml */; };
 		CD77388422ABE15C0032C3CC /* NSShadow in Resources */ = {isa = PBXBuildFile; fileRef = CD77388322ABE15C0032C3CC /* NSShadow */; };
 		CDC823792296F99800E654A6 /* TestCALayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC823722296F99800E654A6 /* TestCALayerViewController.swift */; };
@@ -69,12 +69,12 @@
 		C5BB2E0562DBB1DB3EDDC28E /* Pods-Stem_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stem_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD3D4F8022A8DDA200A63348 /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile; path = ../Gemfile; sourceTree = "<group>"; };
 		CD3D4F8122A8DDA200A63348 /* Gemfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile.lock; path = ../Gemfile.lock; sourceTree = "<group>"; };
-		CD3D4F8422A8DE7400A63348 /* trunk.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = trunk.sh; path = ../trunk.sh; sourceTree = "<group>"; };
 		CD3D4F9E22A956DD00A63348 /* UILabel */ = {isa = PBXFileReference; lastKnownFileType = text; path = UILabel; sourceTree = "<group>"; };
 		CD3D4FA022A9570500A63348 /* CALayer */ = {isa = PBXFileReference; lastKnownFileType = text; path = CALayer; sourceTree = "<group>"; };
 		CD3D4FA422A95E6600A63348 /* UIView */ = {isa = PBXFileReference; lastKnownFileType = text; path = UIView; sourceTree = "<group>"; };
 		CD3D4FA622A961C400A63348 /* temp */ = {isa = PBXFileReference; lastKnownFileType = text; path = temp; sourceTree = "<group>"; };
 		CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSMutableParagraphStyle; sourceTree = "<group>"; };
+		CD543C36233C6E9D00CFE10F /* TestUIViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUIViewViewController.swift; sourceTree = "<group>"; };
 		CD6ABC87229BDFD80017C6ED /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 		CD77388322ABE15C0032C3CC /* NSShadow */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSShadow; sourceTree = "<group>"; };
 		CDC823722296F99800E654A6 /* TestCALayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCALayerViewController.swift; sourceTree = "<group>"; };
@@ -201,7 +201,6 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				CD3D4F8422A8DE7400A63348 /* trunk.sh */,
 				CD3D4F8022A8DDA200A63348 /* Gemfile */,
 				CD3D4F8122A8DDA200A63348 /* Gemfile.lock */,
 				CD6ABC87229BDFD80017C6ED /* .travis.yml */,
@@ -216,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				CDC823742296F99800E654A6 /* BaseViewController.swift */,
+				CD543C36233C6E9D00CFE10F /* TestUIViewViewController.swift */,
 				CDC823722296F99800E654A6 /* TestCALayerViewController.swift */,
 				CDC823732296F99800E654A6 /* TestButtonViewController.swift */,
 				CDC823752296F99800E654A6 /* TestImageViewController.swift */,
@@ -259,6 +259,7 @@
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
 				7A052E420793733D9B8D799E /* [CP] Embed Pods Frameworks */,
+				CD84DB0D233E25AE00C92BB1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -328,7 +329,6 @@
 				CD3D4FA522A95E6600A63348 /* UIView in Resources */,
 				CD6ABC88229BDFD80017C6ED /* .travis.yml in Resources */,
 				CD3D4FA722A961C400A63348 /* temp in Resources */,
-				CD3D4F8522A8DE7400A63348 /* trunk.sh in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				CD3D4F9F22A956DD00A63348 /* UILabel in Resources */,
 			);
@@ -435,6 +435,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CD84DB0D233E25AE00C92BB1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -443,6 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDC8237F2296F99800E654A6 /* TestImageController.swift in Sources */,
+				CD543C37233C6E9D00CFE10F /* TestUIViewViewController.swift in Sources */,
 				CDEB8AB522DC1EAB0021BBD8 /* TestInputViewController.swift in Sources */,
 				CDC8237E2296F99800E654A6 /* TestGestureViewController.swift in Sources */,
 				CDC8237C2296F99800E654A6 /* TestImageViewController.swift in Sources */,

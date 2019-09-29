@@ -69,14 +69,14 @@ public extension Stem where Base: UITextField {
 
     /// 占位文字颜色
     var placeholderColor: UIColor? {
-        get{ return placeholderLabel?.textColor }
-        set{ placeholderLabel?.textColor = newValue }
+        get { return placeholderLabel?.textColor }
+        set { placeholderLabel?.textColor = newValue }
     }
 
     /// 占位文字字体
     var placeholderFont: UIFont? {
-        get{ return placeholderLabel?.font }
-        set{ placeholderLabel?.font = newValue }
+        get { return placeholderLabel?.font }
+        set { placeholderLabel?.font = newValue }
     }
 
 }

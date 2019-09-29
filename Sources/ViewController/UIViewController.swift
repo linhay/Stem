@@ -53,7 +53,7 @@ public extension Stem where Base: UIViewController {
         default:
             base.navigationController?.pushViewController(vc, animated: animated)
             if isRemove {
-                guard let vcs = base.navigationController?.viewControllers else{ return self }
+                guard let vcs = base.navigationController?.viewControllers else { return self }
                 guard let flags = vcs.firstIndex(of: base.self) else { return self }
                 base.navigationController?.viewControllers.remove(at: flags)
             }
@@ -112,7 +112,7 @@ public extension Stem where Base: UIViewController {
     func pop(toRootVC animated: Bool) -> [UIViewController]? {
         if let vc = base as? UINavigationController {
             return vc.popToRootViewController(animated: animated)
-        }else{
+        } else {
             return base.navigationController?.popToRootViewController(animated: animated)
         }
     }

@@ -23,7 +23,7 @@
 import UIKit
 
 // MARK: - 初始化
-public extension UIImage{
+public extension UIImage {
     /// 获取指定颜色的图片
     ///
     /// - Parameters:
@@ -44,14 +44,14 @@ public extension UIImage{
 }
 
 // MARK: - UIImage
-public extension Stem where Base: UIImage{
+public extension Stem where Base: UIImage {
     /// 返回一张没有被渲染图片
     var original: UIImage { return base.withRenderingMode(.alwaysOriginal) }
     /// 返回一张可被渲染图片
     var template: UIImage { return base.withRenderingMode(.alwaysTemplate) }
 }
 
-public extension Stem where Base: UIImage{
+public extension Stem where Base: UIImage {
     /// 修改单色系图片颜色
     ///
     /// - Parameter color: 颜色

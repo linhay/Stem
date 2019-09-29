@@ -29,7 +29,7 @@ public extension Stem where Base: UIImageView {
     ///
     /// - Parameter image: 待解码图片
     @discardableResult
-    func setImage(async image: UIImage) -> Stem<Base>  {
+    func setImage(async image: UIImage) -> Stem<Base> {
         DispatchQueue.global().async {
             DispatchQueue.main.async {
                 self.base.image = image
@@ -37,7 +37,6 @@ public extension Stem where Base: UIImageView {
         }
         return self
     }
-    
     
     /// 从网络上下载图片
     ///
@@ -57,12 +56,12 @@ public extension Stem where Base: UIImageView {
 
         URLSession.shared.dataTask(with: url) { (data, response, _) in
             guard
-                let httpURLResponse = response as? HTTPURLResponse
-                , httpURLResponse.statusCode == 200
-                , let mimeType = response?.mimeType
-                , mimeType.hasPrefix("image")
-                , let data = data
-                , let image = UIImage(data: data)
+                let httpURLResponse = response as? HTTPURLResponse,
+                httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType,
+                mimeType.hasPrefix("image"),
+                let data = data,
+                let image = UIImage(data: data)
                 else {
                     completionHandler?(nil)
                     return
@@ -71,12 +70,11 @@ public extension Stem where Base: UIImageView {
                 self.base.image = image
                 completionHandler?(image)
             }
-            }.resume()
+        }.resume()
 
         return self
     }
-    
-    
+
     /// 毛玻璃效果
     ///
     /// - Parameter style: 毛玻璃样式
@@ -90,8 +88,7 @@ public extension Stem where Base: UIImageView {
         base.clipsToBounds = true
         return self
     }
-    
-    
+
     /// 毛玻璃效果
     ///
     /// - Parameter style: 毛玻璃样式

@@ -25,7 +25,7 @@
 import UIKit
 import CoreMedia
 
-public extension UIImage{
+public extension UIImage {
     /// from CMSampleBuffer
     ///
     /// must import CoreMedia
@@ -66,8 +66,6 @@ public extension UIImage{
         self.init(cgImage: quartzImage)
     }
 
-
-
 }
 
 #endif
@@ -78,16 +76,16 @@ import AVKit
 
 extension Stem where Base: UIImage {
 
-    func frame(asset: AVAsset,seconds: [TimeInterval], _ handle: @escaping (UIImage) -> Void) {
+    func frame(asset: AVAsset, seconds: [TimeInterval], _ handle: @escaping (UIImage) -> Void) {
         let generator = AVAssetImageGenerator(asset: asset)
         generator.requestedTimeToleranceBefore = CMTime.zero
         generator.requestedTimeToleranceAfter  = CMTime.zero
 
         let duration = asset.duration
         let times  = seconds.map({ CMTime(seconds: Double($0), preferredTimescale: duration.timescale) })
-        let values = times.map{ NSValue(time: $0) }
+        let values = times.map { NSValue(time: $0) }
 
-        generator.generateCGImagesAsynchronously(forTimes: values) { (time, cgImage, ti, result, error) in
+        generator.generateCGImagesAsynchronously(forTimes: values) { (_, cgImage, _, _, error) in
             if let error = error {
                 assertionFailure(error.localizedDescription)
                 return

@@ -26,15 +26,13 @@ extension Data: StemValueCompatible { }
 
 extension StemValue where Base == Data {
 
-  // http://stackoverflow.com/questions/39248092/nsattributedstring-extension-in-swift-3
-  @available(iOS 9.0,*)
-  public var attributedString: NSAttributedString? {
-    do {
-      return try NSAttributedString(data: base, options:[NSAttributedString.DocumentReadingOptionKey.documentType:NSAttributedString.DocumentType.html, NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
-    } catch let error as NSError {
-      print(error.localizedDescription)
+    // http://stackoverflow.com/questions/39248092/nsattributedstring-extension-in-swift-3
+    @available(iOS 9.0, *)
+    public var attributedString: NSAttributedString? {
+        return try? NSAttributedString(data: base,
+                                       options: [.documentType: NSAttributedString.DocumentType.html,
+                                                 .characterEncoding: String.Encoding.utf8.rawValue],
+                                       documentAttributes: nil)
     }
-    return nil
-  }
 
 }

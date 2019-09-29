@@ -23,28 +23,29 @@
 import UIKit
 
 // MARK: - UIImage
-public extension Stem where Base: UIImage{
+public extension Stem where Base: UIImage {
 
     /// 图片尺寸: Bytes
-    var sizeAsBytes: Int
-    { return base.jpegData(compressionQuality: 1)?.count ?? 0 }
+    var sizeAsBytes: Int {
+        return base.jpegData(compressionQuality: 1)?.count ?? 0
+    }
 
     /// 图片尺寸: KB
     var sizeAsKB: Int {
         let sizeAsBytes = self.sizeAsBytes
-        return sizeAsBytes != 0 ? sizeAsBytes / 1024: 0 }
+        return sizeAsBytes != 0 ? sizeAsBytes / 1024: 0
+    }
 
     /// 图片尺寸: MB
     var sizeAsMB: Int {
         let sizeAsKB = self.sizeAsKB
-        return sizeAsBytes != 0 ? sizeAsKB / 1024: 0 }
+        return sizeAsBytes != 0 ? sizeAsKB / 1024: 0
+    }
 
 }
 
-
-
 // MARK: - UIImage 图片处理
-public extension Stem where Base: UIImage{
+public extension Stem where Base: UIImage {
 
     /// 裁剪对应区域
     ///
@@ -56,7 +57,6 @@ public extension Stem where Base: UIImage{
             else { return base }
         return UIImage(cgImage: image)
     }
-
 
     /// 返回圆形图片
     func rounded() -> UIImage {
@@ -83,14 +83,10 @@ public extension Stem where Base: UIImage{
         var corners = corners
         if corners != UIRectCorner.allCorners {
             var rawValue: UInt = 0
-            if (corners.rawValue & UIRectCorner.topLeft.rawValue) != 0
-            { rawValue = rawValue | UIRectCorner.bottomLeft.rawValue }
-            if (corners.rawValue & UIRectCorner.topRight.rawValue) != 0
-            { rawValue = rawValue | UIRectCorner.bottomRight.rawValue }
-            if (corners.rawValue & UIRectCorner.bottomLeft.rawValue) != 0
-            { rawValue = rawValue | UIRectCorner.topLeft.rawValue }
-            if (corners.rawValue & UIRectCorner.bottomRight.rawValue) != 0
-            { rawValue = rawValue | UIRectCorner.topRight.rawValue }
+            if (corners.rawValue & UIRectCorner.topLeft.rawValue) != 0 { rawValue = rawValue | UIRectCorner.bottomLeft.rawValue }
+            if (corners.rawValue & UIRectCorner.topRight.rawValue) != 0 { rawValue = rawValue | UIRectCorner.bottomRight.rawValue }
+            if (corners.rawValue & UIRectCorner.bottomLeft.rawValue) != 0 { rawValue = rawValue | UIRectCorner.topLeft.rawValue }
+            if (corners.rawValue & UIRectCorner.bottomRight.rawValue) != 0 { rawValue = rawValue | UIRectCorner.topRight.rawValue }
             corners = UIRectCorner(rawValue: rawValue)
         }
         UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
@@ -102,7 +98,7 @@ public extension Stem where Base: UIImage{
         context.translateBy(x: 0, y: -rect.height)
         let minSize = min(base.size.width, base.size.height)
 
-        if borderWidth < minSize * 0.5{
+        if borderWidth < minSize * 0.5 {
             let path = UIBezierPath(roundedRect: rect.insetBy(dx: borderWidth, dy: borderWidth),
                                     byRoundingCorners: corners,
                                     cornerRadii: CGSize(width: radius, height: borderWidth))
@@ -115,7 +111,7 @@ public extension Stem where Base: UIImage{
             context.restoreGState()
         }
 
-        if (borderColor != nil && borderWidth < minSize / 2 && borderWidth > 0) {
+        if borderColor != nil, borderWidth < minSize / 2, borderWidth > 0 {
             let strokeInset = (floor(borderWidth * base.scale) + 0.5) / base.scale
             let strokeRect = rect.insetBy(dx: strokeInset, dy: strokeInset)
             let strokeRadius = radius > base.scale / 2 ? CGFloat(radius - base.scale / 2): 0
@@ -146,7 +142,6 @@ public extension Stem where Base: UIImage{
         UIGraphicsEndImageContext()
         return newImage
     }
-
 
     /// 缩放至指定宽度
     ///
@@ -184,7 +179,6 @@ public extension Stem where Base: UIImage{
         return compress(withB: limit * 1000 * 1000)
     }
 
-
     /// 压缩至指定字节大小
     ///
     /// - Parameters:
@@ -206,7 +200,7 @@ public extension Stem where Base: UIImage{
             data = temp
             if temp.count > limit {
                 max = mid
-            }else{
+            } else {
                 min = mid
             }
         }

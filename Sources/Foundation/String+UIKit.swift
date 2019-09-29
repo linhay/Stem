@@ -79,7 +79,7 @@ public extension StemValue where Base == String {
     func rows(font: UIFont, width: CGFloat) -> CGFloat {
         if base.isEmpty { return 0 }
         // 获取单行时候的内容的size
-        let singleSize = (base as NSString).size(withAttributes: [NSAttributedString.Key.font:font])
+        let singleSize = (base as NSString).size(withAttributes: [NSAttributedString.Key.font: font])
         // 获取多行时候,文字的size
         let textSize = self.size(attributes: [NSAttributedString.Attribute.font(font)],
                                  size: CGSize(width: width,
@@ -109,5 +109,3 @@ public extension StemValue where Base == String {
     }
     
 }
-
-

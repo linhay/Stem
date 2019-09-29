@@ -22,8 +22,7 @@
 
 import UIKit
 
-
-public extension UIImage{
+public extension UIImage {
     
     /// 生成二维码
     convenience init?(qrCode: String) {

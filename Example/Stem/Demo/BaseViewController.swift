@@ -62,11 +62,8 @@ class BaseViewController: UIViewController {
                 make.right.bottom.equalToSuperview().offset(-8)
             })
         }
-        
-        
-        
     }
-    
+
 }
 extension BaseViewController: UITableViewDataSource {
     

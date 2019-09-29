@@ -28,7 +28,7 @@ public extension CGFloat {
     
 }
 
-public extension Float{
+public extension Float {
     var cgFloat: CGFloat { return CGFloat(self) }
 }
 
@@ -40,7 +40,7 @@ public extension Int {
     var cgFloat: CGFloat { return CGFloat(self) }
 }
 
-public extension CGFloat{
+public extension CGFloat {
     /// 绝对值
     var abs: CGFloat { return Swift.abs(self) }
     /// 向上取整

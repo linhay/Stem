@@ -44,5 +44,3 @@ public extension CGRect {
         return true
     }
 }
-
-

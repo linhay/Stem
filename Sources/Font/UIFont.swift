@@ -39,7 +39,7 @@ extension UIFont {
   /// - Parameters:
   ///   - cgFont: CGFont
   ///   - size: font size
-  convenience init?(cgFont: CGFont,size: CGFloat) {
+  convenience init?(cgFont: CGFont, size: CGFloat) {
     guard let cfName = cgFont.postScriptName else { return nil }
     let name = cfName as String
     guard !name.isEmpty else { return nil }
@@ -52,7 +52,7 @@ extension UIFont {
   convenience init?(data: Data) {
     guard let provider = CGDataProvider(data: (data as CFData)), let cgFont = CGFont(provider) else { return nil }
     var error: Unmanaged<CFError>?
-    guard CTFontManagerRegisterGraphicsFont(cgFont, &error),let fontName = cgFont.postScriptName else { return nil }
+    guard CTFontManagerRegisterGraphicsFont(cgFont, &error), let fontName = cgFont.postScriptName else { return nil }
     self.init(name: fontName as String, size: UIFont.systemFontSize)
   }
   
@@ -71,7 +71,6 @@ public extension Stem where Base: UIFont {
   var isMonoSpace: Bool {
     return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitMonoSpace.rawValue > 0
   }
-  
   
   var isColorGlyphs: Bool {
     return CTFontGetSymbolicTraits(base as! CTFont).rawValue & CTFontSymbolicTraits.traitColorGlyphs.rawValue != 0

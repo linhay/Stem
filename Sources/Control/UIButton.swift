@@ -22,16 +22,15 @@
 
 import UIKit
 
-
 // MARK: - UIButton 扩展函数
-public extension Stem where Base: UIButton{
+public extension Stem where Base: UIButton {
     
     /// 设置背景颜色
     ///
     /// - Parameters:
     ///   - color: color
     ///   - forState: Button状态
-    func setBackgroundColor(color: UIColor,for forState: UIControl.State) {
+    func setBackgroundColor(color: UIColor, for forState: UIControl.State) {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
         UIGraphicsGetCurrentContext()?.setFillColor(color.cgColor)
         UIGraphicsGetCurrentContext()?.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
@@ -39,8 +38,7 @@ public extension Stem where Base: UIButton{
         UIGraphicsEndImageContext()
         base.setBackgroundImage(colorImage, for: forState)
     }
-    
-    
+
     /// 文字与图片水平居中
     ///
     /// - Parameter spacing: 图片与文字间距
@@ -50,13 +48,13 @@ public extension Stem where Base: UIButton{
         if let label = base.titleLabel, let text = label.text, let font = label.font {
             titleSize = (text as NSString).boundingRect(with: base.bounds.size,
                                                         options: [.usesLineFragmentOrigin],
-                                                        attributes: [NSAttributedString.Key.font : font],
+                                                        attributes: [NSAttributedString.Key.font: font],
                                                         context: nil).size
         }
         
         let totalWidth = (imageSize.width + titleSize.width + spacing)
-        base.imageEdgeInsets = UIEdgeInsets(top:0, left:0, bottom:0, right:-(totalWidth - imageSize.width) * 2)
-        base.titleEdgeInsets = UIEdgeInsets(top:0, left:-(totalWidth - titleSize.width) * 2,bottom: 0,right: 0)
+        base.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -(totalWidth - imageSize.width) * 2)
+        base.titleEdgeInsets = UIEdgeInsets(top: 0, left: -(totalWidth - titleSize.width) * 2, bottom: 0, right: 0)
     }
     
     /// 图片与文字垂直居中
@@ -68,13 +66,13 @@ public extension Stem where Base: UIButton{
         if let label = base.titleLabel, let text = label.text, let font = label.font {
             titleSize = (text as NSString).boundingRect(with: base.bounds.size,
                                                         options: [.usesLineFragmentOrigin],
-                                                        attributes: [NSAttributedString.Key.font : font],
+                                                        attributes: [NSAttributedString.Key.font: font],
                                                         context: nil).size
         }
         
         let totalHeight = imageSize.height + titleSize.height + spacing
         base.imageEdgeInsets = UIEdgeInsets(top: imageSize.height - totalHeight, left: 0, bottom: 0, right: -titleSize.width)
-        base.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageSize.width, bottom:titleSize.height - totalHeight, right: 0)
+        base.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageSize.width, bottom: titleSize.height - totalHeight, right: 0)
     }
     
 }

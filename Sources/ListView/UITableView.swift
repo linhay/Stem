@@ -32,7 +32,7 @@ public extension Stem where Base: UITableView {
     }
 
     @discardableResult
-    func scroll(to row: Int,in section: Int, at position: UITableView.ScrollPosition,animated: Bool) -> Stem<Base> {
+    func scroll(to row: Int, in section: Int, at position: UITableView.ScrollPosition, animated: Bool) -> Stem<Base> {
         let indexPath = IndexPath(row: row, section: section)
         base.scrollToRow(at: indexPath, at: position, animated: animated)
         return self
@@ -58,7 +58,7 @@ public extension Stem where Base: UITableView {
     }
 
     @discardableResult
-    func reloadRow(row: Int, in section: Int,with animation: UITableView.RowAnimation) -> Stem<Base> {
+    func reloadRow(row: Int, in section: Int, with animation: UITableView.RowAnimation) -> Stem<Base> {
         let indexPath = IndexPath(row: row, section: section)
         base.insertRows(at: [indexPath], with: animation)
         return self

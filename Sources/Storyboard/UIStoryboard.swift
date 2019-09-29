@@ -36,17 +36,27 @@ public extension UIStoryboard {
 
 }
 
-// MARK: - UIStoryboard 扩展
-public extension Stem where Base: UIStoryboard{
+// MARK: - static Apis
+public extension Stem where Base: UIStoryboard {
+
+    static var main: UIStoryboard? {
+        guard let name = Bundle.main.object(forInfoDictionaryKey: "UIMainStoryboardFile") as? String else { return nil }
+        return UIStoryboard(name: name, bundle: Bundle.main)
+    }
+
+}
+
+// MARK: - ivar Apis
+public extension Stem where Base: UIStoryboard {
 
     var bundle: Bundle? {
         // set{ base.setValue(newValue, forKey: "bundle") }
-        get{ return ivar(for: "bundle") }
+        return ivar(for: "bundle")
     }
 
     var name: String {
         // set{ base.setValue(newValue, forKey: "storyboardFileName") }
-        get{ return ivar(for: "storyboardFileName") as String? ?? "" }
+        return ivar(for: "storyboardFileName") as String? ?? ""
     }
 
     /// 尝试使用 AnyClass 初始化视图控制器

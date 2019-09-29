@@ -47,9 +47,4 @@ class TestImageViewController: BaseViewController {
 
     }
 
-    deinit {
-        print("---")
-    }
-
-
 }

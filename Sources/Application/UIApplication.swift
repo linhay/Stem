@@ -22,13 +22,15 @@
 
 import UIKit
 
-
 public extension Stem where Base: UIApplication {
 
     /// 是否已开启推送
     var isOpenNotification: Bool {
-        if let type = UIApplication.shared.currentUserNotificationSettings?.types, type == .init(rawValue: 0) { return false}
-        else { return true }
+        if let type = UIApplication.shared.currentUserNotificationSettings?.types, type == .init(rawValue: 0) {
+            return false
+        } else {
+            return true
+        }
     }
 
 }
@@ -104,9 +106,9 @@ public extension Stem where Base: UIApplication {
     ///   - completionHandler: 完成回调
     func open(url: String,
               isSafe: Bool = true,
-              options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
+              options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:],
               completionHandler: ((Bool) -> Void)? = nil) {
-        guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) else{ return }
+        guard let str = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: str) else { return }
         open(url: url, isSafe: isSafe, options: options, completionHandler: completionHandler)
     }
     
@@ -119,7 +121,7 @@ public extension Stem where Base: UIApplication {
     ///   - completionHandler: 完成回调
     func open(url: URL,
               isSafe: Bool = true,
-              options: [UIApplication.OpenExternalURLOptionsKey : Any] = [:],
+              options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:],
               completionHandler: ((Bool) -> Void)? = nil) {
         if isSafe, !UIApplication.shared.canOpenURL(url) { return }
         if #available(iOS 10.0, *) {
@@ -132,7 +134,5 @@ public extension Stem where Base: UIApplication {
             }
         }
     }
-    
-    
-}
 
+}

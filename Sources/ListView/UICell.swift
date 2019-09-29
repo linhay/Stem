@@ -22,7 +22,6 @@
 
 import UIKit
 
-
 public protocol STCellProtocol: class {
     static var id: String { get }
     static var nib: UINib? { get }
@@ -42,7 +41,7 @@ public extension STNibProtocol {
 }
 
 // MARK: - UITableView
-public extension Stem where Base: UITableView{
+public extension Stem where Base: UITableView {
 
     /// 注册 `STCellProtocol` 类型的 UITableViewCell
     ///

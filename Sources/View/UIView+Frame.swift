@@ -23,69 +23,69 @@
 import UIKit
 
 // MARK: - 设置ViewFarme相关属性
-public extension UIView{
+public extension UIView {
 
-    var x: CGFloat{
-        get{ return frame.origin.x }
-        set{ self.frame.origin.x = newValue }
+    var x: CGFloat {
+        get { return frame.origin.x }
+        set { self.frame.origin.x = newValue }
     }
 
-    var y: CGFloat{
-        get{ return frame.origin.y }
-        set{ self.frame.origin.y = newValue }
+    var y: CGFloat {
+        get { return frame.origin.y }
+        set { self.frame.origin.y = newValue }
     }
 
     var minX: CGFloat {
-        get{ return self.frame.minX }
-        set{ self.x = newValue }
+        get { return self.frame.minX }
+        set { self.x = newValue }
     }
 
     var midX: CGFloat {
-        get{ return self.frame.midX }
-        set{ self.x = newValue - self.width * 0.5 }
+        get { return self.frame.midX }
+        set { self.x = newValue - self.width * 0.5 }
     }
 
     var maxX: CGFloat {
-        get{ return self.frame.maxX }
-        set{ self.x = newValue - self.width }
+        get { return self.frame.maxX }
+        set { self.x = newValue - self.width }
     }
 
     var minY: CGFloat {
-        get{ return self.frame.minY }
-        set{ self.y = newValue }
+        get { return self.frame.minY }
+        set { self.y = newValue }
     }
 
     var midY: CGFloat {
-        get{ return self.frame.midY }
-        set{ self.y = newValue - self.height * 0.5 }
+        get { return self.frame.midY }
+        set { self.y = newValue - self.height * 0.5 }
     }
 
     var maxY: CGFloat {
-        get{ return self.frame.maxY }
-        set{ self.y = newValue - self.height }
+        get { return self.frame.maxY }
+        set { self.y = newValue - self.height }
     }
 
     /// view的宽度
     var width: CGFloat {
-        get{ return self.frame.size.width }
-        set{ self.frame.size.width = newValue }
+        get { return self.frame.size.width }
+        set { self.frame.size.width = newValue }
     }
 
     /// view的高度
     var height: CGFloat {
-        get{ return self.frame.size.height }
-        set{ self.frame.size.height = newValue }
+        get { return self.frame.size.height }
+        set { self.frame.size.height = newValue }
     }
 
     /// view的size
-    var size: CGSize{
-        get{ return self.frame.size }
-        set{ self.frame.size = newValue }
+    var size: CGSize {
+        get { return self.frame.size }
+        set { self.frame.size = newValue }
     }
 
     /// view的origin
     var origin: CGPoint {
-        get{ return self.frame.origin }
-        set{ self.frame.origin = newValue }
+        get { return self.frame.origin }
+        set { self.frame.origin = newValue }
     }
 }

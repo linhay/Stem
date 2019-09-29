@@ -21,30 +21,29 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 import UIKit
 
-
 #if canImport(AVFoundation)
 import AVFoundation
 public extension Stem where Base: UIDevice {
 
     /// 闪光灯 亮度等级 0 ~ 1
     var torchLevel: Double {
-        set{
+        set {
             let value = min(max(newValue, 0), 1)
             guard let device = AVCaptureDevice.default(for: .video) else { return }
             do {
                 try device.lockForConfiguration()
                 if value == 0 {
                     device.torchMode = .off
-                }else{
+                } else {
                     device.torchMode = .on
                     try device.setTorchModeOn(level: Float(value))
                 }
                 device.unlockForConfiguration()
-            }catch{
+            } catch {
                 debugPrint(error.localizedDescription)
             }
         }
-        get{
+        get {
             guard let device = AVCaptureDevice.default(for: .video) else { return 0 }
             return Double(device.torchLevel)
         }
@@ -55,9 +54,7 @@ public extension Stem where Base: UIDevice {
     /// - Parameter params: level  (number)  0 ~ 3 表示振动等级
     @discardableResult
     func taptic(level: Int, isSupportTaptic: Bool = true) -> Stem<Base> {
-        if #available(iOS 10.0, *),
-            isSupportTaptic
-            , let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
+        if #available(iOS 10.0, *), isSupportTaptic, let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
             let tapticEngine = UIImpactFeedbackGenerator(style: style)
             tapticEngine.prepare()
             tapticEngine.impactOccurred()

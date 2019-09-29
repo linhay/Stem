@@ -20,11 +20,10 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
 import UIKit
 
 // MARK: - 文本区域
-public extension String{
+public extension String {
 
     /// 解析HTML样式
     ///
@@ -48,10 +47,9 @@ public extension String{
     ///   - size: 字符串长宽限制
     /// - Returns: 字符串的Bounds
     @available(iOS, deprecated: 8.0, message:"Use bounds(attributes:size:option:) instead.")
-    func bounds(font: UIFont,size: CGSize) -> CGRect {
+    func bounds(font: UIFont, size: CGSize) -> CGRect {
         return self.st.bounds(attributes: [NSAttributedString.Attribute.font(font)], size: size)
     }
-
 
     /// 获取字符串的Bounds
     ///
@@ -78,7 +76,7 @@ public extension String{
     ///   - width: 最大宽度
     /// - Returns: 行数
     @available(iOS, deprecated: 8.0, message:"Use st.rows(font:width:) instead.")
-    func rows(font: UIFont,width: CGFloat) -> CGFloat {
+    func rows(font: UIFont, width: CGFloat) -> CGFloat {
         return self.st.rows(font: font, width: width)
     }
 

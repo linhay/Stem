@@ -20,7 +20,6 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
 import UIKit
 
 public final class StemRuntime {
@@ -29,24 +28,24 @@ public final class StemRuntime {
     ///
     /// - Parameters:
     ///   - selector: 被交换的方法
-    ///   - replace: 用于交换的方法
+    ///   - by: 用于交换的方法
     ///   - classType: 所属类型
-    public static func exchangeMethod(selector: Selector, replace: Selector, class classType: AnyClass) {
-        let select1 = selector
-        let select2 = replace
-        let select1Method = class_getInstanceMethod(classType, select1)
-        let select2Method = class_getInstanceMethod(classType, select2)
-        let didAddMethod  = class_addMethod(classType,
-                                            select1,
-                                            method_getImplementation(select2Method!),
-                                            method_getTypeEncoding(select2Method!))
+    public static func exchange(selector: Selector, by newSelector: Selector, class classType: AnyClass) {
+        guard let method = class_getInstanceMethod(classType, selector) else {
+            assertionFailure("Runtime: 在类: \(classType) 中无法取得对应方法: \(selector.description)")
+            return
+        }
+
+        guard let newMethod = class_getInstanceMethod(classType, newSelector) else {
+            assertionFailure("Runtime: 在类: \(classType) 中无法取得对应方法: \(newSelector.description)")
+            return
+        }
+
+        let didAddMethod  = class_addMethod(classType, selector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))
         if didAddMethod {
-            class_replaceMethod(classType,
-                                select2,
-                                method_getImplementation(select1Method!),
-                                method_getTypeEncoding(select1Method!))
-        }else {
-            method_exchangeImplementations(select1Method!, select2Method!)
+            class_replaceMethod(classType, newSelector, method_getImplementation(method), method_getTypeEncoding(method))
+        } else {
+            method_exchangeImplementations(method, newMethod)
         }
     }
 
@@ -59,7 +58,7 @@ public extension Stem where Base: NSObject {
         return object_getIvar(base, ivar) as? T
     }
 
-    func setAssociated<T>(value: T, associatedKey: UnsafeRawPointer, policy: objc_AssociationPolicy = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC) -> Void {
+    func setAssociated<T>(value: T, associatedKey: UnsafeRawPointer, policy: objc_AssociationPolicy = .OBJC_ASSOCIATION_RETAIN_NONATOMIC) {
         objc_setAssociatedObject(base, associatedKey, value, policy)
     }
 

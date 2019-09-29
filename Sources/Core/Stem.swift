@@ -41,7 +41,6 @@ public extension StemCompatible {
 
 extension NSObject: StemCompatible { }
 
-
 public struct StemValue<Base> {
     public let base: Base
     public init(_ base: Base) {

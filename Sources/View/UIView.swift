@@ -35,11 +35,11 @@ public extension Stem where Base: UIView {
      
      */
     var viewController: UIViewController? {
-        var next:UIView? = base
-        repeat{
-            if let vc = next?.next as? UIViewController{ return vc }
+        var next: UIView? = base
+        repeat {
+            if let vc = next?.next as? UIViewController { return vc }
             next = next?.superview
-        }while next != nil
+        } while next != nil
         return nil
     }
     /// 惰性查询父视图
@@ -97,9 +97,8 @@ public extension Stem where Base: UIView {
     
 }
 
-
 // MARK: - UIView 函数扩展
-public extension Stem where Base: UIView{
+public extension Stem where Base: UIView {
     
     func snapshotImage(afterUpdates: Bool) -> UIImage? {
         return base.snapshotView(afterScreenUpdates: afterUpdates)?.st.snapshot
@@ -144,10 +143,9 @@ public extension Stem where Base: UIView{
     /// 移除全部子控件
     @discardableResult
     func removeSubviews() -> Stem<Base> {
-        base.subviews.forEach{ $0.removeFromSuperview() }
+        base.subviews.forEach { $0.removeFromSuperview() }
         return self
     }
-    
     
     /** 添加子控件
      
@@ -170,12 +168,11 @@ public extension Stem where Base: UIView{
     /// 移除全部手势
     @discardableResult
     func removeGestureRecognizers() -> Stem<Base> {
-        base.gestureRecognizers?.forEach{ base.removeGestureRecognizer($0) }
+        base.gestureRecognizers?.forEach { base.removeGestureRecognizer($0) }
         return self
     }
     
 }
-
 
 extension UIView {
     
@@ -199,8 +196,8 @@ extension UIView {
 public extension Stem where Base: UIView {
     
     var tapGestureRecognizer: UITapGestureRecognizer? {
-        get { return objc_getAssociatedObject(base, UIView.ActionKey.tapGestureRecognizer) as? UITapGestureRecognizer }
-        set { objc_setAssociatedObject(base, UIView.ActionKey.tapGestureRecognizer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        get { return self.getAssociated(associatedKey: UIView.ActionKey.tapGestureRecognizer) }
+        set { self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.tapGestureRecognizer) }
     }
     
     fileprivate var tap: ((UITapGestureRecognizer) -> Void)? {
@@ -232,8 +229,8 @@ public extension Stem where Base: UIView {
 public extension Stem where Base: UIView {
     
     var panGestureRecognizer: UIPanGestureRecognizer? {
-        get { return objc_getAssociatedObject(base, UIView.ActionKey.panGestureRecognizer) as? UIPanGestureRecognizer }
-        set { objc_setAssociatedObject(base, UIView.ActionKey.panGestureRecognizer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        get { return self.getAssociated(associatedKey: UIView.ActionKey.panGestureRecognizer) }
+        set { self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.panGestureRecognizer) }
     }
     
     fileprivate var pan: ((UIPanGestureRecognizer) -> Void)? {

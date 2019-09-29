@@ -32,7 +32,6 @@ public extension Stem where Base: UISearchBar {
     
 }
 
-
 public extension Stem where Base: UISearchBar {
 
     var selectedRange: NSRange? {

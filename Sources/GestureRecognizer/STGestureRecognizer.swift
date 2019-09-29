@@ -31,7 +31,6 @@ public final class STGestureRecognizer: UIGestureRecognizer {
   
   private var _startPoint = CGPoint.zero, _lastPoint = CGPoint.zero, _currentPoint = CGPoint.zero
   
-  
   public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
     guard let touch = touches.first, let view = self.view else { return }
     self.state = .began

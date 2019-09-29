@@ -20,12 +20,10 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
 import UIKit
 
-
 extension Array where Element == NSAttributedString.Attribute {
-
+    
     var attributes: [NSAttributedString.Key: Any] {
         return self.reduce([NSAttributedString.Key: Any]()) { (dict, item) -> [NSAttributedString.Key: Any] in
             var dict = dict
@@ -33,21 +31,21 @@ extension Array where Element == NSAttributedString.Attribute {
             return dict
         }
     }
-
+    
 }
 
 public extension Stem where Base: NSAttributedString {
-
+    
     /// 获取可变类型富文本
     var toMutable: NSMutableAttributedString {
         return NSMutableAttributedString(attributedString: base)
     }
-
+    
 }
 
 // MARK: - convenience init
 public extension NSAttributedString {
-
+    
     /// 初始化函数
     ///
     /// - Parameters:
@@ -56,7 +54,7 @@ public extension NSAttributedString {
     convenience init(string: String, attributes: Attribute...) {
         self.init(string: string, attributes: attributes.attributes)
     }
-
+    
     /// 初始化函数
     ///
     /// - Parameters:
@@ -65,12 +63,11 @@ public extension NSAttributedString {
     convenience init(string: String, attributes: [Attribute]) {
         self.init(string: string, attributes: attributes.attributes)
     }
-
+    
 }
 
-
 public extension NSAttributedString {
-
+    
     /// 富文本属性
     ///
     /// - font: 字体, [default: Helvetica(Neue) 12]
@@ -116,34 +113,34 @@ public extension NSAttributedString {
         case obliqueness(_: CGFloat)
         case expansion(_: CGFloat)
         case writingDirection(_: [NSWritingDirection])
-
-        var rawValue: (key: NSAttributedString.Key,value: Any?) {
+        
+        var rawValue: (key: NSAttributedString.Key, value: Any?) {
             switch self {
-            case .font(let value):                return (NSAttributedString.Key.font,value)
-            case .paragraphStyle(let value):      return (NSAttributedString.Key.paragraphStyle,value)
-            case .foregroundColor(let value):     return (NSAttributedString.Key.foregroundColor,value)
-            case .backgroundColor(let value):     return (NSAttributedString.Key.backgroundColor,value)
-            case .ligature(let value):            return (NSAttributedString.Key.ligature,value)
-            case .kern(let value):                return (NSAttributedString.Key.kern,value)
-            case .strikethroughStyle(let value):  return (NSAttributedString.Key.strikethroughStyle,value)
-            case .strikethroughColor(let value):  return (NSAttributedString.Key.strikethroughColor,value)
-            case .underlineColor(let value):      return (NSAttributedString.Key.underlineColor,value)
-            case .underlineStyle(let value):      return (NSAttributedString.Key.underlineStyle,value)
-            case .strokeColor(let value):         return (NSAttributedString.Key.strokeColor,value)
-            case .strokeWidth(let value):         return (NSAttributedString.Key.strokeWidth,value)
-            case .shadow(let value):              return (NSAttributedString.Key.shadow,value)
-            case .verticalGlyphForm(let value):   return (NSAttributedString.Key.verticalGlyphForm,value)
-            case .textEffect(let value):          return (NSAttributedString.Key.textEffect,value)
-            case .attachment(let value):          return (NSAttributedString.Key.attachment,value)
-            case .link(let value):                return (NSAttributedString.Key.link,value)
-            case .baselineOffset(let value):      return (NSAttributedString.Key.baselineOffset,value)
-            case .obliqueness(let value):         return (NSAttributedString.Key.obliqueness,value)
-            case .expansion(let value):           return (NSAttributedString.Key.expansion,value)
-            case .writingDirection(let value):    return (NSAttributedString.Key.writingDirection,value)
+            case .font(let value):                return (NSAttributedString.Key.font, value)
+            case .paragraphStyle(let value):      return (NSAttributedString.Key.paragraphStyle, value)
+            case .foregroundColor(let value):     return (NSAttributedString.Key.foregroundColor, value)
+            case .backgroundColor(let value):     return (NSAttributedString.Key.backgroundColor, value)
+            case .ligature(let value):            return (NSAttributedString.Key.ligature, value)
+            case .kern(let value):                return (NSAttributedString.Key.kern, value)
+            case .strikethroughStyle(let value):  return (NSAttributedString.Key.strikethroughStyle, value)
+            case .strikethroughColor(let value):  return (NSAttributedString.Key.strikethroughColor, value)
+            case .underlineColor(let value):      return (NSAttributedString.Key.underlineColor, value)
+            case .underlineStyle(let value):      return (NSAttributedString.Key.underlineStyle, value)
+            case .strokeColor(let value):         return (NSAttributedString.Key.strokeColor, value)
+            case .strokeWidth(let value):         return (NSAttributedString.Key.strokeWidth, value)
+            case .shadow(let value):              return (NSAttributedString.Key.shadow, value)
+            case .verticalGlyphForm(let value):   return (NSAttributedString.Key.verticalGlyphForm, value)
+            case .textEffect(let value):          return (NSAttributedString.Key.textEffect, value)
+            case .attachment(let value):          return (NSAttributedString.Key.attachment, value)
+            case .link(let value):                return (NSAttributedString.Key.link, value)
+            case .baselineOffset(let value):      return (NSAttributedString.Key.baselineOffset, value)
+            case .obliqueness(let value):         return (NSAttributedString.Key.obliqueness, value)
+            case .expansion(let value):           return (NSAttributedString.Key.expansion, value)
+            case .writingDirection(let value):    return (NSAttributedString.Key.writingDirection, value)
             }
         }
     }
-
+    
     /// 文字排版方向
     ///
     /// - horizontal: 横排文本 [default]
@@ -152,7 +149,7 @@ public extension NSAttributedString {
         case horizontal = 0
         case vertical = 1
     }
-
+    
     /// 连字符
     ///
     /// - none: 没有连体字符
@@ -163,17 +160,16 @@ public extension NSAttributedString {
         case `default` = 1
         case all = 2
     }
-
-
-    static func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
+    
+    static func+(lhs: NSAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
         let attr = NSMutableAttributedString(attributedString: lhs)
         attr.append(rhs)
         return attr
     }
-
-    static func +=(lhs: NSMutableAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
+    
+    static func+=(lhs: NSMutableAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
         lhs.append(rhs)
         return lhs
     }
-
+    
 }
