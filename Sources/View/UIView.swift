@@ -201,7 +201,7 @@ public extension Stem where Base: UIView {
     }
     
     fileprivate var tap: ((UITapGestureRecognizer) -> Void)? {
-        get { return objc_getAssociatedObject(base, UIView.ActionKey.tap) as? (UITapGestureRecognizer) -> Void }
+        get { return self.getAssociated(associatedKey: UIView.ActionKey.tap) }
         set {
             if newValue != nil, tapGestureRecognizer == nil {
                 tapGestureRecognizer = UITapGestureRecognizer(target: base, action: #selector(UIView.stem_view_tapGesture_event(ges:)))
@@ -213,13 +213,13 @@ public extension Stem where Base: UIView {
                 tapGestureRecognizer = nil
             }
             
-            objc_setAssociatedObject(base, UIView.ActionKey.tap, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.tap)
         }
     }
     
     @discardableResult
-    func set(tap: ((UITapGestureRecognizer) -> Void)?) -> Stem<Base> {
-        self.tap = tap
+    func setTapGesture(_ ges: ((UITapGestureRecognizer) -> Void)?) -> Stem<Base> {
+        self.tap = ges
         return self
     }
     
@@ -234,7 +234,7 @@ public extension Stem where Base: UIView {
     }
     
     fileprivate var pan: ((UIPanGestureRecognizer) -> Void)? {
-        get { return objc_getAssociatedObject(base, UIView.ActionKey.pan) as? (UIPanGestureRecognizer) -> Void }
+        get { return self.getAssociated(associatedKey: UIView.ActionKey.pan) }
         set {
             if newValue != nil, panGestureRecognizer == nil {
                 panGestureRecognizer = UIPanGestureRecognizer(target: base, action: #selector(UIView.stem_view_panGesture_event(ges:)))
@@ -246,13 +246,13 @@ public extension Stem where Base: UIView {
                 panGestureRecognizer = nil
             }
             
-            objc_setAssociatedObject(base, UIView.ActionKey.pan, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.pan)
         }
     }
     
     @discardableResult
-    func set(pan: ((UIPanGestureRecognizer) -> Void)?) -> Stem<Base> {
-        self.pan = pan
+    func setPanGesture(_ ges: ((UIPanGestureRecognizer) -> Void)?) -> Stem<Base> {
+        self.pan = ges
         return self
     }
     

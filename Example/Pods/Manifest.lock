@@ -1,25 +1,4 @@
 PODS:
-  - BLFoundation (0.9.2):
-    - BLFoundation/Coder (= 0.9.2)
-    - BLFoundation/Custom (= 0.9.2)
-    - BLFoundation/Data (= 0.9.2)
-    - BLFoundation/Date (= 0.9.2)
-    - BLFoundation/Device (= 0.9.2)
-    - BLFoundation/Dispatch (= 0.9.2)
-    - BLFoundation/NSObject (= 0.9.2)
-    - BLFoundation/Stdlib (= 0.9.2)
-    - BLFoundation/String (= 0.9.2)
-    - BLFoundation/URL (= 0.9.2)
-  - BLFoundation/Coder (0.9.2)
-  - BLFoundation/Custom (0.9.2)
-  - BLFoundation/Data (0.9.2)
-  - BLFoundation/Date (0.9.2)
-  - BLFoundation/Device (0.9.2)
-  - BLFoundation/Dispatch (0.9.2)
-  - BLFoundation/NSObject (0.9.2)
-  - BLFoundation/Stdlib (0.9.2)
-  - BLFoundation/String (0.9.2)
-  - BLFoundation/URL (0.9.2)
   - SnapKit (4.2.0)
   - Stem (0.0.27):
     - Stem/Application (= 0.0.27)
@@ -83,22 +62,23 @@ PODS:
     - Stem/Core
   - Stem/ViewController (0.0.27):
     - Stem/Core
+  - Stone (0.0.2)
   - SVProgressHUD (2.2.5)
   - SwiftLint (0.35.0)
   - Then (2.6.0)
 
 DEPENDENCIES:
-  - BLFoundation
   - SnapKit
   - Stem (from `../`)
+  - Stone
   - SVProgressHUD
   - SwiftLint
   - Then
 
 SPEC REPOS:
   trunk:
-    - BLFoundation
     - SnapKit
+    - Stone
     - SVProgressHUD
     - SwiftLint
     - Then
@@ -108,13 +88,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BLFoundation: 6defc5738a980703df6a518d04501e6b7091d12d
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   Stem: f4dfbc6063f09134fb9cf43c3e28c321870c688d
+  Stone: ce22394d2644c843bfc93413454df098c8c630d6
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
   Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
 
-PODFILE CHECKSUM: 84f1feb1fe05ff69f48e2b3bbb67f6982513a62a
+PODFILE CHECKSUM: 92d345a7396e92cad48c092290687b1948b61ff4
 
 COCOAPODS: 1.8.0

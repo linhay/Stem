@@ -22,7 +22,8 @@ class PopGestureRecognizerDelegate: NSObject, UIGestureRecognizerDelegate {
     let beginningLocation = gestureRecognizer.location(in: gestureRecognizer.view)
     let maxAllowedInitialDistance = topViewController.st.popGestureMaxLeftEdge
     if maxAllowedInitialDistance > 0 && beginningLocation.x > maxAllowedInitialDistance { return false }
-    if nav.value(forKey: "_isTransitioning") as? Bool ?? false { return false }
+    let isTransitioning: Bool = nav.st.ivar(for: "_isTransitioning") ?? false
+    if isTransitioning { return false }
 
     let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
     if translation.x <= 0 { return false }

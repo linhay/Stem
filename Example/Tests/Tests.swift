@@ -1,8 +1,16 @@
 import XCTest
-import BLFoundation
+import Stone
 import Stem
 
 class Tests: XCTestCase {
+
+    func test_rect() {
+        let rect = CGRect(x: 100, y: 100, width: 100, height: 100)
+    }
+
+    func test_point() {
+        assert(CGPoint(x: 0, y: 0).st.distance(to: CGPoint(x: 30, y: 40)) == 50)
+    }
     
     func test_color() {
         UIColor.st.isDisplayP3Enabled = false
@@ -11,17 +19,14 @@ class Tests: XCTestCase {
         assert(UIColor.st.random != UIColor.st.random, "UIColor.st.random")
     }
 
+    func test_string() {
+        
+
+    }
+
     func testUIApplication() {
-        RunTime.print.ivars(from: UISearchBar.self).forEach({ print($0) })
-        RunTime.properties(from: UISearchBar.self).forEach({
-            let propertyAttributes = String(cString: property_getAttributes($0)!)
-            let splitPropertyAttributes = propertyAttributes.components(separatedBy: "\"")
-            var className = ""
-            if splitPropertyAttributes.count >= 2 {
-                className = splitPropertyAttributes[1]
-            }
-            print(String(cString: property_getName($0))," : ", className)
-        })
+        RunTime.print.ivars(from: UISearchBar.self)
+        RunTime.print.properties(from: UISearchBar.self)
     }
 
 }

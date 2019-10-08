@@ -64,19 +64,23 @@ extension UINavigationController {
         }
         
         if !gestureRecognizers.contains(st.popGesture) {
+
             self.interactivePopGestureRecognizer?.view?.addGestureRecognizer(st.popGesture)
-            let targets = interactivePopGestureRecognizer?.value(forKey: "targets") as! [NSObject]
-            let target = targets.first?.value(forKey: "target") as! NSObject
-            let action = NSSelectorFromString("handleNavigationTransition:")
+            guard let targets: [NSObject] = interactivePopGestureRecognizer?.st.ivar(for: "targets"),
+            let target: NSObject = targets.first?.st.ivar(for: "target") else {
+                return
+            }
+
+            let action = Selector("handleNavigationTransition:")
             st.popGesture.delegate = st.popGestureDelegate
             st.popGesture.addTarget(target, action: action)
             interactivePopGestureRecognizer?.isEnabled = false
         }
         
         saveVCNavState(vc: viewController)
-        if !viewControllers.contains(viewController) {
-            stem_popGesture_pushViewController(viewController, animated: animated)
-        }
+
+        guard !viewControllers.contains(viewController) else { return }
+        stem_popGesture_pushViewController(viewController, animated: animated)
     }
     
     func saveVCNavState(vc: UIViewController) {
@@ -87,8 +91,7 @@ extension UINavigationController {
             base.setNavigationBarHidden(vc.st.isSetNavHidden, animated: animated)
         }
         vc.st.popGestureClosure = closure
-        guard let disappearingViewController = viewControllers.last,
-            disappearingViewController.st.popGestureClosure == nil else { return }
+        guard let disappearingViewController = viewControllers.last, disappearingViewController.st.popGestureClosure == nil else { return }
         disappearingViewController.st.popGestureClosure = closure
     }
     

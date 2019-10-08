@@ -1,9 +1,9 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
-## BLFoundation
+## Stem
 
-Copyright (c) 2018 is.linhey@outlook.com <is.linhey@outlook.com>
+Copyright (c) 2019 linhay <is.linhay@outlook.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-## Stem
+## Stone
 
-Copyright (c) 2019 linhay <is.linhay@outlook.com>
+Copyright (c) 2019 linhey <158179948@qq.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -22,9 +22,11 @@
 
 import UIKit
 
+extension CGRect: StemValueCompatible { }
+
 public extension CGRect {
     
-    static var max = CGRect(origin: CGPoint.zero, size: CGSize.max)
+    static var max = CGRect.infinite
     
     /// X
     var x: CGFloat {
@@ -38,9 +40,30 @@ public extension CGRect {
         get { return self.origin.y }
     }
     
+}
+
+public extension StemValue where Base == CGRect {
+
     /// 判断一个 CGRect 是否合法（例如不带无穷大的值、不带非法数字）
     var isValidated: Bool {
-        guard !self.isNull, !self.isInfinite else { return false }
+        guard !base.isNull, !base.isInfinite else { return false }
         return true
     }
+
+    func changed(height: CGFloat) -> CGRect {
+        return CGRect(x: base.x, y: base.y, width: base.width, height: height)
+    }
+
+    func changed(width: CGFloat) -> CGRect {
+        return CGRect(x: base.x, y: base.y, width: width, height: base.height)
+    }
+
+    func changed(x: CGFloat) -> CGRect {
+        return CGRect(x: x, y: base.y, width: base.width, height: base.height)
+    }
+
+    func changed(y: CGFloat) -> CGRect {
+        return CGRect(x: base.x, y: y, width: base.width, height: base.height)
+    }
+
 }

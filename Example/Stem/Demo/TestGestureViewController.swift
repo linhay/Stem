@@ -36,23 +36,23 @@ class TestGestureViewController: BaseViewController {
                                   subtitle: "testView.st.set(tap: ((UITapGestureRecognizer) -> Void)?)") { [weak self] in
                                     guard let base = self else { return }
                                     if base.testView.st.tapGestureRecognizer == nil {
-                                        base.testView.st.set(tap: { (ges) in
+                                        base.testView.st.setTapGesture({ (ges) in
                                             SVProgressHUD.showSuccess(withStatus: "Tap: " + ges.location(in: base.testView).debugDescription)
                                         })
                                     }else{
-                                        base.testView.st.set(tap: nil)
+                                        base.testView.st.setTapGesture(nil)
                                     }
         })
-
+        
         items.append(TableElement(title: "UIPanGestureRecognizer",
                                   subtitle: "testView.st.set(pan: ((UIPanGestureRecognizer) -> Void)?)") { [weak self] in
                                     guard let base = self else { return }
                                     if base.testView.st.panGestureRecognizer == nil {
-                                        base.testView.st.set(pan: { (ges) in
+                                        base.testView.st.setPanGesture({ (ges) in
                                             SVProgressHUD.showSuccess(withStatus: "Pan: " + ges.location(in: base.testView).debugDescription)
                                         })
                                     }else{
-                                        base.testView.st.set(pan: nil)
+                                        base.testView.st.setPanGesture(nil)
                                     }
         })
     }

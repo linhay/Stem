@@ -113,7 +113,7 @@ public extension Stem where Base: UITextView {
 private extension Stem where Base: UITextView {
 
     func _scrollRectToVisible(rect: CGRect, animated: Bool) {
-        guard rect.isValidated else { return }
+        guard rect.st.isValidated else { return }
         var contentOffsetY = base.contentOffset.y
 
         if rect.minY == base.contentOffset.y + base.textContainerInset.top {

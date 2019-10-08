@@ -27,12 +27,12 @@ fileprivate extension UILabel {
     
     private static let swizzing: Void = {
         StemRuntime.exchange(selector: #selector(UILabel.drawText(in:)),
-                                   by: #selector(UILabel.st_drawText(in:)),
-                                   class: UILabel.self)
+                             by: #selector(UILabel.st_drawText(in:)),
+                             class: UILabel.self)
     }()
     
     struct SwzzlingKeys {
-        static var textInset = UnsafeRawPointer(bitPattern: "label_textInset".hashValue)
+        static var textInset = UnsafeRawPointer(bitPattern: "label_textInset".hashValue)!
     }
 }
 
@@ -42,17 +42,11 @@ extension UILabel {
     /// 调整文字绘制区域
     public var textInset: UIEdgeInsets {
         get {
-            if let eventInterval = objc_getAssociatedObject(self, UILabel.SwzzlingKeys.textInset!) as? UIEdgeInsets {
-                return eventInterval
-            }
-            return UIEdgeInsets.zero
+            return st.getAssociated(associatedKey: UILabel.SwzzlingKeys.textInset) ?? .zero
         }
         set {
             UILabel.swizzing
-            objc_setAssociatedObject(self,
-                                     UILabel.SwzzlingKeys.textInset!,
-                                     newValue as UIEdgeInsets,
-                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            st.setAssociated(value: newValue, associatedKey: UILabel.SwzzlingKeys.textInset)
             drawText(in: bounds)
         }
     }
