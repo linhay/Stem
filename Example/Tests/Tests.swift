@@ -6,6 +6,10 @@ class Tests: XCTestCase {
 
     func test_rect() {
         let rect = CGRect(x: 100, y: 100, width: 100, height: 100)
+        assert(rect.st.changed(x: 50) == CGRect(x: 50, y: 100, width: 100, height: 100))
+        assert(rect.st.changed(y: 50) == CGRect(x: 100, y: 50, width: 100, height: 100))
+        assert(rect.st.changed(width: 50)  == CGRect(x: 100, y: 100, width: 50, height: 100))
+        assert(rect.st.changed(height: 50) == CGRect(x: 100, y: 100, width: 100, height: 50))
     }
 
     func test_point() {
@@ -19,6 +23,11 @@ class Tests: XCTestCase {
         assert(UIColor.st.random != UIColor.st.random, "UIColor.st.random")
     }
 
+
+    func test_STGestureRecognizer() {
+        let ges = STGestureRecognizer()
+    }
+    
     func test_string() {
         
 

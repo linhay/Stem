@@ -23,50 +23,52 @@
 import UIKit
 
 public final class STGestureRecognizer: UIGestureRecognizer {
-  
-  public var   startPoint: CGPoint { return _startPoint   }
-  public var    lastPoint: CGPoint { return _lastPoint    }
-  public var currentPoint: CGPoint { return _currentPoint }
-  public var action: ((_ gesture: STGestureRecognizer, _ state: State) -> Void)?
-  
-  private var _startPoint = CGPoint.zero, _lastPoint = CGPoint.zero, _currentPoint = CGPoint.zero
-  
-  public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
-    guard let touch = touches.first, let view = self.view else { return }
-    self.state = .began
-    _startPoint = touch.location(in: view)
-    _lastPoint = _currentPoint
-    _currentPoint = _startPoint
-    action?(self, self.state)
-  }
-  
-  public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
-    guard let touch = touches.first, let view = self.view else { return }
-    self.state = .changed
-    _currentPoint = touch.location(in: view)
-    _lastPoint = _currentPoint
-    action?(self, self.state)
-  }
-  
-  public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
-    self.state = .ended
-    action?(self, self.state)
-  }
-  
-  public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
-    self.state = .cancelled
-    action?(self, self.state)
-  }
-  
-  public override func reset() {
-    self.state = .possible
-  }
-  
-  public func cancel() {
-    if self.state == .began || self.state == .changed {
-      self.state = .cancelled
-      action?(self, self.state)
+
+    public var   startPoint: CGPoint = CGPoint.zero
+    public var    lastPoint: CGPoint = CGPoint.zero
+    public var currentPoint: CGPoint = CGPoint.zero
+    private var actionStore: [State: ((_ gesture: STGestureRecognizer, _ state: State) -> Void)] = [:]
+
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        guard let touch = touches.first, let view = self.view else { return }
+        self.state = .began
+        startPoint = touch.location(in: view)
+        lastPoint = currentPoint
+        currentPoint = startPoint
+        actionStore[self.state]?(self, self.state)
     }
-  }
-  
+
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        guard let touch = touches.first, let view = self.view else { return }
+        self.state = .changed
+        currentPoint = touch.location(in: view)
+        lastPoint = currentPoint
+        actionStore[self.state]?(self, self.state)
+    }
+
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        self.state = .ended
+        actionStore[self.state]?(self, self.state)
+    }
+
+    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+        self.state = .cancelled
+        actionStore[self.state]?(self, self.state)
+    }
+
+    public func add(for state: State, action: ((_ gesture: STGestureRecognizer, _ state: State) -> Void)?) {
+        self.actionStore[state] = action
+    }
+
+    public override func reset() {
+        self.state = .possible
+    }
+
+    public func cancel() {
+        if self.state == .began || self.state == .changed {
+            self.state = .cancelled
+            actionStore[self.state]?(self, self.state)
+        }
+    }
+
 }

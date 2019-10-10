@@ -20,16 +20,19 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-import Foundation
+import UIKit
 
-extension CGPoint: StemValueCompatible { }
+extension UIGestureRecognizer.State: CustomDebugStringConvertible {
 
-public extension StemValue where Base == CGPoint {
-    
-    /// 两点距离
-    /// - Parameter point: 另一个点
-    func distance(to point: CGPoint) -> CGFloat {
-        return hypot(point.x - base.x, point.y - base.y)
+    public var debugDescription: String {
+        switch self {
+        case .possible:  return "possible"
+        case .began:     return "began"
+        case .changed:   return "changed"
+        case .ended:     return "ended"
+        case .cancelled: return "cancelled"
+        case .failed:    return "failed"
+        }
     }
 
 }
