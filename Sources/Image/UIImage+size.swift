@@ -24,29 +24,29 @@ import UIKit
 
 // MARK: - UIImage
 public extension Stem where Base: UIImage {
-
+    
     /// 图片尺寸: Bytes
     var sizeAsBytes: Int {
         return base.jpegData(compressionQuality: 1)?.count ?? 0
     }
-
+    
     /// 图片尺寸: KB
     var sizeAsKB: Int {
         let sizeAsBytes = self.sizeAsBytes
         return sizeAsBytes != 0 ? sizeAsBytes / 1024: 0
     }
-
+    
     /// 图片尺寸: MB
     var sizeAsMB: Int {
         let sizeAsKB = self.sizeAsKB
         return sizeAsBytes != 0 ? sizeAsKB / 1024: 0
     }
-
+    
 }
 
 // MARK: - UIImage 图片处理
 public extension Stem where Base: UIImage {
-
+    
     /// 裁剪对应区域
     ///
     /// - Parameter bound: 裁剪区域
@@ -57,16 +57,16 @@ public extension Stem where Base: UIImage {
             else { return base }
         return UIImage(cgImage: image)
     }
-
+    
     /// 返回圆形图片
     func rounded() -> UIImage {
-        return base.st.rounded(radius: base.size.height * 0.5,
-                               corners: .allCorners,
-                               borderWidth: 0,
-                               borderColor: nil,
-                               borderLineJoin: .miter)
+        return self.rounded(radius: base.size.height * 0.5,
+                            corners: .allCorners,
+                            borderWidth: 0,
+                            borderColor: nil,
+                            borderLineJoin: .miter)
     }
-
+    
     /// 图像处理: 裁圆
     /// - Parameters:
     /// - radius: 圆角大小
@@ -91,18 +91,18 @@ public extension Stem where Base: UIImage {
         }
         UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
         defer { UIGraphicsEndImageContext() }
-
+        
         guard let context = UIGraphicsGetCurrentContext() else { return base }
         let rect = CGRect(x: 0, y: 0, width: base.size.width, height: base.size.height)
         context.scaleBy(x: 1, y: -1)
         context.translateBy(x: 0, y: -rect.height)
         let minSize = min(base.size.width, base.size.height)
-
+        
         if borderWidth < minSize * 0.5 {
             let path = UIBezierPath(roundedRect: rect.insetBy(dx: borderWidth, dy: borderWidth),
                                     byRoundingCorners: corners,
                                     cornerRadii: CGSize(width: radius, height: borderWidth))
-
+            
             path.close()
             context.saveGState()
             path.addClip()
@@ -110,7 +110,7 @@ public extension Stem where Base: UIImage {
             context.draw(cgImage, in: rect)
             context.restoreGState()
         }
-
+        
         if borderColor != nil, borderWidth < minSize / 2, borderWidth > 0 {
             let strokeInset = (floor(borderWidth * base.scale) + 0.5) / base.scale
             let strokeRect = rect.insetBy(dx: strokeInset, dy: strokeInset)
@@ -122,11 +122,11 @@ public extension Stem where Base: UIImage {
             borderColor?.setStroke()
             path.stroke()
         }
-
+        
         let image = UIGraphicsGetImageFromCurrentImageContext()
         return image ?? base
     }
-
+    
     /// 缩放至指定高度
     ///
     /// - Parameters:
@@ -142,7 +142,7 @@ public extension Stem where Base: UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
-
+    
     /// 缩放至指定宽度
     ///
     /// - Parameters:
@@ -158,7 +158,7 @@ public extension Stem where Base: UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
-
+    
     /// 压缩至指定字节大小
     ///
     /// - Parameters:
@@ -168,7 +168,7 @@ public extension Stem where Base: UIImage {
     func compress(withMB limit: Int, leeway: CGFloat = 0.3) -> Data? {
         return compress(withB: limit * 1000)
     }
-
+    
     /// 压缩至指定字节大小
     ///
     /// - Parameters:
@@ -178,7 +178,7 @@ public extension Stem where Base: UIImage {
     func compress(withKB limit: Int, leeway: CGFloat = 0.3) -> Data? {
         return compress(withB: limit * 1000 * 1000)
     }
-
+    
     /// 压缩至指定字节大小
     ///
     /// - Parameters:
@@ -189,10 +189,10 @@ public extension Stem where Base: UIImage {
         var compression: CGFloat = 1
         guard var data = base.jpegData(compressionQuality: compression) else { return nil }
         if data.count <= limit { return data }
-
+        
         var max: CGFloat = 1
         var min: CGFloat = 0
-
+        
         while data.count > limit || (max - min) > leeway {
             let mid = (max + min) * 0.5
             compression = mid
@@ -204,8 +204,8 @@ public extension Stem where Base: UIImage {
                 min = mid
             }
         }
-
+        
         return data
     }
-
+    
 }
