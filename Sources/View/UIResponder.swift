@@ -22,18 +22,18 @@
 
 import UIKit
 
-public protocol UIResponderRouterEvent { }
+public extension Stem where Base: UIResponder {
 
-public extension UIResponder {
-
-    /// 基于ReponderChain的数据传递
-    /// from: https://casatwy.com/responder_chain_communication.html
-    /// - Parameters:
-    ///   - event: 事件协议
-    ///   - object: 传递对象
-    ///   - userInfo: 传递数据
-    func router(event: UIResponderRouterEvent, object: Any? = nil, userInfo: [String: Any] = [:]) {
-        self.next?.router(event: event, object: object, userInfo: userInfo)
+    func responderChain() -> [UIResponder] {
+        var list = [UIResponder]()
+        var next: UIResponder? = base
+        repeat {
+            if let next = next {
+                list.append(next)
+            }
+            next = next?.next
+        } while next != nil
+        return list
     }
 
 }
