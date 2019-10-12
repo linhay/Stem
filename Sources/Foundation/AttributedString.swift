@@ -34,6 +34,14 @@ extension Array where Element == NSAttributedString.Attribute {
     
 }
 
+extension Dictionary where Key == NSAttributedString.Key {
+    
+    var attributes: [NSAttributedString.Attribute] {
+        return self.compactMap { return NSAttributedString.Attribute(key: $0.key, value: $0.value) }
+    }
+    
+}
+
 public extension Stem where Base: NSAttributedString {
     
     /// 获取可变类型富文本
@@ -113,6 +121,40 @@ public extension NSAttributedString {
         case obliqueness(_: CGFloat)
         case expansion(_: CGFloat)
         case writingDirection(_: [NSWritingDirection])
+        
+        public init?(key: NSAttributedString.Key, value: Any) {
+            switch key {
+            case .font:                if let v = value as? UIFont { self = .font(v) } else { return nil }
+            case .paragraphStyle:      if let v = value as? NSParagraphStyle { self = .paragraphStyle(v) } else { return nil }
+            case .foregroundColor:     if let v = value as? UIColor { self = .foregroundColor(v) } else { return nil }
+            case .backgroundColor:     if let v = value as? UIColor { self = .backgroundColor(v) } else { return nil }
+            case .ligature:
+                if let v = value as? Int, let t = AttributeLigatureType(rawValue: v) {
+                    self = .ligature(t)
+                } else { return nil }
+            case .kern:                if let v = value as? CGFloat { self = .kern(v) } else { return nil }
+            case .strikethroughStyle:  if let v = value as? NSUnderlineStyle { self = .strikethroughStyle(v) } else { return nil }
+            case .strikethroughColor:  if let v = value as? UIColor { self = .strikethroughColor(v) } else { return nil }
+            case .underlineColor:      if let v = value as? UIColor { self = .underlineColor(v) } else { return nil }
+            case .underlineStyle:      if let v = value as? NSUnderlineStyle { self = .underlineStyle(v) } else { return nil }
+            case .strokeColor:         if let v = value as? UIColor { self = .strokeColor(v) } else { return nil }
+            case .strokeWidth:         if let v = value as? CGFloat { self = .strokeWidth(v) } else { return nil }
+            case .shadow:              if let v = value as? NSShadow { self = .shadow(v) } else { return nil }
+            case .verticalGlyphForm:
+                if let v = value as? Int, let t = VerticalGlyphFormStyle(rawValue: v) {
+                    self = .verticalGlyphForm(t)
+                } else { return nil }
+            case .textEffect:          if let v = value as? TextEffectStyle { self = .textEffect(v) } else { return nil }
+            case .attachment:          if let v = value as? NSTextAttachment { self = .attachment(v) } else { return nil }
+            case .link:                self = .link(value)
+            case .baselineOffset:      if let v = value as? CGFloat { self = .baselineOffset(v) } else { return nil }
+            case .obliqueness:         if let v = value as? CGFloat { self = .obliqueness(v) } else { return nil }
+            case .expansion:           if let v = value as? CGFloat { self = .expansion(v) } else { return nil }
+            case .writingDirection:    if let v = value as? [NSWritingDirection] { self = .writingDirection(v) } else { return nil }
+            default:                   return nil
+            }
+            
+        }
         
         var rawValue: (key: NSAttributedString.Key, value: Any?) {
             switch self {
