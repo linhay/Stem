@@ -34,6 +34,7 @@ extension Array where Element == NSAttributedString.Attribute {
     
 }
 
+// MARK: - convenience [NSAttributedString.Attribute]
 extension Dictionary where Key == NSAttributedString.Key {
     
     var attributes: [NSAttributedString.Attribute] {
@@ -42,6 +43,28 @@ extension Dictionary where Key == NSAttributedString.Key {
     
 }
 
+// MARK: - convenience String
+public extension StemValue where Base == String {
+    
+    ///  获取富文本类型字符串
+    ///
+    /// - Parameter attributes: 富文本属性
+    /// - Returns: 富文本类型字符串
+    func attributes(_ attributes: NSAttributedString.Attribute...) -> NSAttributedString {
+        return NSAttributedString(string: base, attributes: attributes)
+    }
+    
+    ///  获取富文本类型字符串
+    ///
+    /// - Parameter attributes: 富文本属性
+    /// - Returns: 富文本类型字符串
+    func attributes(_ attributes: [NSAttributedString.Attribute]) -> NSAttributedString {
+        return NSAttributedString(string: base, attributes: attributes)
+    }
+    
+}
+
+// MARK: - convenience NSMutableAttributedString
 public extension Stem where Base: NSAttributedString {
     
     /// 获取可变类型富文本
@@ -49,6 +72,49 @@ public extension Stem where Base: NSAttributedString {
         return NSMutableAttributedString(attributedString: base)
     }
     
+}
+
+// MARK: - NSAttributedString
+public extension Stem where Base: NSAttributedString  {
+    
+    /// 获取字符串的Bounds
+    ///
+    /// - Parameters:
+    ///   - font: 字体大小
+    ///   - size: 字符串长宽限制
+    /// - Returns: 字符串的Bounds
+    func bounds(size: CGSize, option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGRect {
+        if base.length == 0 { return CGRect.zero }
+        return base.boundingRect(with: size, options: option, context: nil)
+    }
+    
+    /// 获取字符串的CGSize
+    ///
+    /// - Parameters:
+    ///   - font: 字体大小
+    ///   - size: 字符串长宽限制
+    /// - Returns: 字符串的Bounds
+    func size(size: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
+                                    height: CGFloat.greatestFiniteMagnitude),
+              option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGSize {
+        return self.bounds(size: size, option: option).size
+    }
+    
+    /// 文本行数
+    ///
+    /// - Parameters:
+    ///   - font: 字体
+    ///   - width: 最大宽度
+    /// - Returns: 行数
+    func rows(maxWidth: CGFloat) -> CGFloat {
+        if base.length == 0 { return 0 }
+        // 获取单行时候的内容的size
+        let singleSize = self.size()
+        // 获取多行时候,文字的size
+        let textSize = self.size(size: CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
+        // 返回计算的行数
+        return ceil(textSize.height / singleSize.height)
+    }
 }
 
 // MARK: - convenience init
