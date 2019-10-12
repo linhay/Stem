@@ -61,9 +61,9 @@ public extension Stem where Base: UIColor {
 
     /// 随机色
     static var random: UIColor {
-        let r = CGFloat(drand48())
-        let g = CGFloat(drand48())
-        let b = CGFloat(drand48())
+        let r = CGFloat.random(in: 0.0 ... 255)
+        let g = CGFloat.random(in: 0.0 ... 255)
+        let b = CGFloat.random(in: 0.0 ... 255)
         return UIColor(r: r, g: g, b: b, a: 1.0)
     }
 
