@@ -23,7 +23,7 @@
 import UIKit
 
 extension Array where Element == NSAttributedString.Attribute {
-    
+
     var attributes: [NSAttributedString.Key: Any] {
         return self.reduce([NSAttributedString.Key: Any]()) { (dict, item) -> [NSAttributedString.Key: Any] in
             var dict = dict
@@ -31,21 +31,21 @@ extension Array where Element == NSAttributedString.Attribute {
             return dict
         }
     }
-    
+
 }
 
 // MARK: - convenience [NSAttributedString.Attribute]
 extension Dictionary where Key == NSAttributedString.Key {
-    
+
     var attributes: [NSAttributedString.Attribute] {
         return self.compactMap { return NSAttributedString.Attribute(key: $0.key, value: $0.value) }
     }
-    
+
 }
 
 // MARK: - convenience String
 public extension StemValue where Base == String {
-    
+
     ///  获取富文本类型字符串
     ///
     /// - Parameter attributes: 富文本属性
@@ -53,7 +53,7 @@ public extension StemValue where Base == String {
     func attributes(_ attributes: NSAttributedString.Attribute...) -> NSAttributedString {
         return NSAttributedString(string: base, attributes: attributes)
     }
-    
+
     ///  获取富文本类型字符串
     ///
     /// - Parameter attributes: 富文本属性
@@ -61,33 +61,35 @@ public extension StemValue where Base == String {
     func attributes(_ attributes: [NSAttributedString.Attribute]) -> NSAttributedString {
         return NSAttributedString(string: base, attributes: attributes)
     }
-    
+
 }
 
 // MARK: - convenience NSMutableAttributedString
 public extension Stem where Base: NSAttributedString {
-    
+
     /// 获取可变类型富文本
     var toMutable: NSMutableAttributedString {
         return NSMutableAttributedString(attributedString: base)
     }
-    
+
 }
 
 // MARK: - NSAttributedString
-public extension Stem where Base: NSAttributedString  {
-    
+public extension Stem where Base: NSAttributedString {
+
     /// 获取字符串的Bounds
     ///
     /// - Parameters:
     ///   - font: 字体大小
     ///   - size: 字符串长宽限制
     /// - Returns: 字符串的Bounds
-    func bounds(size: CGSize, option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGRect {
+    func bounds(size: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
+                                      height: CGFloat.greatestFiniteMagnitude),
+                option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGRect {
         if base.length == 0 { return CGRect.zero }
         return base.boundingRect(with: size, options: option, context: nil)
     }
-    
+
     /// 获取字符串的CGSize
     ///
     /// - Parameters:
@@ -99,7 +101,7 @@ public extension Stem where Base: NSAttributedString  {
               option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGSize {
         return self.bounds(size: size, option: option).size
     }
-    
+
     /// 文本行数
     ///
     /// - Parameters:
@@ -119,7 +121,7 @@ public extension Stem where Base: NSAttributedString  {
 
 // MARK: - convenience init
 public extension NSAttributedString {
-    
+
     /// 初始化函数
     ///
     /// - Parameters:
@@ -128,7 +130,7 @@ public extension NSAttributedString {
     convenience init(string: String, attributes: Attribute...) {
         self.init(string: string, attributes: attributes.attributes)
     }
-    
+
     /// 初始化函数
     ///
     /// - Parameters:
@@ -137,11 +139,11 @@ public extension NSAttributedString {
     convenience init(string: String, attributes: [Attribute]) {
         self.init(string: string, attributes: attributes.attributes)
     }
-    
+
 }
 
 public extension NSAttributedString {
-    
+
     /// 富文本属性
     ///
     /// - font: 字体, [default: Helvetica(Neue) 12]
@@ -187,7 +189,7 @@ public extension NSAttributedString {
         case obliqueness(_: CGFloat)
         case expansion(_: CGFloat)
         case writingDirection(_: [NSWritingDirection])
-        
+
         public init?(key: NSAttributedString.Key, value: Any) {
             switch key {
             case .font:                if let v = value as? UIFont { self = .font(v) } else { return nil }
@@ -219,9 +221,9 @@ public extension NSAttributedString {
             case .writingDirection:    if let v = value as? [NSWritingDirection] { self = .writingDirection(v) } else { return nil }
             default:                   return nil
             }
-            
+
         }
-        
+
         var rawValue: (key: NSAttributedString.Key, value: Any?) {
             switch self {
             case .font(let value):                return (NSAttributedString.Key.font, value)
@@ -248,7 +250,7 @@ public extension NSAttributedString {
             }
         }
     }
-    
+
     /// 文字排版方向
     ///
     /// - horizontal: 横排文本 [default]
@@ -257,7 +259,7 @@ public extension NSAttributedString {
         case horizontal = 0
         case vertical = 1
     }
-    
+
     /// 连字符
     ///
     /// - none: 没有连体字符
@@ -268,16 +270,16 @@ public extension NSAttributedString {
         case `default` = 1
         case all = 2
     }
-    
+
     static func+(lhs: NSAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
         let attr = NSMutableAttributedString(attributedString: lhs)
         attr.append(rhs)
         return attr
     }
-    
+
     static func+=(lhs: NSMutableAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
         lhs.append(rhs)
         return lhs
     }
-    
+
 }

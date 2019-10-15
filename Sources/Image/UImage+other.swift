@@ -59,7 +59,7 @@ public extension Stem where Base: UIImage {
     ///   - offset: 覆盖图片偏移 正值向下向右
     /// - Returns: 新图
     func overlay(image: UIImage, offset: UIOffset = UIOffset.zero) -> UIImage {
-        UIGraphicsBeginImageContext(base.size)
+        UIGraphicsBeginImageContextWithOptions(base.size, false, UIScreen.main.scale)
         defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(origin: .zero, size: base.size))
         image.draw(in: CGRect(origin: .init(x: offset.horizontal, y: offset.vertical), size: image.size))

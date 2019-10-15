@@ -44,6 +44,11 @@ public extension CGRect {
 
 public extension StemValue where Base == CGRect {
 
+    /// 中心点
+    var center: CGPoint {
+        return CGPoint(x: base.x + base.width * 0.5, y: base.y + base.height * 0.5)
+    }
+
     /// 判断一个 CGRect 是否合法（例如不带无穷大的值、不带非法数字）
     var isValidated: Bool {
         guard !base.isNull, !base.isInfinite else { return false }
@@ -66,4 +71,7 @@ public extension StemValue where Base == CGRect {
         return CGRect(x: base.x, y: y, width: base.width, height: base.height)
     }
 
+    func changed(center: CGPoint) -> CGRect {
+        return CGRect(x: center.x - base.width * 0.5, y: center.y - base.height * 0.5, width: base.width, height: base.height)
+    }
 }
