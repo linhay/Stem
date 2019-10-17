@@ -25,21 +25,15 @@ import UIKit
 // MARK: - UIImage
 public extension Stem where Base: UIImage {
     
-    /// 图片尺寸: Bytes
-    var sizeAsBytes: Int {
+    /// 图片尺寸: byte as jpeg
+    var byte: Int {
         return base.jpegData(compressionQuality: 1)?.count ?? 0
     }
-    
-    /// 图片尺寸: KB
-    var sizeAsKB: Int {
-        let sizeAsBytes = self.sizeAsBytes
-        return sizeAsBytes != 0 ? sizeAsBytes / 1024: 0
-    }
-    
-    /// 图片尺寸: MB
-    var sizeAsMB: Int {
-        let sizeAsKB = self.sizeAsKB
-        return sizeAsBytes != 0 ? sizeAsKB / 1024: 0
+
+    /// 图片尺寸: 1 KB | 1MB | 1TB
+    var byteString: String {
+        let formatter = ByteCountFormatter()
+        return formatter.string(fromByteCount: Int64(byte))
     }
     
 }

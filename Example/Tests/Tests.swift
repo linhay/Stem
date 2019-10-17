@@ -25,11 +25,9 @@ class Tests: XCTestCase {
 
 
     func test_STGestureRecognizer() {
-        let ges = STGestureRecognizer()
     }
     
     func test_string() {
-        
 
     }
 
