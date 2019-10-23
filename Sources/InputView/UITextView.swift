@@ -18,6 +18,10 @@ public extension Stem where Base: UITextView {
         item.textColor = UIColor.gray.withAlphaComponent(0.7)
         base.addSubview(item)
         base.setValue(item, forKey: "_placeholderLabel")
+        /// 修正初始化时的偏移
+        let attr = base.attributedText
+        base.attributedText = NSAttributedString(string: "stem.placeholderLabel")
+        base.attributedText = attr
         return item
     }
 
