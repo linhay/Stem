@@ -13,8 +13,6 @@ class TestNavbar01ViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.st.isSetNavHidden = true
-        self.st.popGestureMaxLeftEdge = 20
     }
 
 }

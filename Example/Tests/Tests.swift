@@ -1,5 +1,4 @@
 import XCTest
-import Stone
 import Stem
 
 class Tests: XCTestCase {
@@ -32,8 +31,9 @@ class Tests: XCTestCase {
     }
 
     func testUIApplication() {
-        RunTime.print.ivars(from: UISearchBar.self)
-        RunTime.print.properties(from: UISearchBar.self)
+        RunTime.print.ivars(from: UITextField.self)
+        RunTime.print.methods(from: UITextField.self)
+        RunTime.print.properties(from: UITextField.self)
     }
 
 }

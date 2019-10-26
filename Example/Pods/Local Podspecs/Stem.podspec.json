@@ -14,256 +14,86 @@
     "git": "https://github.com/linhay/Stem.git",
     "tag": "0.0.27"
   },
-  "platforms": {
-    "ios": "8.0"
-  },
-  "swift_versions": "5.0",
-  "frameworks": [
-    "UIKit"
+  "swift_versions": [
+    "4.0",
+    "4.1",
+    "4.2",
+    "5.0",
+    "5.1"
   ],
   "requires_arc": true,
+  "platforms": {
+    "osx": null,
+    "ios": null,
+    "tvos": null,
+    "watchos": null
+  },
   "subspecs": [
     {
       "name": "Core",
       "source_files": [
-        "Sources/Core/**",
-        "Sources/Core/*/**"
-      ]
+        "Sources/Core/*.swift"
+      ],
+      "platforms": {
+        "ios": "8.0",
+        "tvos": "9.0",
+        "osx": "10.10",
+        "watchos": "2.0"
+      }
     },
     {
-      "name": "UIDevice",
+      "name": "Runtime",
       "source_files": [
-        "Sources/UIDevice/**",
-        "Sources/UIDevice/*/**"
+        "Sources/Runtime/Runtime.swift"
       ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
+      "platforms": {
+        "ios": "8.0",
+        "tvos": "9.0",
+        "osx": "10.10",
+        "watchos": "2.0"
       }
     },
     {
       "name": "Foundation",
       "source_files": [
-        "Sources/Foundation/**",
-        "Sources/Foundation/*/**"
+        "Sources/Foundation/**/*.swift"
+      ],
+      "frameworks": [
+        "Foundation"
       ],
       "dependencies": {
         "Stem/Core": [
 
         ]
+      },
+      "platforms": {
+        "ios": "8.0",
+        "tvos": "9.0",
+        "osx": "10.10",
+        "watchos": "2.0"
       }
     },
     {
-      "name": "CGGeometry",
+      "name": "UIKit",
       "source_files": [
-        "Sources/CGGeometry/**",
-        "Sources/CGGeometry/*/**"
+        "Sources/UIKit/**/*.swift"
       ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "ListView",
-      "source_files": [
-        "Sources/ListView/**",
-        "Sources/ListView/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Color",
-      "source_files": [
-        "Sources/Color/**",
-        "Sources/Color/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Label",
-      "source_files": [
-        "Sources/Label/**",
-        "Sources/Label/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Font",
-      "source_files": [
-        "Sources/Font/**",
-        "Sources/Font/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Image",
-      "source_files": [
-        "Sources/Image/**",
-        "Sources/Image/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "ImageView",
-      "source_files": [
-        "Sources/ImageView/**",
-        "Sources/ImageView/*/**"
+      "frameworks": [
+        "Foundation",
+        "UIKit"
       ],
       "dependencies": {
         "Stem/Core": [
 
         ],
-        "Stem/Image": [
+        "Stem/Runtime": [
 
         ]
-      }
-    },
-    {
-      "name": "Control",
-      "source_files": [
-        "Sources/Control/**",
-        "Sources/Control/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "NSLayoutConstraint",
-      "source_files": [
-        "Sources/NSLayoutConstraint/**",
-        "Sources/NSLayoutConstraint/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Application",
-      "source_files": [
-        "Sources/Application/**",
-        "Sources/Application/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Storyboard",
-      "source_files": [
-        "Sources/Storyboard/**",
-        "Sources/Storyboard/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "PopGesture",
-      "source_files": [
-        "Sources/PopGesture/**",
-        "Sources/PopGesture/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "NavigationBar",
-      "source_files": [
-        "Sources/NavigationBar/**",
-        "Sources/NavigationBar/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "InputView",
-      "source_files": [
-        "Sources/InputView/**",
-        "Sources/InputView/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ],
-        "Stem/CGGeometry": [
-
-        ]
-      }
-    },
-    {
-      "name": "ViewController",
-      "source_files": [
-        "Sources/ViewController/**",
-        "Sources/ViewController/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "View",
-      "source_files": [
-        "Sources/View/**",
-        "Sources/View/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "GestureRecognizer",
-      "source_files": [
-        "Sources/GestureRecognizer/**",
-        "Sources/GestureRecognizer/*/**"
-      ],
-      "dependencies": {
-        "Stem/Core": [
-
-        ]
+      },
+      "platforms": {
+        "ios": "8.0"
       }
     }
   ],
-  "swift_version": "5.0"
+  "swift_version": "5.1"
 }

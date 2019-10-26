@@ -78,6 +78,7 @@
 		CD543C36233C6E9D00CFE10F /* TestUIViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUIViewViewController.swift; sourceTree = "<group>"; };
 		CD6ABC87229BDFD80017C6ED /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 		CD77388322ABE15C0032C3CC /* NSShadow */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSShadow; sourceTree = "<group>"; };
+		CD84E69623630D6C000F5E9B /* string+range.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "string+range.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		CDBD3017234F1B830098AEE3 /* TestNavbar01ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNavbar01ViewController.swift; sourceTree = "<group>"; };
 		CDC823722296F99800E654A6 /* TestCALayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCALayerViewController.swift; sourceTree = "<group>"; };
 		CDC823732296F99800E654A6 /* TestButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestButtonViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 		CDD47A06234C7AAD00691618 /* playgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				CD84E69623630D6C000F5E9B /* string+range.playground */,
 				CDD47A07234C7AFA00691618 /* AttributedString.playground */,
 			);
 			path = playgrounds;
@@ -369,7 +371,6 @@
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Stem/Stem.framework",
-				"${BUILT_PRODUCTS_DIR}/Stone/Stone.framework",
 				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -377,7 +378,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stem.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stone.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Then.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,12 +437,10 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Stem/Stem.framework",
-				"${BUILT_PRODUCTS_DIR}/Stone/Stone.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stem.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stone.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

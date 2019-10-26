@@ -1,68 +1,17 @@
 PODS:
   - SnapKit (4.2.0)
   - Stem (0.0.27):
-    - Stem/Application (= 0.0.27)
-    - Stem/CGGeometry (= 0.0.27)
-    - Stem/Color (= 0.0.27)
-    - Stem/Control (= 0.0.27)
     - Stem/Core (= 0.0.27)
-    - Stem/Font (= 0.0.27)
     - Stem/Foundation (= 0.0.27)
-    - Stem/GestureRecognizer (= 0.0.27)
-    - Stem/Image (= 0.0.27)
-    - Stem/ImageView (= 0.0.27)
-    - Stem/InputView (= 0.0.27)
-    - Stem/Label (= 0.0.27)
-    - Stem/ListView (= 0.0.27)
-    - Stem/NavigationBar (= 0.0.27)
-    - Stem/NSLayoutConstraint (= 0.0.27)
-    - Stem/PopGesture (= 0.0.27)
-    - Stem/Storyboard (= 0.0.27)
-    - Stem/UIDevice (= 0.0.27)
-    - Stem/View (= 0.0.27)
-    - Stem/ViewController (= 0.0.27)
-  - Stem/Application (0.0.27):
-    - Stem/Core
-  - Stem/CGGeometry (0.0.27):
-    - Stem/Core
-  - Stem/Color (0.0.27):
-    - Stem/Core
-  - Stem/Control (0.0.27):
-    - Stem/Core
+    - Stem/Runtime (= 0.0.27)
+    - Stem/UIKit (= 0.0.27)
   - Stem/Core (0.0.27)
-  - Stem/Font (0.0.27):
-    - Stem/Core
   - Stem/Foundation (0.0.27):
     - Stem/Core
-  - Stem/GestureRecognizer (0.0.27):
+  - Stem/Runtime (0.0.27)
+  - Stem/UIKit (0.0.27):
     - Stem/Core
-  - Stem/Image (0.0.27):
-    - Stem/Core
-  - Stem/ImageView (0.0.27):
-    - Stem/Core
-    - Stem/Image
-  - Stem/InputView (0.0.27):
-    - Stem/CGGeometry
-    - Stem/Core
-  - Stem/Label (0.0.27):
-    - Stem/Core
-  - Stem/ListView (0.0.27):
-    - Stem/Core
-  - Stem/NavigationBar (0.0.27):
-    - Stem/Core
-  - Stem/NSLayoutConstraint (0.0.27):
-    - Stem/Core
-  - Stem/PopGesture (0.0.27):
-    - Stem/Core
-  - Stem/Storyboard (0.0.27):
-    - Stem/Core
-  - Stem/UIDevice (0.0.27):
-    - Stem/Core
-  - Stem/View (0.0.27):
-    - Stem/Core
-  - Stem/ViewController (0.0.27):
-    - Stem/Core
-  - Stone (0.0.2)
+    - Stem/Runtime
   - SVProgressHUD (2.2.5)
   - SwiftLint (0.35.0)
   - Then (2.6.0)
@@ -70,7 +19,6 @@ PODS:
 DEPENDENCIES:
   - SnapKit
   - Stem (from `../`)
-  - Stone
   - SVProgressHUD
   - SwiftLint
   - Then
@@ -78,7 +26,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - SnapKit
-    - Stone
     - SVProgressHUD
     - SwiftLint
     - Then
@@ -89,12 +36,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: f4dfbc6063f09134fb9cf43c3e28c321870c688d
-  Stone: ce22394d2644c843bfc93413454df098c8c630d6
+  Stem: 221c64262813c69341a4c0640a2907c5c9b09802
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
   Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
 
-PODFILE CHECKSUM: 92d345a7396e92cad48c092290687b1948b61ff4
+PODFILE CHECKSUM: 1a6322237aa6a94ed7508d0afd227f148b3953c2
 
 COCOAPODS: 1.8.0
