@@ -21,10 +21,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
-
 import Foundation
-
 
 public class RunTime {
 
@@ -209,21 +206,6 @@ public extension RunTime {
     }
     
 }
-
-extension RunTime {
-    struct ObJC {
-
-        var instance: NSObject?
-        var `class`: NSObject?
-
-        init?(_ name: String) {
-            self.class = NSClassFromString(name) as NSObject.Type
-            self.instance = type?.perform(Selector("new"))
-        }
-    }
-}
-
-
 #if DEBUG
 public extension RunTime {
 

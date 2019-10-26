@@ -9,8 +9,6 @@
 #endif
 #endif
 #endif
-
-
 FOUNDATION_EXPORT double StemVersionNumber;
 FOUNDATION_EXPORT const unsigned char StemVersionString[];
 

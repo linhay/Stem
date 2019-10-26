@@ -21,10 +21,30 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
-
 import UIKit
 
-class UIStoryboard_Protocol: NSAttributedString {
+public protocol StoryboardInstantiable {
+    static var storyboardID: String { get }
+}
 
+extension StoryboardInstantiable {
+    public static var storyboardID: String {
+        String(describing: self)
+    }
+}
+
+extension StoryboardInstantiable where Self: UIViewController {
+    /// Instantiates and returns the view controller of type `Self`.
+    ///
+    /// - Parameters:
+    ///   - named: The name of the storyboard file without the file extension. The
+    ///            default value is `Main`.
+    ///   - bundle: The bundle containing the storyboard file and its related
+    ///             resources. If `nil`, then this method looks in the `main` bundle
+    ///             of the current application. The default value is `nil`.
+    /// - Returns: The view controller of type `Self`.
+    public static func initFromStoryboard(named: String = "Main", bundle: Bundle? = nil) -> Self {
+        let bundle = bundle ?? Bundle(for: Self.self)
+        return UIStoryboard(name: named, bundle: bundle).instantiateViewController(withIdentifier: storyboardID) as! Self
+    }
 }

@@ -2,8 +2,6 @@ Pod::Spec.new do |s|
     s.name             = 'Stem'
     s.version          = '0.0.27'
     s.summary          = 'A set of useful categories for Foundation and UIKit.'
-
-
     s.homepage         = 'https://github.com/linhay/Stem.git'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'lin' => 'is.linhay@outlook.com' }

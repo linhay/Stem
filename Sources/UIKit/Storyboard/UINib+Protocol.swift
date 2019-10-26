@@ -21,32 +21,29 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
-
 import UIKit
 
-public protocol StoryboardInstantiable {
-    static var storyboardID: String { get }
+public protocol NibInstantiable {
+    static var nibId: String { get }
 }
 
-extension StoryboardInstantiable {
-    public static var storyboardID: String {
+extension NibInstantiable {
+    public static var nibId: String {
         String(describing: self)
     }
 }
 
-extension StoryboardInstantiable where Self: UIViewController {
-    /// Instantiates and returns the view controller of type `Self`.
+extension NibInstantiable where Self: UIView {
+    /// Instantiates and returns the nib of type `Self`.
     ///
-    /// - Parameters:
-    ///   - named: The name of the storyboard file without the file extension. The
-    ///            default value is `Main`.
-    ///   - bundle: The bundle containing the storyboard file and its related
-    ///             resources. If `nil`, then this method looks in the `main` bundle
-    ///             of the current application. The default value is `nil`.
-    /// - Returns: The view controller of type `Self`.
-    public static func initFromStoryboard(named: String = "Main", bundle: Bundle? = nil) -> Self {
+    /// - Parameter bundle: The bundle containing the nib file and its related
+    ///                     resources. If `nil`, then this method looks in the
+    ///                     `main` bundle of the current application. The default
+    ///                     value is `nil`.
+    /// - Returns: The nib of type `Self`.
+    public static func initFromNib(bundle: Bundle? = nil) -> Self {
         let bundle = bundle ?? Bundle(for: Self.self)
-        return UIStoryboard(name: named, bundle: bundle).instantiateViewController(withIdentifier: storyboardID) as! Self
+        return bundle.loadNibNamed(nibId, owner: nil, options: nil)!.first as! Self
     }
 }
+

@@ -21,8 +21,6 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
-
 /* 协议继承关系
  https://github.com/apple/swift-evolution/blob/master/proposals/0104-improved-integers.md
  +-------------+   +-------------+

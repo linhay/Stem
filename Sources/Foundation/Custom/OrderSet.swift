@@ -21,8 +21,6 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-
-
 import Foundation
 
 /// https://github.com/Weebly/OrderedSet/blob/master/Sources/OrderedSet.swift
