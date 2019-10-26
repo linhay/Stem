@@ -35,9 +35,12 @@ def fileCallback(path: str, license: bytearray = license(path=os.getcwd() + '/sc
         index: int = 0
         for i in range(0, len(lines)):
             line = lines[i].decode(encoding='utf-8').replace(' ', '')
-            if not line.startswith('//') and line.count != 0:
-                index = i
-                break
+            if line.startswith('//'):
+                continue
+            if line == '\n':
+                continue
+            index = i   
+            break
 
         lines = license + [b'\n'] + lines[index:]
         with open(path, 'wb') as writer:
