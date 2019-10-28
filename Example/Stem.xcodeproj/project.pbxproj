@@ -24,6 +24,7 @@
 		CD3D4FA722A961C400A63348 /* temp in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FA622A961C400A63348 /* temp */; };
 		CD3D4FAB22A974B900A63348 /* NSMutableParagraphStyle in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */; };
 		CD543C37233C6E9D00CFE10F /* TestUIViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD543C36233C6E9D00CFE10F /* TestUIViewViewController.swift */; };
+		CD5E4A76236747D800DCBF68 /* TestVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5E4A75236747D800DCBF68 /* TestVCViewController.swift */; };
 		CD6ABC88229BDFD80017C6ED /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = CD6ABC87229BDFD80017C6ED /* .travis.yml */; };
 		CD77388422ABE15C0032C3CC /* NSShadow in Resources */ = {isa = PBXBuildFile; fileRef = CD77388322ABE15C0032C3CC /* NSShadow */; };
 		CDBD3018234F1B830098AEE3 /* TestNavbar01ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBD3017234F1B830098AEE3 /* TestNavbar01ViewController.swift */; };
@@ -76,6 +77,7 @@
 		CD3D4FA622A961C400A63348 /* temp */ = {isa = PBXFileReference; lastKnownFileType = text; path = temp; sourceTree = "<group>"; };
 		CD3D4FAA22A974B900A63348 /* NSMutableParagraphStyle */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSMutableParagraphStyle; sourceTree = "<group>"; };
 		CD543C36233C6E9D00CFE10F /* TestUIViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUIViewViewController.swift; sourceTree = "<group>"; };
+		CD5E4A75236747D800DCBF68 /* TestVCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVCViewController.swift; sourceTree = "<group>"; };
 		CD6ABC87229BDFD80017C6ED /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 		CD77388322ABE15C0032C3CC /* NSShadow */ = {isa = PBXFileReference; lastKnownFileType = text; path = NSShadow; sourceTree = "<group>"; };
 		CD84E69623630D6C000F5E9B /* string+range.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "string+range.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -230,6 +232,7 @@
 				CDECD16F22C5B9FF00015160 /* TestVideoViewController.swift */,
 				CDEB8AB422DC1EAB0021BBD8 /* TestInputViewController.swift */,
 				CDBD3017234F1B830098AEE3 /* TestNavbar01ViewController.swift */,
+				CD5E4A75236747D800DCBF68 /* TestVCViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDC8237F2296F99800E654A6 /* TestImageController.swift in Sources */,
+				CD5E4A76236747D800DCBF68 /* TestVCViewController.swift in Sources */,
 				CD543C37233C6E9D00CFE10F /* TestUIViewViewController.swift in Sources */,
 				CDEB8AB522DC1EAB0021BBD8 /* TestInputViewController.swift in Sources */,
 				CDC8237E2296F99800E654A6 /* TestGestureViewController.swift in Sources */,

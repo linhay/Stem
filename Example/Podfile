@@ -1,3 +1,5 @@
+source 'https://cdn.cocoapods.org/'
+
 use_frameworks!
 install! 'cocoapods', :generate_multiple_pod_projects => true
 inhibit_all_warnings!
@@ -8,7 +10,7 @@ target 'Stem_Example' do
   pod 'Then'
   pod 'SVProgressHUD'
   pod 'SwiftLint'
-
+  pod 'Stuart'
   
   target 'Stem_Tests' do
     inherit! :search_paths

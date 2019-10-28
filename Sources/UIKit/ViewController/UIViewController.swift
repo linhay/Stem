@@ -62,19 +62,6 @@ public extension Stem where Base: UIViewController {
         return self
     }
     
-    /// modal 指定控制器
-    ///
-    /// - Parameters:
-    ///   - vc: 指定控制器
-    ///   - animated: 是否显示动画
-    ///   - completion: 完成后事件
-    @discardableResult
-    func present(vc: UIViewController?, animated: Bool = true, completion: (() -> Void)? = nil) -> Stem<Base> {
-        guard let vc = vc else { return self }
-        base.present(vc, animated: animated, completion: completion)
-        return self
-    }
-    
     /// 后退一层控制器
     ///
     /// - Parameter animated: 是否显示动画
@@ -111,9 +98,10 @@ public extension Stem where Base: UIViewController {
     /// - Returns: vcs
     @discardableResult
     func pop(toRootVC animated: Bool) -> [UIViewController]? {
-        if let vc = base as? UINavigationController {
-            return vc.popToRootViewController(animated: animated)
-        } else {
+        switch base {
+        case let nav as UINavigationController:
+            return nav.popToRootViewController(animated: animated)
+        default:
             return base.navigationController?.popToRootViewController(animated: animated)
         }
     }
@@ -125,6 +113,7 @@ public extension Stem where Base: UIViewController {
     
     /// 获取当前显示控制器
     static var current: UIViewController? {
+
         func find(rawVC: UIViewController) -> UIViewController {
             switch rawVC {
             case let nav as UINavigationController:
@@ -148,30 +137,7 @@ public extension Stem where Base: UIViewController {
         }
         return find(rawVC: rootViewController)
     }
-    
-    /// 父控制器
-    var parents: [UIViewController] {
-        var list = [UIViewController]()
-        var vc: UIViewController = base
-        while let parent = vc.parent {
-            list.append(parent)
-            vc = parent
-        }
-        return list
-    }
-    
-    /// 惰性查询父控制器
-    ///
-    /// - Parameter where: 条件
-    /// - Returns: 父控制器
-    func first(parent where: (_: UIViewController) -> Bool) -> UIViewController? {
-        var vc: UIViewController = base
-        while let parent = vc.parent {
-            if `where`(parent) { return parent }
-            vc = parent
-        }
-        return nil
-    }
+
 }
 
 // MARK: - ivar
@@ -186,17 +152,47 @@ public extension Stem where Base: UIViewController {
     var canback: Bool {
         return (base.navigationController?.viewControllers.count ?? 0) > 1
     }
-    
-    /// 当前是控制器是否是被modal出来
-    var isByPresented: Bool {
-        guard base.presentingViewController == nil else { return false }
-        return true
-    }
-    
+
     /// 是否是当前显示控制器
     var isVisible: Bool {
         guard let vc = UIViewController.st.current else { return false }
         return vc == base || vc.tabBarController == base || vc.navigationController == base
     }
     
+}
+
+// MARK: - present
+public extension Stem where Base: UIViewController {
+
+    /// 能modal的控制器
+    static var presented: UIViewController? {
+        var vc = UIApplication.shared.keyWindow?.rootViewController
+        while let temp = vc?.presentedViewController {
+            vc = temp
+        }
+        return vc
+    }
+
+    /// 当前是控制器是否是被modal出来
+    var isByPresented: Bool {
+        guard base.presentedViewController == nil else { return false }
+        return true
+    }
+
+    /// modal 指定控制器
+    ///
+    /// - Parameters:
+    ///   - vc: 指定控制器
+    ///   - animated: 是否显示动画
+    ///   - completion: 完成后事件
+    @discardableResult
+    func present(vc: UIViewController?, animated: Bool = true, completion: (() -> Void)? = nil) {
+        guard let vc = vc else { return }
+        UIViewController.st.presented?.present(vc, animated: animated, completion: completion)
+    }
+
+    func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
+        base.dismiss(animated: animated, completion: completion)
+    }
+
 }
