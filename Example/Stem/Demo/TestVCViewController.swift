@@ -18,10 +18,7 @@ class TestVCViewController: BaseViewController {
             vc1.contentView.backgroundColor = UIColor.st.random
             let vc2 = TestVCViewController()
             vc2.contentView.backgroundColor = UIColor.st.random
-            print(self.st.canPresentVC)
-            self.st.canPresentVC?.st.present(vc: vc1)
-            print(self.st.canPresentVC)
-//            self.st.canPresentVC?.st.present(vc: vc2)
+            UIViewController.st.presented?.st.present(vc: vc1)
         })
         
         items.append(TableElement(title: "dismiss", subtitle: "") {

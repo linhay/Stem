@@ -22,12 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 import Foundation
 
-public extension Bool {
+extension Bool: StemValueCompatible {}
+
+extension StemValue where Base == Bool {
 
     func trueOrThrow(_ error: Error) throws {
-        if !self {
-            throw error
-        }
+        if !base { throw error }
     }
 
 }

@@ -22,6 +22,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 import Foundation
 
-extension Double {
+extension Double: StemValueCompatible {}
+
+extension StemValue where Base == Double {
 
 }
