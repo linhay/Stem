@@ -23,18 +23,24 @@
 
 import Foundation
 
-/// 事件订阅
-public struct EventBus<Key: EventBusKey, Value: Any>: EventBusProtocol {
-  
-  public typealias EventBusKey = Key
-  public typealias EventBusValue = Value
-  
-  /// 订阅队列
-  public var events = [EventBusItem<EventBusKey, EventBusValue>]()
-  
-  /// 订阅事件集合
-  public var keySet = Set<EventBusKey>()
-  
-  public init() { }
-  
+public class Event<Value> {
+
+    public let key: Notification.Name
+    
+    public init(key: String) {
+        self.key = Notification.Name(key)
+    }
+
+    public var value: Value? {
+        didSet{
+            NotificationCenter.default.post(name: key, object: value)
+        }
+    }
+
+    public func subscribe(queue: OperationQueue? = nil, using block: @escaping (Value?) -> Void) -> NSObjectProtocol {
+        return NotificationCenter.default.addObserver(forName: key, object: nil, queue: queue) { (note) in
+            block(note.object as? Value)
+        }
+    }
+
 }

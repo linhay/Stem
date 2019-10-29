@@ -27,7 +27,16 @@ class Tests: XCTestCase {
     }
     
     func test_string() {
+        let item = Event<Int>(key: "2")
 
+        _ = item.subscribe(using: { (value) in
+            print(value)
+        })
+
+        item.value = 1
+        item.value = 2
+        item.value = 3
+        item.value = 4
     }
 
     func testUIApplication() {
