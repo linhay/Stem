@@ -25,6 +25,11 @@ import Foundation
 
 public extension Stem where Base: NSObject {
 
+    /// 内存地址
+    var memoryAddress: String {
+        String(describing: Unmanaged<NSObject>.passUnretained(base).toOpaque())
+    }
+
     func value<T>(for key: String) -> T? {
         guard let ivar = class_getInstanceVariable(type(of: base), key) else { return nil }
         return object_getIvar(base, ivar) as? T

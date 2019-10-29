@@ -43,19 +43,7 @@ public extension Stem where Base: UIView {
         } while next != nil
         return nil
     }
-    /// 惰性查询父视图
-    ///
-    /// - Parameter where: 条件
-    /// - Returns: 父视图
-    func first(superview `where`: (_: UIView) -> Bool) -> UIView? {
-        var view: UIView = base
-        while let superview = view.superview {
-            if `where`(superview) { return superview }
-            view = superview
-        }
-        return nil
-    }
-    
+
     /** 视图中层级关系描述
      
      示例:

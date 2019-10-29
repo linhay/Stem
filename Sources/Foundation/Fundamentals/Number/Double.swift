@@ -23,6 +23,8 @@
 
 import Foundation
 
-extension Double {
+extension Double: StemValueCompatible {}
+
+extension StemValue where Base == Double {
 
 }
