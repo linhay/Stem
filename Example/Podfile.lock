@@ -12,6 +12,11 @@ PODS:
   - Stem/UIKit (0.0.27):
     - Stem/Core
     - Stem/Runtime
+  - Stuart (0.1.0):
+    - Stuart/Input (= 0.1.0)
+    - Stuart/SectionView (= 0.1.0)
+  - Stuart/Input (0.1.0)
+  - Stuart/SectionView (0.1.0)
   - SVProgressHUD (2.2.5)
   - SwiftLint (0.35.0)
   - Then (2.6.0)
@@ -19,6 +24,7 @@ PODS:
 DEPENDENCIES:
   - SnapKit
   - Stem (from `../`)
+  - "Stuart (from `git@github.com:linhay/Stuart.git`, branch `0.1.0`)"
   - SVProgressHUD
   - SwiftLint
   - Then
@@ -33,14 +39,23 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Stem:
     :path: "../"
+  Stuart:
+    :branch: 0.1.0
+    :git: "git@github.com:linhay/Stuart.git"
+
+CHECKOUT OPTIONS:
+  Stuart:
+    :commit: bb7c48a46b7538cbf6ac072e7b2cbc19d4dd28b4
+    :git: "git@github.com:linhay/Stuart.git"
 
 SPEC CHECKSUMS:
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: 221c64262813c69341a4c0640a2907c5c9b09802
+  Stem: c37ee8bd4ac85ec641e77693cf5b45570cd32d0c
+  Stuart: a9a711fbb7b32a0a522947a1ccb483c5175c6f01
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
   Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
 
-PODFILE CHECKSUM: 1a6322237aa6a94ed7508d0afd227f148b3953c2
+PODFILE CHECKSUM: c8953902841baa32186c8e5a2817953ce4781ea6
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.8.4

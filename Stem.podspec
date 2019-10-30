@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
     end
 
     s.subspec 'Runtime' do |ss|
-        ss.source_files = ['Sources/Runtime/Runtime.swift']
+        ss.source_files = ['Sources/Runtime/*.swift']
 
         ss.ios.deployment_target = '8.0'
         ss.tvos.deployment_target = '9.0'

@@ -92,7 +92,7 @@ public class RunTime {
         let list = (0..<typeCount).compactMap { (index) -> AnyClass? in
             return types[index]
         }
-        
+
         types.deinitialize(count: typeCount)
         types.deallocate()
         return list
@@ -134,78 +134,69 @@ public extension RunTime {
     ///
     /// - Parameter classType: 类型
     /// - Returns: 实例变量大小
-    class func instanceSize(from classType: AnyClass) -> Int {
+    static func instanceSize(from classType: AnyClass) -> Int {
         return class_getInstanceSize(classType)
     }
-    
+
     /// 获取方法列表
     ///
     /// - Parameter classType: 所属类型
     /// - Returns: 方法列表
-    class func methods(from classType: AnyClass) -> [Method] {
-        var methodNum: UInt32 = 0
-        var list = [Method]()
-        let methods = class_copyMethodList(classType, &methodNum)
-        for index in 0..<numericCast(methodNum) {
-            if let met = methods?[index] {
-                list.append(met)
-            }
-        }
-        free(methods)
-        return list
+    static func methods(from classType: AnyClass) -> [Method] {
+        return get_list(close: { class_copyMethodList(classType, &$0) }, format: { $0 })
     }
     
     /// 获取属性列表
     ///
     /// - Parameter classType: 所属类型
     /// - Returns: 属性列表
-    class func properties(from classType: AnyClass) -> [objc_property_t] {
-        var propNum: UInt32 = 0
-        let properties = class_copyPropertyList(classType, &propNum)
-        var list = [objc_property_t]()
-        for index in 0..<Int(propNum) {
-            if let prop = properties?[index] {
-                list.append(prop)
-            }
-        }
-        free(properties)
-        return list
+    static func properties(from classType: AnyClass) -> [objc_property_t] {
+        return get_list(close: { class_copyPropertyList(classType, &$0) }, format: { $0 })
     }
     
     /// 获取协议列表
     ///
     /// - Parameter classType: 所属类型
     /// - Returns: 协议列表
-    class func protocols(from classType: AnyClass) -> [Protocol] {
-        var propNum: UInt32 = 0
-        let protocols = class_copyProtocolList(classType, &propNum)
-        var list = [Protocol]()
-        for index in 0..<Int(propNum) {
-            if let prop = protocols?[index] {
-                list.append(prop)
-            }
-        }
-        return list
+    static func protocols(from classType: AnyClass) -> [Protocol] {
+        return get_list(close: { class_copyProtocolList(classType, &$0) }, format: { $0 })
     }
     
     /// 成员变量列表
     ///
     /// - Parameter classType: 类型
     /// - Returns: 成员变量
-    class func ivars(from classType: AnyClass) -> [Ivar] {
-        var ivarNum: UInt32 = 0
-        let ivars = class_copyIvarList(classType, &ivarNum)
-        var list = [Ivar]()
-        for index in 0..<numericCast(ivarNum) {
-            if let ivar: objc_property_t = ivars?[index] {
-                list.append(ivar)
-            }
-        }
-        free(ivars)
-        return list
+    static func ivars(from classType: AnyClass) -> [Ivar] {
+        return get_list(close: { class_copyIvarList(classType, &$0) }, format: { $0 })
     }
     
 }
+
+private extension RunTime {
+
+    static func get_list<T, U>(close: ( _ outcount: inout UInt32) -> AutoreleasingUnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
+        var outcount: UInt32 = 0
+        var list = [U]()
+        guard let methods = close(&outcount) else { return [] }
+        for index in 0..<Int(outcount) {
+            list.append(format(methods[index]))
+        }
+        return list
+    }
+
+    static func get_list<T, U>(close: ( _ outcount: inout UInt32) -> UnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
+        var outcount: UInt32 = 0
+        var list = [U]()
+        guard let methods = close(&outcount) else { return [] }
+        for index in 0..<numericCast(outcount) {
+            list.append(format(methods[index]))
+        }
+        free(methods)
+        return list
+    }
+
+}
+
 #if DEBUG
 public extension RunTime {
 

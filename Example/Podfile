@@ -10,7 +10,7 @@ target 'Stem_Example' do
   pod 'Then'
   pod 'SVProgressHUD'
   pod 'SwiftLint'
-  pod 'Stuart'
+  pod 'Stuart', :git => 'git@github.com:linhay/Stuart.git',:branch => '0.1.0'
   
   target 'Stem_Tests' do
     inherit! :search_paths

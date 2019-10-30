@@ -32,7 +32,7 @@ public class Event<Value> {
     }
 
     public var value: Value? {
-        didSet{
+        didSet {
             NotificationCenter.default.post(name: key, object: value)
         }
     }

@@ -46,4 +46,3 @@ extension NibInstantiable where Self: UIView {
         return bundle.loadNibNamed(nibId, owner: nil, options: nil)!.first as! Self
     }
 }
-

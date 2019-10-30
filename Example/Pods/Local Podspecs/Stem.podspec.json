@@ -44,7 +44,7 @@
     {
       "name": "Runtime",
       "source_files": [
-        "Sources/Runtime/Runtime.swift"
+        "Sources/Runtime/*.swift"
       ],
       "platforms": {
         "ios": "8.0",
