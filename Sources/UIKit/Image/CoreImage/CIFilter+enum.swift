@@ -21,63 +21,87 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-import UIKit
+import CoreImage
 
+public protocol CIFilterContainerProtocol {
+    var filter: CIFilter { get }
+}
+
+public extension CIFilterContainerProtocol {
+
+    var outputImage: CIImage? {
+        return filter.outputImage
+    }
+
+    var name: String {
+        return filter.name
+    }
+
+    func setDefaults() {
+        return filter.setDefaults()
+    }
+
+    var attributes: [String: Any] {
+        return filter.attributes
+    }
+}
+
+//https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/uid/TP40004346
 public extension CIFilter {
 
-    convenience init(blur value: CIFilter.CICategoryBlur) {
+    convenience init(blur value: CIFilter.Blur) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(colorAdjustment value: CIFilter.CICategoryColorAdjustment) {
+    convenience init(colorAdjustment value: CIFilter.ColorAdjustment) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(colorEffect value: CIFilter.CICategoryColorEffect) {
+    convenience init(colorEffect value: CIFilter.ColorEffect) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(compositeOperation value: CIFilter.CICategoryCompositeOperation) {
+    convenience init(compositeOperation value: CIFilter.CompositeOperation) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(distortionEffect value: CIFilter.CICategoryDistortionEffect) {
+    convenience init(distortionEffect value: CIFilter.DistortionEffect) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(generator value: CIFilter.CICategoryGenerator) {
+    convenience init(generator value: CIFilter.Generator) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(geometryAdjustment value: CIFilter.CICategoryGeometryAdjustment) {
+    convenience init(geometryAdjustment value: CIFilter.GeometryAdjustment) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(gradient value: CIFilter.CICategoryGradient) {
+    convenience init(gradient value: CIFilter.Gradient) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(halftoneEffect value: CIFilter.CICategoryHalftoneEffect) {
+    convenience init(halftoneEffect value: CIFilter.HalftoneEffect) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(reduction value: CIFilter.CICategoryReduction) {
+    convenience init(reduction value: CIFilter.Reduction) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(sharpen value: CIFilter.CICategorySharpen) {
+    convenience init(sharpen value: CIFilter.Sharpen) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(stylize value: CIFilter.CICategoryStylize) {
+    convenience init(stylize value: CIFilter.Stylize) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(tileEffect value: CIFilter.CICategoryTileEffect) {
+    convenience init(tileEffect value: CIFilter.TileEffect) {
         self.init(name: value.rawValue)!
     }
 
-    convenience init(transition value: CIFilter.CICategoryTransition) {
+    convenience init(transition value: CIFilter.Transition) {
         self.init(name: value.rawValue)!
     }
 
@@ -85,7 +109,7 @@ public extension CIFilter {
 
 public extension CIFilter {
 
-    enum CICategoryBlur: String {
+    enum Blur: String {
         case boxBlur            = "CIBoxBlur"
         case discBlur           = "CIDiscBlur"
         case gaussianBlur       = "CIGaussianBlur"
@@ -95,7 +119,7 @@ public extension CIFilter {
         case noiseReduction     = "CINoiseReduction"
     }
 
-    enum CICategoryColorAdjustment: String {
+    enum ColorAdjustment: String {
         case colorClamp            = "CIColorClamp"
         case colorControls         = "CIColorControls"
         case colorMatrix           = "CIColorMatrix"
@@ -111,7 +135,7 @@ public extension CIFilter {
         case whitePointAdjust      = "CIWhitePointAdjust"
     }
 
-    enum CICategoryColorEffect: String {
+    enum ColorEffect: String {
         case colorCrossPolynomial    = "CIColorCrossPolynomial"
         case colorCube               = "CIColorCube"
         case colorCubeWithColorSpace = "CIColorCubeWithColorSpace"
@@ -136,7 +160,7 @@ public extension CIFilter {
         case vignetteEffect          = "CIVignetteEffect"
     }
 
-    enum CICategoryCompositeOperation: String {
+    enum CompositeOperation: String {
         case additionCompositing   = "CIAdditionCompositing"
         case colorBlendMode        = "CIColorBlendMode"
         case colorBurnBlendMode    = "CIColorBurnBlendMode"
@@ -167,7 +191,7 @@ public extension CIFilter {
         case subtractBlendMode     = "CISubtractBlendMode"
     }
 
-    enum CICategoryDistortionEffect: String {
+    enum DistortionEffect: String {
         case bumpDistortion         = "CIBumpDistortion"
         case bumpDistortionLinear   = "CIBumpDistortionLinear"
         case circleSplashDistortion = "CICircleSplashDistortion"
@@ -185,7 +209,40 @@ public extension CIFilter {
         case vortexDistortion       = "CIVortexDistortion"
     }
 
-    enum CICategoryGenerator: String {
+    enum Generator: String {
+
+        /// 二维码
+        public class QRCode: CIFilterContainerProtocol {
+            /// 纠错等级
+            public enum CorrectionLevel: String {
+                /// 7%
+                case l = "L"
+                /// 15%
+                case m = "M"
+                /// 25%
+                case q = "Q"
+                /// 30%
+                case h = "H"
+            }
+
+            public let filter = CIFilter(name: "CIQRCodeGenerator")!
+
+            /// 要编码为QR码的数据
+            public var message: Data? {
+                get { return filter.value(forKey: "inputMessage") as? Data }
+                set { filter.setValue(newValue, forKey: "inputMessage") }
+            }
+
+            /// 纠错等级
+            public var correctionLevel: CorrectionLevel {
+                get {
+                    guard let value = filter.value(forKey: "inputCorrectionLevel") as? String else { return .m }
+                    return CIFilter.Generator.QRCode.CorrectionLevel(rawValue: value)  ?? .m
+                }
+                set { filter.setValue(newValue.rawValue, forKey: "inputCorrectionLevel") }
+            }
+        }
+
         case aztecCodeGenerator      = "CIAztecCodeGenerator"
         case checkerboardGenerator   = "CICheckerboardGenerator"
         case codest8CarcodeGenerator = "CICodest8CarcodeGenerator"
@@ -199,7 +256,7 @@ public extension CIFilter {
         case sunbeamsGenerator       = "CISunbeamsGenerator"
     }
 
-    enum CICategoryGeometryAdjustment: String {
+    enum GeometryAdjustment: String {
         case affineTransform                = "CIAffineTransform"
         case crop                           = "CICrop"
         case lanczosScaleTransform          = "CILanczosScaleTransform"
@@ -209,14 +266,14 @@ public extension CIFilter {
         case straightenFilter               = "CIStraightenFilter"
     }
 
-    enum CICategoryGradient: String {
+    enum Gradient: String {
         case gaussianGradient     = "CIGaussianGradient"
         case linearGradient       = "CILinearGradient"
         case radialGradient       = "CIRadialGradient"
         case smoothLinearGradient = "CISmoothLinearGradient"
     }
 
-    enum CICategoryHalftoneEffect: String {
+    enum HalftoneEffect: String {
         case circularScreen = "CICircularScreen"
         case cMYKHalftone   = "CICMYKHalftone"
         case dotScreen      = "CIDotScreen"
@@ -224,7 +281,7 @@ public extension CIFilter {
         case lineScreen     = "CILineScreen"
     }
 
-    enum CICategoryReduction: String {
+    enum Reduction: String {
         case areaAverage            = "CIAreaAverage"
         case areaHistogram          = "CIAreaHistogram"
         case rowAverage             = "CIRowAverage"
@@ -236,12 +293,12 @@ public extension CIFilter {
         case areaMinimumAlpha       = "CIAreaMinimumAlpha"
     }
 
-    enum CICategorySharpen: String {
+    enum Sharpen: String {
         case sharpenLuminance = "CISharpenLuminance"
         case unsharpMask      = "CIUnsharpMask"
     }
 
-    enum CICategoryStylize: String {
+    enum Stylize: String {
         case blendWithAlphaMask           = "CIBlendWithAlphaMask"
         case blendWithMask                = "CIBlendWithMask"
         case bloom                        = "CIBloom"
@@ -267,7 +324,7 @@ public extension CIFilter {
         case spotLight                    = "CISpotLight"
     }
 
-    enum CICategoryTileEffect: String {
+    enum TileEffect: String {
         case  affineClamp               = "CIAffineClamp"
         case  affineTile                = "CIAffineTile"
         case  eightfoldReflectedTile    = "CIEightfoldReflectedTile"
@@ -286,7 +343,7 @@ public extension CIFilter {
         case  twelvefoldReflectedTile   = "CITwelvefoldReflectedTile"
     }
 
-    enum CICategoryTransition: String {
+    enum Transition: String {
         case accordionFold           = "CIAccordionFoldTransition"
         case barsSwipe               = "CIBarsSwipeTransition"
         case copyMachine             = "CICopyMachineTransition"

@@ -39,6 +39,23 @@ class objc_class_a: objc_class_base {
 
 class Tests: XCTestCase {
 
+    func test_CIFilter()  {
+        var results = [String: [String]]()
+       let categories = CIFilter.filterNames(inCategories: nil)
+
+
+       for category in categories {
+        if let attributes = CIFilter(name: category)?.attributes,
+            let filterCategories = attributes["CIAttributeFilterCategories"] as? [String] {
+            results[category] = filterCategories
+            }
+       }
+
+        results.keys.sorted().forEach { (item) in
+            print(item)
+        }
+    }
+
     func test_objc() {
 
         guard let type = OBJC.Class(name: "objc_class_a")

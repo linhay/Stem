@@ -79,7 +79,7 @@ class TestImageController: BaseViewController {
                                     let image = base.image.st.scaled(toHeight: 80)
                                     base.imageView.image = image
         })
-
+        
         items.append(TableElement(title: "图片覆盖",
                                   subtitle: "image1.st.overlay(image: image2, offset: UIOffset(horizontal: 20, vertical: 30))") {[weak self] in
                                     guard let base = self else { return }
@@ -88,13 +88,13 @@ class TestImageController: BaseViewController {
                                     let image = image1.st.overlay(image: image2, offset: UIOffset(horizontal: 20, vertical: 30))
                                     base.imageView.image = image
         })
-
+        
         items.append(TableElement(title: "毛玻璃效果", subtitle: "imageView.st.blur()") {[weak self] in
             guard let base = self else { return }
             base.imageView.image = base.image.st.blur(value: 5)
         })
-
-
+        
+        
     }
     
 }

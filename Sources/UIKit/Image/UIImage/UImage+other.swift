@@ -25,16 +25,6 @@ import UIKit
 
 public extension UIImage {
     
-    /// 生成二维码
-    convenience init?(qrCode: String) {
-        let data = qrCode.data(using: .utf8)
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
-        filter.setValue(data, forKey: "inputMessage")
-        let transform = CGAffineTransform(scaleX: UIScreen.main.scale, y: UIScreen.main.scale)
-        guard let output = filter.outputImage?.transformed(by: transform) else { return nil }
-        self.init(ciImage: output)
-    }
-    
     convenience init?(named: String, in bundle: Bundle) {
         let manager = FileManager.default
         guard let res = manager.enumerator(atPath: bundle.bundlePath)?
@@ -66,20 +56,5 @@ public extension Stem where Base: UIImage {
         image.draw(in: CGRect(origin: .init(x: offset.horizontal, y: offset.vertical), size: image.size))
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }
-    
-      /// 高斯模糊
-      ///
-      /// - Parameter value: 0 ~ 100, 0为不模糊
-      func blur(value: Double) -> UIImage? {
-        let ciImage = CIImage(image: base)
-        let filter = CIFilter(blur: .gaussianBlur)
-        filter.setValue(ciImage, forKey: kCIInputImageKey)
-        filter.setValue(value, forKey: "inputRadius")
-        guard let output = filter.value(forKey: kCIOutputImageKey) as? CIImage else { return nil }
-        let context = CIContext()
-        guard let cgImage = context.createCGImage(output, from: output.extent) else { return nil }
-        let image = UIImage(cgImage: cgImage)
-        return image
-      }
 
 }
