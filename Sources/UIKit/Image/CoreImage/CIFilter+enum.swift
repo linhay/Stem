@@ -105,7 +105,7 @@ public extension CIFilter {
         /// 二维码
         public class QRCode: CIFilterContainerProtocol {
             /// 纠错等级
-            public enum CorrectionLevel: String {
+            public enum CorrectionLevel: String, CaseIterable {
                 /// 7%
                 case l = "L"
                 /// 15%
@@ -114,6 +114,16 @@ public extension CIFilter {
                 case q = "Q"
                 /// 30%
                 case h = "H"
+
+                public var level: Double {
+                    switch self {
+                    case .l: return 0.07
+                    case .m: return 0.15
+                    case .q: return 0.25
+                    case .h: return 0.30
+                    }
+                }
+
             }
 
             public let filter = CIFilter(name: "CIQRCodeGenerator")!

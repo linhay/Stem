@@ -75,8 +75,8 @@ public extension Stem where Base: UIStoryboard {
     /// - Returns: 视图控制器 | nil
     func viewController<T: UIViewController>(with: T.Type) -> T? {
         let vcName = String(describing: T.self)
-        if let vc = base.instantiateViewController(withIdentifier: vcName) as? T { return vc }
         if let vc = base.instantiateInitialViewController() as? T { return vc }
+        if let vc = base.instantiateViewController(withIdentifier: vcName) as? T { return vc }
         assertionFailure("""
             can't find vc: [\(vcName)]
             in storyboard: [\(base.st.name)]
