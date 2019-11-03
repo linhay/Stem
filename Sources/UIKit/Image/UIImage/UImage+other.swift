@@ -41,6 +41,17 @@ public extension UIImage {
     
 }
 
+public extension UIImage {
+
+  public enum OverlayAlignment {
+        /// 居中
+        case center(x: CGFloat, y: CGFloat)
+        /// 左上
+        case zero(x: CGFloat, y: CGFloat)
+    }
+
+}
+
 public extension Stem where Base: UIImage {
 
     /// 叠加图片
@@ -49,11 +60,19 @@ public extension Stem where Base: UIImage {
     ///   - image: 覆盖至上方图片
     ///   - offset: 覆盖图片偏移 正值向下向右
     /// - Returns: 新图
-    func overlay(image: UIImage, offset: UIOffset = UIOffset.zero) -> UIImage {
+    func overlay(image: UIImage, alignment: UIImage.OverlayAlignment = .center(x: 0, y: 0)) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(base.size, false, UIScreen.main.scale)
         defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(origin: .zero, size: base.size))
-        image.draw(in: CGRect(origin: .init(x: offset.horizontal, y: offset.vertical), size: image.size))
+        switch alignment {
+        case .center(x: let x, y: let y):
+            let origin = CGPoint(x: (base.size.width - image.size.width) * 0.5 + x,
+                                 y: (base.size.height - image.size.height) * 0.5 + y)
+            image.draw(in: CGRect(origin: origin, size: image.size))
+        case .zero(x: let x, y: let y):
+            let origin = CGPoint(x: x, y: y)
+            image.draw(in: CGRect(origin: origin, size: image.size))
+        }
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }
 
