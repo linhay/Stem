@@ -9,7 +9,7 @@ extension CIFilter {
         self.init(name: type.rawValue)!
     }
     
-    enum Blur: String {
+    enum Blur: String, CaseIterable {
         @available(OSX 10.5, *) @available(iOS 9.0, *)
         case boxBlur            = "CIBoxBlur"
         @available(OSX 10.5, *) @available(iOS 9.0, *)

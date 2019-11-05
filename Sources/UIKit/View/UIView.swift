@@ -201,7 +201,7 @@ public extension Stem where Base: UIView {
                 base.removeGestureRecognizer(ges)
                 tapGestureRecognizer = nil
             }
-            
+
             self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.tap)
         }
     }
@@ -209,6 +209,7 @@ public extension Stem where Base: UIView {
     @discardableResult
     func setTapGesture(_ ges: ((UITapGestureRecognizer) -> Void)?) -> Stem<Base> {
         self.tap = ges
+        base.isUserInteractionEnabled = true
         return self
     }
     
@@ -234,7 +235,7 @@ public extension Stem where Base: UIView {
                 base.removeGestureRecognizer(ges)
                 panGestureRecognizer = nil
             }
-            
+
             self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.pan)
         }
     }
@@ -242,6 +243,7 @@ public extension Stem where Base: UIView {
     @discardableResult
     func setPanGesture(_ ges: ((UIPanGestureRecognizer) -> Void)?) -> Stem<Base> {
         self.pan = ges
+        base.isUserInteractionEnabled = true
         return self
     }
     

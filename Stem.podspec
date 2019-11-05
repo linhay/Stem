@@ -53,6 +53,7 @@ Pod::Spec.new do |s|
         ss.frameworks = ['Foundation', 'UIKit']
         ss.dependency 'Stem/Core'
         ss.dependency 'Stem/Runtime'
+        ss.dependency 'Stem/Foundation'
 
         ss.ios.deployment_target = '8.0'
     end

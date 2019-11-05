@@ -93,4 +93,8 @@ extension CIFilterValueProtocol {
         return filter.value(forKey: key) as? CIVector ?? CIVector(x: 0, y: 0, z: 0, w: 0)
     }
 
+    func vector10(for key: String) -> CIVector {
+        return filter.value(forKey: key) as? CIVector ?? CIVector(string: "[1 0 0 0 0 0 0 0 0 0]")
+    }
+
 }

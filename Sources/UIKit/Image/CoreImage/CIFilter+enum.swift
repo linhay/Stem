@@ -26,31 +26,6 @@ import CoreImage
 //https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/uid/TP40004346
 public extension CIFilter {
 
-    enum ColorEffect: String {
-        case colorCrossPolynomial    = "CIColorCrossPolynomial"
-        case colorCube               = "CIColorCube"
-        case colorCubeWithColorSpace = "CIColorCubeWithColorSpace"
-        case colorInvert             = "CIColorInvert"
-        case colorMap                = "CIColorMap"
-        case colorMonochrome         = "CIColorMonochrome"
-        case colorPosterize          = "CIColorPosterize"
-        case falseColor              = "CIFalseColor"
-        case maskToAlpha             = "CIMaskToAlpha"
-        case maximumComponent        = "CIMaximumComponent"
-        case minimumComponent        = "CIMinimumComponent"
-        case photoEffectChrome       = "CIPhotoEffectChrome"
-        case photoEffectFade         = "CIPhotoEffectFade"
-        case photoEffectInstant      = "CIPhotoEffectInstant"
-        case photoEffectMono         = "CIPhotoEffectMono"
-        case photoEffectNoir         = "CIPhotoEffectNoir"
-        case photoEffectProcess      = "CIPhotoEffectProcess"
-        case photoEffectTonal        = "CIPhotoEffectTonal"
-        case photoEffectTransfer     = "CIPhotoEffectTransfer"
-        case sepiaTone               = "CISepiaTone"
-        case vignette                = "CIVignette"
-        case vignetteEffect          = "CIVignetteEffect"
-    }
-
     enum CompositeOperation: String {
         case additionCompositing   = "CIAdditionCompositing"
         case colorBlendMode        = "CIColorBlendMode"

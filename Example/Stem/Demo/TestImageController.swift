@@ -85,7 +85,7 @@ class TestImageController: BaseViewController {
                                     guard let base = self else { return }
                                     let image1 = UIImage(color: UIColor.red, size: CGSize(width: 80, height: 80))
                                     let image2 = UIImage(color: UIColor.blue, size: CGSize(width: 50, height: 50))
-                                    let image = image1.st.overlay(image: image2, offset: UIOffset(horizontal: 20, vertical: 30))
+                                    let image = image1.st.overlay(image: image2, alignment: .zero(x: 20, y: 30))
                                     base.imageView.image = image
         })
         

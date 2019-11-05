@@ -9,7 +9,7 @@ public extension CIFilter {
         self.init(name: type.rawValue)!
     }
 
-    enum ColorAdjustment: String {
+    enum ColorAdjustment: String, CaseIterable {
         @available(OSX 10.9, *) @available(iOS 7.0, *)
         case colorClamp            = "CIColorClamp"
         @available(OSX 10.4, *) @available(iOS 5.0, *)
