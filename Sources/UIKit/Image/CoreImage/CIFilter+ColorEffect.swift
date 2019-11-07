@@ -9,12 +9,8 @@ public extension CIFilter {
     }
 
     enum ColorEffect: String {
-        public typealias AllCases = String
-
         case colorCrossPolynomial    = "CIColorCrossPolynomial"
-
         case colorCube               = "CIColorCube"
-
         case colorCubeWithColorSpace = "CIColorCubeWithColorSpace"
         case colorInvert             = "CIColorInvert"
         case colorMap                = "CIColorMap"
@@ -50,9 +46,9 @@ extension CIFilter.ColorEffect {
         @CIFilterValueBox var blueCoefficients: CIVector
 
         init() {
-            self._redCoefficients.cofig(filter: filter, name: "inputRedCoefficients", default: .init(string: "[1 0 0 0 0 0 0 0 0 0]"))
-            self._greenCoefficients.cofig(filter: filter, name: "inputGreenCoefficients", default: .init(string: "[0 1 0 0 0 0 0 0 0 0]"))
-            self._blueCoefficients.cofig(filter: filter, name: "inputBlueCoefficients", default: .init(string: "[0 0 1 0 0 0 0 0 0 0]"))
+            _redCoefficients.cofig(filter: filter, name: "inputRedCoefficients", default: .init(string: "[1 0 0 0 0 0 0 0 0 0]"))
+            _greenCoefficients.cofig(filter: filter, name: "inputGreenCoefficients", default: .init(string: "[0 1 0 0 0 0 0 0 0 0]"))
+            _blueCoefficients.cofig(filter: filter, name: "inputBlueCoefficients", default: .init(string: "[0 0 1 0 0 0 0 0 0 0]"))
         }
     }
 
@@ -64,8 +60,8 @@ extension CIFilter.ColorEffect {
         @CIFilterValueBox var cubeData: Data?
 
         init() {
-            self._cubeDimension.cofig(filter: filter, name: "inputRedCoefficients", default: 2)
-            self._cubeData.cofig(filter: filter, name: "inputCubeData", default: nil)
+            _cubeDimension.cofig(filter: filter, name: "inputRedCoefficients", default: 2)
+            _cubeData.cofig(filter: filter, name: "inputCubeData", default: nil)
         }
 
     }
@@ -79,9 +75,9 @@ extension CIFilter.ColorEffect {
         @CIFilterValueBox var colorSpace: CGColorSpace?
 
         init() {
-            self._cubeDimension.cofig(filter: filter, name: "inputCubeDimension", default: 2)
-            self._cubeData.cofig(filter: filter, name: "inputCubeData", default: nil)
-            self._colorSpace.cofig(filter: filter, name: "inputColorSpace", default: nil)
+            _cubeDimension.cofig(filter: filter, name: "inputCubeDimension", default: 2)
+            _cubeData.cofig(filter: filter, name: "inputCubeData", default: nil)
+            _colorSpace.cofig(filter: filter, name: "inputColorSpace", default: nil)
         }
 
     }
@@ -92,4 +88,25 @@ extension CIFilter.ColorEffect {
 
     }
 
+    public struct ColorMap: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
+        public var filter: CIFilter = CIFilter(colorAdjustment: .colorMap)
+
+        @CIFilterValueBox var gradientImage: CIImage?
+
+        init() {
+            _gradientImage.cofig(filter: filter, name: "inputGradientImage", default: nil)
+        }
+    }
+
+    public struct ColorMap: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
+        public var filter: CIFilter = CIFilter(colorAdjustment: .colorMap)
+
+        @CIFilterValueBox var gradientImage: CIImage?
+
+        init() {
+            _gradientImage.cofig(filter: filter, name: "inputGradientImage", default: nil)
+        }
+    }
 }

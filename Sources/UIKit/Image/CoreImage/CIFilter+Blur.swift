@@ -40,7 +40,7 @@ extension CIFilter.Blur {
         @CIFilterValueBox var radius: NSNumber
 
         init() {
-            self._radius.cofig(filter: filter, name: "inputRadius", default: 10.00)
+            _radius.cofig(filter: filter, name: "inputRadius", default: 10.00)
         }
     }
 
@@ -52,7 +52,7 @@ extension CIFilter.Blur {
         @CIFilterValueBox var radius: NSNumber
 
         init() {
-            self._radius.cofig(filter: filter, name: "inputRadius", default: 8.00)
+            _radius.cofig(filter: filter, name: "inputRadius", default: 8.00)
         }
     }
 
@@ -62,7 +62,7 @@ extension CIFilter.Blur {
         @CIFilterValueBox var radius: NSNumber
 
         init() {
-            self._radius.cofig(filter: filter, name: "inputRadius", default: 10.00)
+            _radius.cofig(filter: filter, name: "inputRadius", default: 10.00)
         }
     }
 
@@ -74,8 +74,8 @@ extension CIFilter.Blur {
         @CIFilterValueBox var radius: NSNumber
 
         init() {
-            self._radius.cofig(filter: filter, name: "inputRadius", default: 8.00)
-            self._mask.cofig(filter: filter, name: "inputMask", default: nil)
+            _radius.cofig(filter: filter, name: "inputRadius", default: 8.00)
+            _mask.cofig(filter: filter, name: "inputMask", default: nil)
         }
 
     }
@@ -94,8 +94,8 @@ extension CIFilter.Blur {
         @CIFilterValueBox var radius: NSNumber
 
         init() {
-            self._angle.cofig(filter: filter, name: "inputAngle", default: 20)
-            self._radius.cofig(filter: filter, name: "inputRadius", default: 0)
+            _angle.cofig(filter: filter, name: "inputAngle", default: 20)
+            _radius.cofig(filter: filter, name: "inputRadius", default: 0)
         }
     }
 
@@ -108,8 +108,8 @@ extension CIFilter.Blur {
         @CIFilterValueBox var sharpness: NSNumber
 
         init() {
-            self._noiseLevel.cofig(filter: filter, name: "inputNoiseLevel", default: 0.02)
-            self._sharpness.cofig(filter: filter, name: "inputSharpness", default: 0.40)
+            _noiseLevel.cofig(filter: filter, name: "inputNoiseLevel", default: 0.02)
+            _sharpness.cofig(filter: filter, name: "inputSharpness", default: 0.40)
         }
     }
 
@@ -121,8 +121,8 @@ extension CIFilter.Blur {
         @CIFilterValueBox var amount: NSNumber
 
         init() {
-            self._inputCenter.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
-            self._amount.cofig(filter: filter, name: "inputAmount", default: 20.00)
+            _inputCenter.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
+            _amount.cofig(filter: filter, name: "inputAmount", default: 20.00)
         }
     }
 

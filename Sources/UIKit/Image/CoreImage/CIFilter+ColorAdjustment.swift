@@ -39,8 +39,8 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var maxComponents: CIVector
 
         init() {
-            self._minComponents.cofig(filter: filter, name: "inputMinComponents", default: .init(string: "[0 0 0 0]"))
-            self._maxComponents.cofig(filter: filter, name: "inputMaxComponents", default: .init(string: "[1 1 1 1]"))
+            _minComponents.cofig(filter: filter, name: "inputMinComponents", default: .init(string: "[0 0 0 0]"))
+            _maxComponents.cofig(filter: filter, name: "inputMaxComponents", default: .init(string: "[1 1 1 1]"))
         }
     }
 
@@ -53,9 +53,9 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var contrast: NSNumber
 
         init() {
-            self._saturation.cofig(filter: filter, name: "inputSaturation", default: 1)
-            self._brightness.cofig(filter: filter, name: "inputBrightness", default: nil)
-            self._contrast.cofig(filter: filter, name: "inputContrast", default: 1)
+            _saturation.cofig(filter: filter, name: "inputSaturation", default: 1)
+            _brightness.cofig(filter: filter, name: "inputBrightness", default: nil)
+            _contrast.cofig(filter: filter, name: "inputContrast", default: 1)
         }
     }
 
@@ -70,11 +70,11 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var biasVector: CIVector
 
         init() {
-            self._rVector.cofig(filter: filter, name: "inputRVector", default: .init(string: "[1 0 0 0]"))
-            self._gVector.cofig(filter: filter, name: "inputGVector", default: .init(string: "[0 1 0 0]"))
-            self._bVector.cofig(filter: filter, name: "inputBVector", default: .init(string: "[0 0 1 0]"))
-            self._aVector.cofig(filter: filter, name: "inputAVector", default: .init(string: "[0 0 0 1]"))
-            self._biasVector.cofig(filter: filter, name: "inputBiasVector", default: .init(string: "[0 0 0 0]"))
+            _rVector.cofig(filter: filter, name: "inputRVector", default: .init(string: "[1 0 0 0]"))
+            _gVector.cofig(filter: filter, name: "inputGVector", default: .init(string: "[0 1 0 0]"))
+            _bVector.cofig(filter: filter, name: "inputBVector", default: .init(string: "[0 0 1 0]"))
+            _aVector.cofig(filter: filter, name: "inputAVector", default: .init(string: "[0 0 0 1]"))
+            _biasVector.cofig(filter: filter, name: "inputBiasVector", default: .init(string: "[0 0 0 0]"))
         }
 
     }
@@ -89,10 +89,10 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var alphaCoefficients: CIVector
 
         init() {
-            self._redCoefficients.cofig(filter: filter, name: "inputRedCoefficients", default: .init(string: "[0 1 0 0]"))
-            self._greenCoefficients.cofig(filter: filter, name: "inputGreenCoefficients", default: .init(string: "[0 1 0 0]"))
-            self._blueCoefficients.cofig(filter: filter, name: "inputBlueCoefficients", default: .init(string: "[0 1 0 0]"))
-            self._alphaCoefficients.cofig(filter: filter, name: "inputAlphaCoefficients", default: .init(string: "[0 1 0 0]"))
+            _redCoefficients.cofig(filter: filter, name: "inputRedCoefficients", default: .init(string: "[0 1 0 0]"))
+            _greenCoefficients.cofig(filter: filter, name: "inputGreenCoefficients", default: .init(string: "[0 1 0 0]"))
+            _blueCoefficients.cofig(filter: filter, name: "inputBlueCoefficients", default: .init(string: "[0 1 0 0]"))
+            _alphaCoefficients.cofig(filter: filter, name: "inputAlphaCoefficients", default: .init(string: "[0 1 0 0]"))
         }
 
     }
@@ -104,7 +104,7 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var ev: NSNumber
 
         init() {
-            self._ev.cofig(filter: filter, name: "inputEV", default: 0.50)
+            _ev.cofig(filter: filter, name: "inputEV", default: 0.50)
         }
 
     }
@@ -116,7 +116,7 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var power: NSNumber
 
         init() {
-            self._power.cofig(filter: filter, name: "inputPower", default: 0.75)
+            _power.cofig(filter: filter, name: "inputPower", default: 0.75)
         }
 
     }
@@ -128,7 +128,7 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var angle: NSNumber
 
         init() {
-            self._angle.cofig(filter: filter, name: "inputAngle", default: 0.00)
+            _angle.cofig(filter: filter, name: "inputAngle", default: 0.00)
         }
 
     }
@@ -155,8 +155,8 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var targetNeutral: CIVector
 
         init() {
-            self._neutral.cofig(filter: filter, name: "inputNeutral", default: .init(string: " [6500, 0]"))
-            self._targetNeutral.cofig(filter: filter, name: "inputTargetNeutral", default: .init(string: "[6500, 0]"))
+            _neutral.cofig(filter: filter, name: "inputNeutral", default: .init(string: " [6500, 0]"))
+            _targetNeutral.cofig(filter: filter, name: "inputTargetNeutral", default: .init(string: "[6500, 0]"))
         }
     }
 
@@ -171,11 +171,11 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var point4: CIVector
 
         init() {
-            self._point0.cofig(filter: filter, name: "inputPoint0", default: .init(string: "[0, 0]"))
-            self._point1.cofig(filter: filter, name: "inputPoint1", default: .init(string: "[0.25, 0.25]"))
-            self._point2.cofig(filter: filter, name: "inputPoint2", default: .init(string: "[0.5, 0.5]"))
-            self._point3.cofig(filter: filter, name: "inputPoint3", default: .init(string: "[0.75, 0.75]"))
-            self._point4.cofig(filter: filter, name: "inputPoint4", default: .init(string: "[1, 1]"))
+            _point0.cofig(filter: filter, name: "inputPoint0", default: .init(string: "[0, 0]"))
+            _point1.cofig(filter: filter, name: "inputPoint1", default: .init(string: "[0.25, 0.25]"))
+            _point2.cofig(filter: filter, name: "inputPoint2", default: .init(string: "[0.5, 0.5]"))
+            _point3.cofig(filter: filter, name: "inputPoint3", default: .init(string: "[0.75, 0.75]"))
+            _point4.cofig(filter: filter, name: "inputPoint4", default: .init(string: "[1, 1]"))
         }
 
     }
@@ -187,7 +187,7 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var amount: NSNumber?
 
         init() {
-            self._amount.cofig(filter: filter, name: "inputAmount", default: nil)
+            _amount.cofig(filter: filter, name: "inputAmount", default: nil)
         }
     }
 
@@ -198,7 +198,7 @@ extension CIFilter.ColorAdjustment {
         @CIFilterValueBox var color: CIColor?
 
         init() {
-            self._color.cofig(filter: filter, name: "inputColor", default: nil)
+            _color.cofig(filter: filter, name: "inputColor", default: nil)
         }
     }
 }

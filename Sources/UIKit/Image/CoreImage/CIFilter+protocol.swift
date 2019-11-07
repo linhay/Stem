@@ -15,6 +15,28 @@ public extension CIFilterInputImageProtocol {
 
 }
 
+public protocol CIFilterContainerProtocol {
+    var filter: CIFilter { get }
+}
+
+public extension CIFilterContainerProtocol {
+
+    var outputImage: CIImage? {
+        return filter.outputImage
+    }
+
+    var name: String {
+        return filter.name
+    }
+
+    func setDefaults() {
+        return filter.setDefaults()
+    }
+
+    var attributes: [String: Any] {
+        return filter.attributes
+    }
+}
 
 @propertyWrapper
 class CIFilterValueBox<Value> {
@@ -40,28 +62,5 @@ class CIFilterValueBox<Value> {
         self.filter = filter
         self.defaultValue = value
         self.name = name
-    }
-}
-
-public protocol CIFilterContainerProtocol {
-    var filter: CIFilter { get }
-}
-
-public extension CIFilterContainerProtocol {
-
-    var outputImage: CIImage? {
-        return filter.outputImage
-    }
-
-    var name: String {
-        return filter.name
-    }
-
-    func setDefaults() {
-        return filter.setDefaults()
-    }
-
-    var attributes: [String: Any] {
-        return filter.attributes
     }
 }
