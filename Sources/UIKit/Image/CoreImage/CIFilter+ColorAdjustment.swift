@@ -9,32 +9,21 @@ public extension CIFilter {
         self.init(name: type.rawValue)!
     }
 
-    enum ColorAdjustment: String, CaseIterable {
-        @available(OSX 10.9, *) @available(iOS 7.0, *)
+    enum ColorAdjustment: String {
         case colorClamp            = "CIColorClamp"
-        @available(OSX 10.4, *) @available(iOS 5.0, *)
         case colorControls         = "CIColorControls"
-        @available(OSX 10.4, *) @available(iOS 5.0, *)
         case colorMatrix           = "CIColorMatrix"
-        @available(OSX 10.9, *) @available(iOS 7.0, *)
         case colorPolynomial       = "CIColorPolynomial"
-        @available(OSX 10.4, *) @available(iOS 5.0, *)
         case exposureAdjust        = "CIExposureAdjust"
-        @available(OSX 10.4, *) @available(iOS 5.0, *)
         case gammaAdjust           = "CIGammaAdjust"
-        @available(OSX 10.4, *) @available(iOS 5.0, *)
         case hueAdjust             = "CIHueAdjust"
-        @available(OSX 10.10, *) @available(iOS 7.0, *)
+        @available(OSX 10.10, *)
         case linearToSRGBToneCurve = "CILinearToSRGBToneCurve"
-        @available(OSX 10.10, *) @available(iOS 7.0, *)
+        @available(OSX 10.10, *)
         case sRGBToneCurveToLinear = "CISRGBToneCurveToLinear"
-        @available(OSX 10.7, *) @available(iOS 5.0, *)
         case temperatureAndTint    = "CITemperatureAndTint"
-        @available(OSX 10.7, *) @available(iOS 5.0, *)
         case toneCurve             = "CIToneCurve"
-        @available(OSX 10.7, *) @available(iOS 5.0, *)
         case vibrance              = "CIVibrance"
-        @available(OSX 10.7, *) @available(iOS 5.0, *)
         case whitePointAdjust      = "CIWhitePointAdjust"
     }
 
@@ -42,225 +31,174 @@ public extension CIFilter {
 
 extension CIFilter.ColorAdjustment {
 
-    @available(OSX 10.9, *) @available(iOS 7.0, *)
-    public struct ColorClamp: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ColorClamp: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .colorClamp)
 
-        var minComponents: CIVector {
-            set { set(vector: newValue, for: "inputSaturation") }
-            get { return vector4(for: "inputSaturation") }
-        }
+        @CIFilterValueBox var minComponents: CIVector
+        @CIFilterValueBox var maxComponents: CIVector
 
-        var maxComponents: CIVector {
-            set { set(vector: newValue, for: "inputSaturation") }
-            get { return vector4(for: "inputSaturation") }
+        init() {
+            self._minComponents.cofig(filter: filter, name: "inputMinComponents", default: .init(string: "[0 0 0 0]"))
+            self._maxComponents.cofig(filter: filter, name: "inputMaxComponents", default: .init(string: "[1 1 1 1]"))
         }
-
     }
 
-    @available(OSX 10.4, *) @available(iOS 5.0, *)
-    public struct ColorControls: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ColorControls: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .colorControls)
 
-        var saturation: NSNumber {
-            set { set(number: newValue, for: "inputSaturation") }
-            get { return number(for: "inputSaturation") }
-        }
+        @CIFilterValueBox var saturation: NSNumber
+        @CIFilterValueBox var brightness: NSNumber?
+        @CIFilterValueBox var contrast: NSNumber
 
-        var brightness: NSNumber {
-            set { set(number: newValue, for: "inputBrightness") }
-            get { return number(for: "inputBrightness") }
+        init() {
+            self._saturation.cofig(filter: filter, name: "inputSaturation", default: 1)
+            self._brightness.cofig(filter: filter, name: "inputBrightness", default: nil)
+            self._contrast.cofig(filter: filter, name: "inputContrast", default: 1)
         }
-
-        var contrast: NSNumber {
-            set { set(number: newValue, for: "inputContrast") }
-            get { return number(for: "inputContrast") }
-        }
-
     }
 
-    @available(OSX 10.4, *) @available(iOS 5.0, *)
-    public struct ColorMatrix: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ColorMatrix: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .colorMatrix)
 
-        var rVector: CIVector {
-            set { set(vector: newValue, for: "inputRVector") }
-            get { return vector4(for: "inputRVector") }
-        }
+        @CIFilterValueBox var rVector: CIVector
+        @CIFilterValueBox var gVector: CIVector
+        @CIFilterValueBox var bVector: CIVector
+        @CIFilterValueBox var aVector: CIVector
+        @CIFilterValueBox var biasVector: CIVector
 
-        var gVector: CIVector {
-            set { set(vector: newValue, for: "inputGVector") }
-            get { return vector4(for: "inputGVector") }
-        }
-
-        var bVector: CIVector {
-            set { set(vector: newValue, for: "inputBVector") }
-            get { return vector4(for: "inputBVector") }
-        }
-
-        var aVector: CIVector {
-            set { set(vector: newValue, for: "inputAVector") }
-            get { return vector4(for: "inputAVector") }
-        }
-
-        var biasVector: CIVector {
-            set { set(vector: newValue, for: "inputBiasVector") }
-            get { return vector4(for: "inputBiasVector") }
+        init() {
+            self._rVector.cofig(filter: filter, name: "inputRVector", default: .init(string: "[1 0 0 0]"))
+            self._gVector.cofig(filter: filter, name: "inputGVector", default: .init(string: "[0 1 0 0]"))
+            self._bVector.cofig(filter: filter, name: "inputBVector", default: .init(string: "[0 0 1 0]"))
+            self._aVector.cofig(filter: filter, name: "inputAVector", default: .init(string: "[0 0 0 1]"))
+            self._biasVector.cofig(filter: filter, name: "inputBiasVector", default: .init(string: "[0 0 0 0]"))
         }
 
     }
 
-    @available(OSX 10.9, *) @available(iOS 7.0, *)
-    public struct ColorPolynomial: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ColorPolynomial: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .colorPolynomial)
 
-        var redCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputRedCoefficients") }
-            get { return vector4(for: "inputRedCoefficients") }
-        }
+        @CIFilterValueBox var redCoefficients: CIVector
+        @CIFilterValueBox var greenCoefficients: CIVector
+        @CIFilterValueBox var blueCoefficients: CIVector
+        @CIFilterValueBox var alphaCoefficients: CIVector
 
-        var greenCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputGreenCoefficients") }
-            get { return vector4(for: "inputGreenCoefficients") }
-        }
-
-        var blueCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputBlueCoefficients") }
-            get { return vector4(for: "inputBlueCoefficients") }
-        }
-
-        var alphaCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputAlphaCoefficients") }
-            get { return vector4(for: "inputAlphaCoefficients") }
+        init() {
+            self._redCoefficients.cofig(filter: filter, name: "inputRedCoefficients", default: .init(string: "[0 1 0 0]"))
+            self._greenCoefficients.cofig(filter: filter, name: "inputGreenCoefficients", default: .init(string: "[0 1 0 0]"))
+            self._blueCoefficients.cofig(filter: filter, name: "inputBlueCoefficients", default: .init(string: "[0 1 0 0]"))
+            self._alphaCoefficients.cofig(filter: filter, name: "inputAlphaCoefficients", default: .init(string: "[0 1 0 0]"))
         }
 
     }
 
-    @available(OSX 10.4, *) @available(iOS 5.0, *)
-    public struct ExposureAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ExposureAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .exposureAdjust)
 
-        var ev: NSNumber {
-            set { set(number: newValue, for: "inputEV") }
-            get { return number(for: "inputEV") }
+        @CIFilterValueBox var ev: NSNumber
+
+        init() {
+            self._ev.cofig(filter: filter, name: "inputEV", default: 0.50)
         }
 
     }
 
-    @available(OSX 10.4, *) @available(iOS 5.0, *)
-    public struct GammaAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct GammaAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .gammaAdjust)
 
-        var power: NSNumber {
-            set { set(number: newValue, for: "inputPower") }
-            get { return number(for: "inputPower") }
+        @CIFilterValueBox var power: NSNumber
+
+        init() {
+            self._power.cofig(filter: filter, name: "inputPower", default: 0.75)
         }
 
     }
 
-    @available(OSX 10.4, *) @available(iOS 5.0, *)
-    public struct HueAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct HueAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .hueAdjust)
 
-        var angle: NSNumber {
-            set { set(number: newValue, for: "inputAngle") }
-            get { return number(for: "inputAngle") }
+        @CIFilterValueBox var angle: NSNumber
+
+        init() {
+            self._angle.cofig(filter: filter, name: "inputAngle", default: 0.00)
         }
 
     }
 
-    @available(OSX 10.10, *) @available(iOS 7.0, *)
+    @available(OSX 10.10, *)
     public struct LinearToSRGBToneCurve: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .linearToSRGBToneCurve)
 
     }
 
-    @available(OSX 10.10, *) @available(iOS 7.0, *)
+    @available(OSX 10.10, *)
     public struct SRGBToneCurveToLinear: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .sRGBToneCurveToLinear)
 
     }
 
-    @available(OSX 10.7, *) @available(iOS 5.0, *)
-    public struct TemperatureAndTint: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct TemperatureAndTint: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .temperatureAndTint)
 
-        var neutral: CIVector {
-            set { set(vector: newValue, for: "inputNeutral") }
-            get { return vector2(for: "inputNeutral") }
-        }
+        @CIFilterValueBox var neutral: CIVector
+        @CIFilterValueBox var targetNeutral: CIVector
 
-        var targetNeutral: CIVector {
-            set { set(vector: newValue, for: "inputTargetNeutral") }
-            get { return vector2(for: "inputTargetNeutral") }
+        init() {
+            self._neutral.cofig(filter: filter, name: "inputNeutral", default: .init(string: " [6500, 0]"))
+            self._targetNeutral.cofig(filter: filter, name: "inputTargetNeutral", default: .init(string: "[6500, 0]"))
         }
-
     }
 
-    @available(OSX 10.7, *) @available(iOS 5.0, *)
-    public struct ToneCurve: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ToneCurve: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .toneCurve)
 
-        var point0: CIVector {
-            set { set(vector: newValue, for: "inputPoint0") }
-            get { return vector2(for: "inputPoint0") }
-        }
+        @CIFilterValueBox var point0: CIVector
+        @CIFilterValueBox var point1: CIVector
+        @CIFilterValueBox var point2: CIVector
+        @CIFilterValueBox var point3: CIVector
+        @CIFilterValueBox var point4: CIVector
 
-        var point1: CIVector {
-            set { set(vector: newValue, for: "inputPoint1") }
-            get { return vector2(for: "inputPoint1") }
-        }
-
-        var point2: CIVector {
-            set { set(vector: newValue, for: "inputPoint2") }
-            get { return vector2(for: "inputPoint2") }
-        }
-
-        var point3: CIVector {
-            set { set(vector: newValue, for: "inputPoint3") }
-            get { return vector2(for: "inputPoint3") }
-        }
-
-        var point4: CIVector {
-            set { set(vector: newValue, for: "inputPoint4") }
-            get { return vector2(for: "inputPoint4") }
+        init() {
+            self._point0.cofig(filter: filter, name: "inputPoint0", default: .init(string: "[0, 0]"))
+            self._point1.cofig(filter: filter, name: "inputPoint1", default: .init(string: "[0.25, 0.25]"))
+            self._point2.cofig(filter: filter, name: "inputPoint2", default: .init(string: "[0.5, 0.5]"))
+            self._point3.cofig(filter: filter, name: "inputPoint3", default: .init(string: "[0.75, 0.75]"))
+            self._point4.cofig(filter: filter, name: "inputPoint4", default: .init(string: "[1, 1]"))
         }
 
     }
 
-    @available(OSX 10.7, *) @available(iOS 5.0, *)
-    public struct Vibrance: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct Vibrance: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .vibrance)
 
-        var amount: NSNumber {
-            set { set(number: newValue, for: "inputAmount") }
-            get { return number(for: "inputAmount") }
-        }
+        @CIFilterValueBox var amount: NSNumber?
 
+        init() {
+            self._amount.cofig(filter: filter, name: "inputAmount", default: nil)
+        }
     }
 
-
-    @available(OSX 10.7, *) @available(iOS 5.0, *)
-    public struct WhitePointAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct WhitePointAdjust: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .whitePointAdjust)
 
-        var color: NSNumber {
-            set { set(number: newValue, for: "inputColor") }
-            get { return number(for: "inputColor") }
-        }
+        @CIFilterValueBox var color: CIColor?
 
+        init() {
+            self._color.cofig(filter: filter, name: "inputColor", default: nil)
+        }
     }
 }

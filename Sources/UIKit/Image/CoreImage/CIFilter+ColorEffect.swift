@@ -8,11 +8,13 @@ public extension CIFilter {
         self.init(name: type.rawValue)!
     }
 
-    enum ColorEffect: String, CaseIterable {
+    enum ColorEffect: String {
         public typealias AllCases = String
-        @available(OSX 10.9, *) @available(iOS 7.0, *)
+
         case colorCrossPolynomial    = "CIColorCrossPolynomial"
+
         case colorCube               = "CIColorCube"
+
         case colorCubeWithColorSpace = "CIColorCubeWithColorSpace"
         case colorInvert             = "CIColorInvert"
         case colorMap                = "CIColorMap"
@@ -39,25 +41,54 @@ public extension CIFilter {
 
 extension CIFilter.ColorEffect {
 
-    @available(OSX 10.9, *) @available(iOS 7.0, *)
-    public struct ColorCrossPolynomial: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+    public struct ColorCrossPolynomial: CIFilterContainerProtocol, CIFilterInputImageProtocol {
 
         public var filter: CIFilter = CIFilter(colorAdjustment: .colorCrossPolynomial)
 
-        var redCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputRedCoefficients") }
-            get { return vector10(for: "inputRedCoefficients") }
+        @CIFilterValueBox var redCoefficients: CIVector
+        @CIFilterValueBox var greenCoefficients: CIVector
+        @CIFilterValueBox var blueCoefficients: CIVector
+
+        init() {
+            self._redCoefficients.cofig(filter: filter, name: "inputRedCoefficients", default: .init(string: "[1 0 0 0 0 0 0 0 0 0]"))
+            self._greenCoefficients.cofig(filter: filter, name: "inputGreenCoefficients", default: .init(string: "[0 1 0 0 0 0 0 0 0 0]"))
+            self._blueCoefficients.cofig(filter: filter, name: "inputBlueCoefficients", default: .init(string: "[0 0 1 0 0 0 0 0 0 0]"))
+        }
+    }
+
+    public struct ColorCube: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
+        public var filter: CIFilter = CIFilter(colorAdjustment: .colorCube)
+
+        @CIFilterValueBox var cubeDimension: NSNumber
+        @CIFilterValueBox var cubeData: Data?
+
+        init() {
+            self._cubeDimension.cofig(filter: filter, name: "inputRedCoefficients", default: 2)
+            self._cubeData.cofig(filter: filter, name: "inputCubeData", default: nil)
         }
 
-        var greenCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputGreenCoefficients") }
-            get { return vector10(for: "inputGreenCoefficients") }
+    }
+
+    public struct ColorCubeWithColorSpace: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
+        public var filter: CIFilter = CIFilter(colorAdjustment: .colorCube)
+
+        @CIFilterValueBox var cubeDimension: NSNumber
+        @CIFilterValueBox var cubeData: Data?
+        @CIFilterValueBox var colorSpace: CGColorSpace?
+
+        init() {
+            self._cubeDimension.cofig(filter: filter, name: "inputCubeDimension", default: 2)
+            self._cubeData.cofig(filter: filter, name: "inputCubeData", default: nil)
+            self._colorSpace.cofig(filter: filter, name: "inputColorSpace", default: nil)
         }
 
-        var blueCoefficients: CIVector {
-            set { set(vector: newValue, for: "inputBlueCoefficients") }
-            get { return vector10(for: "inputBlueCoefficients") }
-        }
+    }
+
+    public struct ColorInvert: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
+        public var filter: CIFilter = CIFilter(colorAdjustment: .colorInvert)
 
     }
 

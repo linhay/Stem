@@ -9,97 +9,121 @@ extension CIFilter {
         self.init(name: type.rawValue)!
     }
     
-    enum Blur: String, CaseIterable {
-        @available(OSX 10.5, *) @available(iOS 9.0, *)
+    enum Blur: String {
+        @available(iOS 9.0, *)
         case boxBlur            = "CIBoxBlur"
-        @available(OSX 10.5, *) @available(iOS 9.0, *)
+        @available(iOS 9.0, *)
         case discBlur           = "CIDiscBlur"
-        @available(OSX 10.4, *) @available(iOS 6.0, *)
         case gaussianBlur       = "CIGaussianBlur"
         @available(OSX 10.10, *)
         case maskedVariableBlur = "CIMaskedVariableBlur"
-        @available(OSX 10.4, *) @available(iOS 9.0, *)
+        @available(iOS 9.0, *)
         case medianFilter       = "CIMedianFilter"
-        @available(OSX 10.4, *) @available(iOS 9.0, *)
+        @available(iOS 9.0, *)
         case motionBlur         = "CIMotionBlur"
-        @available(OSX 10.4, *) @available(iOS 9.0, *)
+        @available(iOS 9.0, *)
         case noiseReduction     = "CINoiseReduction"
-        @available(OSX 10.4, *) @available(iOS 9.0, *)
+        @available(iOS 9.0, *)
         case zoomReduction     = "CIZoomBlur"
     }
     
 }
 
+
+
 extension CIFilter.Blur {
     
-    @available(OSX 10.5, *) @available(iOS 9.0, *)
-    public struct BoxBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterInputRadiusProtocol {
+    @available(iOS 9.0, *)
+    public struct BoxBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol {
         public var filter: CIFilter = CIFilter(blur: .boxBlur)
-    }
-    
-    @available(OSX 10.5, *) @available(iOS 9.0, *)
-    public struct DiscBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterInputRadiusProtocol {
-        public var filter: CIFilter = CIFilter(blur: .discBlur)
-    }
-    
-    @available(OSX 10.4, *) @available(iOS 6.0, *)
-    public struct GaussianBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterInputRadiusProtocol {
-        public var filter: CIFilter = CIFilter(blur: .gaussianBlur)
-    }
-    
-    @available(OSX 10.10, *)
-    public struct MaskedVariableBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterInputRadiusProtocol {
-        public var filter: CIFilter = CIFilter(blur: .maskedVariableBlur)
-        
-        var image: CIImage? {
-            set { filter.setValue(newValue, forKey: "inputMask") }
-            get { return filter.value(forKey: "inputMask") as? CIImage }
+
+        @CIFilterValueBox var radius: NSNumber
+
+        init() {
+            self._radius.cofig(filter: filter, name: "inputRadius", default: 10.00)
         }
     }
-    
-    @available(OSX 10.4, *) @available(iOS 9.0, *)
+
+    @available(iOS 9.0, *)
+    public struct DiscBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
+        public var filter: CIFilter = CIFilter(blur: .discBlur)
+
+        @CIFilterValueBox var radius: NSNumber
+
+        init() {
+            self._radius.cofig(filter: filter, name: "inputRadius", default: 8.00)
+        }
+    }
+
+    public struct GaussianBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+        public var filter: CIFilter = CIFilter(blur: .gaussianBlur)
+
+        @CIFilterValueBox var radius: NSNumber
+
+        init() {
+            self._radius.cofig(filter: filter, name: "inputRadius", default: 10.00)
+        }
+    }
+
+    @available(OSX 10.10, *)
+    public struct MaskedVariableBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+        public var filter: CIFilter = CIFilter(blur: .maskedVariableBlur)
+
+        @CIFilterValueBox var mask: CIImage?
+        @CIFilterValueBox var radius: NSNumber
+
+        init() {
+            self._radius.cofig(filter: filter, name: "inputRadius", default: 8.00)
+            self._mask.cofig(filter: filter, name: "inputMask", default: nil)
+        }
+
+    }
+
+    @available(iOS 9.0, *)
     public struct MedianFilter: CIFilterContainerProtocol, CIFilterInputImageProtocol {
         public var filter: CIFilter = CIFilter(blur: .medianFilter)
     }
-    
-    @available(OSX 10.4, *) @available(iOS 9.0, *)
-    public struct MotionBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterInputRadiusProtocol, CIFilterValueProtocol {
+
+    @available(iOS 9.0, *)
+    public struct MotionBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
         public var filter: CIFilter = CIFilter(blur: .motionBlur)
-        
-        var angle: NSNumber {
-            set { set(number: newValue, for: "inputAngle") }
-            get { return number(for: "inputAngle") }
+
+        @CIFilterValueBox var angle: NSNumber
+        @CIFilterValueBox var radius: NSNumber
+
+        init() {
+            self._angle.cofig(filter: filter, name: "inputAngle", default: 20)
+            self._radius.cofig(filter: filter, name: "inputRadius", default: 0)
         }
     }
-    
-    @available(OSX 10.4, *) @available(iOS 9.0, *)
-    public struct NoiseReduction: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+
+    @available(iOS 9.0, *)
+    public struct NoiseReduction: CIFilterContainerProtocol, CIFilterInputImageProtocol {
+
         public var filter: CIFilter = CIFilter(blur: .noiseReduction)
-        
-        var noiseLevel: NSNumber {
-            set { set(number: newValue, for: "inputNoiseLevel") }
-            get { return number(for: "inputNoiseLevel") }
-        }
-        
-        var sharpness: NSNumber {
-            set { set(number: newValue, for: "inputSharpness") }
-            get { return number(for: "inputSharpness") }
+
+        @CIFilterValueBox var noiseLevel: NSNumber
+        @CIFilterValueBox var sharpness: NSNumber
+
+        init() {
+            self._noiseLevel.cofig(filter: filter, name: "inputNoiseLevel", default: 0.02)
+            self._sharpness.cofig(filter: filter, name: "inputSharpness", default: 0.40)
         }
     }
-    
-    @available(OSX 10.4, *) @available(iOS 9.0, *)
-    public struct ZoomBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol, CIFilterValueProtocol {
+
+    @available(iOS 9.0, *)
+    public struct ZoomBlur: CIFilterContainerProtocol, CIFilterInputImageProtocol {
         public var filter: CIFilter = CIFilter(blur: .noiseReduction)
-        
-        var inputCenter: CIVector {
-            set { set(vector: newValue, for: "inputCenter") }
-            get { return vector2(for: "inputCenter") }
-        }
-        
-        var amount: NSNumber {
-            set { set(number: newValue, for: "inputAmount") }
-            get { return number(for: "inputAmount") }
+
+        @CIFilterValueBox var inputCenter: CIVector
+        @CIFilterValueBox var amount: NSNumber
+
+        init() {
+            self._inputCenter.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
+            self._amount.cofig(filter: filter, name: "inputAmount", default: 20.00)
         }
     }
-    
+
 }
