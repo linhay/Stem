@@ -30,13 +30,11 @@ public extension UIImage {
         let data = qrCode.data(using: .utf8)
         let filter = CIFilter.Generator.QRCode()
         filter.message = data
-        filter.correctionLevel = correctionLevel
+        filter.level = correctionLevel
         let transform = CGAffineTransform(scaleX: UIScreen.main.scale, y: UIScreen.main.scale)
         guard let output = filter.outputImage?.transformed(by: transform) else { return nil }
         self.init(ciImage: output)
     }
-
-    
 
 }
 

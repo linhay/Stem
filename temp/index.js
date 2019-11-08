@@ -29,12 +29,26 @@ function get_sections() {
             single.type  = filter.getElementsByClassName("filter Objective-C")[0].innerText.replace(" ","")
             single.sort_type = single.type.replace('CI', '')
             single.name = single.sort_type.slice(0,1).toLowerCase() + single.sort_type.slice(1,single.sort_type.length)
-            
+            single.availability  = filter.getElementsByClassName("para availability-item")[0].innerText.replace("\n","").replace("\n","")
+            single.discussion  = ''
+            if (filter.getElementsByClassName("discussion")[0]) {
+                single.discussion  += '/**'
+                for (const row of filter.getElementsByClassName("discussion")[0].innerText.split('\n')) {
+                    if (row == '' || row == '  ') {
+                        continue
+                    }
+                    single.discussion += '\n' + row
+                }
+                single.discussion  += '\n*/'
+            }
+
+
             let parameters = []
-            console.log(' -',single.name)
+            console.log(' -',single.name, " : ", single.availability)
 
             let parametersNode = filter.getElementsByClassName("parameters")[0] 
-            if (parametersNode != undefined) {
+
+            if (parametersNode) {
                 for (const parameter of parametersNode.getElementsByTagName("tr")) {
                     let parm = {}
                     let td = parameter.getElementsByTagName("td")
@@ -43,25 +57,57 @@ function get_sections() {
                     veriable = td[0].getElementsByClassName("term")[0]
                     if (veriable) {
                         parm.key = veriable.innerText
+                        let sort_key = veriable.innerText.replace('input','')
+                        sort_key = sort_key.slice(0,1).toLowerCase() + sort_key.slice(1,sort_key.length)
+                        parm.sort_key = sort_key
                     }
 
-                    veriable = td[1].getElementsByClassName("para")[0]
+                    veriable = td[1]
                     if (veriable) {
-                        parm.decs = veriable.innerText
+                        parm.decs = ''
+                        for (const row of veriable.innerText.split('\n')) {
+                            if (row == '' || row == '  ') {
+                                continue
+                            }
+                            parm.decs += '\n///' + row
+                        }
                     }
 
-                    veriable = td[1].getElementsByClassName("code-voice")[0]
+                    veriable = undefined
+                    for (const node of td[1].getElementsByClassName("code-voice")) {
+                        let type = node.innerText
+                        if (type == 'NSNumber' || type == 'CIVector' || type == 'CGColorSpaceRef' || type == 'NSData' || type == 'CIImage' || type == 'CIColor' || type == 'NSString') {
+                            veriable = type
+                            break
+                        }
+                    }
+
                     if (veriable) {
-                        parm.type = veriable.innerText
+                        parm.type = veriable
+                        if (parm.type == 'CGColorSpaceRef') {
+                            parm.type = 'CGColorSpace'
+                        } else if (parm.type == 'NSData') {
+                            parm.type = 'Data'
+                        } else if (parm.type == 'NSString') {
+                            parm.type = 'String'
+                        }
+                    } else {
+                        parm.type = 'Any'
                     }
 
                     veriable = td[1].getElementsByClassName("para")[1]
                     if (veriable) {
                         parm.default_value_desc = veriable.innerText
-                        parm.default_value = deal_default_value(parm.default_value_desc)  
+                        parm.default_value = veriable.getElementsByClassName("code-voice")[0]
+                        if (parm.default_value) {
+                            parm.default_value = parm.default_value.innerText
+                        } else {
+                            parm.default_value = deal_default_value(parm.default_value_desc) 
+                        }
+                        
                     }
 
-                    console.log('  -|', parm.key, ' - ', parm.type, ' - ', parm.default_value)
+                    console.log('  -|', parm.key, ' - ', parm.type, ' - ', parm.default_value, ' : ', parm.decs)
                     parameters.push(parm)
                 }
             }
@@ -78,39 +124,67 @@ function get_sections() {
 }
 
 
-function toswift(section) {
-    let str = 'extension CIFilter {' + '\n'
-    section_type = section.name.replace("CICategory")
-    section_name = section_type.slice(0,0).toLowerCase() + section_type.slice(1,section_type.length - 1)
+function toswift(sections) {
 
-    str += 'convenience init(' + section_name + ' type: ' + section_type + ') {\n'
-    str += 'self.init(name: type.rawValue)!\n'
-    str += '}\n'
-
-    str += 'enum ' + section_type + ': String {\n' 
-
-    let filters = section.filters
-
-    for (const filter of filters) {
-        filter.case_name = filter.name
-        str += 'case ' + section_type + ': String {\n' 
-    }
-            @available(iOS 9.0, *)
-            case boxBlur            = "CIBoxBlur"
-            @available(iOS 9.0, *)
-            case discBlur           = "CIDiscBlur"
-            case gaussianBlur       = "CIGaussianBlur"
-            @available(OSX 10.10, *)
-            case maskedVariableBlur = "CIMaskedVariableBlur"
-            @available(iOS 9.0, *)
-            case medianFilter       = "CIMedianFilter"
-            @available(iOS 9.0, *)
-            case motionBlur         = "CIMotionBlur"
-            @available(iOS 9.0, *)
-            case noiseReduction     = "CINoiseReduction"
-            @available(iOS 9.0, *)
-            case zoomReduction     = "CIZoomBlur"
+    let str = 'import UIKit\n'
+    for (const section of sections) {
+        str += 'extension CIFilter {' + '\n'
+        str += 'convenience init(' + section.name + ' type: ' + section.sort_type + ') {\n'
+        str += 'self.init(name: type.rawValue)!\n'
+        str += '}\n'
+    
+        str += 'enum ' + section.sort_type + ': String {\n' 
+    
+        for (const filter of section.filters) {
+            str += '///' + filter.availability + '\n'
+            str += 'case ' + filter.name + ' = ' + '"' + filter.type + '"\n' 
         }
-        
-    }'
+        str += ' }\n'
+        str += '}\n'
+
+        str += 'extension CIFilter.' + section.sort_type + ' {\n'
+
+        for (const filter of section.filters) {
+            str += filter.discussion + '\n'
+            str += '///' + filter.availability + '\n'
+            str += 'public struct ' + filter.sort_type + ': CIFilterContainerProtocol {\n'
+            str += 'public var filter: CIFilter = CIFilter(' + section.name +  ': .' + filter.name + ')\n'
+            
+            if (filter.parameters.length != 0) {
+                for (const parameter of filter.parameters) {
+                    str += parameter.decs + '\n'
+                    str += '@CIFilterValueBox var ' + parameter.sort_key + ': ' + parameter.type
+                    if (!parameter.default_value) {
+                        str += '?'
+                    }
+                    str += '\n'
+                }
+            
+                str += 'init() {\n'
+                for (const parameter of filter.parameters) {
+                    str += '_' + parameter.sort_key + '.cofig(filter: filter, name: "' + parameter.key + '", default: '
+                    if (parameter.default_value) {
+                        if (parameter.type == 'NSNumber') {
+                            str += parameter.default_value
+                        } else if (parameter.type == 'CIVector') {
+                            str += '.init(string: "' + parameter.default_value + '")'
+                        } else if (parameter.type == 'String') {
+                            str += '"' + parameter.default_value + '"'
+                        }
+                    } else {
+                        str += 'nil'
+                    }
+                    str += ')\n'
+                }
+                str += ' }\n'
+            }
+
+            str += '}\n'
+        }
+
+        str += '}\n'
+    }
+    console.log(str)
 }
+    
+toswift(get_sections())

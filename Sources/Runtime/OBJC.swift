@@ -2,7 +2,7 @@ import Foundation
 import ObjectiveC.runtime
 
 public struct OBJC {
-
+    
     public enum Encode: String, Hashable {
         case void             = "v"//void类型   v
         case sel              = ":"//selector  :
@@ -29,7 +29,7 @@ public struct OBJC {
         //  case `struct` =     //{name=type…}
         //  case union    =     //(name=type…)
         //  case bnum     =     //A bit field of num bits
-
+        
         public init(char: UnsafePointer<CChar>) {
             guard let str = String(utf8String: char) else {
                 self = .unknown
@@ -55,11 +55,11 @@ public struct OBJC {
     public class Method {
         
         public let pointer: OpaquePointer
-
+        
         public lazy var imp: IMP = {
-           return method_getImplementation(pointer)
+            return method_getImplementation(pointer)
         }()
-
+        
         /// 函数类型编码
         public lazy var typeEncoding: String? = {
             guard let typeEncoding = method_getTypeEncoding(pointer) else {
@@ -67,7 +67,7 @@ public struct OBJC {
             }
             return String(cString: typeEncoding)
         }()
-
+        
         /// 参数类型
         public lazy var argTypes: [OBJC.Encode] = {
             let arguments = method_getNumberOfArguments(pointer)
@@ -80,7 +80,7 @@ public struct OBJC {
                 return type
             }
         }()
-
+        
         /// 返回值类型
         public lazy var returnType: OBJC.Encode = {
             /// 返回值类型
@@ -88,7 +88,7 @@ public struct OBJC {
             defer { free(type) }
             return OBJC.Encode(char: type)
         }()
-
+        
         /// Selector
         public lazy var selector: Selector = {
             return method_getName(pointer)
@@ -100,7 +100,7 @@ public struct OBJC {
         }
         
     }
-
+    
     /// 实例
     public struct Object {
         /// 实例
@@ -114,17 +114,17 @@ public struct OBJC {
         }
         
     }
-
+    
     /// 类型
     public struct Class {
-
+        
         /// 类型实例
         public var type: AnyClass
         /// 类型名
         public var name: String
         /// 所在 bundle
         public var bundle: Bundle
-
+        
         public init(type: AnyClass) {
             self.type = type
             self.name = String(cString: class_getName(type))
@@ -134,7 +134,7 @@ public struct OBJC {
         public init?(name: String, bundle: Bundle = Bundle.main) {
             self.name = name
             self.bundle = bundle
-
+            
             let namespace = bundle.infoDictionary?["CFBundleExecutable"] as? String ?? ""
             if let type = NSClassFromString(name) {
                 self.type = type
@@ -151,12 +151,12 @@ public struct OBJC {
         }
         
     }
-
+    
 }
 
 // MARK: - static
 public extension OBJC.Class {
-
+    
     /// 加载动态库
     /// - Parameter path: 动态库路径
     @discardableResult
@@ -164,19 +164,19 @@ public extension OBJC.Class {
         guard let bundle = Bundle(path: path) else {
             return false
         }
-
+        
         if bundle.isLoaded {
             return true
         }
-
+        
         return bundle.load()
     }
-
+    
 }
 
 // MARK: - func
 public extension OBJC.Class {
-
+    
     /// 元类
     var metaClass: OBJC.Class? {
         guard let type = objc_getMetaClass(name) as? AnyClass else {
@@ -190,28 +190,28 @@ public extension OBJC.Class {
         guard let objc = (type as? NSObject.Type)?.perform(Selector("new"))?.takeRetainedValue() else {
             return nil
         }
-
+        
         return OBJC.Object(value: objc, type: self)
     }
-
+    
 }
 
 // MARK: - CustomStringConvertible
 extension OBJC.Class: CustomStringConvertible {
-
+    
     public var description: String { return self.name }
-
+    
 }
 
 // MARK: - CustomStringConvertible
 extension OBJC.Method: CustomStringConvertible {
-
+    
     public var description: String { return method_getName(pointer).description }
-
+    
 }
 
 public extension OBJC.Class {
-
+    
     /// 获取方法列表
     ///
     /// - Parameter classType: 所属类型
@@ -219,7 +219,7 @@ public extension OBJC.Class {
     var methods: [OBJC.Method] {
         return get_list(close: { class_copyMethodList(type, &$0) }, format: { OBJC.Method(value: $0) })
     }
-
+    
     /// 获取属性列表
     ///
     /// - Parameter classType: 所属类型
@@ -227,7 +227,7 @@ public extension OBJC.Class {
     var properties: [OBJC.Property] {
         return get_list(close: { class_copyPropertyList(type, &$0) }, format: { OBJC.Property(value: $0) })
     }
-
+    
     /// 获取协议列表
     ///
     /// - Parameter classType: 所属类型
@@ -235,7 +235,7 @@ public extension OBJC.Class {
     var protocols: [Protocol] {
         return get_list(close: { class_copyProtocolList(type, &$0) }, format: { $0 })
     }
-
+    
     /// 成员变量列表
     ///
     /// - Parameter classType: 类型
@@ -243,10 +243,10 @@ public extension OBJC.Class {
     var ivars: [Ivar] {
         return get_list(close: { class_copyIvarList(type, &$0) }, format: { $0 })
     }
-
+    
 }
 
-fileprivate func get_list<T, U>(close: ( _ outcount: inout UInt32) -> AutoreleasingUnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
+func get_list<T, U>(close: ( _ outcount: inout UInt32) -> AutoreleasingUnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
     var outcount: UInt32 = 0
     var list = [U]()
     guard let methods = close(&outcount) else { return [] }
@@ -256,7 +256,7 @@ fileprivate func get_list<T, U>(close: ( _ outcount: inout UInt32) -> Autoreleas
     return list
 }
 
-fileprivate func get_list<T, U>(close: ( _ outcount: inout UInt32) -> UnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
+func get_list<T, U>(close: ( _ outcount: inout UInt32) -> UnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
     var outcount: UInt32 = 0
     var list = [U]()
     guard let methods = close(&outcount) else { return [] }

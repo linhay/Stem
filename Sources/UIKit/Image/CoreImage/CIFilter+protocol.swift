@@ -1,19 +1,4 @@
-
 import CoreImage
-
-public protocol CIFilterInputImageProtocol {
-    var filter: CIFilter { get }
-}
-
-public extension CIFilterInputImageProtocol {
-
-    /// A CIImage object whose display name is Image.
-    var image: CIImage? {
-        set { filter.setValue(newValue, forKey: "inputImage") }
-        get { return filter.value(forKey: "inputImage") as? CIImage }
-    }
-
-}
 
 public protocol CIFilterContainerProtocol {
     var filter: CIFilter { get }
