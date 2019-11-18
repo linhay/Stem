@@ -158,9 +158,25 @@ public extension NSAttributedString {
         return attr
     }
 
-    static func+=(lhs: NSMutableAttributedString, rhs: NSAttributedString) -> NSMutableAttributedString {
-        lhs.append(rhs)
-        return lhs
+}
+
+extension Array where Element == NSAttributedString.Attribute {
+
+    var attributes: [NSAttributedString.Key: Any] {
+        return self.reduce([NSAttributedString.Key: Any]()) { (dict, item) -> [NSAttributedString.Key: Any] in
+            var dict = dict
+            dict[item.rawValue.key] = item.rawValue.value
+            return dict
+        }
+    }
+
+}
+
+// MARK: - convenience [NSAttributedString.Attribute]
+extension Dictionary where Key == NSAttributedString.Key {
+
+    var attributes: [NSAttributedString.Attribute] {
+        return self.compactMap { return NSAttributedString.Attribute(key: $0.key, value: $0.value) }
     }
 
 }

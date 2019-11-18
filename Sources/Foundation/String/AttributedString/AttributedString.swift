@@ -23,25 +23,18 @@
 
 import Foundation
 
-extension Array where Element == NSAttributedString.Attribute {
+extension Array where Array.Element: NSAttributedString {
 
-    var attributes: [NSAttributedString.Key: Any] {
-        return self.reduce([NSAttributedString.Key: Any]()) { (dict, item) -> [NSAttributedString.Key: Any] in
-            var dict = dict
-            dict[item.rawValue.key] = item.rawValue.value
-            return dict
+    public func joined(separator: NSAttributedString? = nil) -> NSMutableAttributedString {
+        let temp = NSMutableAttributedString()
+        for (index, item) in self.enumerated() {
+            temp.append(item)
+            if index != self.count - 1, let separator = separator {
+                temp.append(separator)
+            }
         }
+        return temp
     }
-
-}
-
-// MARK: - convenience [NSAttributedString.Attribute]
-extension Dictionary where Key == NSAttributedString.Key {
-
-    var attributes: [NSAttributedString.Attribute] {
-        return self.compactMap { return NSAttributedString.Attribute(key: $0.key, value: $0.value) }
-    }
-
 }
 
 // MARK: - convenience String
@@ -69,8 +62,38 @@ public extension StemValue where Base == String {
 public extension Stem where Base: NSAttributedString {
 
     /// 获取可变类型富文本
-    var toMutable: NSMutableAttributedString {
+    var mutabled: NSMutableAttributedString {
         return NSMutableAttributedString(attributedString: base)
+    }
+
+    func createTagImage(lineHeight: CGFloat,
+                        insets: UIEdgeInsets,
+                        backgroundColor: UIColor,
+                        cornerRadius: CGFloat) -> UIImage? {
+
+        var string = NSMutableAttributedString(attributedString: base)
+
+        var textSize = string.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude,
+                                                        height: lineHeight),
+                                           options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                           context: nil).size
+
+        textSize = CGSize(width: ceil(textSize.width), height: lineHeight)
+
+        let rect = CGRect(origin: .zero, size: CGSize(width: textSize.width + insets.left + insets.right,
+                                                      height: textSize.height + insets.top + insets.bottom))
+
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
+        defer { UIGraphicsEndImageContext() }
+
+        let bezierPath = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
+        bezierPath.addClip()
+        backgroundColor.setFill()
+        UIRectFill(rect)
+        let textRect = CGRect(origin: CGPoint(x: insets.left, y: (rect.height - textSize.height) * 0.5), size: textSize)
+        string.draw(in: textRect)
+        guard UIGraphicsGetCurrentContext() != nil else { return nil }
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 
 }
@@ -97,10 +120,10 @@ public extension Stem where Base: NSAttributedString {
     ///   - font: 字体大小
     ///   - size: 字符串长宽限制
     /// - Returns: 字符串的Bounds
-    func size(size: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
-                                    height: CGFloat.greatestFiniteMagnitude),
+    func size(maxWidth width: CGFloat = CGFloat.greatestFiniteMagnitude,
+              maxHeight height: CGFloat = CGFloat.greatestFiniteMagnitude,
               option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGSize {
-        return self.bounds(size: size, option: option).size
+        return self.bounds(size: CGSize(width: width, height: height), option: option).size
     }
 
     /// 文本行数
@@ -109,12 +132,12 @@ public extension Stem where Base: NSAttributedString {
     ///   - font: 字体
     ///   - width: 最大宽度
     /// - Returns: 行数
-    func rows(maxWidth: CGFloat) -> CGFloat {
+    func rows(maxWidth width: CGFloat) -> CGFloat {
         if base.length == 0 { return 0 }
         // 获取单行时候的内容的size
         let singleSize = self.size()
         // 获取多行时候,文字的size
-        let textSize = self.size(size: CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
+        let textSize = self.size(maxWidth: width)
         // 返回计算的行数
         return ceil(textSize.height / singleSize.height)
     }

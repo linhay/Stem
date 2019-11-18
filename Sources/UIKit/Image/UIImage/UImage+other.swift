@@ -77,3 +77,22 @@ public extension Stem where Base: UIImage {
     }
 
 }
+
+
+public extension Stem where Base: UIImage {
+
+    func toAttributedString(bounds: CGRect) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = base
+        attachment.bounds = bounds
+        return NSAttributedString(attachment: attachment)
+    }
+
+    func toMutableAttributedString(bounds: CGRect) -> NSMutableAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = base
+        attachment.bounds = bounds
+        return NSMutableAttributedString(attachment: attachment)
+    }
+
+}
