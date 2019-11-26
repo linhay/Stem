@@ -30,9 +30,9 @@ public extension UINib {
         self.init(nibName: name, bundle: bundle)
     }
 
-    convenience init<T: UIView>(vc: T.Type, in bundle: Bundle? = nil) {
+    convenience init<T: UIView>(vc: T.Type) {
         let name = String(describing: T.self)
-        self.init(name: name, in: bundle)
+        self.init(name: name, in: Bundle(for: T.self))
     }
 
 }

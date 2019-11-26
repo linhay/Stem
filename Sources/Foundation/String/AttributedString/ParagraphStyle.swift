@@ -9,7 +9,22 @@ import Foundation
 
 public extension Stem where Base: NSParagraphStyle {
 
-    var mutabled: NSMutableParagraphStyle {
+    /**
+     将 `NSParagraphStyle` 转换成 `NSMutableParagraphStyle` 类型
+
+     - Authors: 林翰
+     - Date: 2019/11/26
+
+     - Example:
+
+     ```
+
+     NSParagraphStyle().dxy.mutableCopy
+
+     ```
+
+     */
+    var mutableCopy: NSMutableParagraphStyle {
         if let value = base as? NSMutableParagraphStyle {
             return value
         }

@@ -26,14 +26,22 @@ import UIKit
 // MARK: - UIView 属性扩展
 public extension Stem where Base: UIView {
     
-    /** 返回视图所在的视图控制器
-     
-     示例:
-     
-     ```
-     let vc = UIView().st.viewController
-     ```
-     
+    /**
+     查找 UIView 所在的 UIViewController
+
+     - Authors: linhey
+     - Date: 2019/11/20
+
+     - Example:
+
+        ```
+        guard let vc = CustomView().dxy.viewController else {
+            return
+        }
+
+        vc.present(CustomViewController(), animated: true, completion: nil)
+
+        ```
      */
     var viewController: UIViewController? {
         var next: UIView? = base
@@ -44,11 +52,16 @@ public extension Stem where Base: UIView {
         return nil
     }
 
-    /** 视图中层级关系描述
-     
-     示例:
-     
+    /**
+     输出视图中层级关系描述
+
+     - Authors: linhey
+     - Date: 2019/11/20
+
+     - Example:
+
      ```
+
      <UIView; frame = (15 74; 345 201); autoresize = RM+BM; layer = <CALayer>>
      | <UIView; frame = (8 8; 185 185); autoresize = RM+BM; layer = <CALayer>>
      |    | <UIView; frame = (8 8; 169 76.5); autoresize = RM+BM; layer = <CALayer>>
@@ -56,8 +69,9 @@ public extension Stem where Base: UIView {
      |    | <UIView; frame = (8 100.5; 169 76.5); autoresize = RM+BM; layer = <CALayer>>
      | <UIView; frame = (201 8; 136 185); autoresize = RM+BM; layer = <CALayer>>
      |    | <UILabel; frame = (8 8; 120 21); text = 'Label'; opaque = NO; autoresize = RM+BM; userInteractionEnabled = NO; layer = <_UILabelLayer>
+
      ```
-     
+
      */
     var description: String {
         let recursiveDescription = base
@@ -68,13 +82,34 @@ public extension Stem where Base: UIView {
                                                          options: .regularExpression)
     }
     
-    /** 获取视图显示内容
-     
-     示例:
-     
-     ```
-     UIImageView(image: UIView().st.snapshot)
-     ```
+    /**
+     生成 UIView 截图
+
+     - Authors: linhey
+     - Date: 2019/11/20
+
+     - Example:
+
+        ```
+        guard let image = CustomView().dxy.snapshot else {
+            return
+        }
+
+        let imageView = UIImageView()
+
+        imageView.image = image
+
+        ```
+
+     - Important:
+
+        - # imageSize: 取值于 self.bounds.size
+
+        - # 是否透明: 取决于 self.isOpaque
+
+            * (isOpaque == true) == 完全不透明
+
+            * UIView.isOpaque 默认为 true
      */
     var snapshot: UIImage? {
         UIGraphicsBeginImageContextWithOptions(base.bounds.size, base.isOpaque, 0)
@@ -93,47 +128,45 @@ public extension Stem where Base: UIView {
         return base.snapshotView(afterScreenUpdates: afterUpdates)?.st.snapshot
     }
     
-    @available(iOS 9.0, *) @discardableResult
-    func addLayoutGuides(_ layoutGuides: UILayoutGuide...) -> Stem<Base> {
+    @available(iOS 9.0, *)
+    func addLayoutGuides(_ layoutGuides: UILayoutGuide...) {
         layoutGuides.forEach { base.addLayoutGuide($0) }
-        return self
     }
     
-    @available(iOS 9.0, *) @discardableResult
-    func addLayoutGuides(_ layoutGuides: [UILayoutGuide]) -> Stem<Base> {
+    @available(iOS 9.0, *)
+    func addLayoutGuides(_ layoutGuides: [UILayoutGuide]) {
         layoutGuides.forEach { base.addLayoutGuide($0) }
-        return self
     }
-    
-    /** 添加子控件
-     
-     示例:
-     
+
+    /**
+     添加 subviews
+
+     - Authors: linhey
+     - Date: 2019/11/20
+
+     - Parameter subviews: 子控件数组
+
+     - Example:
+
      ```
+
      let aView = UIView()
      let bView = UIView()
      UIView().st.addSubviews(aView,bView)
+
      ```
-     
-     - Parameter subviews: 子控件数组
      */
-    @discardableResult
-    func addSubviews(_ subviews: UIView...) -> Stem<Base> {
+    func addSubviews(_ subviews: UIView...) {
         subviews.forEach { base.addSubview($0) }
-        return self
     }
     
-    @discardableResult
-    func addSubviews(_ subviews: [UIView]) -> Stem<Base> {
+    func addSubviews(_ subviews: [UIView]) {
         subviews.forEach { base.addSubview($0) }
-        return self
     }
     
     /// 移除全部子控件
-    @discardableResult
-    func removeSubviews() -> Stem<Base> {
+    func removeSubviews() {
         base.subviews.forEach { $0.removeFromSuperview() }
-        return self
     }
     
     /** 添加子控件
@@ -148,17 +181,13 @@ public extension Stem where Base: UIView {
      
      - Parameter subviews: 手势对象数组
      */
-    @discardableResult
-    func addGestureRecognizers(_ gestureRecognizers: UIGestureRecognizer...) -> Stem<Base> {
+    func addGestureRecognizers(_ gestureRecognizers: UIGestureRecognizer...) {
         gestureRecognizers.forEach { base.addGestureRecognizer($0) }
-        return self
     }
     
     /// 移除全部手势
-    @discardableResult
-    func removeGestureRecognizers() -> Stem<Base> {
+    func removeGestureRecognizers() {
         base.gestureRecognizers?.forEach { base.removeGestureRecognizer($0) }
-        return self
     }
     
 }
@@ -206,11 +235,9 @@ public extension Stem where Base: UIView {
         }
     }
     
-    @discardableResult
-    func setTapGesture(_ ges: ((UITapGestureRecognizer) -> Void)?) -> Stem<Base> {
+    func setTapGesture(_ ges: ((UITapGestureRecognizer) -> Void)?) {
         self.tap = ges
         base.isUserInteractionEnabled = true
-        return self
     }
     
 }
@@ -240,11 +267,9 @@ public extension Stem where Base: UIView {
         }
     }
     
-    @discardableResult
-    func setPanGesture(_ ges: ((UIPanGestureRecognizer) -> Void)?) -> Stem<Base> {
+    func setPanGesture(_ ges: ((UIPanGestureRecognizer) -> Void)?) {
         self.pan = ges
         base.isUserInteractionEnabled = true
-        return self
     }
     
 }

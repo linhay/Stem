@@ -25,6 +25,22 @@ import Foundation
 
 extension Array where Array.Element: NSAttributedString {
 
+    /**
+     NSAttributedString 拼接
+
+     - Authors: linhey
+     - Date: 2019/11/26
+
+     - Example:
+
+     ```
+
+     [NSAttributedString(string: "a"), NSAttributedString(string: "b")].joined(separator: NSAttributedString(string: " : "))
+
+     // Print: a : b
+
+     ```
+     */
     public func joined(separator: NSAttributedString? = nil) -> NSMutableAttributedString {
         let temp = NSMutableAttributedString()
         for (index, item) in self.enumerated() {
@@ -61,11 +77,65 @@ public extension StemValue where Base == String {
 // MARK: - convenience NSMutableAttributedString
 public extension Stem where Base: NSAttributedString {
 
-    /// 获取可变类型富文本
-    var mutabled: NSMutableAttributedString {
+    /**
+      转换为 NSMutableAttributedString 类型
+
+     - Authors: linhey
+     - Date: 2019/11/26
+
+     - Example:
+
+     ```
+
+     NSAttributedString(string: "Stem").dxy.mutableCopy
+
+     ```
+
+     */
+    var mutableCopy: NSMutableAttributedString {
         return NSMutableAttributedString(attributedString: base)
     }
 
+    /**
+     创建标签图片
+
+     ```
+     大致长这样:
+     -------
+     | 文字 |
+     -------
+
+     ```
+
+     - Authors: linhey
+     - Date: 2019/11/26
+
+     - Parameter lineHeight: 文字行高
+     - Parameter insets: 上下左右间距
+     - Parameter backgroundColor: 背景色
+     - Parameter cornerRadius: 圆角
+
+     - Example:
+
+     ```
+
+    let image = NSAttributedString(string: "createTagImage",
+                                   attributes: [.foregroundColor: UIColor.white,
+                                   .font: UIFont.systemFont(ofSize: 10, weight: .medium),
+                                   .baselineOffset: 1.2])
+                .dxy.createTagImage(lineHeight: 14,
+                                    insets: UIEdgeInsets(top: 0.5, left: 4, bottom: 0.5, right: 4),
+                                    backgroundColor: UIColor(model.tagColor),
+                                    cornerRadius: 2)
+
+     ```
+
+     - Important:
+
+     - # lineHeight: 是文字行高 不是 标签文本高度
+     - # insets: 不论咋设置, 文字都将居中显示
+     - # 文字偏移: 由于字体差异, 可能需要单独设置 `baselineOffset` 来校正上下偏移
+     */
     func createTagImage(lineHeight: CGFloat,
                         insets: UIEdgeInsets,
                         backgroundColor: UIColor,

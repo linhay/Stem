@@ -18,7 +18,7 @@ extension NSMutableAttributedString {
     
 }
 
-public extension Stem where Base: NSMutableAttributedString {
+extension Stem where Base: NSMutableAttributedString {
 
     func set(_ value: Any?, for key: NSAttributedString.Key, range: Range<Int>? = nil) -> Base {
         var textRange = NSRange(location: 0, length: base.length)

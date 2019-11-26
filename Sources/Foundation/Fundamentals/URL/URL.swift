@@ -23,24 +23,20 @@
 
 import Foundation
 
-public extension URL {
-    
+extension URL: StemValueCompatible { }
+
+extension StemValue where Base == URL {
+
     /// 获取url参数集合
     var querys: [String: String] {
-        var dict = [String: String]()
-        if let query = query {
-            query.components(separatedBy: "&").forEach { (item) in
-                let list = item.components(separatedBy: "=")
-                if list.count == 2 {
-                    dict[list.first!] = list.last!
-                } else if list.count > 2 {
-                    dict[list.first!] = list.dropLast().joined()
-                }
-            }
-        }
-        return dict
+        let compents = URLComponents(url: base, resolvingAgainstBaseURL: true)
+        return compents?.queryItems?.reduce([String: String](), { (result, item) -> [String: String] in
+            var result = result
+            result[item.name] = item.value
+            return result
+        }) ?? [:]
     }
-    
+
 }
 
 // MARK: - ExpressibleByStringLiteral

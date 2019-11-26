@@ -44,6 +44,11 @@ public extension String {
             return String(character)
         }.joined()
     }
+
+    func deletingPrefix(_ prefix: String) -> String {
+        guard self.hasPrefix(prefix) else { return self }
+        return String(self.dropFirst(prefix.count))
+    }
     
     /// 是否包含 Emojis
     var containEmoji: Bool {
