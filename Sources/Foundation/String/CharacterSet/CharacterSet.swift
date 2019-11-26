@@ -22,42 +22,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
 import Foundation
-// MARK: - format
 
-public extension StemValue where Base == String {
-    /// format: NSNumber
-    var number: NSNumber? { return NumberFormatter().number(from: base) }
-    /// format: Int
-    var int: Int? { return number?.intValue }
-    /// format: Double
-    var double: Double? { return number?.doubleValue }
-    /// format: Float
-    var float: Float? { return number?.floatValue }
-    /// format: Bool
-    var bool: Bool? {
-        if let num = number { return num.boolValue }
-        switch base.lowercased() {
-        case "1", "true", "yes": return true
-        case "0", "false", "no": return false
-        default: return nil
-        }
-    }
+extension CharacterSet: StemValueCompatible { }
 
-    /// format: Date
-    func date(mode: String) -> Date? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = mode
-        return formatter.date(from: base)
-    }
+public extension StemValue where Base == CharacterSet {
 
-    
-    /// URL
-    var url: URL? { return URL(string: base) }
-    
-    /// get json
-    var jsonObject: Any? {
-        guard let data = base.data(using: .utf8) else { return nil }
-        return try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-    }
-    
+    // 对urlQuery中的value转义
+    static let urlQueryValueAllowed = CharacterSet(charactersIn: "&\"#%<>[]^`{|}=").inverted
+
 }

@@ -23,15 +23,9 @@
 
 import Foundation
 
-// MARK: - Properties
-public extension Character {
-    /// 转换: int
-    var int: Int? {
-        return Int(String(self))
-    }
+extension String: StemValueCompatible { }
+
+public extension StemValue where Base == String {
     
-    /// 转换: string
-    var string: String {
-        return String(self)
-    }
 }
+

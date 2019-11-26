@@ -21,10 +21,28 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
-import UIKit
+#if canImport(AVFoundation)
+import AVFoundation
 
-extension String: StemValueCompatible { }
+public struct TapticEngine {
 
-public extension StemValue where Base == String {
-    
+    /// 在有 Taptic Engine 的设备上触发一个轻微的振动
+    ///
+    /// - Parameter params: level  (number)  0 ~ 3 表示振动等级
+    public static func taptic(level: Int, isSupportTaptic: Bool = true) {
+        if #available(iOS 10.0, *), isSupportTaptic, let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
+            let tapticEngine = UIImpactFeedbackGenerator(style: style)
+            tapticEngine.prepare()
+            tapticEngine.impactOccurred()
+        }
+        switch level {
+        case 3:  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        case 2:  AudioServicesPlaySystemSound(1521) // 连续三次短震
+        case 1:  AudioServicesPlaySystemSound(1520) // 普通短震，3D Touch 中 Pop 震动反馈
+        default: AudioServicesPlaySystemSound(1519) // 普通短震，3D Touch 中 Peek 震动反馈
+        }
+    }
+
 }
+
+#endif

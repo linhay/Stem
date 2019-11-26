@@ -26,10 +26,10 @@ import Foundation
 #if canImport(CommonCrypto)
 import CommonCrypto
 
-public extension String {
+public extension StemValue where Base == String {
 
     var md5: String {
-        guard let data = self.data(using: String.Encoding.utf8) else { return self }
+        guard let data = base.data(using: .utf8) else { return "" }
         return data.st.md5
     }
 

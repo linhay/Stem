@@ -23,8 +23,17 @@
 
 import Foundation
 
-public extension CharacterSet {
- // 对urlQuery中的value转义
-    static let urlQueryValueAllowed = CharacterSet(charactersIn: "&\"#%<>[]^`{|}=").inverted
+extension Character: StemValueCompatible { }
 
+public extension StemValue where Base == Character {
+
+    /// 转换: int
+    var int: Int? {
+        return Int(String(base))
+    }
+    
+    /// 转换: string
+    var string: String {
+        return String(base)
+    }
 }
