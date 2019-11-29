@@ -8,7 +8,8 @@
 
 import UIKit
 import AVKit
-import CoreMedia
+import Stem
+
 class TestVideoViewController: BaseViewController {
 
     let imageView = UIImageView().then { (item) in
@@ -40,37 +41,7 @@ extension TestVideoViewController {
     func test(handle: @escaping (UIImage) -> Void) {
         let url       = URL(fileURLWithPath: Bundle.main.bundlePath + "/test-video.mp4")
         let asset     = AVAsset(url: url)
-
-        let generator = AVAssetImageGenerator(asset: asset)
-        generator.requestedTimeToleranceBefore = CMTime.zero
-        generator.requestedTimeToleranceAfter  = CMTime.zero
-
-        let duration = asset.duration
-        let times  = (0...52).map({ CMTime(seconds: Double($0), preferredTimescale: duration.timescale) })
-        let values = times.map{ NSValue(time: $0) }
-
-        print(url)
-
-        generator.generateCGImagesAsynchronously(forTimes: values) { (time, cgImage, ti, result, error) in
-            if let error = error {
-                assertionFailure(error.localizedDescription)
-                return
-            }
-
-            if let cgImage = cgImage {
-                let image = UIImage(cgImage: cgImage)
-                let url   = URL(fileURLWithPath: Bundle.main.bundlePath + "/1.png")
-                do{
-                    try image.jpegData(compressionQuality: 1)?.write(to: url)
-                }catch{
-                    assertionFailure(error.localizedDescription)
-                }
-                DispatchQueue.main.async {
-                    handle(image)
-                }
-                return
-            }
-        }
+        asset.st.frame(seconds: (0...52).map({ TimeInterval($0) }), success: handle)
     }
 
     

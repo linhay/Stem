@@ -78,7 +78,6 @@ public extension Stem where Base: UIImage {
 
 }
 
-
 public extension Stem where Base: UIImage {
 
     func toAttributedString(bounds: CGRect) -> NSAttributedString {

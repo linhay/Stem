@@ -23,35 +23,23 @@
   ],
   "requires_arc": true,
   "platforms": {
-    "osx": null,
-    "ios": null,
-    "tvos": null,
-    "watchos": null
+    "ios": "8.0",
+    "tvos": "9.0",
+    "osx": "10.10",
+    "watchos": "2.0"
   },
   "subspecs": [
     {
       "name": "Core",
       "source_files": [
         "Sources/Core/*.swift"
-      ],
-      "platforms": {
-        "ios": "8.0",
-        "tvos": "9.0",
-        "osx": "10.10",
-        "watchos": "2.0"
-      }
+      ]
     },
     {
       "name": "Runtime",
       "source_files": [
         "Sources/Runtime/*.swift"
-      ],
-      "platforms": {
-        "ios": "8.0",
-        "tvos": "9.0",
-        "osx": "10.10",
-        "watchos": "2.0"
-      }
+      ]
     },
     {
       "name": "Foundation",
@@ -65,12 +53,6 @@
         "Stem/Core": [
 
         ]
-      },
-      "platforms": {
-        "ios": "8.0",
-        "tvos": "9.0",
-        "osx": "10.10",
-        "watchos": "2.0"
       }
     },
     {
@@ -88,8 +70,23 @@
         ],
         "Stem/Runtime": [
 
-        ],
-        "Stem/Foundation": [
+        ]
+      },
+      "platforms": {
+        "ios": "8.0"
+      }
+    },
+    {
+      "name": "AVKit",
+      "source_files": [
+        "Sources/AVKit/*.swift"
+      ],
+      "frameworks": [
+        "AVFoundation",
+        "AVKit"
+      ],
+      "dependencies": {
+        "Stem/Core": [
 
         ]
       },

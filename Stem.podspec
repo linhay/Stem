@@ -11,49 +11,47 @@ Pod::Spec.new do |s|
 
     s.requires_arc = true
 
+    s.ios.deployment_target = '8.0'
+    s.tvos.deployment_target = '9.0'
+    s.osx.deployment_target = '10.10'
+    s.watchos.deployment_target = '2.0'
+
     s.subspec 'Core' do |ss|
         ss.source_files = ['Sources/Core/*.swift']
-
-        ss.ios.deployment_target = '8.0'
-        ss.tvos.deployment_target = '9.0'
-        ss.osx.deployment_target = '10.10'
-        ss.watchos.deployment_target = '2.0'
     end
 
     s.subspec 'Runtime' do |ss|
         ss.source_files = ['Sources/Runtime/*.swift']
-
-        ss.ios.deployment_target = '8.0'
-        ss.tvos.deployment_target = '9.0'
-        ss.osx.deployment_target = '10.10'
-        ss.watchos.deployment_target = '2.0'
     end
 
     s.subspec 'Foundation' do |ss|
         base_path = 'Sources/Foundation/'
 
         ss.source_files = [base_path + '**/*.swift']
-        #    ss.exclude_files = [base_path + 'Custom/**/*', base_path + 'Custom/*']
 
         ss.frameworks = ['Foundation']
         ss.dependency 'Stem/Core'
-
-        ss.ios.deployment_target = '8.0'
-        ss.tvos.deployment_target = '9.0'
-        ss.osx.deployment_target = '10.10'
-        ss.watchos.deployment_target = '2.0'
     end
 
     s.subspec 'UIKit' do |ss|
         base_path = 'Sources/UIKit/'
 
         ss.source_files = [base_path + '**/*.swift']
-        #    ss.exclude_files = [base_path + 'Custom/**/*', base_path + 'Custom/*']
 
         ss.frameworks = ['Foundation', 'UIKit']
         ss.dependency 'Stem/Core'
         ss.dependency 'Stem/Runtime'
-        ss.dependency 'Stem/Foundation'
+
+        ss.ios.deployment_target = '8.0'
+    end
+
+    s.subspec 'AVKit' do |ss|
+        base_path = 'Sources/AVKit/'
+
+        ss.source_files = [base_path + '*.swift']
+
+        ss.frameworks = ['AVFoundation', 'AVKit']
+        ss.dependency 'Stem/Core'
 
         ss.ios.deployment_target = '8.0'
     end

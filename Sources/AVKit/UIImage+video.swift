@@ -74,24 +74,32 @@ public extension UIImage {
 import UIKit
 import AVKit
 
-extension Stem where Base: UIImage {
+public extension Stem where Base: AVAsset {
 
-    func frame(asset: AVAsset, seconds: [TimeInterval], _ handle: @escaping (UIImage) -> Void) {
-        let generator = AVAssetImageGenerator(asset: asset)
+    func frame(seconds: TimeInterval,
+               success: @escaping (UIImage) -> Void,
+               failure: ((Error) -> Void)? = nil) {
+        frames(seconds: [seconds], success: success, failure: failure)
+    }
+
+    func frames(seconds: [TimeInterval],
+                success: @escaping (UIImage) -> Void,
+                failure: ((Error) -> Void)? = nil) {
+        let generator = AVAssetImageGenerator(asset: base)
         generator.requestedTimeToleranceBefore = CMTime.zero
         generator.requestedTimeToleranceAfter  = CMTime.zero
 
-        let duration = asset.duration
+        let duration = base.duration
         let times  = seconds.map({ CMTime(seconds: Double($0), preferredTimescale: duration.timescale) })
         let values = times.map { NSValue(time: $0) }
 
-        generator.generateCGImagesAsynchronously(forTimes: values) { (_, cgImage, _, _, error) in
+        generator.generateCGImagesAsynchronously(forTimes: values) { (time, cgImage, _, _, error) in
             if let error = error {
-                assertionFailure(error.localizedDescription)
+                DispatchQueue.main.async { failure?(error) }
                 return
             }
             if let cgImage = cgImage {
-                DispatchQueue.main.async { handle(UIImage(cgImage: cgImage)) }
+                DispatchQueue.main.async { success(UIImage(cgImage: cgImage)) }
             }
         }
     }
