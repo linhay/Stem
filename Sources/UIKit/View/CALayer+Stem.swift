@@ -53,4 +53,41 @@ public extension Stem where Base: CALayer {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 
+
+    /**
+     Sketch 中的阴影效果
+
+     - Authors: linhey
+     - Date: 2019/11/28
+
+     - Parameter <#parameter#>: <#desc#>
+
+     - Example:
+
+     ```
+
+     <#code#>
+
+     ```
+
+     - Important:
+
+     - # <#key#>: <#desc#>
+
+     */
+    func setSketchShadow(color: UIColor,
+                         alpha: CGFloat,
+                         x: CGFloat,
+                         y: CGFloat,
+                         blur: CGFloat,
+                         spread: CGFloat) {
+        base.shadowOffset = CGSize(width: x, height: y)
+        base.shadowRadius = blur * 0.5
+        base.shadowColor = color.cgColor
+        base.shadowOpacity = Float(alpha)
+
+        let rect = base.bounds.insetBy(dx: -spread, dy: -spread)
+        let path = UIBezierPath(roundedRect: rect, cornerRadius: base.cornerRadius)
+        base.shadowPath = path.cgPath
+    }
 }
