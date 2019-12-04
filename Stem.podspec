@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'Stem'
-    s.version          = '0.0.27'
+    s.version          = '0.0.28'
     s.summary          = 'A set of useful categories for Foundation and UIKit.'
     s.homepage         = 'https://github.com/linhay/Stem.git'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -27,22 +27,41 @@ Pod::Spec.new do |s|
     s.subspec 'Foundation' do |ss|
         base_path = 'Sources/Foundation/'
 
-        ss.source_files = [base_path + '**/*.swift']
-
         ss.frameworks = ['Foundation']
         ss.dependency 'Stem/Core'
+
+        subspec_names = ['Coder', 'Collections', 'Custom', 'Date',
+                         'Dispatch', 'Fundamentals', 'NSObject',
+                         'pre-release', 'String']
+
+        for name in subspec_names
+            ss.subspec name do |sss|
+                path = base_path + name
+                sss.source_files = [path + '/**/*.swift', path + '/*.swift']
+            end
+        end
+
     end
 
     s.subspec 'UIKit' do |ss|
         base_path = 'Sources/UIKit/'
-
-        ss.source_files = [base_path + '**/*.swift']
-
         ss.frameworks = ['Foundation', 'UIKit']
         ss.dependency 'Stem/Core'
         ss.dependency 'Stem/Runtime'
 
-        ss.ios.deployment_target = '8.0'
+        subspec_names = ['Application', 'Color', 'Control', 'Custom',
+                         'Font', 'GestureRecognizer', 'Image',
+                         'ImageView', 'InputView', 'Label', 'ListView',
+                         'UIDevice', 'View', 'ViewController',
+                         'NavigationBar', 'NSLayoutConstraint', 'Storyboard']
+
+        for name in subspec_names
+            ss.subspec name do |sss|
+                path = base_path + name
+                sss.source_files = [path + '/**/*.swift', path + '/*.swift']
+            end
+        end
+
     end
 
     s.subspec 'AVKit' do |ss|
@@ -52,44 +71,7 @@ Pod::Spec.new do |s|
 
         ss.frameworks = ['AVFoundation', 'AVKit']
         ss.dependency 'Stem/Core'
-
-        ss.ios.deployment_target = '8.0'
+        
     end
-
-    #  foundation_store = {
-    #
-    #  }
-    #
-    #  uikit_dict = {
-    #    'Core' => [],
-    #    'UIDevice' => ['Stem/Core'],
-    #    'Foundation' => ['Stem/Core'],
-    #    'CGGeometry' => ['Stem/Core'],
-    #    'ListView' => ['Stem/Core'],
-    #    'Color' => ['Stem/Core'],
-    #    'Label' => ['Stem/Core'],
-    #    'Font' => ['Stem/Core'],
-    #    'Image' => ['Stem/Core'],
-    #    'ImageView' => ['Stem/Core', 'Stem/Image'],
-    #    'Control' => ['Stem/Core'],
-    #    'NSLayoutConstraint' => ['Stem/Core'],
-    #    'Application' => ['Stem/Core'],
-    #    'Storyboard' => ['Stem/Core'],
-    #    'PopGesture' => ['Stem/Core'],
-    #    'NavigationBar' => ['Stem/Core'],
-    #    'InputView' => ['Stem/Core', 'Stem/CGGeometry'],
-    #    'ViewController' => ['Stem/Core'],
-    #    'View' => ['Stem/Core'],
-    #    'GestureRecognizer' => ['Stem/Core']
-    #  }
-    #
-    #  dict.each { |key, value|
-    #    s.subspec key do |ss|
-    #      ss.source_files = ['Sources/' + key + '/**', 'Sources/' + key + '/*/**']
-    #      for name in value
-    #        ss.dependency name
-    #      end
-    #    end
-    #  }
 
 end

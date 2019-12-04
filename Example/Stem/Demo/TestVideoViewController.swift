@@ -41,7 +41,7 @@ extension TestVideoViewController {
     func test(handle: @escaping (UIImage) -> Void) {
         let url       = URL(fileURLWithPath: Bundle.main.bundlePath + "/test-video.mp4")
         let asset     = AVAsset(url: url)
-        asset.st.frame(seconds: (0...52).map({ TimeInterval($0) }), success: handle)
+        asset.st.frames(seconds: (0...52).map({ TimeInterval($0) }), success: handle)
     }
 
     
