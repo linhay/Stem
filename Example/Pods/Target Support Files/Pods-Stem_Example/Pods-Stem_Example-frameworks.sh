@@ -162,17 +162,17 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Stem/Stem.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Stem-be4603a1/Stem.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stuart/Stuart.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Then/Then.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Then-iOS/Then.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Stem/Stem.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Stem-be4603a1/Stem.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Stuart/Stuart.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/Then/Then.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Then-iOS/Then.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

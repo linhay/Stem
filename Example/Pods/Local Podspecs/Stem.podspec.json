@@ -23,23 +23,35 @@
   ],
   "requires_arc": true,
   "platforms": {
-    "ios": "8.0",
-    "tvos": "9.0",
-    "osx": "10.10",
-    "watchos": "2.0"
+    "osx": null,
+    "ios": null,
+    "tvos": null,
+    "watchos": null
   },
   "subspecs": [
     {
       "name": "Core",
       "source_files": [
         "Sources/Core/*.swift"
-      ]
+      ],
+      "platforms": {
+        "ios": "8.0",
+        "osx": "10.10",
+        "tvos": "9.0",
+        "watchos": "2.0"
+      }
     },
     {
       "name": "Runtime",
       "source_files": [
         "Sources/Runtime/*.swift"
-      ]
+      ],
+      "platforms": {
+        "ios": "8.0",
+        "osx": "10.10",
+        "tvos": "9.0",
+        "watchos": "2.0"
+      }
     },
     {
       "name": "Foundation",
@@ -50,6 +62,10 @@
         "Stem/Core": [
 
         ]
+      },
+      "platforms": {
+        "ios": "8.0",
+        "osx": "10.10"
       },
       "subspecs": [
         {
@@ -129,7 +145,16 @@
         ],
         "Stem/Runtime": [
 
+        ],
+        "Stem/Foundation/NSObject": [
+
+        ],
+        "Stem/Foundation/Fundamentals": [
+
         ]
+      },
+      "platforms": {
+        "ios": "8.0"
       },
       "subspecs": [
         {
@@ -250,6 +275,13 @@
             "Sources/UIKit/Storyboard/**/*.swift",
             "Sources/UIKit/Storyboard/*.swift"
           ]
+        },
+        {
+          "name": "AttributedString",
+          "source_files": [
+            "Sources/UIKit/AttributedString/**/*.swift",
+            "Sources/UIKit/AttributedString/*.swift"
+          ]
         }
       ]
     },
@@ -266,6 +298,9 @@
         "Stem/Core": [
 
         ]
+      },
+      "platforms": {
+        "ios": "8.0"
       }
     }
   ],

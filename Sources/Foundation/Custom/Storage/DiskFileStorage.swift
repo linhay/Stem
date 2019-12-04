@@ -145,22 +145,21 @@ public extension DiskFileStorage {
 public extension DiskFileStorage {
 
     func set(data: Data?, for key: String) -> Bool {
-        let path = folderPath + key.st.md5
+        let path = folderPath + key
         if let data = data {
             return manager.createFile(atPath: path, contents: data, attributes: nil)
-        } else {
-            do {
-                let url = URL(fileURLWithPath: path)
-                try manager.removeItem(at: url)
-                return true
-            } catch {
-                return false
-            }
+        }
+        do {
+            let url = URL(fileURLWithPath: path)
+            try manager.removeItem(at: url)
+            return true
+        } catch {
+            return false
         }
     }
 
     func get(key: String) -> Data? {
-        let path = folderPath + key.st.md5
+        let path = folderPath + key
         return manager.contents(atPath: path)
     }
 

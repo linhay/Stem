@@ -11,17 +11,20 @@ Pod::Spec.new do |s|
 
     s.requires_arc = true
 
-    s.ios.deployment_target = '8.0'
-    s.tvos.deployment_target = '9.0'
-    s.osx.deployment_target = '10.10'
-    s.watchos.deployment_target = '2.0'
-
     s.subspec 'Core' do |ss|
         ss.source_files = ['Sources/Core/*.swift']
+        ss.ios.deployment_target     = '8.0'
+        ss.osx.deployment_target     = '10.10'
+        ss.tvos.deployment_target    = '9.0'
+        ss.watchos.deployment_target = '2.0'
     end
 
     s.subspec 'Runtime' do |ss|
         ss.source_files = ['Sources/Runtime/*.swift']
+        ss.ios.deployment_target     = '8.0'
+        ss.osx.deployment_target     = '10.10'
+        ss.tvos.deployment_target    = '9.0'
+        ss.watchos.deployment_target = '2.0'
     end
 
     s.subspec 'Foundation' do |ss|
@@ -29,6 +32,8 @@ Pod::Spec.new do |s|
 
         ss.frameworks = ['Foundation']
         ss.dependency 'Stem/Core'
+        ss.ios.deployment_target     = '8.0'
+        ss.osx.deployment_target     = '10.10'
 
         subspec_names = ['Coder', 'Collections', 'Custom', 'Date',
                          'Dispatch', 'Fundamentals', 'NSObject',
@@ -48,12 +53,15 @@ Pod::Spec.new do |s|
         ss.frameworks = ['Foundation', 'UIKit']
         ss.dependency 'Stem/Core'
         ss.dependency 'Stem/Runtime'
+        ss.dependency 'Stem/Foundation/NSObject'
+        ss.dependency 'Stem/Foundation/Fundamentals'
+        ss.ios.deployment_target = '8.0'
 
         subspec_names = ['Application', 'Color', 'Control', 'Custom',
                          'Font', 'GestureRecognizer', 'Image',
                          'ImageView', 'InputView', 'Label', 'ListView',
                          'UIDevice', 'View', 'ViewController',
-                         'NavigationBar', 'NSLayoutConstraint', 'Storyboard']
+                         'NavigationBar', 'NSLayoutConstraint', 'Storyboard', 'AttributedString']
 
         for name in subspec_names
             ss.subspec name do |sss|
@@ -71,7 +79,8 @@ Pod::Spec.new do |s|
 
         ss.frameworks = ['AVFoundation', 'AVKit']
         ss.dependency 'Stem/Core'
-        
+
+        ss.ios.deployment_target     = '8.0'
     end
 
 end

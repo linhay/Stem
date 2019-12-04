@@ -15,6 +15,11 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		8A2480C3BFE8FC8B3E9849DD /* Pods_Stem_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1354FB75AD208DE3BD84A0A7 /* Pods_Stem_Tests.framework */; };
+		CD2036972397DDAB00FAB33D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2036962397DDAB00FAB33D /* AppDelegate.swift */; };
+		CD2036992397DDAB00FAB33D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2036982397DDAB00FAB33D /* ContentView.swift */; };
+		CD20369B2397DDAD00FAB33D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD20369A2397DDAD00FAB33D /* Assets.xcassets */; };
+		CD20369E2397DDAD00FAB33D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD20369D2397DDAD00FAB33D /* Preview Assets.xcassets */; };
+		CD2036A12397DDAD00FAB33D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD20369F2397DDAD00FAB33D /* Main.storyboard */; };
 		CD3D4F8222A8DDA200A63348 /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8022A8DDA200A63348 /* Gemfile */; };
 		CD3D4F8322A8DDA200A63348 /* Gemfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8122A8DDA200A63348 /* Gemfile.lock */; };
 		CD3D4F8822A8FA8300A63348 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
@@ -38,6 +43,7 @@
 		CDEB8AB522DC1EAB0021BBD8 /* TestInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEB8AB422DC1EAB0021BBD8 /* TestInputViewController.swift */; };
 		CDECD17022C5B9FF00015160 /* TestVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDECD16F22C5B9FF00015160 /* TestVideoViewController.swift */; };
 		CDECD17222C5C52500015160 /* test-video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CDECD17122C5BB9000015160 /* test-video.mp4 */; };
+		E4BE0B8879B61D20DA9D3F29 /* Pods_stem_macos_example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E5BC396F2596ECC876D51F /* Pods_stem_macos_example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,9 +72,19 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		609FA80D3235E6F2C7BD3713 /* Pods_Stem_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stem_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		861760F18AACC9BDE7A6DA86 /* Pods-stem_macos_example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stem_macos_example.debug.xcconfig"; path = "Target Support Files/Pods-stem_macos_example/Pods-stem_macos_example.debug.xcconfig"; sourceTree = "<group>"; };
 		A0755716043C4CB45869337D /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		A3E5BC396F2596ECC876D51F /* Pods_stem_macos_example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_stem_macos_example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B112AFEC132184D4A527015C /* Pods-Stem_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stem_Example.release.xcconfig"; path = "Target Support Files/Pods-Stem_Example/Pods-Stem_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C5BB2E0562DBB1DB3EDDC28E /* Pods-Stem_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stem_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		CD2036942397DDAB00FAB33D /* stem_macos_example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = stem_macos_example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD2036962397DDAB00FAB33D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CD2036982397DDAB00FAB33D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CD20369A2397DDAD00FAB33D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CD20369D2397DDAD00FAB33D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CD2036A02397DDAD00FAB33D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CD2036A22397DDAD00FAB33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD2036A32397DDAD00FAB33D /* stem_macos_example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = stem_macos_example.entitlements; sourceTree = "<group>"; };
 		CD3D4F8022A8DDA200A63348 /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile; path = ../Gemfile; sourceTree = "<group>"; };
 		CD3D4F8122A8DDA200A63348 /* Gemfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile.lock; path = ../Gemfile.lock; sourceTree = "<group>"; };
 		CD3D4F9E22A956DD00A63348 /* UILabel */ = {isa = PBXFileReference; lastKnownFileType = text; path = UILabel; sourceTree = "<group>"; };
@@ -94,6 +110,7 @@
 		CDECD16F22C5B9FF00015160 /* TestVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVideoViewController.swift; sourceTree = "<group>"; };
 		CDECD17122C5BB9000015160 /* test-video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video.mp4"; sourceTree = "<group>"; };
 		D1ECD002EB1D2D6C8A4DCA57 /* Stem.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		DDBDE8AC12E37EBA7D4F9249 /* Pods-stem_macos_example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stem_macos_example.release.xcconfig"; path = "Target Support Files/Pods-stem_macos_example/Pods-stem_macos_example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +130,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CD2036912397DDAB00FAB33D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4BE0B8879B61D20DA9D3F29 /* Pods_stem_macos_example.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -121,6 +146,7 @@
 			children = (
 				609FA80D3235E6F2C7BD3713 /* Pods_Stem_Example.framework */,
 				1354FB75AD208DE3BD84A0A7 /* Pods_Stem_Tests.framework */,
+				A3E5BC396F2596ECC876D51F /* Pods_stem_macos_example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,6 +158,8 @@
 				B112AFEC132184D4A527015C /* Pods-Stem_Example.release.xcconfig */,
 				C5BB2E0562DBB1DB3EDDC28E /* Pods-Stem_Tests.debug.xcconfig */,
 				5C12EAA7DF6A553C9469C96F /* Pods-Stem_Tests.release.xcconfig */,
+				861760F18AACC9BDE7A6DA86 /* Pods-stem_macos_example.debug.xcconfig */,
+				DDBDE8AC12E37EBA7D4F9249 /* Pods-stem_macos_example.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -143,6 +171,7 @@
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for Stem */,
 				607FACE81AFB9204008FA782 /* Tests */,
+				CD2036952397DDAB00FAB33D /* stem_macos_example */,
 				607FACD11AFB9204008FA782 /* Products */,
 				5BD455E9EFE34948772C7A30 /* Pods */,
 				09FE0DA2F9027F91F86D75FA /* Frameworks */,
@@ -154,6 +183,7 @@
 			children = (
 				607FACD01AFB9204008FA782 /* Stem_Example.app */,
 				607FACE51AFB9204008FA782 /* Stem_Tests.xctest */,
+				CD2036942397DDAB00FAB33D /* stem_macos_example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,6 +246,28 @@
 				A0755716043C4CB45869337D /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		CD2036952397DDAB00FAB33D /* stem_macos_example */ = {
+			isa = PBXGroup;
+			children = (
+				CD2036962397DDAB00FAB33D /* AppDelegate.swift */,
+				CD2036982397DDAB00FAB33D /* ContentView.swift */,
+				CD20369A2397DDAD00FAB33D /* Assets.xcassets */,
+				CD20369F2397DDAD00FAB33D /* Main.storyboard */,
+				CD2036A22397DDAD00FAB33D /* Info.plist */,
+				CD2036A32397DDAD00FAB33D /* stem_macos_example.entitlements */,
+				CD20369C2397DDAD00FAB33D /* Preview Content */,
+			);
+			path = stem_macos_example;
+			sourceTree = "<group>";
+		};
+		CD20369C2397DDAD00FAB33D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CD20369D2397DDAD00FAB33D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		CDC823712296F99800E654A6 /* Demo */ = {
@@ -290,13 +342,32 @@
 			productReference = 607FACE51AFB9204008FA782 /* Stem_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CD2036932397DDAB00FAB33D /* stem_macos_example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD2036A62397DDAD00FAB33D /* Build configuration list for PBXNativeTarget "stem_macos_example" */;
+			buildPhases = (
+				CCFA23E9639E66DC3CFE04D3 /* [CP] Check Pods Manifest.lock */,
+				CD2036902397DDAB00FAB33D /* Sources */,
+				CD2036912397DDAB00FAB33D /* Frameworks */,
+				CD2036922397DDAB00FAB33D /* Resources */,
+				1E01DF220FC771EE85B0AEE8 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = stem_macos_example;
+			productName = stem_macos_example;
+			productReference = CD2036942397DDAB00FAB33D /* stem_macos_example.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -310,6 +381,11 @@
 						DevelopmentTeam = 8H2PX2432F;
 						LastSwiftMigration = 1030;
 						TestTargetID = 607FACCF1AFB9204008FA782;
+					};
+					CD2036932397DDAB00FAB33D = {
+						CreatedOnToolsVersion = 11.1;
+						DevelopmentTeam = 3L8RM3MDLS;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -328,6 +404,7 @@
 			targets = (
 				607FACCF1AFB9204008FA782 /* Stem_Example */,
 				607FACE41AFB9204008FA782 /* Stem_Tests */,
+				CD2036932397DDAB00FAB33D /* stem_macos_example */,
 			);
 		};
 /* End PBXProject section */
@@ -361,6 +438,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CD2036922397DDAB00FAB33D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD2036A12397DDAD00FAB33D /* Main.storyboard in Resources */,
+				CD20369E2397DDAD00FAB33D /* Preview Assets.xcassets in Resources */,
+				CD20369B2397DDAD00FAB33D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -372,10 +459,10 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Stem/Stem.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Stem-be4603a1/Stem.framework",
 				"${BUILT_PRODUCTS_DIR}/Stuart/Stuart.framework",
-				"${BUILT_PRODUCTS_DIR}/Then/Then.framework",
+				"${BUILT_PRODUCTS_DIR}/Then-iOS/Then.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -388,6 +475,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stem_Example/Pods-Stem_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1E01DF220FC771EE85B0AEE8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-stem_macos_example/Pods-stem_macos_example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-macOS/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Stem-4d3f2148/Stem.framework",
+				"${BUILT_PRODUCTS_DIR}/Then-macOS/Then.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stem.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Then.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-stem_macos_example/Pods-stem_macos_example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5E3A54F66417A88712FC3A9B /* [CP] Check Pods Manifest.lock */ = {
@@ -441,7 +550,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Stem/Stem.framework",
+				"${BUILT_PRODUCTS_DIR}/Stem-be4603a1/Stem.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -450,6 +559,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stem_Tests/Pods-Stem_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CCFA23E9639E66DC3CFE04D3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-stem_macos_example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CD84DB0D233E25AE00C92BB1 /* ShellScript */ = {
@@ -518,6 +649,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CD2036902397DDAB00FAB33D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD2036992397DDAB00FAB33D /* ContentView.swift in Sources */,
+				CD2036972397DDAB00FAB33D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -543,6 +683,14 @@
 				607FACDF1AFB9204008FA782 /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		CD20369F2397DDAD00FAB33D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD2036A02397DDAD00FAB33D /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -727,6 +875,69 @@
 			};
 			name = Release;
 		};
+		CD2036A42397DDAD00FAB33D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 861760F18AACC9BDE7A6DA86 /* Pods-stem_macos_example.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = stem_macos_example/stem_macos_example.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"stem_macos_example/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = stem_macos_example/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "linhey.stem.macos.stem-macos-example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CD2036A52397DDAD00FAB33D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DDBDE8AC12E37EBA7D4F9249 /* Pods-stem_macos_example.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = stem_macos_example/stem_macos_example.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"stem_macos_example/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = stem_macos_example/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "linhey.stem.macos.stem-macos-example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -753,6 +964,15 @@
 			buildConfigurations = (
 				607FACF31AFB9204008FA782 /* Debug */,
 				607FACF41AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CD2036A62397DDAD00FAB33D /* Build configuration list for PBXNativeTarget "stem_macos_example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD2036A42397DDAD00FAB33D /* Debug */,
+				CD2036A52397DDAD00FAB33D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
