@@ -59,29 +59,29 @@ class TestGestureViewController: BaseViewController {
         items.append(TableElement(title: "UITapGestureRecognizer",
                                   subtitle: "testView.st.set(tap: ((UITapGestureRecognizer) -> Void)?)") { [weak self] in
                                     guard let base = self else { return }
-                                    let ges = STGestureRecognizer()
-                                    ges.add(for: .began) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    ges.add(for: .cancelled) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    ges.add(for: .changed) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    ges.add(for: .ended) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    ges.add(for: .failed) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    ges.add(for: .possible) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    ges.add(for: .recognized) { (_, state) in
-                                        print(state.debugDescription)
-                                    }
-                                    base.testView.addGestureRecognizer(ges)
+//                                    let ges = STGestureRecognizer()
+//                                    ges.add(for: .began) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    ges.add(for: .cancelled) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    ges.add(for: .changed) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    ges.add(for: .ended) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    ges.add(for: .failed) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    ges.add(for: .possible) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    ges.add(for: .recognized) { (_, state) in
+//                                        print(state.debugDescription)
+//                                    }
+//                                    base.testView.addGestureRecognizer(ges)
         })
     }
     

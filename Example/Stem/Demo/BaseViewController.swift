@@ -31,16 +31,23 @@ class BaseViewController: UIViewController {
     deinit {
         print(self.description)
     }
-    
+
+     init() {
+        super.init(nibName: nil, bundle: nil)
+        contentView.backgroundColor = UIColor.yellow
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        contentView.backgroundColor = UIColor.yellow
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.view.st.addSubviews(tableView,contentView)
         
         contentView.do { (item) in
-            
-            item.backgroundColor = UIColor.yellow
-            
             item.snp.makeConstraints({ (make) in
                 make.top.equalTo(self.topLayoutGuide.snp.bottom).offset(8)
                 make.left.equalToSuperview().offset(8)

@@ -1,3 +1,5 @@
+source 'https://cdn.cocoapods.org/'
+
 use_frameworks!
 install! 'cocoapods', :generate_multiple_pod_projects => true
 inhibit_all_warnings!
@@ -6,14 +8,12 @@ target 'Stem_Example' do
   pod 'Stem', :path => '../'
   pod 'SnapKit'
   pod 'Then'
-  pod 'Stone'
   pod 'SVProgressHUD'
   pod 'SwiftLint'
-
+  pod 'Stuart', :git => 'git@github.com:linhay/Stuart.git',:branch => '0.1.0'
   
   target 'Stem_Tests' do
     inherit! :search_paths
-    pod 'Stone'
     pod 'Stem', :path => '../'
 
   end
