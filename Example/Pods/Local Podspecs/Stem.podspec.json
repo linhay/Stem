@@ -16,42 +16,28 @@
   },
   "swift_versions": [
     "4.0",
-    "4.1",
     "4.2",
-    "5.0",
-    "5.1"
+    "5.0"
   ],
   "requires_arc": true,
   "platforms": {
-    "osx": null,
-    "ios": null,
-    "tvos": null,
-    "watchos": null
+    "ios": "8.0",
+    "osx": "10.10",
+    "tvos": "9.0",
+    "watchos": "2.0"
   },
   "subspecs": [
     {
       "name": "Core",
       "source_files": [
         "Sources/Core/*.swift"
-      ],
-      "platforms": {
-        "ios": "8.0",
-        "osx": "10.10",
-        "tvos": "9.0",
-        "watchos": "2.0"
-      }
+      ]
     },
     {
       "name": "Runtime",
       "source_files": [
         "Sources/Runtime/*.swift"
-      ],
-      "platforms": {
-        "ios": "8.0",
-        "osx": "10.10",
-        "tvos": "9.0",
-        "watchos": "2.0"
-      }
+      ]
     },
     {
       "name": "Foundation",
@@ -126,9 +112,21 @@
         },
         {
           "name": "String",
+          "dependencies": {
+            "Stem/Foundation/Fundamentals": [
+
+            ]
+          },
           "source_files": [
-            "Sources/Foundation/String/**/*.swift",
-            "Sources/Foundation/String/*.swift"
+            "Sources/Foundation/pre-release/**/*.swift",
+            "Sources/Foundation/pre-release/*.swift"
+          ]
+        },
+        {
+          "name": "Custom",
+          "source_files": [
+            "Sources/Foundation/pre-release/**/*.swift",
+            "Sources/Foundation/pre-release/*.swift"
           ]
         }
       ]
@@ -304,5 +302,5 @@
       }
     }
   ],
-  "swift_version": "5.1"
+  "swift_version": "5.0"
 }

@@ -485,7 +485,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-stem_macos_example/Pods-stem_macos_example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SnapKit-macOS/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Stem-4d3f2148/Stem.framework",
+				"${BUILT_PRODUCTS_DIR}/Stem-Core-Foundation_Custom/Stem.framework",
 				"${BUILT_PRODUCTS_DIR}/Then-macOS/Then.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";

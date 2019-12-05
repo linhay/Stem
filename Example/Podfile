@@ -20,7 +20,7 @@ target 'Stem_Example' do
 end
 
 target 'stem_macos_example' do
-  pod 'Stem', :path => '../'
+  pod 'Stem/Foundation/Custom', :path => '../'
   pod 'SnapKit'
   pod 'Then'
   pod 'SwiftLint'

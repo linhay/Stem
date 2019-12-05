@@ -180,7 +180,7 @@ public extension DiskFileStorage {
     }
 
     func remove(key: String) -> Bool {
-        let url = URL(fileURLWithPath: self.folderPath + key.st.md5)
+        let url = URL(fileURLWithPath: self.folderPath + key)
         return (try? self.manager.removeItem(at: url)) == nil
     }
 

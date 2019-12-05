@@ -53,7 +53,6 @@ Pod::Spec.new do |s|
         end
 
         ss.subspec 'Custom' do |sss|
-            sss.dependency 'Stem/Foundation/String'
             path = base_path + name
             sss.source_files = [path + '/**/*.swift', path + '/*.swift']
         end
