@@ -16,16 +16,14 @@
   },
   "swift_versions": [
     "4.0",
-    "4.1",
     "4.2",
-    "5.0",
-    "5.1"
+    "5.0"
   ],
   "requires_arc": true,
   "platforms": {
     "ios": "8.0",
-    "tvos": "9.0",
     "osx": "10.10",
+    "tvos": "9.0",
     "watchos": "2.0"
   },
   "subspecs": [
@@ -50,6 +48,10 @@
         "Stem/Core": [
 
         ]
+      },
+      "platforms": {
+        "ios": "8.0",
+        "osx": "10.10"
       },
       "subspecs": [
         {
@@ -110,9 +112,21 @@
         },
         {
           "name": "String",
+          "dependencies": {
+            "Stem/Foundation/Fundamentals": [
+
+            ]
+          },
           "source_files": [
-            "Sources/Foundation/String/**/*.swift",
-            "Sources/Foundation/String/*.swift"
+            "Sources/Foundation/pre-release/**/*.swift",
+            "Sources/Foundation/pre-release/*.swift"
+          ]
+        },
+        {
+          "name": "Custom",
+          "source_files": [
+            "Sources/Foundation/pre-release/**/*.swift",
+            "Sources/Foundation/pre-release/*.swift"
           ]
         }
       ]
@@ -129,7 +143,16 @@
         ],
         "Stem/Runtime": [
 
+        ],
+        "Stem/Foundation/NSObject": [
+
+        ],
+        "Stem/Foundation/Fundamentals": [
+
         ]
+      },
+      "platforms": {
+        "ios": "8.0"
       },
       "subspecs": [
         {
@@ -250,6 +273,13 @@
             "Sources/UIKit/Storyboard/**/*.swift",
             "Sources/UIKit/Storyboard/*.swift"
           ]
+        },
+        {
+          "name": "AttributedString",
+          "source_files": [
+            "Sources/UIKit/AttributedString/**/*.swift",
+            "Sources/UIKit/AttributedString/*.swift"
+          ]
         }
       ]
     },
@@ -266,8 +296,11 @@
         "Stem/Core": [
 
         ]
+      },
+      "platforms": {
+        "ios": "8.0"
       }
     }
   ],
-  "swift_version": "5.1"
+  "swift_version": "5.0"
 }
