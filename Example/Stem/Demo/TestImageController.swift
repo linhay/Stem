@@ -35,7 +35,7 @@ class TestImageController: BaseViewController {
         items.append(TableElement(title: "图像处理: 裁圆",
                                   subtitle: "image.st.rounded()") {[weak self] in
                                     guard let base = self else { return }
-                                    base.imageView.image = base.image.st.rounded()
+                                    base.imageView.image = base.image.st.edgeEditing()
         })
         
         items.append(TableElement(title: "获取指定颜色的图片",
@@ -58,11 +58,11 @@ class TestImageController: BaseViewController {
         items.append(TableElement(title: "图像处理: 圆角",
                                   subtitle: "image.st.round(...)") {[weak self] in
                                     guard let base = self else { return }
-                                    let image = base.image.st.rounded(radius: base.image.size.width * 0.5,
-                                                                      corners: [.topRight,.bottomRight],
-                                                                      borderWidth: 8,
-                                                                      borderColor: UIColor.white,
-                                                                      borderLineJoin: CGLineJoin.bevel)
+                                    let image = base.image.st.edgeEditing(radius: base.image.size.width * 0.5,
+                                                                          corners: [.topRight,.bottomRight],
+                                                                          borderWidth: 8,
+                                                                          borderColor: UIColor.white,
+                                                                          borderLineJoin: CGLineJoin.bevel)
                                     base.imageView.image = image
         })
         

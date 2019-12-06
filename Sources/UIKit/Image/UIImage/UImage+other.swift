@@ -95,3 +95,26 @@ public extension Stem where Base: UIImage {
     }
 
 }
+
+
+// MARK: - UIImage 图片处理
+public extension Stem where Base: UIImage {
+
+    /// 是否存在 Alpha 通道
+    var hasAlpha: Bool {
+        guard let alpha = base.cgImage?.alphaInfo else {
+            return false
+        }
+        return alpha == .first || alpha == .last || alpha == .premultipliedFirst || alpha == .premultipliedLast
+    }
+
+    /// 转换为 png 数据格式
+    /// 可能会在 `UIImageWriteToSavedPhotosAlbum` 中使用
+    var png: UIImage? {
+        guard let data = base.pngData() else {
+            return nil
+        }
+        return UIImage(data: data)
+    }
+
+}

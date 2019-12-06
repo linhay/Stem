@@ -42,22 +42,26 @@ public extension CIFilter.Generator {
         public var filter: CIFilter = CIFilter(generator: .aztecCodeGenerator)
         
         ///The data to be encoded as an Aztec code. An NSData object whose display name is Message.
-        @CIFilterValueBox var message: Data?
+        @CIFilterValueBox
+        var message: Data?
         
         ///The percentage of redundancy to add to the message data in the barcode encoding. A higher correction level allows a barcode to be correctly read even when partially damaged.
         ///An NSNumber object whose display name is CorrectionLevel.
         ///Default value: 23.00 Minimum: 5.00 Maximum: 95.00 Slider minimum: 5.00 Slider maximum: 95.00 Identity: 0.00
-        @CIFilterValueBox var correctionLevel: NSNumber
+        @CIFilterValueBox
+        var correctionLevel: NSNumber
         
         ///The number of concentric squares (with a width of two pixels each) encoding the barcode data. When this parameter is set to zero, Core Image automatically determines the appropriate number of layers to encode the message at the specified correction level.
         ///An NSNumber object whose display name is Layers.
         ///Default value: 0.00 Minimum: 1.00 Maximum: 32.00 Slider minimum: 1.00 Slider maximum: 32.00 Identity: 0.00
-        @CIFilterValueBox var layers: NSNumber
+        @CIFilterValueBox
+        var layers: NSNumber
         
         ///A Boolean value that determines whether to use the compact or full-size Aztec barcode format. The compact format can store up to 44 bytes of message data (including data added for correction) in up to 4 layers, producing a barcode image sized between 15 x 15 and 27 x 27 pixels. The full-size format can store up to 1914 bytes of message data (including correction) in up to 32 layers, producing a barcode image sized no larger than 151 x 151 pixels.
         ///An NSNumber object whose display name is CompactStyle.
         ///Default value: 0.00 Minimum: 0.00 Maximum: 1.00 Slider minimum: 0.00 Slider maximum: 1.00 Identity: 0.00
-        @CIFilterValueBox var compactStyle: NSNumber
+        @CIFilterValueBox
+        var compactStyle: NSNumber
         
         init() {
             _message.cofig(filter: filter, name: "inputMessage", default: nil)
@@ -75,21 +79,26 @@ public extension CIFilter.Generator {
         
         ///  A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
         ///  Default value: [150 150]
-        @CIFilterValueBox var center: CIVector
+        @CIFilterValueBox
+        var center: CIVector
         
         ///  A CIColor object whose display name is Color 1.
-        @CIFilterValueBox var color0: CIColor?
+        @CIFilterValueBox
+        var color0: CIColor?
         
         ///  A CIColor object whose display name is Color 2.
-        @CIFilterValueBox var color1: CIColor?
+        @CIFilterValueBox
+        var color1: CIColor?
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Width.
         ///  Default value: 80.00
-        @CIFilterValueBox var width: NSNumber
+        @CIFilterValueBox
+        var width: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Sharpness.
         ///  Default value: 1.00
-        @CIFilterValueBox var sharpness: NSNumber
+        @CIFilterValueBox
+        var sharpness: NSNumber
         
         init() {
             _center.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150] "))
@@ -108,11 +117,13 @@ public extension CIFilter.Generator {
         public var filter: CIFilter = CIFilter(generator: .code128BarcodeGenerator)
         
         ///  The data to be encoded as a Code 128 barcode. Must not contain non-ASCII characters. An NSData object whose display name is Message.
-        @CIFilterValueBox var message: Data?
+        @CIFilterValueBox
+        var message: Data?
         
         ///  The number of pixels of added white space on each side of the barcode. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is QuietSpace.
         ///  Default value: 7.00 Minimum: 0.00 Maximum: 20.00 Slider minimum: 0.00 Slider maximum: 20.00 Identity: 0.00
-        @CIFilterValueBox var quietSpace: NSNumber
+        @CIFilterValueBox
+        var quietSpace: NSNumber
         
         init() {
             _message.cofig(filter: filter, name: "inputMessage", default: nil)
@@ -127,7 +138,8 @@ public extension CIFilter.Generator {
         public var filter: CIFilter = CIFilter(generator: .constantColorGenerator)
         
         ///  A CIColor object whose display name is Color.
-        @CIFilterValueBox var color: CIColor?
+        @CIFilterValueBox
+        var color: CIColor?
         
         init() {
             _color.cofig(filter: filter, name: "inputColor", default: nil)
@@ -143,34 +155,42 @@ public extension CIFilter.Generator {
         
         ///  The center of the lens flare. A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
         ///  Default value: [150 150]
-        @CIFilterValueBox var center: CIVector
+        @CIFilterValueBox
+        var center: CIVector
         
         ///  Controls the proportion of red, green, and blue halos. A CIColor object whose display name is Color.
-        @CIFilterValueBox var color: CIColor?
+        @CIFilterValueBox
+        var color: CIColor?
         
         ///  Controls the size of the lens flare. An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Halo Radius.
         ///  Default value: 70.00
-        @CIFilterValueBox var haloRadius: NSNumber
+        @CIFilterValueBox
+        var haloRadius: NSNumber
         
         ///  Controls the width of the lens flare, that is, the distance between the inner flare and the outer flare. An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Halo Width.
         ///  Default value: 87.00
-        @CIFilterValueBox var haloWidth: NSNumber
+        @CIFilterValueBox
+        var haloWidth: NSNumber
         
         ///  Controls how much the red, green, and blue halos overlap. A value of 0 means no overlap (a lot of separation).  A value of 1 means full overlap (white halos). An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Halo Overlap.
         ///  Default value: 0.77
-        @CIFilterValueBox var haloOverlap: NSNumber
+        @CIFilterValueBox
+        var haloOverlap: NSNumber
         
         ///  Controls the brightness of the rainbow-colored halo area. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Striation Strength.
         ///  Default value: 0.50
-        @CIFilterValueBox var striationStrength: NSNumber
+        @CIFilterValueBox
+        var striationStrength: NSNumber
         
         ///  Controls the contrast of the rainbow-colored halo area. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Striation Contrast.
         ///  Default value: 1.00
-        @CIFilterValueBox var striationContrast: NSNumber
+        @CIFilterValueBox
+        var striationContrast: NSNumber
         
         ///  Adds a randomness to the lens flare; it causes the flare to "sparkle" as it changes through various time values. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Time.
         ///  Default value: 0.00
-        @CIFilterValueBox var time: NSNumber
+        @CIFilterValueBox
+        var time: NSNumber
         
         init() {
             _center.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
@@ -192,35 +212,43 @@ public extension CIFilter.Generator {
         public var filter: CIFilter = CIFilter(generator: .pDF417BarcodeGenerator)
         
         ///  The data to be encoded as a barcode. An NSData object whose display name is Message.
-        @CIFilterValueBox var message: Data?
+        @CIFilterValueBox
+        var message: Data?
         
         ///  The minimum width of the barcode’s data area, in pixels. An NSNumber object whose display name is MinWidth.
         ///  Default value: 0.00 Minimum: 56.00 Maximum: 583.00 Slider minimum: 56.00 Slider maximum: 583.00 Identity: 0.00
-        @CIFilterValueBox var minWidth: NSNumber
+        @CIFilterValueBox
+        var minWidth: NSNumber
         
         ///  The maximum width of the barcode’s data area, in pixels. An NSNumber object whose display name is MaxWidth.
         ///  Default value: 0.00 Minimum: 56.00 Maximum: 583.00 Slider minimum: 56.00 Slider maximum: 583.00 Identity: 0.00
-        @CIFilterValueBox var maxWidth: NSNumber
+        @CIFilterValueBox
+        var maxWidth: NSNumber
         
         ///  The minimum height of the barcode’s data area, in pixels. An NSNumber object whose display name is MinHeight.
         ///  Default value: 0.00 Minimum: 13.00 Maximum: 283.00 Slider minimum: 13.00 Slider maximum: 283.00 Identity: 0.00
-        @CIFilterValueBox var minHeight: NSNumber
+        @CIFilterValueBox
+        var minHeight: NSNumber
         
         ///  The maximum height of the barcode’s data area, in pixels. An NSNumber object whose display name is MaxHeight.
         ///  Default value: 0.00 Minimum: 13.00 Maximum: 283.00 Slider minimum: 13.00 Slider maximum: 283.00 Identity: 0.00
-        @CIFilterValueBox var maxHeight: NSNumber
+        @CIFilterValueBox
+        var maxHeight: NSNumber
         
         ///  The number of data columns in the generated code. If zero, the generator uses a number of columns based on the width, height, and aspect ratio. An NSNumber object whose display name is DataColumns.
         ///  Default value: 0.00 Minimum: 1.00 Maximum: 30.00 Slider minimum: 1.00 Slider maximum: 30.00 Identity: 0.00
-        @CIFilterValueBox var dataColumns: NSNumber
+        @CIFilterValueBox
+        var dataColumns: NSNumber
         
         ///  The number of data rows in the generated code. If zero, the generator uses a number of rows based on the width, height, and aspect ratio. An NSNumber object whose display name is Rows.
         ///  Default value: 0.00 Minimum: 3.00 Maximum: 90.00 Slider minimum: 3.00 Slider maximum: 90.00 Identity: 0.00
-        @CIFilterValueBox var rows: NSNumber
+        @CIFilterValueBox
+        var rows: NSNumber
         
         ///  The preferred ratio of width over height for the generated barcode. The generator approximates this with an actual aspect ratio based on the data and other parameters you specify. An NSNumber object whose display name is PreferredAspectRatio.
         ///  Default value: 0.00 Minimum: 0.00 Maximum: 9223372036854775808.00 Slider minimum: 0.00 Slider maximum: 9223372036854775808.00 Identity: 0.00
-        @CIFilterValueBox var preferredAspectRatio: NSNumber
+        @CIFilterValueBox
+        var preferredAspectRatio: NSNumber
         
         ///  An option that determines which method the generator uses to compress data.
         ///  Automatic. The generator automatically chooses a compression method. This option is the default.
@@ -229,20 +257,24 @@ public extension CIFilter.Generator {
         ///  Byte. Valid for any data, but least compact.
         ///  An NSNumber object whose display name is CompactionMode.
         ///  Default value: 0.00 Minimum: 0.00 Maximum: 3.00 Slider minimum: 0.00 Slider maximum: 3.00 Identity: 0.00
-        @CIFilterValueBox var compactionMode: NSNumber?
+        @CIFilterValueBox
+        var compactionMode: NSNumber?
         
         ///  A Boolean value that determines whether to omit redundant elements to make the generated barcode more compact. An NSNumber object whose display name is CompactStyle.
         ///  Default value: 0.00 Minimum: 0.00 Maximum: 1.00 Slider minimum: 0.00 Slider maximum: 1.00 Identity: 0.00
-        @CIFilterValueBox var compactStyle: NSNumber
+        @CIFilterValueBox
+        var compactStyle: NSNumber
         
         ///  An integer between 0 and 8, inclusive, that determines the amount of redundancy to include in the barcode’s data to prevent errors when the barcode is read. If unspecified, the generator chooses a correction level based on the size of the message data. An NSNumber object whose display name is CorrectionLevel.
         ///  Default value: 0.00 Minimum: 0.00 Maximum: 8.00 Slider minimum: 0.00 Slider maximum: 8.00 Identity: 0.00
-        @CIFilterValueBox var correctionLevel: NSNumber
+        @CIFilterValueBox
+        var correctionLevel: NSNumber
         
         ///  A Boolean value that determines whether to include information about the compaction mode in the barcode even when such information is redundant. (If a PDF417 barcode does not contain compaction mode information, a reader assumes text-based compaction. Some barcodes include this information even when using text-based compaction.)
         ///  An NSNumber object whose display name is AlwaysSpecifyCompaction.
         ///  Default value: 0.00 Minimum: -9223372036854775808.00 Maximum: 9223372036854775808.00 Slider minimum: -9223372036854775808.00 Slider maximum: 9223372036854775808.00 Identity: 0.00
-        @CIFilterValueBox var alwaysSpecifyCompaction: NSNumber
+        @CIFilterValueBox
+        var alwaysSpecifyCompaction: NSNumber
         
         init() {
             _message.cofig(filter: filter, name: "inputMessage", default: nil)
@@ -300,7 +332,8 @@ public extension CIFilter.Generator {
         }
         
         ///  The data to be encoded as a QR code. An NSData object whose display name is Message.
-        @CIFilterValueBox var message: Data?
+        @CIFilterValueBox
+        var message: Data?
         
         ///  A single letter specifying the error correction format. An NSString object whose display name is CorrectionLevel.
         ///  Default value: M
@@ -325,34 +358,42 @@ public extension CIFilter.Generator {
         
         ///  The center of the flare. A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
         ///  Default value: [150 150]
-        @CIFilterValueBox var center: CIVector
+        @CIFilterValueBox
+        var center: CIVector
         
         ///  The color of the flare. A CIColor object whose display name is Color.
-        @CIFilterValueBox var color: CIColor?
+        @CIFilterValueBox
+        var color: CIColor?
         
         ///  Controls the size of the flare. An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Radius.
         ///  Default value: 50.00
-        @CIFilterValueBox var radius: NSNumber
+        @CIFilterValueBox
+        var radius: NSNumber
         
         ///  Controls the ratio of the cross flare size relative to the round central flare. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Cross Scale.
         ///  Default value: 15.00
-        @CIFilterValueBox var crossScale: NSNumber
+        @CIFilterValueBox
+        var crossScale: NSNumber
         
         ///  Controls the angle of the flare. An NSNumber object whose attribute type is CIAttributeTypeAngle and whose display name is Cross Angle.
         ///  Default value: 0.60
-        @CIFilterValueBox var crossAngle: NSNumber
+        @CIFilterValueBox
+        var crossAngle: NSNumber
         
         ///  Controls the thickness of the cross flare. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Cross Opacity.
         ///  Default value: -2.00
-        @CIFilterValueBox var crossOpacity: NSNumber
+        @CIFilterValueBox
+        var crossOpacity: NSNumber
         
         ///  Has the same overall effect as the inputCrossOpacity parameter. An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Cross Width.
         ///  Default value: 2.50
-        @CIFilterValueBox var crossWidth: NSNumber
+        @CIFilterValueBox
+        var crossWidth: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Epsilon.
         ///  Default value: -2.00
-        @CIFilterValueBox var epsilon: NSNumber
+        @CIFilterValueBox
+        var epsilon: NSNumber
         
         init() {
             _center.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
@@ -374,21 +415,26 @@ public extension CIFilter.Generator {
         
         ///  A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
         ///  Default value: [150 150]
-        @CIFilterValueBox var center: CIVector
+        @CIFilterValueBox
+        var center: CIVector
         
         ///  A CIColor object whose display name is Color 1.
-        @CIFilterValueBox var color0: CIColor?
+        @CIFilterValueBox
+        var color0: CIColor?
         
         ///  A CIColor object whose display name is Color 2.
-        @CIFilterValueBox var color1: CIColor?
+        @CIFilterValueBox
+        var color1: CIColor?
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Width.
         ///  Default value: 80.00
-        @CIFilterValueBox var width: NSNumber
+        @CIFilterValueBox
+        var width: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Sharpness.
         ///  Default value: 1.00
-        @CIFilterValueBox var sharpness: NSNumber
+        @CIFilterValueBox
+        var sharpness: NSNumber
         
         init() {
             _center.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
@@ -408,30 +454,37 @@ public extension CIFilter.Generator {
         
         ///  A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
         ///  Default value: [150 150]
-        @CIFilterValueBox var center: CIVector
+        @CIFilterValueBox
+        var center: CIVector
         
         ///  A CIColor object whose display name is Color.
-        @CIFilterValueBox var color: CIColor?
+        @CIFilterValueBox
+        var color: CIColor?
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeDistance and whose display name is Sun Radius.
         ///  Default value: 40.00
-        @CIFilterValueBox var sunRadius: NSNumber
+        @CIFilterValueBox
+        var sunRadius: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Maximum Striation Radius.
         ///  Default value: 2.58
-        @CIFilterValueBox var maxStriationRadius: NSNumber
+        @CIFilterValueBox
+        var maxStriationRadius: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Striation Strength.
         ///  Default value: 0.50
-        @CIFilterValueBox var striationStrength: NSNumber
+        @CIFilterValueBox
+        var striationStrength: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Striation Contrast.
         ///  Default value: 1.38
-        @CIFilterValueBox var striationContrast: NSNumber
+        @CIFilterValueBox
+        var striationContrast: NSNumber
         
         ///  An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is Time.
         ///  Default value: 0.00
-        @CIFilterValueBox var time: NSNumber
+        @CIFilterValueBox
+        var time: NSNumber
         
         init() {
             _center.cofig(filter: filter, name: "inputCenter", default: .init(string: "[150 150]"))
