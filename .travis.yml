@@ -47,7 +47,7 @@ env:
 
 before_install:
   # Bundler 2.0
-  - gem update --system
+  - yes > gem update --system
   - gem install bundler
 
 jobs:
