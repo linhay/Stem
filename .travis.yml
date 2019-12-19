@@ -29,7 +29,7 @@ env:
    - IOS_EXAMPLE_WORKSPACE="Example/Stem.xcworkspace"
 #   - TVOS_EXAMPLE_WORKSPACE="Examples/Examples-tvOS/IGListKitExamples.xcworkspace"
 #   - MACOS_EXAMPLE_WORKSPACE="Examples/Examples-macOS/IGListKitExamples.xcworkspace"
-   - EXAMPLE_SCHEME="IGListKitExamples"
+  #  - EXAMPLE_SCHEME="IGListKitExamples"
 
    # iOS Destinations
    - IOS_DESTINATION_9="OS=9.3,name=iPad Air 2"
@@ -56,7 +56,7 @@ jobs:
       name: Cocoapods Lint
       # We need to pass IGListDiffKit.podspec here so that Cocoapods uses the local version,
       # rather than searching the specs repository for the IGListDiffKit spec.
-      script: bundle exec pod lib lint --allow-warnings --include-podspecs=IGListDiffKit.podspec
+      script: bundle exec pod lib lint --allow-warnings --include-podspecs=Stem.podspec
 
     # Build example projects
     - &build-examples
