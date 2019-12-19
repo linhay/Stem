@@ -1,34 +1,17 @@
-language: swift
+# references:
+# * http://www.objc.io/issue-6/travis-ci.html
+# * https://github.com/supermarin/xcpretty#usage
 
-osx_image:
-- xcode10.1
-- xcode10.2
-
-
-before_install:
-- gem update --system
-- gem install bundler
-- gem install cocoapods -v 1.6.2
-- pod repo update
-- pod install --project-directory=Example
-
-
-cache: cocoapods
-podfile: Example/Podfile
+language: objective-c
+osx_image: xcode11
 
 env:
-  global:
-    - LANG=en_US.UTF-8
-    - LC_ALL=en_US.UTF-8
-    - XCODE_WORKSPACE=Example/Stem.xcworkspace
-  matrix:
-    - SCHEME="Stem-Example"
+  - ACTION=test  PLATFORM=Mac     DESTINATION='platform=macOS'
+  - ACTION=test  PLATFORM=iOS     DESTINATION='platform=iOS Simulator,name=iPhone 6S'
+  - ACTION=test  PLATFORM=tvOS    DESTINATION='platform=tvOS Simulator,name=Apple TV 4K (at 1080p)'
 
 script:
-  - set -o pipefail
-  - xcodebuild -workspace "$XCODE_WORKSPACE" -scheme "$SCHEME" -configuration Debug clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c
-  - xcodebuild -workspace "$XCODE_WORKSPACE" -scheme "$SCHEME" -configuration Release clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty -c
-  - pod lib lint --allow-warnings
+  - set -o pipefail && xcodebuild -scheme Stem-Example -destination "$DESTINATION" $ACTION | xcpretty
 
 after_success:
-  - sleep 3
+- sleep 3

@@ -23,7 +23,7 @@
 
 import Foundation
 
-public struct WeakBox<T: AnyObject> {
+public final class WeakBox<T: AnyObject> {
 
    public weak var value: T?
 

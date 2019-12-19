@@ -20,6 +20,7 @@
 		CD20369B2397DDAD00FAB33D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD20369A2397DDAD00FAB33D /* Assets.xcassets */; };
 		CD20369E2397DDAD00FAB33D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD20369D2397DDAD00FAB33D /* Preview Assets.xcassets */; };
 		CD2036A12397DDAD00FAB33D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD20369F2397DDAD00FAB33D /* Main.storyboard */; };
+		CD2D120E239DEAA20048B804 /* stem_macos_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2D120D239DEAA20048B804 /* stem_macos_tests.swift */; };
 		CD3D4F8222A8DDA200A63348 /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8022A8DDA200A63348 /* Gemfile */; };
 		CD3D4F8322A8DDA200A63348 /* Gemfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = CD3D4F8122A8DDA200A63348 /* Gemfile.lock */; };
 		CD3D4F8822A8FA8300A63348 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
@@ -54,6 +55,13 @@
 			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
 			remoteInfo = Stem;
 		};
+		CD2D1210239DEAA20048B804 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CD2036932397DDAB00FAB33D;
+			remoteInfo = stem_macos_example;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +93,9 @@
 		CD2036A02397DDAD00FAB33D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CD2036A22397DDAD00FAB33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD2036A32397DDAD00FAB33D /* stem_macos_example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = stem_macos_example.entitlements; sourceTree = "<group>"; };
+		CD2D120B239DEAA20048B804 /* stem_macos_tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = stem_macos_tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD2D120D239DEAA20048B804 /* stem_macos_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stem_macos_tests.swift; sourceTree = "<group>"; };
+		CD2D120F239DEAA20048B804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD3D4F8022A8DDA200A63348 /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile; path = ../Gemfile; sourceTree = "<group>"; };
 		CD3D4F8122A8DDA200A63348 /* Gemfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gemfile.lock; path = ../Gemfile.lock; sourceTree = "<group>"; };
 		CD3D4F9E22A956DD00A63348 /* UILabel */ = {isa = PBXFileReference; lastKnownFileType = text; path = UILabel; sourceTree = "<group>"; };
@@ -138,6 +149,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CD2D1208239DEAA20048B804 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -172,6 +190,7 @@
 				607FACD21AFB9204008FA782 /* Example for Stem */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				CD2036952397DDAB00FAB33D /* stem_macos_example */,
+				CD2D120C239DEAA20048B804 /* stem_macos_tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				5BD455E9EFE34948772C7A30 /* Pods */,
 				09FE0DA2F9027F91F86D75FA /* Frameworks */,
@@ -184,6 +203,7 @@
 				607FACD01AFB9204008FA782 /* Stem_Example.app */,
 				607FACE51AFB9204008FA782 /* Stem_Tests.xctest */,
 				CD2036942397DDAB00FAB33D /* stem_macos_example.app */,
+				CD2D120B239DEAA20048B804 /* stem_macos_tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,6 +288,15 @@
 				CD20369D2397DDAD00FAB33D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CD2D120C239DEAA20048B804 /* stem_macos_tests */ = {
+			isa = PBXGroup;
+			children = (
+				CD2D120D239DEAA20048B804 /* stem_macos_tests.swift */,
+				CD2D120F239DEAA20048B804 /* Info.plist */,
+			);
+			path = stem_macos_tests;
 			sourceTree = "<group>";
 		};
 		CDC823712296F99800E654A6 /* Demo */ = {
@@ -361,6 +390,24 @@
 			productReference = CD2036942397DDAB00FAB33D /* stem_macos_example.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CD2D120A239DEAA20048B804 /* stem_macos_tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD2D1214239DEAA20048B804 /* Build configuration list for PBXNativeTarget "stem_macos_tests" */;
+			buildPhases = (
+				CD2D1207239DEAA20048B804 /* Sources */,
+				CD2D1208239DEAA20048B804 /* Frameworks */,
+				CD2D1209239DEAA20048B804 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CD2D1211239DEAA20048B804 /* PBXTargetDependency */,
+			);
+			name = stem_macos_tests;
+			productName = stem_macos_tests;
+			productReference = CD2D120B239DEAA20048B804 /* stem_macos_tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -387,6 +434,12 @@
 						DevelopmentTeam = 3L8RM3MDLS;
 						ProvisioningStyle = Automatic;
 					};
+					CD2D120A239DEAA20048B804 = {
+						CreatedOnToolsVersion = 11.1;
+						DevelopmentTeam = 3L8RM3MDLS;
+						ProvisioningStyle = Automatic;
+						TestTargetID = CD2036932397DDAB00FAB33D;
+					};
 				};
 			};
 			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "Stem" */;
@@ -405,6 +458,7 @@
 				607FACCF1AFB9204008FA782 /* Stem_Example */,
 				607FACE41AFB9204008FA782 /* Stem_Tests */,
 				CD2036932397DDAB00FAB33D /* stem_macos_example */,
+				CD2D120A239DEAA20048B804 /* stem_macos_tests */,
 			);
 		};
 /* End PBXProject section */
@@ -445,6 +499,13 @@
 				CD2036A12397DDAD00FAB33D /* Main.storyboard in Resources */,
 				CD20369E2397DDAD00FAB33D /* Preview Assets.xcassets in Resources */,
 				CD20369B2397DDAD00FAB33D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD2D1209239DEAA20048B804 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,6 +719,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CD2D1207239DEAA20048B804 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD2D120E239DEAA20048B804 /* stem_macos_tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -665,6 +734,11 @@
 			isa = PBXTargetDependency;
 			target = 607FACCF1AFB9204008FA782 /* Stem_Example */;
 			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
+		};
+		CD2D1211239DEAA20048B804 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD2036932397DDAB00FAB33D /* stem_macos_example */;
+			targetProxy = CD2D1210239DEAA20048B804 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -938,6 +1012,61 @@
 			};
 			name = Release;
 		};
+		CD2D1212239DEAA20048B804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = stem_macos_tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "linhey.stem.macos.stem-macos-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/stem_macos_example.app/Contents/MacOS/stem_macos_example";
+			};
+			name = Debug;
+		};
+		CD2D1213239DEAA20048B804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = stem_macos_tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "linhey.stem.macos.stem-macos-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/stem_macos_example.app/Contents/MacOS/stem_macos_example";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -973,6 +1102,15 @@
 			buildConfigurations = (
 				CD2036A42397DDAD00FAB33D /* Debug */,
 				CD2036A52397DDAD00FAB33D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CD2D1214239DEAA20048B804 /* Build configuration list for PBXNativeTarget "stem_macos_tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD2D1212239DEAA20048B804 /* Debug */,
+				CD2D1213239DEAA20048B804 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

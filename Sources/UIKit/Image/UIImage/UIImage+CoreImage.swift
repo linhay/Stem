@@ -44,14 +44,14 @@ public extension Stem where Base: UIImage {
     ///
     /// - Parameter value: 0 ~ 100, 0为不模糊
     func blur(value: Double) -> UIImage? {
-        let ciImage = CIImage(image: base)
-        let filter = CIFilter(blur: .gaussianBlur)
-        filter.setValue(ciImage, forKey: kCIInputImageKey)
-        filter.setValue(value, forKey: "inputRadius")
-        guard let output = filter.value(forKey: kCIOutputImageKey) as? CIImage else { return nil }
+        var filter = CIFilter.Blur.GaussianBlur()
+        filter.image = CIImage(image: base)
+        filter.radius = NSNumber(value: min(100, max(0, value)))
+        guard let output = filter.outputImage else { return nil }
         let context = CIContext()
         guard let cgImage = context.createCGImage(output, from: output.extent) else { return nil }
         let image = UIImage(cgImage: cgImage)
         return image
     }
+
 }
