@@ -10,7 +10,7 @@ import UIKit
 import Stem
 
 class ViewController: BaseViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.removeFromSuperview()
@@ -20,71 +20,29 @@ class ViewController: BaseViewController {
             make.left.equalToSuperview().offset(8)
             make.right.equalToSuperview().offset(-8)
         }
-
-        items.append(TableElement(title: "UIView", subtitle: "") {
-
-        })
-
-        items.append(TableElement(title: "UIImageView", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestImageViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "UIImage", subtitle: "") { [weak self] in
-            guard let base = self else { return }
-            let vc = TestImageController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "UIImage-UIColor", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestImageColorController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "UIButton", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestButtonViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "Gesture", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestGestureViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "CALayer", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestCALayerViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "Video", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestVideoViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "Input", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestInputViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "Navbar", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestNavbar01ViewController()
-            base.st.push(vc: vc)
-        })
-
-        items.append(TableElement(title: "vc", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            let vc = TestVCViewController()
-            base.st.push(vc: vc)
-        })
-
+        
+        func addCell(vc: UIViewController.Type) {
+            let title = vc.description()
+                .split(separator: ".").last!
+                .replacingOccurrences(of: "ViewController", with: "")
+                .replacingOccurrences(of: "Controller", with: "")
+                .replacingOccurrences(of: "Test", with: "")
+            items.append(TableElement(title: title, subtitle: "") { [weak self] in
+                guard let self = self else { return }
+                self.st.push(vc: vc.init())
+            })
+        }
+        
+        [TestImageViewController.self,
+         TestImageColorController.self,
+         TestButtonViewController.self,
+         TestCALayerViewController.self,
+         TestGestureViewController.self,
+         TestVideoViewController.self,
+         TestInputViewController.self,
+         TestNavbar01ViewController.self,
+         TestVCViewController.self].forEach({ addCell(vc: $0) })
+        
     }
-
+    
 }

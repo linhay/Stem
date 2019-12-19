@@ -118,15 +118,15 @@
             ]
           },
           "source_files": [
-            "Sources/Foundation/pre-release/**/*.swift",
-            "Sources/Foundation/pre-release/*.swift"
+            "Sources/Foundation/String/**/*.swift",
+            "Sources/Foundation/String/*.swift"
           ]
         },
         {
           "name": "Custom",
           "source_files": [
-            "Sources/Foundation/pre-release/**/*.swift",
-            "Sources/Foundation/pre-release/*.swift"
+            "Sources/Foundation/Custom/**/*.swift",
+            "Sources/Foundation/Custom/*.swift"
           ]
         }
       ]
@@ -299,6 +299,24 @@
       },
       "platforms": {
         "ios": "8.0"
+      }
+    },
+    {
+      "name": "WebKit",
+      "source_files": [
+        "Sources/WebKit/*.swift"
+      ],
+      "frameworks": [
+        "WebKit"
+      ],
+      "dependencies": {
+        "Stem/Core": [
+
+        ]
+      },
+      "platforms": {
+        "ios": "8.0",
+        "osx": "10.10"
       }
     }
   ],

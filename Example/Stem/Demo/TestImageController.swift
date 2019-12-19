@@ -28,72 +28,81 @@ class TestImageController: BaseViewController {
         }
         
         items.append(TableElement(title: "复原", subtitle: "") { [weak self] in
-            guard let base = self else { return }
-            base.imageView.image = base.image
+            guard let self = self else { return }
+            self.imageView.image = self.image
         })
         
         items.append(TableElement(title: "图像处理: 裁圆",
                                   subtitle: "image.st.rounded()") {[weak self] in
-                                    guard let base = self else { return }
-                                    base.imageView.image = base.image.st.edgeEditing()
+                                    guard let self = self else { return }
+                                    self.imageView.image = self.image.st.edgeEditing()
         })
         
         items.append(TableElement(title: "获取指定颜色的图片",
                                   subtitle: "UIImage(color: UIColor,size: CGSize)") { [weak self] in
-                                    guard let base = self else { return }
+                                    guard let self = self else { return }
                                     let image = UIImage(color: UIColor.red, size: CGSize(width: 50, height: 50))
-                                    base.imageView.image = image
+                                    self.imageView.image = image
         })
         
         items.append(TableElement(title: "裁剪对应区域",
                                   subtitle: "image.st.crop(bound: CGRect)") { [weak self] in
-                                    guard let base = self else { return }
-                                    let image = base.image.st.cropped(to: CGRect(x: 0,
+                                    guard let self = self else { return }
+                                    let image = self.image.st.cropped(to: CGRect(x: 0,
                                                                                  y: 0,
-                                                                                 width: base.image.size.width * 0.5,
-                                                                                 height: base.image.size.height * 0.5))
-                                    base.imageView.image = image
+                                                                                 width: self.image.size.width * 0.5,
+                                                                                 height: self.image.size.height * 0.5))
+                                    self.imageView.image = image
         })
         
         items.append(TableElement(title: "图像处理: 圆角",
                                   subtitle: "image.st.round(...)") {[weak self] in
-                                    guard let base = self else { return }
-                                    let image = base.image.st.edgeEditing(radius: base.image.size.width * 0.5,
+                                    guard let self = self else { return }
+                                    let image = self.image.st.edgeEditing(radius: self.image.size.width * 0.5,
                                                                           corners: [.topRight,.bottomRight],
                                                                           borderWidth: 8,
                                                                           borderColor: UIColor.white,
                                                                           borderLineJoin: CGLineJoin.bevel)
-                                    base.imageView.image = image
+                                    self.imageView.image = image
         })
         
         items.append(TableElement(title: "缩放至指定宽度",
                                   subtitle: "image.st.scaled(toWidth: 50)") {[weak self] in
-                                    guard let base = self else { return }
-                                    let image = base.image.st.scaled(toWidth: 50)
-                                    base.imageView.image = image
+                                    guard let self = self else { return }
+                                    let image = self.image.st.scaled(toWidth: 50)
+                                    self.imageView.image = image
         })
         
         items.append(TableElement(title: "缩放至指定高度",
                                   subtitle: "image.st.scaled(toHeight: 80)") {[weak self] in
-                                    guard let base = self else { return }
-                                    let image = base.image.st.scaled(toHeight: 80)
-                                    base.imageView.image = image
+                                    guard let self = self else { return }
+                                    let image = self.image.st.scaled(toHeight: 80)
+                                    self.imageView.image = image
         })
         
         items.append(TableElement(title: "图片覆盖",
                                   subtitle: "image1.st.overlay(image: image2, offset: UIOffset(horizontal: 20, vertical: 30))") {[weak self] in
-                                    guard let base = self else { return }
+                                    guard let self = self else { return }
                                     let image1 = UIImage(color: UIColor.red, size: CGSize(width: 80, height: 80))
                                     let image2 = UIImage(color: UIColor.blue, size: CGSize(width: 50, height: 50))
                                     let image = image1.st.overlay(image: image2, alignment: .zero(x: 20, y: 30))
-                                    base.imageView.image = image
+                                    self.imageView.image = image
         })
         
         items.append(TableElement(title: "毛玻璃效果", subtitle: "imageView.st.blur()") {[weak self] in
-            guard let base = self else { return }
-            base.imageView.image = base.image.st.blur(value: 5)
+            guard let self = self else { return }
+            self.imageView.image = self.image.st.blur(value: 5)
         })
-        
+
+        items.append(TableElement(title: "图片信息", subtitle: "") {[weak self] in
+            guard let self = self else { return }
+
+        })
+
+        items.append(TableElement(title: "毛玻璃效果", subtitle: "imageView.st.blur()") {[weak self] in
+            guard let self = self else { return }
+            self.imageView.image = self.image.st.blur(value: 5)
+        })
         
     }
     

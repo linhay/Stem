@@ -28,8 +28,8 @@ class TestVideoViewController: BaseViewController {
 
         items.append(TableElement(title: "取帧", subtitle: "") { [weak self] in
             self?.test(handle: { [weak self] (image) in
-                guard let base = self else { return }
-                base.imageView.image = image
+                guard let self = self else { return }
+                self.imageView.image = image
             })
         })
     }

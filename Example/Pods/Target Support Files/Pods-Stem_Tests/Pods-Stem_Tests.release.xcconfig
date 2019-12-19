@@ -4,7 +4,7 @@ GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SVProgressHUD/SVProgressHUD.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SnapKit-iOS/SnapKit.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Stem-be4603a1/Stem.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Stuart/Stuart.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Then-iOS/Then.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
 OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/Stem-be4603a1/Stem.framework/Headers" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/Stem-be4603a1"
-OTHER_LDFLAGS = $(inherited) -framework "AVFoundation" -framework "AVKit" -framework "Foundation" -framework "QuartzCore" -framework "SVProgressHUD" -framework "SnapKit" -framework "Stem" -framework "Stuart" -framework "Then" -framework "UIKit"
+OTHER_LDFLAGS = $(inherited) -framework "AVFoundation" -framework "AVKit" -framework "Foundation" -framework "QuartzCore" -framework "SVProgressHUD" -framework "SnapKit" -framework "Stem" -framework "Stuart" -framework "Then" -framework "UIKit" -framework "WebKit"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

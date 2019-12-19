@@ -27,22 +27,28 @@ class TestImageViewController: BaseViewController {
         }
 
         items.append(TableElement(title: "复原", subtitle: "") {[weak self] in
-            guard let base = self else { return }
-            base.imageView.st.removeSubviews()
-            base.imageView.image = nil
+            guard let self = self else { return }
+            self.imageView.st.removeSubviews()
+            self.imageView.image = nil
         })
 
         items.append(TableElement(title: "从网络上下载图片", subtitle: "imageView.st.download(from: url,placeholder: image,completionHandler: nil)") { [weak self] in
-            guard let base = self else { return }
+            guard let self = self else { return }
             let url = URL(string: "https://s.linhey.com/hexo-docker-1.png")!
-            base.imageView.st.download(from: url,
+            self.imageView.st.download(from: url,
                                        placeholder: UIImage(named: "loading"),
                                        completionHandler: nil)
         })
 
         items.append(TableElement(title: "毛玻璃效果", subtitle: "imageView.st.blur()") {[weak self] in
-            guard let base = self else { return }
-            base.imageView.st.blur()
+            guard let self = self else { return }
+            self.imageView.st.blur()
+        })
+
+        items.append(TableElement(title: "xcasset 读取 GIF", subtitle: "") {[weak self] in
+            guard let self = self else { return }
+            self.imageView.image = UIImage(named: "exif")
+            print(self.imageView.image?.st.properties)
         })
 
     }

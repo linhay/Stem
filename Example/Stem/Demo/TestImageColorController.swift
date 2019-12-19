@@ -38,14 +38,6 @@ class TestImageColorController: BaseViewController {
             self.imageView.image = self.image.st.setTint(color: .red)
         })
         
-        items.append(TableElement(title: "xcasset 读取 GIF", subtitle: "") {
-            guard let data = NSDataAsset(name: "gif_test")?.data else {
-                return
-            }
-            let image = UIImage(data: data)
-            self.imageView.image = image
-        })
-        
         //      items.append(TableElement(title: "高斯模糊", subtitle: "image.st.blur(value: 80)") {
         //        self.imageView.image = self.image.st.blur(value: 80)
         //      })

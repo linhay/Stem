@@ -36,11 +36,11 @@ public extension UIImage {
         color.setFill()
         UIRectFill(CGRect(origin: .zero, size: size))
         
-        guard let aCgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
+        guard let cgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
             self.init()
             return
         }
-        self.init(cgImage: aCgImage)
+        self.init(cgImage: cgImage)
     }
 }
 
@@ -53,12 +53,13 @@ public extension Stem where Base: UIImage {
 }
 
 public extension Stem where Base: UIImage {
+    
     /// 修改单色系图片颜色
     ///
     /// - Parameter color: 颜色
     /// - Returns: 新图
     func setTint(color: UIColor) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(base.size, false, 1)
+        UIGraphicsBeginImageContextWithOptions(base.size, false, 0)
         defer { UIGraphicsEndImageContext() }
         color.setFill()
         let bounds = CGRect(x: 0, y: 0, width: base.size.width, height: base.size.height)

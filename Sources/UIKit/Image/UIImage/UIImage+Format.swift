@@ -23,21 +23,33 @@
 
 import UIKit
 
-public extension UIImage {
-    
-    convenience init?(named: String, in bundle: Bundle) {
-        let manager = FileManager.default
-        guard let res = manager.enumerator(atPath: bundle.bundlePath)?
-            .allObjects
-            .compactMap({ (item) -> String? in
-                return item as? String
-            }).first(where: { (item) -> Bool in
-                return item.components(separatedBy: "/").last?.components(separatedBy: ".").first == .some(named)
-            }),
-            let bundle = Bundle(path: bundle.bundlePath + res)
-            else { return nil }
-        self.init(named: named, in: bundle, compatibleWith: nil)
+// MARK: - format(格式转换)
+public extension Stem where Base: UIImage {
+
+    /// 转换为 png 数据格式
+    /// 可能会在 `UIImageWriteToSavedPhotosAlbum` 中使用
+    var png: UIImage? {
+        guard let data = base.pngData() else {
+            return nil
+        }
+        return UIImage(data: data)
     }
-    
+
 }
 
+
+// MARK: - AttributedString(富文本)
+public extension Stem where Base: UIImage {
+
+    func attributedString(bounds: CGRect) -> NSAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.image = base
+        attachment.bounds = bounds
+        return NSAttributedString(attachment: attachment)
+    }
+
+    func mutableAttributedString(bounds: CGRect) -> NSMutableAttributedString {
+        self.attributedString(bounds: bounds).mutableCopy() as! NSMutableAttributedString
+    }
+
+}

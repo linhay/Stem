@@ -22,22 +22,24 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 
 import UIKit
+import ImageIO
 
-public extension UIImage {
-    
-    convenience init?(named: String, in bundle: Bundle) {
-        let manager = FileManager.default
-        guard let res = manager.enumerator(atPath: bundle.bundlePath)?
-            .allObjects
-            .compactMap({ (item) -> String? in
-                return item as? String
-            }).first(where: { (item) -> Bool in
-                return item.components(separatedBy: "/").last?.components(separatedBy: ".").first == .some(named)
-            }),
-            let bundle = Bundle(path: bundle.bundlePath + res)
-            else { return nil }
-        self.init(named: named, in: bundle, compatibleWith: nil)
+// MARK: - info(图片信息)
+public extension Stem where Base: UIImage {
+
+    /// 是否存在 Alpha 通道
+    var hasAlpha: Bool {
+        guard let alpha = base.cgImage?.alphaInfo else {
+            return false
+        }
+        return alpha == .first || alpha == .last || alpha == .premultipliedFirst || alpha == .premultipliedLast
     }
-    
-}
 
+    /// exif信息
+    #warning("待验证")
+    var properties: [String: Any]? {
+        CFDictionaryGetValue(<#T##theDict: CFDictionary!##CFDictionary!#>, kCGImagePropertyExifOECF)
+        return CIImage(image: base)?.properties
+    }
+
+}

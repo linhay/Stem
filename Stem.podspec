@@ -48,12 +48,12 @@ Pod::Spec.new do |s|
 
         ss.subspec 'String' do |sss|
             sss.dependency 'Stem/Foundation/Fundamentals'
-            path = base_path + name
+            path = base_path + 'String'
             sss.source_files = [path + '/**/*.swift', path + '/*.swift']
         end
 
         ss.subspec 'Custom' do |sss|
-            path = base_path + name
+            path = base_path + 'Custom'
             sss.source_files = [path + '/**/*.swift', path + '/*.swift']
         end
 
@@ -90,6 +90,16 @@ Pod::Spec.new do |s|
         ss.dependency 'Stem/Core'
 
         ss.ios.deployment_target     = '8.0'
+    end
+
+    s.subspec 'WebKit' do |ss|
+        base_path = 'Sources/WebKit/'
+        ss.source_files = [base_path + '*.swift']
+        ss.frameworks = ['WebKit']
+        ss.dependency 'Stem/Core'
+
+        ss.ios.deployment_target     = '8.0'
+        ss.osx.deployment_target     = '10.10'
     end
 
 end

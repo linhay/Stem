@@ -6,6 +6,7 @@ PODS:
     - Stem/Foundation (= 0.0.28)
     - Stem/Runtime (= 0.0.28)
     - Stem/UIKit (= 0.0.28)
+    - Stem/WebKit (= 0.0.28)
   - Stem/AVKit (0.0.28):
     - Stem/Core
   - Stem/Core (0.0.28)
@@ -153,6 +154,8 @@ PODS:
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
+  - Stem/WebKit (0.0.28):
+    - Stem/Core
   - Stuart (0.1.0):
     - Stuart/Input (= 0.1.0)
     - Stuart/SectionView (= 0.1.0)
@@ -192,7 +195,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  Stem: 1869ae2b7db2d2ad06b5f7b9e05b2d0ab70d007e
+  Stem: 23e00616f8a223e2d2590aed83cb694f63f36ee3
   Stuart: a9a711fbb7b32a0a522947a1ccb483c5175c6f01
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 5553187048b900c91aa03552807681bb6b027846
