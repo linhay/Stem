@@ -26,15 +26,13 @@ import UIKit
 public extension Stem where Base: CALayer {
 
     @discardableResult
-    func addSublayers(_ layers: CALayer...) -> Stem<Base> {
-        layers.forEach({ base.addSublayer($0) })
-        return self
+    func addSublayers(_ layers: CALayer...) {
+        addSublayers(layers)
     }
 
     @discardableResult
-    func addSublayers(_ layers: [CALayer]) -> Stem<Base> {
+    func addSublayers(_ layers: [CALayer]) {
         layers.forEach({ base.addSublayer($0) })
-        return self
     }
 
     /** 获取视图显示内容

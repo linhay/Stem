@@ -23,8 +23,9 @@
 
 import WebKit
 
-extension DXYUtilWrapper where Base: WKWebView {
+extension Stem where Base: WKWebView {
 
+    @available(iOS 9.0, *) @available(macOS 10.11, *)
     public func load(_ url: URL) {
         if url.isFileURL {
             // allowingReadAccessTo: 授权路径, 真机上需要赋予相应路径权限, html才可加载相应路径资源文件

@@ -36,10 +36,10 @@ public extension Stem where Base: UIImage {
     }
 
     /// exif信息
-    #warning("待验证")
-    var properties: [String: Any]? {
-        CFDictionaryGetValue(<#T##theDict: CFDictionary!##CFDictionary!#>, kCGImagePropertyExifOECF)
-        return CIImage(image: base)?.properties
-    }
+//    #warning("待验证")
+//    var properties: [String: Any]? {
+//        CFDictionaryGetValue(<#T##theDict: CFDictionary!##CFDictionary!#>, kCGImagePropertyExifOECF)
+//        return CIImage(image: base)?.properties
+//    }
 
 }
