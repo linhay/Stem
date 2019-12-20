@@ -25,7 +25,7 @@ import UIKit
 
 public extension Stem where Base: UIResponder {
 
-    func responderChain() -> [UIResponder] {
+    var responderChain: [UIResponder] {
         var list = [UIResponder]()
         var next: UIResponder? = base
         repeat {

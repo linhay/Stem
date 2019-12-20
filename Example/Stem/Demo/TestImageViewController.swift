@@ -48,7 +48,7 @@ class TestImageViewController: BaseViewController {
         items.append(TableElement(title: "xcasset 读取 GIF", subtitle: "") {[weak self] in
             guard let self = self else { return }
             self.imageView.image = UIImage(named: "exif")
-            print(self.imageView.image?.st.properties)
+//            print(self.imageView.image?.st.properties)
         })
 
     }

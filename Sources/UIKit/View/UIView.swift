@@ -74,12 +74,9 @@ public extension Stem where Base: UIView {
 
      */
     var description: String {
-        let recursiveDescription = base
-            .perform(Selector(("recursiveDescription")))?
-            .takeUnretainedValue() as! String
-        return recursiveDescription.replacingOccurrences(of: ":?\\s*0x[\\da-f]+(\\s*)",
-                                                         with: "$1",
-                                                         options: .regularExpression)
+        return (base.perform(Selector("recursiveDescription"))?
+            .takeUnretainedValue() as! String)
+            .replacingOccurrences(of: #":?\s*0x[\da-f]+(\s*)"#, with: "$1", options: .regularExpression)
     }
     
     /**
