@@ -69,14 +69,14 @@ class TestImageController: BaseViewController {
         items.append(TableElement(title: "缩放至指定宽度",
                                   subtitle: "image.st.scaled(toWidth: 50)") {[weak self] in
                                     guard let self = self else { return }
-                                    let image = self.image.st.scaled(toWidth: 50)
+                                    let image = self.image.st.scale(toWidth: 50)
                                     self.imageView.image = image
         })
         
         items.append(TableElement(title: "缩放至指定高度",
                                   subtitle: "image.st.scaled(toHeight: 80)") {[weak self] in
                                     guard let self = self else { return }
-                                    let image = self.image.st.scaled(toHeight: 80)
+                                    let image = self.image.st.scale(toHeight: 80)
                                     self.imageView.image = image
         })
         

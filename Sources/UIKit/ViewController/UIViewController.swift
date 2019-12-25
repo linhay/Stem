@@ -46,20 +46,20 @@ public extension Stem where Base: UIViewController {
     ///   - isRemove: 前进后是否移除当前控制器
     ///   - animated: 是否显示动画
     @discardableResult
-    func push(vc: UIViewController?, isRemove: Bool = false, animated: Bool = true) -> Stem<Base> {
-        guard let vc = vc else { return self }
+    func push(vc: UIViewController?, isRemove: Bool = false, animated: Bool = true) {
+        guard let vc = vc else { return }
         switch base {
         case let nav as UINavigationController:
             nav.pushViewController(vc, animated: animated)
         default:
             base.navigationController?.pushViewController(vc, animated: animated)
             if isRemove {
-                guard let vcs = base.navigationController?.viewControllers else { return self }
-                guard let flags = vcs.firstIndex(of: base.self) else { return self }
+                guard let vcs = base.navigationController?.viewControllers else { return }
+                guard let flags = vcs.firstIndex(of: base.self) else { return }
                 base.navigationController?.viewControllers.remove(at: flags)
             }
         }
-        return self
+        return
     }
     
     /// 后退一层控制器
@@ -113,7 +113,7 @@ public extension Stem where Base: UIViewController {
     
     /// 获取当前显示控制器
     static var current: UIViewController? {
-
+        
         func find(rawVC: UIViewController) -> UIViewController {
             switch rawVC {
             case let nav as UINavigationController:
@@ -137,33 +137,22 @@ public extension Stem where Base: UIViewController {
         }
         return find(rawVC: rootViewController)
     }
-
+    
 }
 
 // MARK: - ivar
 public extension Stem where Base: UIViewController {
     
-    /// tabbarHeight高度
-    var tabbarHeight: CGFloat {
-        return base.tabBarController?.tabBar.bounds.height ?? 0
-    }
-    
-    /// 能否回退
-    var canback: Bool {
-        return (base.navigationController?.viewControllers.count ?? 0) > 1
-    }
-
     /// 是否是当前显示控制器
     var isVisible: Bool {
-        guard let vc = UIViewController.st.current else { return false }
-        return vc == base || vc.tabBarController == base || vc.navigationController == base
+        return base.view.window != nil && base.isViewLoaded && base.presentedViewController == nil
     }
     
 }
 
 // MARK: - present
 public extension Stem where Base: UIViewController {
-
+    
     /// 能modal的控制器
     static var presented: UIViewController? {
         var vc = UIApplication.shared.keyWindow?.rootViewController
@@ -172,13 +161,13 @@ public extension Stem where Base: UIViewController {
         }
         return vc
     }
-
+    
     /// 当前是控制器是否是被modal出来
     var isByPresented: Bool {
         guard base.presentedViewController == nil else { return false }
         return true
     }
-
+    
     /// modal 指定控制器
     ///
     /// - Parameters:
@@ -187,12 +176,12 @@ public extension Stem where Base: UIViewController {
     ///   - completion: 完成后事件
     @discardableResult
     func present(vc: UIViewController?, animated: Bool = true, completion: (() -> Void)? = nil) {
-        guard let vc = vc else { return }
-        UIViewController.st.presented?.present(vc, animated: animated, completion: completion)
+        guard let vc = vc, base.presentedViewController != nil else { return }
+        base.present(vc, animated: animated, completion: completion)
     }
-
+    
     func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
         base.dismiss(animated: animated, completion: completion)
     }
-
+    
 }

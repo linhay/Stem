@@ -140,7 +140,7 @@ public class Gcd {
     @discardableResult
     public class func `repeat`(interval: TimeInterval,
                                keep: TimeInterval,
-                               leeway: Double,
+                               leeway: Double = 0.1,
                                event: @escaping ((_: DispatchSourceTimer) -> Void),
                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
         let intervalTime = DispatchTimeInterval.nanoseconds(Int(interval * 1000 * 1000 * 1000))

@@ -338,6 +338,26 @@ public extension CIFilter.Generator {
                 case .h: return 0.30
                 }
             }
+
+            init(level: Double) {
+                if  level < CorrectionLevel.m.level {
+                    self = .l
+                    return
+                }
+                if level >= CorrectionLevel.m.level || level < CorrectionLevel.q.level {
+                    self = .m
+                    return
+                }
+                if level >= CorrectionLevel.q.level || level < CorrectionLevel.h.level {
+                    self = .q
+                    return
+                }
+                if level >= CorrectionLevel.h.level {
+                    self = .h
+                    return
+                }
+                self = .m
+            }
             
         }
         

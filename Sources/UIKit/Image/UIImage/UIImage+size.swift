@@ -35,42 +35,45 @@ public extension Stem where Base: UIImage {
     var byteString: String {
         return ByteCountFormatter().string(fromByteCount: Int64(byte))
     }
+
+    /// 基于像素的尺寸
+    var pixelSize: CGSize {
+        return CGSize(width: base.size.width * base.scale, height: base.size.height * base.scale)
+    }
     
 }
 
 // MARK: - scale(缩放)
 public extension Stem where Base: UIImage {
-   
+
     /// 缩放至指定高度
     ///
     /// - Parameters:
     ///   - toWidth: 高度
     ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
     /// - Returns: 新的图片
-    func scaled(toHeight: CGFloat, opaque: Bool = false) -> UIImage? {
+    func scale(toHeight: CGFloat, opaque: Bool = false) -> UIImage? {
         let scale = toHeight / base.size.height
         let newWidth = base.size.width * scale
         UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: toHeight), opaque, 0)
+        defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: toHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
-    
+
     /// 缩放至指定宽度
     ///
     /// - Parameters:
     ///   - toWidth: 宽度
     ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
     /// - Returns: 新的图片
-    func scaled(toWidth: CGFloat, opaque: Bool = false) -> UIImage? {
+    func scale(toWidth: CGFloat, opaque: Bool = false) -> UIImage? {
         let scale = toWidth / base.size.width
         let newHeight = base.size.height * scale
         UIGraphicsBeginImageContextWithOptions(CGSize(width: toWidth, height: newHeight), opaque, 0)
+        defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(x: 0, y: 0, width: toWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 
 }
