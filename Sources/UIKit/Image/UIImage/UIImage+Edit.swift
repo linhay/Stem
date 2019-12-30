@@ -44,17 +44,21 @@ public extension Stem where Base: UIImage {
     ///   - offset: 覆盖图片偏移 正值向下向右
     /// - Returns: 新图
     func overlay(image: UIImage, alignment: UIImage.OverlayAlignment = .center(x: 0, y: 0)) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(base.size, false, UIScreen.main.scale)
+        UIGraphicsBeginImageContextWithOptions(base.size, false, 0)
         defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(origin: .zero, size: base.size))
+
+        let imageScale = image.scale / base.scale
+        let imageSize = CGSize(width: image.size.width * imageScale, height: image.size.height * imageScale)
+
         switch alignment {
         case .center(x: let x, y: let y):
-            let origin = CGPoint(x: (base.size.width - image.size.width) * 0.5 + x,
-                                 y: (base.size.height - image.size.height) * 0.5 + y)
-            image.draw(in: CGRect(origin: origin, size: image.size))
+            let origin = CGPoint(x: (base.size.width - imageSize.width) * 0.5 + x,
+                                 y: (base.size.height - imageSize.height) * 0.5 + y)
+            image.draw(in: CGRect(origin: origin, size: imageSize))
         case .zero(x: let x, y: let y):
             let origin = CGPoint(x: x, y: y)
-            image.draw(in: CGRect(origin: origin, size: image.size))
+            image.draw(in: CGRect(origin: origin, size: imageSize))
         }
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }
