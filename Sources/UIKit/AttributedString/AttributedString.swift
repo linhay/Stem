@@ -202,14 +202,24 @@ public extension Stem where Base: NSAttributedString {
     ///   - font: 字体
     ///   - width: 最大宽度
     /// - Returns: 行数
-    func rows(maxWidth width: CGFloat) -> CGFloat {
+    func rows(maxWidth width: CGFloat, lineHeight: CGFloat? = nil) -> Int {
         if base.length == 0 { return 0 }
-        // 获取单行时候的内容的size
-        let singleSize = self.size()
+        // 获取单行时候的内容的高度
+        var lineHeight = lineHeight
+
+        if lineHeight != nil {} else {
+            lineHeight = self.size().height
+        }
+
+        guard let singleLineHeight = lineHeight else {
+            return 0
+        }
+
         // 获取多行时候,文字的size
         let textSize = self.size(maxWidth: width)
+
         // 返回计算的行数
-        return ceil(textSize.height / singleSize.height)
+        return Int(ceil(textSize.height / singleLineHeight))
     }
 }
 
