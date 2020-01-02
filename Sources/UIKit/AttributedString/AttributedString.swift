@@ -78,25 +78,6 @@ public extension StemValue where Base == String {
 public extension Stem where Base: NSAttributedString {
 
     /**
-      转换为 NSMutableAttributedString 类型
-
-     - Authors: linhey
-     - Date: 2019/11/26
-
-     - Example:
-
-     ```
-
-     NSAttributedString(string: "Stem").dxy.mutableCopy
-
-     ```
-
-     */
-    var mutableCopy: NSMutableAttributedString {
-        return NSMutableAttributedString(attributedString: base)
-    }
-
-    /**
      创建标签图片
 
      ```
@@ -180,8 +161,21 @@ public extension Stem where Base: NSAttributedString {
     func bounds(size: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
                                       height: CGFloat.greatestFiniteMagnitude),
                 option: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]) -> CGRect {
-        if base.length == 0 { return CGRect.zero }
-        return base.boundingRect(with: size, options: option, context: nil)
+
+        guard base.length != 0 else {
+            return CGRect.zero
+        }
+
+        let mutableCopy = NSMutableAttributedString(attributedString: base)
+
+        if let style = base.attributes(at: 0, effectiveRange: nil)[.paragraphStyle] as? NSParagraphStyle,
+            style.lineBreakMode != .byWordWrapping,
+            let mutableParagraphStyle = style.mutableCopy() as? NSMutableParagraphStyle {
+            mutableParagraphStyle.lineBreakMode = .byWordWrapping
+            mutableCopy.setAttributes([.paragraphStyle: mutableParagraphStyle], range: NSRange(location: 0, length: base.length))
+        }
+
+        return mutableCopy.boundingRect(with: size, options: option, context: nil)
     }
 
     /// 获取字符串的CGSize
