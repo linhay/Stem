@@ -53,6 +53,20 @@ public extension Stem where Base: CALayer {
 
 
     /**
+     设置边框样式
+
+     - Authors: linhey
+     - Date: 2020/01/06
+
+     - Parameter color: 颜色
+     - Parameter width: 宽度
+     */
+    func setBorder(color: UIColor, width: CGFloat) {
+        base.borderColor = color.cgColor
+        base.borderWidth = width
+    }
+
+    /**
      Sketch 中的阴影效果
 
      - Authors: linhey
