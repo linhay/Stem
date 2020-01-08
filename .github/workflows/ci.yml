@@ -1,4 +1,4 @@
-name: "SwiftyUtils CI"
+name: "Stem CI"
 
 on: 
   push:
@@ -9,15 +9,15 @@ on:
       - master
 
 jobs:
-  macOS:
-    name: Test macOS
-    runs-on: macOS-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install Dependencies
-        run: brew install swiftlint
-      - name: macOS
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "SwiftyUtils.xcodeproj" -scheme "SwiftyUtils macOS" -destination "platform=macOS" clean test | xcpretty
+  # macOS:
+  #   name: Test macOS
+  #   runs-on: macOS-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Install Dependencies
+  #       run: brew install swiftlint
+  #     - name: macOS
+  #       run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "Stem.xcodeproj" -scheme "macOS" -destination "platform=macOS" clean test | xcpretty
   iOS:
     name: Test iOS 
     runs-on: macOS-latest
@@ -30,37 +30,37 @@ jobs:
         run: brew install swiftlint
       - name: iOS - ${{ matrix.destination }}
         run: set -o pipefail && 
-             env NSUnbufferedIO=YES xcodebuild -project "SwiftyUtils.xcodeproj" -scheme "SwiftyUtils iOS" -destination "${{ matrix.destination }}" clean test | xcpretty &&
-             xcodebuild -workspace "SwiftyUtils.xcworkspace" -scheme "iOS Example" -destination "${{ matrix.destination }}" clean 
-  tvOS:
-    name: Test tvOS 
-    runs-on: macOS-latest
-    strategy:
-      matrix:
-        destination: ["OS=13.0,name=Apple TV 4K"] #, "OS=11.4,name=Apple TV 4K", "OS=10.2,name=Apple TV 1080p"]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install Dependencies
-        run: brew install swiftlint
-      - name: tvOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "SwiftyUtils.xcodeproj" -scheme "SwiftyUtils tvOS" -destination "${{ matrix.destination }}" clean test | xcpretty
-  watchOS:
-    name: Build watchOS
-    runs-on: macOS-latest
-    strategy:
-      matrix:
-        destination: ["OS=6.0,name=Apple Watch Series 5 - 44mm"] #, "OS=4.2,name=Apple Watch Series 3 - 42mm", "OS=3.2,name=Apple Watch Series 2 - 42mm"]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install Dependencies
-        run: brew install swiftlint
-      - name: watchOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "SwiftyUtils.xcodeproj" -scheme "SwiftyUtils watchOS" -destination "${{ matrix.destination }}" clean build | xcpretty
-  spm:
-    name: Test SPM Integration
-    runs-on: macOS-latest    
-    needs: [macOS]
-    steps:
-      - uses: actions/checkout@v1
-      - name: SPM Build
-        run: swift build
+             env NSUnbufferedIO=YES xcodebuild -project "Stem.xcodeproj" -scheme "iOS" -destination "${{ matrix.destination }}" clean test | xcpretty &&
+             xcodebuild -workspace "Stem.xcworkspace" -scheme "iOS" -destination "${{ matrix.destination }}" clean 
+  # tvOS:
+  #   name: Test tvOS 
+  #   runs-on: macOS-latest
+  #   strategy:
+  #     matrix:
+  #       destination: ["OS=13.0,name=Apple TV 4K"] #, "OS=11.4,name=Apple TV 4K", "OS=10.2,name=Apple TV 1080p"]
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Install Dependencies
+  #       run: brew install swiftlint
+  #     - name: tvOS - ${{ matrix.destination }}
+  #       run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "SwiftyUtils.xcodeproj" -scheme "SwiftyUtils tvOS" -destination "${{ matrix.destination }}" clean test | xcpretty
+  # watchOS:
+  #   name: Build watchOS
+  #   runs-on: macOS-latest
+  #   strategy:
+  #     matrix:
+  #       destination: ["OS=6.0,name=Apple Watch Series 5 - 44mm"] #, "OS=4.2,name=Apple Watch Series 3 - 42mm", "OS=3.2,name=Apple Watch Series 2 - 42mm"]
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Install Dependencies
+  #       run: brew install swiftlint
+  #     - name: watchOS - ${{ matrix.destination }}
+  #       run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "SwiftyUtils.xcodeproj" -scheme "SwiftyUtils watchOS" -destination "${{ matrix.destination }}" clean build | xcpretty
+  # spm:
+  #   name: Test SPM Integration
+  #   runs-on: macOS-latest    
+  #   needs: [macOS]
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: SPM Build
+  #       run: swift build
