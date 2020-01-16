@@ -1,0 +1,99 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXFileReference section */
+		CDCF2E1623C6029C00107BF1 /* Template.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Template.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		CDCF2E1723C6029C00107BF1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CDCF2E1A23C6088600107BF1 /* Template.docment */ = {isa = PBXFileReference; lastKnownFileType = text; path = Template.docment; sourceTree = "<group>"; };
+		CDCF2E4023C6CB0000107BF1 /* trunk.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = trunk.sh; sourceTree = "<group>"; };
+		CDCF2E4123C6CB0000107BF1 /* license */ = {isa = PBXFileReference; lastKnownFileType = text; path = license; sourceTree = "<group>"; };
+		CDCF2E4223C6CB0000107BF1 /* document.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = document.sh; sourceTree = "<group>"; };
+		CDCF2E4323C6CB0000107BF1 /* license.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = license.py; sourceTree = "<group>"; };
+		CDCF2E4423C6CB0000107BF1 /* git_config.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = git_config.sh; sourceTree = "<group>"; };
+		CDCF2E4723C6CD0D00107BF1 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; };
+		CDCF2E4A23C6DBAA00107BF1 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		CDCF2E0F23C6026500107BF1 = {
+			isa = PBXGroup;
+			children = (
+				CDCF2E3F23C6CB0000107BF1 /* scripts */,
+				CDCF2E4723C6CD0D00107BF1 /* Gemfile */,
+				CDCF2E4A23C6DBAA00107BF1 /* .swiftlint.yml */,
+				CDCF2E1723C6029C00107BF1 /* LICENSE */,
+				CDCF2E1A23C6088600107BF1 /* Template.docment */,
+				CDCF2E1623C6029C00107BF1 /* Template.podspec */,
+			);
+			sourceTree = "<group>";
+		};
+		CDCF2E3F23C6CB0000107BF1 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				CDCF2E4023C6CB0000107BF1 /* trunk.sh */,
+				CDCF2E4123C6CB0000107BF1 /* license */,
+				CDCF2E4223C6CB0000107BF1 /* document.sh */,
+				CDCF2E4323C6CB0000107BF1 /* license.py */,
+				CDCF2E4423C6CB0000107BF1 /* git_config.sh */,
+			);
+			path = scripts;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		CDCF2E1023C6026500107BF1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1130;
+			};
+			buildConfigurationList = CDCF2E1323C6026500107BF1 /* Build configuration list for PBXProject "Configurations" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CDCF2E0F23C6026500107BF1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		CDCF2E1423C6026500107BF1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		CDCF2E1523C6026500107BF1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CDCF2E1323C6026500107BF1 /* Build configuration list for PBXProject "Configurations" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDCF2E1423C6026500107BF1 /* Debug */,
+				CDCF2E1523C6026500107BF1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CDCF2E1023C6026500107BF1 /* Project object */;
+}

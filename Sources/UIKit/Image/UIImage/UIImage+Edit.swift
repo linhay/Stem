@@ -1,25 +1,24 @@
-//
-//  Stem
-//
-//  github: https://github.com/linhay/Stem
-//  Copyright (c) 2019 linhay - https://github.com/linhay
-//
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in all
-//  copies or substantial portions of the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// MIT License
+///
+/// Copyright (c) 2020 linhey
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all
+/// copies or substantial portions of the Software.
+
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// SOFTWARE.
 
 import UIKit
 
@@ -27,7 +26,7 @@ public extension UIImage {
 
     public enum OverlayAlignment {
         /// 居中
-        case center(x: CGFloat, y: CGFloat)
+        case center(offset: UIOffset)
         /// 左上
         case zero(x: CGFloat, y: CGFloat)
     }
@@ -43,7 +42,7 @@ public extension Stem where Base: UIImage {
     ///   - image: 覆盖至上方图片
     ///   - offset: 覆盖图片偏移 正值向下向右
     /// - Returns: 新图
-    func overlay(image: UIImage, alignment: UIImage.OverlayAlignment = .center(x: 0, y: 0)) -> UIImage {
+    func overlay(image: UIImage, alignment: UIImage.OverlayAlignment = .center(offset: .zero)) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(base.size, false, 0)
         defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(origin: .zero, size: base.size))
@@ -52,9 +51,9 @@ public extension Stem where Base: UIImage {
         let imageSize = CGSize(width: image.size.width * imageScale, height: image.size.height * imageScale)
 
         switch alignment {
-        case .center(x: let x, y: let y):
-            let origin = CGPoint(x: (base.size.width - imageSize.width) * 0.5 + x,
-                                 y: (base.size.height - imageSize.height) * 0.5 + y)
+        case .center(let offset):
+            let origin = CGPoint(x: (base.size.width - imageSize.width) * 0.5 + offset.horizontal,
+                                 y: (base.size.height - imageSize.height) * 0.5 + offset.vertical)
             image.draw(in: CGRect(origin: origin, size: imageSize))
         case .zero(x: let x, y: let y):
             let origin = CGPoint(x: x, y: y)

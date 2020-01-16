@@ -1,4 +1,3 @@
-
 import os
 
 def BFS_Dir(path, dirCallback=None, fileCallback=None):

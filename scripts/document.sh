@@ -1,6 +1,6 @@
 #! /bin/bash
-file="EmptyPage"
+file="Template"
 # 文档生成
 jazzy \
 --podspec ${file}.podspec \
---output ../pages/Github.io/${file}/
+--output ./document/api/
