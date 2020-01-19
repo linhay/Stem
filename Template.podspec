@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 
-    s.name         = "Template"
+    s.name         = "Stem"
     s.version      = "0.0.30"
     s.summary      = "A Template library."
 
