@@ -6,161 +6,161 @@ PODS:
     - Stem/Core
   - Stem/Runtime (0.0.29)
   - SwiftLint (0.38.1)
-  - Template (0.0.1):
-    - Template/AVKit (= 0.0.1)
-    - Template/Core (= 0.0.1)
-    - Template/Foundation (= 0.0.1)
-    - Template/Runtime (= 0.0.1)
-    - Template/UIKit (= 0.0.1)
-    - Template/WebKit (= 0.0.1)
-  - Template/AVKit (0.0.1):
+  - Template (0.0.30):
+    - Template/AVKit (= 0.0.30)
+    - Template/Core (= 0.0.30)
+    - Template/Foundation (= 0.0.30)
+    - Template/Runtime (= 0.0.30)
+    - Template/UIKit (= 0.0.30)
+    - Template/WebKit (= 0.0.30)
+  - Template/AVKit (0.0.30):
     - Stem/Core
-  - Template/Core (0.0.1)
-  - Template/Foundation (0.0.1):
+  - Template/Core (0.0.30)
+  - Template/Foundation (0.0.30):
     - Stem/Core
-    - Template/Foundation/Coder (= 0.0.1)
-    - Template/Foundation/Collections (= 0.0.1)
-    - Template/Foundation/Custom (= 0.0.1)
-    - Template/Foundation/Date (= 0.0.1)
-    - Template/Foundation/Dispatch (= 0.0.1)
-    - Template/Foundation/Fundamentals (= 0.0.1)
-    - Template/Foundation/NSObject (= 0.0.1)
-    - Template/Foundation/pre-release (= 0.0.1)
-    - Template/Foundation/String (= 0.0.1)
-  - Template/Foundation/Coder (0.0.1):
+    - Template/Foundation/Coder (= 0.0.30)
+    - Template/Foundation/Collections (= 0.0.30)
+    - Template/Foundation/Custom (= 0.0.30)
+    - Template/Foundation/Date (= 0.0.30)
+    - Template/Foundation/Dispatch (= 0.0.30)
+    - Template/Foundation/Fundamentals (= 0.0.30)
+    - Template/Foundation/NSObject (= 0.0.30)
+    - Template/Foundation/pre-release (= 0.0.30)
+    - Template/Foundation/String (= 0.0.30)
+  - Template/Foundation/Coder (0.0.30):
     - Stem/Core
-  - Template/Foundation/Collections (0.0.1):
+  - Template/Foundation/Collections (0.0.30):
     - Stem/Core
-  - Template/Foundation/Custom (0.0.1):
+  - Template/Foundation/Custom (0.0.30):
     - Stem/Core
-  - Template/Foundation/Date (0.0.1):
+  - Template/Foundation/Date (0.0.30):
     - Stem/Core
-  - Template/Foundation/Dispatch (0.0.1):
+  - Template/Foundation/Dispatch (0.0.30):
     - Stem/Core
-  - Template/Foundation/Fundamentals (0.0.1):
+  - Template/Foundation/Fundamentals (0.0.30):
     - Stem/Core
-  - Template/Foundation/NSObject (0.0.1):
+  - Template/Foundation/NSObject (0.0.30):
     - Stem/Core
-  - Template/Foundation/pre-release (0.0.1):
+  - Template/Foundation/pre-release (0.0.30):
     - Stem/Core
-  - Template/Foundation/String (0.0.1):
-    - Stem/Core
-    - Stem/Foundation/Fundamentals
-  - Template/Runtime (0.0.1)
-  - Template/UIKit (0.0.1):
+  - Template/Foundation/String (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
-    - Stem/Foundation/NSObject
-    - Stem/Runtime
-    - Template/UIKit/Application (= 0.0.1)
-    - Template/UIKit/AttributedString (= 0.0.1)
-    - Template/UIKit/Color (= 0.0.1)
-    - Template/UIKit/Control (= 0.0.1)
-    - Template/UIKit/Custom (= 0.0.1)
-    - Template/UIKit/Font (= 0.0.1)
-    - Template/UIKit/GestureRecognizer (= 0.0.1)
-    - Template/UIKit/Image (= 0.0.1)
-    - Template/UIKit/ImageView (= 0.0.1)
-    - Template/UIKit/InputView (= 0.0.1)
-    - Template/UIKit/Label (= 0.0.1)
-    - Template/UIKit/ListView (= 0.0.1)
-    - Template/UIKit/NavigationBar (= 0.0.1)
-    - Template/UIKit/NSLayoutConstraint (= 0.0.1)
-    - Template/UIKit/Storyboard (= 0.0.1)
-    - Template/UIKit/UIDevice (= 0.0.1)
-    - Template/UIKit/View (= 0.0.1)
-    - Template/UIKit/ViewController (= 0.0.1)
-  - Template/UIKit/Application (0.0.1):
+  - Template/Runtime (0.0.30)
+  - Template/UIKit (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/AttributedString (0.0.1):
+    - Template/UIKit/Application (= 0.0.30)
+    - Template/UIKit/AttributedString (= 0.0.30)
+    - Template/UIKit/Color (= 0.0.30)
+    - Template/UIKit/Control (= 0.0.30)
+    - Template/UIKit/Custom (= 0.0.30)
+    - Template/UIKit/Font (= 0.0.30)
+    - Template/UIKit/GestureRecognizer (= 0.0.30)
+    - Template/UIKit/Image (= 0.0.30)
+    - Template/UIKit/ImageView (= 0.0.30)
+    - Template/UIKit/InputView (= 0.0.30)
+    - Template/UIKit/Label (= 0.0.30)
+    - Template/UIKit/ListView (= 0.0.30)
+    - Template/UIKit/NavigationBar (= 0.0.30)
+    - Template/UIKit/NSLayoutConstraint (= 0.0.30)
+    - Template/UIKit/Storyboard (= 0.0.30)
+    - Template/UIKit/UIDevice (= 0.0.30)
+    - Template/UIKit/View (= 0.0.30)
+    - Template/UIKit/ViewController (= 0.0.30)
+  - Template/UIKit/Application (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Color (0.0.1):
+  - Template/UIKit/AttributedString (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Control (0.0.1):
+  - Template/UIKit/Color (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Custom (0.0.1):
+  - Template/UIKit/Control (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Font (0.0.1):
+  - Template/UIKit/Custom (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/GestureRecognizer (0.0.1):
+  - Template/UIKit/Font (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Image (0.0.1):
+  - Template/UIKit/GestureRecognizer (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/ImageView (0.0.1):
+  - Template/UIKit/Image (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/InputView (0.0.1):
+  - Template/UIKit/ImageView (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Label (0.0.1):
+  - Template/UIKit/InputView (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/ListView (0.0.1):
+  - Template/UIKit/Label (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/NavigationBar (0.0.1):
+  - Template/UIKit/ListView (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/NSLayoutConstraint (0.0.1):
+  - Template/UIKit/NavigationBar (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/Storyboard (0.0.1):
+  - Template/UIKit/NSLayoutConstraint (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/UIDevice (0.0.1):
+  - Template/UIKit/Storyboard (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/View (0.0.1):
+  - Template/UIKit/UIDevice (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/UIKit/ViewController (0.0.1):
+  - Template/UIKit/View (0.0.30):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Template/WebKit (0.0.1):
+  - Template/UIKit/ViewController (0.0.30):
+    - Stem/Core
+    - Stem/Foundation/Fundamentals
+    - Stem/Foundation/NSObject
+    - Stem/Runtime
+  - Template/WebKit (0.0.30):
     - Stem/Core
 
 DEPENDENCIES:
@@ -179,7 +179,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Stem: cdf22931dd9d5a5a1fb329c04785c8756d619f08
   SwiftLint: 0aeb99ca7ccfc222ef93e2560a35e669f5465e6c
-  Template: 72726a9969d9ede062a8671bad1e6e72bd9b6bd2
+  Template: aaa8428af3f191a574cda4219342b0463c485873
 
 PODFILE CHECKSUM: 42868da1e41dbf2e68101f78444fdc54a42f2290
 

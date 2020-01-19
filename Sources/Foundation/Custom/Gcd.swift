@@ -142,14 +142,14 @@ public class Gcd {
                                leeway: Double = 0.1,
                                event: @escaping ((_: DispatchSourceTimer) -> Void),
                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
-        let intervalTime = DispatchTimeInterval.nanoseconds(Int(interval * 1000 * 1000 * 1000))
-        let leewayTime = DispatchTimeInterval.nanoseconds(Int(leeway * 1000 * 1000 * 1000))
+        let intervalTime = DispatchTimeInterval.milliseconds(Int(interval * 1000))
+        let leewayTime = DispatchTimeInterval.milliseconds(Int(leeway * 1000))
 
         let queue = DispatchQueue.global()
         let timer = DispatchSource.makeTimerSource(flags: [], queue: queue)
 
         if keep > 0 {
-            let keepTime = DispatchTime.now() + .nanoseconds(Int(keep * 1000 * 1000 * 1000))
+            let keepTime = DispatchTime.now() + .milliseconds(Int(keep * 1000))
             queue.asyncAfter(deadline: keepTime) {
                 if timer.isCancelled { return }
                 timer.cancel()

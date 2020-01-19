@@ -49,7 +49,6 @@ public extension StemValue where Base == String {
         return formatter.date(from: base)
     }
 
-    
     /// URL
     var url: URL? { return URL(string: base) }
     
