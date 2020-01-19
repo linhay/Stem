@@ -22,7 +22,7 @@
 
 import UIKit
 
-public protocol STCellProtocol: class {
+public protocol STCellProtocol: UIView {
     static var id: String { get }
     static var nib: UINib? { get }
 }
