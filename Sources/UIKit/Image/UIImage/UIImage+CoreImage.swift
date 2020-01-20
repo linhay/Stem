@@ -43,7 +43,7 @@ public extension Stem where Base: UIImage {
     ///
     /// - Parameter value: 0 ~ 100, 0为不模糊
     func blur(value: Double) -> UIImage? {
-        var filter = CIFilter.Blur.GaussianBlur()
+        let filter = CIFilter.Blur.GaussianBlur()
         filter.image = CIImage(image: base)
         filter.radius = NSNumber(value: min(100, max(0, value)))
         guard let output = filter.outputImage else { return nil }

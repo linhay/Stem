@@ -24,12 +24,10 @@ import UIKit
 
 public extension Stem where Base: CALayer {
 
-    @discardableResult
     func addSublayers(_ layers: CALayer...) {
         addSublayers(layers)
     }
 
-    @discardableResult
     func addSublayers(_ layers: [CALayer]) {
         layers.forEach({ base.addSublayer($0) })
     }
@@ -49,7 +47,6 @@ public extension Stem where Base: CALayer {
         base.render(in: context)
         return UIGraphicsGetImageFromCurrentImageContext()
     }
-
 
     /**
      设置边框样式

@@ -42,10 +42,8 @@ public extension Stem where Base: UIView {
 
     var firstResponder: UIView? {
         guard !base.isFirstResponder else { return base }
-        for subview in base.subviews {
-            if let firstResponder = subview.st.firstResponder {
-                return self.firstResponder
-            }
+        for subview in base.subviews where subview.st.firstResponder != nil {
+            return self.firstResponder
         }
         return nil
     }

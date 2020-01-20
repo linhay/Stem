@@ -24,7 +24,4 @@ import Foundation
 
 extension String: StemValueCompatible { }
 
-public extension StemValue where Base == String {
-    
-}
-
+public extension StemValue where Base == String { }

@@ -30,7 +30,7 @@ private enum AssociatedKey {
 
 fileprivate extension UIViewController {
 
-    static let swizzing = {
+    static let swizzing: Void = {
         RunTime.exchange(selector: #selector(UIViewController.viewWillAppear(_:)),
                          by: #selector(UIViewController.stem_viewController_viewWillAppear(_:)),
                          class: UIViewController.self)

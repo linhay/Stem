@@ -81,7 +81,7 @@ extension CIFilter.Blur {
         }
     }
 
-    public struct GaussianBlur: CIFilterContainerProtocol {
+    public class GaussianBlur: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(blur: .gaussianBlur)
         
         ///  A CIImage object whose display name is Image.

@@ -188,8 +188,6 @@ public extension Array {
 }
 
 // MARK: - Array about remove
-#warning("unit test")
-#warning("document")
 public extension Array where Element: Equatable {
 
     mutating func removeFirst(with value: Element) {
@@ -207,8 +205,6 @@ public extension Array where Element: Equatable {
 }
 
 // MARK: - Array about other
-#warning("unit test")
-#warning("document")
 public extension Array {
 
     func decompose() -> (head: Iterator.Element, tail: SubSequence)? {

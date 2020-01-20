@@ -44,7 +44,6 @@ public extension Stem where Base: UIViewController {
     ///   - vc: 指定控制器
     ///   - isRemove: 前进后是否移除当前控制器
     ///   - animated: 是否显示动画
-    @discardableResult
     func push(vc: UIViewController?, isRemove: Bool = false, animated: Bool = true) {
         guard let vc = vc else { return }
         switch base {
@@ -173,7 +172,6 @@ public extension Stem where Base: UIViewController {
     ///   - vc: 指定控制器
     ///   - animated: 是否显示动画
     ///   - completion: 完成后事件
-    @discardableResult
     func present(vc: UIViewController?, animated: Bool = true, completion: (() -> Void)? = nil) {
         guard let vc = vc, base.presentedViewController != nil else { return }
         base.present(vc, animated: animated, completion: completion)

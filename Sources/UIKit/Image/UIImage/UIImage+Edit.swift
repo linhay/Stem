@@ -23,19 +23,19 @@
 import UIKit
 
 public extension UIImage {
-
-    public enum OverlayAlignment {
+    
+    enum OverlayAlignment {
         /// 居中
         case center(offset: UIOffset)
         /// 左上
         case zero(x: CGFloat, y: CGFloat)
     }
-
+    
 }
 
 // MARK: - edit(图片编辑)
 public extension Stem where Base: UIImage {
-
+    
     /// 叠加图片
     ///
     /// - Parameters:
@@ -46,10 +46,10 @@ public extension Stem where Base: UIImage {
         UIGraphicsBeginImageContextWithOptions(base.size, false, 0)
         defer { UIGraphicsEndImageContext() }
         base.draw(in: CGRect(origin: .zero, size: base.size))
-
+        
         let imageScale = image.scale / base.scale
         let imageSize = CGSize(width: image.size.width * imageScale, height: image.size.height * imageScale)
-
+        
         switch alignment {
         case .center(let offset):
             let origin = CGPoint(x: (base.size.width - imageSize.width) * 0.5 + offset.horizontal,

@@ -92,7 +92,7 @@ public extension Stem where Base: AVAsset {
         let times  = seconds.map({ CMTime(seconds: Double($0), preferredTimescale: duration.timescale) })
         let values = times.map { NSValue(time: $0) }
 
-        generator.generateCGImagesAsynchronously(forTimes: values) { (time, cgImage, _, _, error) in
+        generator.generateCGImagesAsynchronously(forTimes: values) { (_, cgImage, _, _, error) in
             if let error = error {
                 DispatchQueue.main.async { failure?(error) }
                 return

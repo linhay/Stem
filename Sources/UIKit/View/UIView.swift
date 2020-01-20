@@ -73,7 +73,7 @@ public extension Stem where Base: UIView {
 
      */
     var description: String {
-        return (base.perform(Selector("recursiveDescription"))?
+        return (base.perform(Selector(("recursiveDescription")))?
             .takeUnretainedValue() as! String)
             .replacingOccurrences(of: #":?\s*0x[\da-f]+(\s*)"#, with: "$1", options: .regularExpression)
     }
