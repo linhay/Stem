@@ -35,6 +35,15 @@ public extension UIStoryboard {
     }
 
 }
+public extension Stem where Base: UIViewController {
+
+    static var storyboard: UIViewController? {
+        let storyboard = UIStoryboard(name: String(describing: Base.self), in: Bundle(for: Base.self))
+        let vc = storyboard.instantiateInitialViewController() as? Base
+        return vc
+    }
+
+}
 
 // MARK: - static Apis
 public extension Stem where Base: UIStoryboard {

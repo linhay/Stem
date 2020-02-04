@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         = "Stem"
-    s.version      = "0.0.30"
+    s.version      = "0.0.31"
     s.summary      = "A Template library."
 
     s.description  = <<-DESC
@@ -74,14 +74,14 @@ Pod::Spec.new do |s|
 
     end
 
-    s.subspec 'UIKit' do |ss|
+    s.subspec 'UIKit' do |sp|
         base_path = 'Sources/UIKit/'
-        ss.frameworks = ['Foundation', 'UIKit']
-        ss.dependency 'Stem/Core'
-        ss.dependency 'Stem/Runtime'
-        ss.dependency 'Stem/Foundation/NSObject'
-        ss.dependency 'Stem/Foundation/Fundamentals'
-        ss.ios.deployment_target = '8.0'
+        sp.frameworks = ['Foundation', 'UIKit']
+        sp.dependency 'Stem/Core'
+        sp.dependency 'Stem/Runtime'
+        sp.dependency 'Stem/Foundation/NSObject'
+        sp.dependency 'Stem/Foundation/Fundamentals'
+        sp.ios.deployment_target = '8.0'
 
         subspec_names = ['Application',
         'Color',
@@ -93,20 +93,25 @@ Pod::Spec.new do |s|
         'ImageView',
         'InputView',
         'Label',
-        'ListView',
         'UIDevice',
         'View',
         'ViewController',
         'NavigationBar',
         'NSLayoutConstraint',
-        'Storyboard',
+        'Interface',
         'AttributedString']
 
         for name in subspec_names
-            ss.subspec name do |sss|
+            sp.subspec name do |ssp|
                 path = base_path + name
-                sss.source_files = [path + '/**/*.swift', path + '/*.swift']
+                ssp.source_files = [path + '/**/*.swift', path + '/*.swift']
             end
+        end
+
+        sp.subspec 'ListView' do |ssp|
+            path = base_path + 'ListView'
+            ssp.dependency 'Stem/UIKit/Interface'
+            ssp.source_files = [path + '/**/*.swift', path + '/*.swift']
         end
 
     end

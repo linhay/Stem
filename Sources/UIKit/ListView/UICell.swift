@@ -22,31 +22,13 @@
 
 import UIKit
 
-public protocol STCellProtocol: UIView {
-    static var id: String { get }
-    static var nib: UINib? { get }
-}
-
-public extension STCellProtocol {
-    static var id: String { return String(describing: Self.self) }
-    static  var nib: UINib? { return nil }
-}
-
-public protocol STNibProtocol: STCellProtocol { }
-
-public extension STNibProtocol {
-    static  var nib: UINib? {
-        return UINib(nibName: String(describing: Self.self), bundle: nil)
-    }
-}
-
 // MARK: - UITableView
 public extension Stem where Base: UITableView {
-
-    /// 注册 `STCellProtocol` 类型的 UITableViewCell
+    
+    /// 注册 `STViewProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
-    func registers(_ views: STCellProtocol.Type...) {
+    func registers(_ views: STViewProtocol.Type...) {
         views.forEach { (item) in
             if let nib = item.nib {
                 switch item {
@@ -69,41 +51,41 @@ public extension Stem where Base: UITableView {
             }
         }
     }
-
-    /// 注册 `STCellProtocol` 类型的 UITableViewCell
+    
+    /// 注册 `STViewProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
-    func register<T: UITableViewCell>(_ cell: T.Type) where T: STCellProtocol {
+    func register<T: UITableViewCell>(_ cell: T.Type) where T: STViewProtocol {
         if let nib = T.nib {
             base.register(nib, forCellReuseIdentifier: T.id)
         } else {
             base.register(T.self, forCellReuseIdentifier: T.id)
         }
     }
-
+    
     /// 从缓存池取出 Cell
     ///
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeueCell<T: STCellProtocol>(_ indexPath: IndexPath) -> T {
+    func dequeueCell<T: STViewProtocol>(_ indexPath: IndexPath) -> T {
         return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
     }
-
-    /// 注册 `STCellProtocol` 类型的 UITableViewHeaderFooterView
+    
+    /// 注册 `STViewProtocol` 类型的 UITableViewHeaderFooterView
     ///
     /// - Parameter _: UITableViewHeaderFooterView
-    func registerHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) where T: STCellProtocol {
+    func registerHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) where T: STViewProtocol {
         if let nib = T.nib {
             base.register(nib, forHeaderFooterViewReuseIdentifier: T.id)
         } else {
             base.register(T.self, forHeaderFooterViewReuseIdentifier: T.id)
         }
     }
-
+    
     /// 从缓存池取出 UITableViewHeaderFooterView
     ///
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeueHeaderFooterView<T: UITableViewHeaderFooterView>() -> T where T: STCellProtocol {
+    func dequeueHeaderFooterView<T: UITableViewHeaderFooterView>() -> T where T: STViewProtocol {
         return base.dequeueReusableHeaderFooterView(withIdentifier: T.id) as! T
     }
 }
@@ -134,10 +116,10 @@ public extension UICollectionView {
 
 public extension Stem where Base: UICollectionView {
     
-    /// 注册 `STCellProtocol` 类型的 UICollectionViewCell
+    /// 注册 `STViewProtocol` 类型的 UICollectionViewCell
     ///
     /// - Parameter cell: UICollectionViewCell
-    func register<T: UICollectionViewCell>(_ cell: T.Type) where T: STCellProtocol {
+    func register<T: UICollectionViewCell>(_ cell: T.Type) where T: STViewProtocol {
         if let nib = T.nib {
             base.register(nib, forCellWithReuseIdentifier: T.id)
         } else {
@@ -149,33 +131,26 @@ public extension Stem where Base: UICollectionView {
     ///
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UICollectionViewCell`
-    func dequeueCell<T: UICollectionViewCell>(_ indexPath: IndexPath) -> T where T: STCellProtocol {
+    func dequeueCell<T: UICollectionViewCell>(_ indexPath: IndexPath) -> T where T: STViewProtocol {
         return base.dequeueReusableCell(withReuseIdentifier: T.id, for: indexPath) as! T
     }
     
-    func registerSupplementaryView<T: STCellProtocol>(kind: UICollectionView.KindType, _ view: T.Type) {
-        registerSupplementaryView(elementKind: kind.rawValue, view)
-    }
-    
-    func registerSupplementaryView<T: STCellProtocol>(elementKind: String, _: T.Type) {
+    func registerSupplementaryView<T: UICollectionReusableView>(kind: UICollectionView.KindType, _ view: T.Type) where T: STViewProtocol {
         if let nib = T.nib {
             base.register(nib,
-                          forSupplementaryViewOfKind: elementKind,
+                          forSupplementaryViewOfKind: kind.rawValue,
                           withReuseIdentifier: T.id)
         } else {
             base.register(T.self,
-                          forSupplementaryViewOfKind: elementKind,
+                          forSupplementaryViewOfKind: kind.rawValue,
                           withReuseIdentifier: T.id)
         }
     }
     
-    func dequeueSupplementaryView<T: UICollectionReusableView>(kind: UICollectionView.KindType, indexPath: IndexPath) -> T where T: STCellProtocol {
-        return dequeueSupplementaryView(elementKind: kind.rawValue, indexPath: indexPath)
-    }
-    
-    func dequeueSupplementaryView<T: UICollectionReusableView>(elementKind: String, indexPath: IndexPath) -> T where T: STCellProtocol {
-        return base.dequeueReusableSupplementaryView(ofKind: elementKind,
+    func dequeueSupplementaryView<T: UICollectionReusableView>(kind: UICollectionView.KindType, indexPath: IndexPath) -> T where T: STViewProtocol {
+        return base.dequeueReusableSupplementaryView(ofKind: kind.rawValue,
                                                      withReuseIdentifier: T.id,
                                                      for: indexPath) as! T
     }
+    
 }
