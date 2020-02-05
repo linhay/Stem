@@ -94,6 +94,11 @@ public extension Stem where Base: CALayer {
         base.shadowColor = color.cgColor
         base.shadowOpacity = Float(alpha)
 
+        if spread == 0 {
+            base.shadowPath = nil
+            return
+        }
+
         let rect = base.bounds.insetBy(dx: -spread, dy: -spread)
         let path = UIBezierPath(roundedRect: rect, cornerRadius: base.cornerRadius)
         base.shadowPath = path.cgPath
