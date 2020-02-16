@@ -1,160 +1,160 @@
 PODS:
-  - Stem (0.0.30):
-    - Stem/AVKit (= 0.0.30)
-    - Stem/Core (= 0.0.30)
-    - Stem/Foundation (= 0.0.30)
-    - Stem/Runtime (= 0.0.30)
-    - Stem/UIKit (= 0.0.30)
-    - Stem/WebKit (= 0.0.30)
-  - Stem/AVKit (0.0.30):
+  - Stem (0.0.31):
+    - Stem/AVKit (= 0.0.31)
+    - Stem/Core (= 0.0.31)
+    - Stem/Foundation (= 0.0.31)
+    - Stem/Runtime (= 0.0.31)
+    - Stem/UIKit (= 0.0.31)
+    - Stem/WebKit (= 0.0.31)
+  - Stem/AVKit (0.0.31):
     - Stem/Core
-  - Stem/Core (0.0.30)
-  - Stem/Foundation (0.0.30):
+  - Stem/Core (0.0.31)
+  - Stem/Foundation (0.0.31):
     - Stem/Core
-    - Stem/Foundation/Coder (= 0.0.30)
-    - Stem/Foundation/Collections (= 0.0.30)
-    - Stem/Foundation/Custom (= 0.0.30)
-    - Stem/Foundation/Date (= 0.0.30)
-    - Stem/Foundation/Dispatch (= 0.0.30)
-    - Stem/Foundation/Fundamentals (= 0.0.30)
-    - Stem/Foundation/NSObject (= 0.0.30)
-    - Stem/Foundation/pre-release (= 0.0.30)
-    - Stem/Foundation/String (= 0.0.30)
-  - Stem/Foundation/Coder (0.0.30):
+    - Stem/Foundation/Coder (= 0.0.31)
+    - Stem/Foundation/Collections (= 0.0.31)
+    - Stem/Foundation/Custom (= 0.0.31)
+    - Stem/Foundation/Date (= 0.0.31)
+    - Stem/Foundation/Dispatch (= 0.0.31)
+    - Stem/Foundation/Fundamentals (= 0.0.31)
+    - Stem/Foundation/NSObject (= 0.0.31)
+    - Stem/Foundation/pre-release (= 0.0.31)
+    - Stem/Foundation/String (= 0.0.31)
+  - Stem/Foundation/Coder (0.0.31):
     - Stem/Core
-  - Stem/Foundation/Collections (0.0.30):
+  - Stem/Foundation/Collections (0.0.31):
     - Stem/Core
-  - Stem/Foundation/Custom (0.0.30):
+  - Stem/Foundation/Custom (0.0.31):
     - Stem/Core
-  - Stem/Foundation/Date (0.0.30):
+  - Stem/Foundation/Date (0.0.31):
     - Stem/Core
-  - Stem/Foundation/Dispatch (0.0.30):
+  - Stem/Foundation/Dispatch (0.0.31):
     - Stem/Core
-  - Stem/Foundation/Fundamentals (0.0.30):
+  - Stem/Foundation/Fundamentals (0.0.31):
     - Stem/Core
-  - Stem/Foundation/NSObject (0.0.30):
+  - Stem/Foundation/NSObject (0.0.31):
     - Stem/Core
-  - Stem/Foundation/pre-release (0.0.30):
+  - Stem/Foundation/pre-release (0.0.31):
     - Stem/Core
-  - Stem/Foundation/String (0.0.30):
-    - Stem/Core
-    - Stem/Foundation/Fundamentals
-  - Stem/Runtime (0.0.30)
-  - Stem/UIKit (0.0.30):
+  - Stem/Foundation/String (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
-    - Stem/Foundation/NSObject
-    - Stem/Runtime
-    - Stem/UIKit/Application (= 0.0.30)
-    - Stem/UIKit/AttributedString (= 0.0.30)
-    - Stem/UIKit/Color (= 0.0.30)
-    - Stem/UIKit/Control (= 0.0.30)
-    - Stem/UIKit/Custom (= 0.0.30)
-    - Stem/UIKit/Font (= 0.0.30)
-    - Stem/UIKit/GestureRecognizer (= 0.0.30)
-    - Stem/UIKit/Image (= 0.0.30)
-    - Stem/UIKit/ImageView (= 0.0.30)
-    - Stem/UIKit/InputView (= 0.0.30)
-    - Stem/UIKit/Interface (= 0.0.30)
-    - Stem/UIKit/Label (= 0.0.30)
-    - Stem/UIKit/ListView (= 0.0.30)
-    - Stem/UIKit/NavigationBar (= 0.0.30)
-    - Stem/UIKit/NSLayoutConstraint (= 0.0.30)
-    - Stem/UIKit/UIDevice (= 0.0.30)
-    - Stem/UIKit/View (= 0.0.30)
-    - Stem/UIKit/ViewController (= 0.0.30)
-  - Stem/UIKit/Application (0.0.30):
+  - Stem/Runtime (0.0.31)
+  - Stem/UIKit (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/AttributedString (0.0.30):
+    - Stem/UIKit/Application (= 0.0.31)
+    - Stem/UIKit/AttributedString (= 0.0.31)
+    - Stem/UIKit/Color (= 0.0.31)
+    - Stem/UIKit/Control (= 0.0.31)
+    - Stem/UIKit/Custom (= 0.0.31)
+    - Stem/UIKit/Font (= 0.0.31)
+    - Stem/UIKit/GestureRecognizer (= 0.0.31)
+    - Stem/UIKit/Image (= 0.0.31)
+    - Stem/UIKit/ImageView (= 0.0.31)
+    - Stem/UIKit/InputView (= 0.0.31)
+    - Stem/UIKit/Interface (= 0.0.31)
+    - Stem/UIKit/Label (= 0.0.31)
+    - Stem/UIKit/ListView (= 0.0.31)
+    - Stem/UIKit/NavigationBar (= 0.0.31)
+    - Stem/UIKit/NSLayoutConstraint (= 0.0.31)
+    - Stem/UIKit/UIDevice (= 0.0.31)
+    - Stem/UIKit/View (= 0.0.31)
+    - Stem/UIKit/ViewController (= 0.0.31)
+  - Stem/UIKit/Application (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Color (0.0.30):
+  - Stem/UIKit/AttributedString (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Control (0.0.30):
+  - Stem/UIKit/Color (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Custom (0.0.30):
+  - Stem/UIKit/Control (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Font (0.0.30):
+  - Stem/UIKit/Custom (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/GestureRecognizer (0.0.30):
+  - Stem/UIKit/Font (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Image (0.0.30):
+  - Stem/UIKit/GestureRecognizer (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/ImageView (0.0.30):
+  - Stem/UIKit/Image (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/InputView (0.0.30):
+  - Stem/UIKit/ImageView (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Interface (0.0.30):
+  - Stem/UIKit/InputView (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/Label (0.0.30):
+  - Stem/UIKit/Interface (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/ListView (0.0.30):
+  - Stem/UIKit/Label (0.0.31):
+    - Stem/Core
+    - Stem/Foundation/Fundamentals
+    - Stem/Foundation/NSObject
+    - Stem/Runtime
+  - Stem/UIKit/ListView (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
     - Stem/UIKit/Interface
-  - Stem/UIKit/NavigationBar (0.0.30):
+  - Stem/UIKit/NavigationBar (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/NSLayoutConstraint (0.0.30):
+  - Stem/UIKit/NSLayoutConstraint (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/UIDevice (0.0.30):
+  - Stem/UIKit/UIDevice (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/View (0.0.30):
+  - Stem/UIKit/View (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/UIKit/ViewController (0.0.30):
+  - Stem/UIKit/ViewController (0.0.31):
     - Stem/Core
     - Stem/Foundation/Fundamentals
     - Stem/Foundation/NSObject
     - Stem/Runtime
-  - Stem/WebKit (0.0.30):
+  - Stem/WebKit (0.0.31):
     - Stem/Core
   - SwiftLint (0.38.1)
 
@@ -171,7 +171,7 @@ EXTERNAL SOURCES:
     :path: "./Template.podspec"
 
 SPEC CHECKSUMS:
-  Stem: 03853660a741e90021093ffe9fe577fca29141fb
+  Stem: 3d2e2b805645f0eafa691c92ae4738d1159880d5
   SwiftLint: 0aeb99ca7ccfc222ef93e2560a35e669f5465e6c
 
 PODFILE CHECKSUM: 0179d7c67b74c40d579f12b4fa99e7abd246f6ff

@@ -111,7 +111,6 @@ public extension Stem where Base: UIViewController {
     
     /// 获取当前显示控制器
     static var current: UIViewController? {
-        
         func find(rawVC: UIViewController) -> UIViewController {
             switch rawVC {
             case let nav as UINavigationController:
