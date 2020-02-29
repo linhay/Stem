@@ -24,6 +24,16 @@ import Foundation
 
 public extension Stem where Base: NSObject {
 
+    #if !os(macOS)
+    var className: String {
+        return type(of: self).className
+    }
+    #endif
+
+    static var className: String {
+        return String(describing: self)
+    }
+
     /// 内存地址
     var memoryAddress: String {
         String(describing: Unmanaged<NSObject>.passUnretained(base).toOpaque())

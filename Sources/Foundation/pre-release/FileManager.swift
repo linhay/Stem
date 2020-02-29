@@ -22,41 +22,18 @@
 
 import Foundation
 
-/// http://rasic.info/bindings-generics-swift-and-mvvm/
-/// 对象监听
-public class Dynamic<T> {
-  public typealias Listener = (T) -> Void
-  public var listener: Listener?
+public
+extension FileManager {
 
-  /// 监听
-  ///
-  /// - Parameter listener: 回调
-  public func bind(listener: Listener?) {
-    self.listener = listener
-  }
+    // 判断是否是文件夹的方法
+    func fileExists(path: String, isDirectory: Bool) -> Bool {
+        var directoryExists = ObjCBool(false)
+        let fileExists = FileManager.default.fileExists(atPath: path, isDirectory: &directoryExists)
+        if isDirectory {
+            return fileExists
+        } else {
+            return fileExists && directoryExists.boolValue
+        }
+    }
 
-  /// 监听并立马返回一次
-  ///
-  /// - Parameter listener: 回调
-  public func bindAndFire(listener: Listener?) {
-    self.listener = listener
-    listener?(value)
-  }
-  
-  var _value: T
-  
-  /// 值
-  public var value: T {
-    set {
-      _value = newValue
-      listener?(value)
-    }
-    get {
-      return _value
-    }
-  }
-  
-  public init(_ v: T) {
-    _value = v
-  }
 }

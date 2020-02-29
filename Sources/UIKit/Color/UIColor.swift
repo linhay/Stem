@@ -24,13 +24,13 @@ import UIKit
 
 // MARK: - static Api
 public extension Stem where Base: UIColor {
-
+    
     /// 是否启用sRGB色彩模式
     static var isDisplayP3Enabled: Bool {
         set { UIColor.isDisplayP3Enabled = newValue }
         get { return UIColor.isDisplayP3Enabled }
     }
-
+    
     /// hex to RGB value
     /// - Parameter value: hex
     static func rgb(from value: UInt32) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
@@ -38,27 +38,27 @@ public extension Stem where Base: UIColor {
                 green: CGFloat((value & 0x00FF00) >> 8),
                 blue: CGFloat(value & 0x0000FF))
     }
-
+    
     /// hex to RGB value
     /// - Parameter str: value: hex
     static func rgb(from str: String) -> (red: CGFloat, green: CGFloat, blue: CGFloat)? {
         var cString = str.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-
+        
         if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
         if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
         if cString.count != 6 { return nil }
-
+        
         var value: UInt32 = 0x0
         Scanner(string: String(cString)).scanHexInt32(&value)
-
+        
         return rgb(from: value)
     }
-
+    
 }
 
 // MARK: - api
 public extension Stem where Base: UIColor {
-
+    
     /// 随机色
     static var random: UIColor {
         let r = CGFloat.random(in: 0.0 ... 255)
@@ -66,18 +66,18 @@ public extension Stem where Base: UIColor {
         let b = CGFloat.random(in: 0.0 ... 255)
         return UIColor(r: r, g: g, b: b, a: 1.0)
     }
-
+    
     /// 透明度
     var alpha: CGFloat {
         return base.cgColor.alpha
     }
-
+    
     /// 设置透明度
     ///
     /// - Parameter alpha: 透明度
     /// - Returns: uicolor
     func with(alpha: CGFloat) -> UIColor { return base.withAlphaComponent(alpha) }
-
+    
     /// 获取RGB色值
     var rgb: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         guard let components = base.cgColor.components, components.count >= 4 else {
@@ -89,7 +89,7 @@ public extension Stem where Base: UIColor {
         let a = components[3]
         return (red: r, green: g, blue: b, alpha: a)
     }
-
+    
     /// 获取hex字符
     var hexString: String {
         let rgb = self.rgb
@@ -99,7 +99,7 @@ public extension Stem where Base: UIColor {
             return String(format: "#%02lX%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue), Int(rgb.alpha))
         }
     }
-
+    
     /// 获取颜色16进制
     var uInt: UInt {
         let rgb = self.rgb
@@ -109,20 +109,20 @@ public extension Stem where Base: UIColor {
         colorAsUInt32 += UInt32(rgb.blue * 255.0)
         return UInt(colorAsUInt32)
     }
-
+    
 }
 
 // MARK: - private api
 private extension UIColor {
-
+    
     /// 是否启用sRGB色彩模式
     static var isDisplayP3Enabled = false
-
+    
 }
 
 // MARK: - init
 public extension UIColor {
-
+    
     /// 十六进制色: 0x666666
     ///
     /// - Parameter str: "#666666" / "0X666666" / "0x666666"
@@ -133,7 +133,7 @@ public extension UIColor {
         }
         self.init(r: value.red, g: value.green, b: value.blue)
     }
-
+    
     /// 十六进制色: 0x666666
     ///
     /// - Parameter RGBValue: 十六进制颜色
@@ -141,7 +141,7 @@ public extension UIColor {
         let value = UIColor.st.rgb(from: value)
         self.init(r: value.red, g: value.green, b: value.blue)
     }
-
+    
     /// 设置RGBA颜色
     ///
     /// - Parameters:
@@ -156,5 +156,41 @@ public extension UIColor {
             self.init(red: r / 255, green: g / 255, blue: b / 255, alpha: a)
         }
     }
+    
+}
 
+// MARK: - Brightness
+public extension Stem where Base: UIColor {
+    
+    public func lighter(amount: CGFloat = 0.25) -> UIColor {
+        return hueColor(withBrightnessAmount: 1 + amount)
+    }
+    
+    public func darker(amount: CGFloat = 0.25) -> UIColor {
+        return hueColor(withBrightnessAmount: 1 - amount)
+    }
+    
+    private func hueColor(withBrightnessAmount amount: CGFloat) -> UIColor {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        #if os (iOS) || os (tvOS) || os (watchOS)
+        if base.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            return UIColor(hue: hue,
+                           saturation: saturation,
+                           brightness: brightness * amount,
+                           alpha: alpha)
+        }
+        return base
+        #else
+        base.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return UIColor(hue: hue,
+                       saturation: saturation,
+                       brightness: brightness * amount,
+                       alpha: alpha)
+        #endif
+    }
+    
 }

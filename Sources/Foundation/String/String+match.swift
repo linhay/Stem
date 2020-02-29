@@ -27,14 +27,13 @@ public extension Array where Element == String {
     
     static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: Range<Int>, count: Int) -> [String] {
         return (0..<count).map { _ -> String in
-            return String.random(characters: characters, length: length)
+            return String.st.random(characters: characters, length: length)
         }
     }
     
 }
 
-// MARK: - Emoji
-public extension String {
+public extension StemValue where Base == String {
     
     static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: Range<Int>) -> String {
         let count = Int.random(in: length)
@@ -43,16 +42,21 @@ public extension String {
             return String(character)
         }.joined()
     }
-
-    func deletingPrefix(_ prefix: String) -> String {
-        guard self.hasPrefix(prefix) else { return self }
-        return String(self.dropFirst(prefix.count))
+    
+    func deleting(prefix: String) -> String {
+        guard base.hasPrefix(prefix) else { return base }
+        return String(base.dropFirst(prefix.count))
+    }
+    
+    func deleting(suffix: String) -> String {
+        guard base.hasSuffix(suffix) else { return base }
+        return String(base.dropLast(suffix.count))
     }
     
     /// 是否包含 Emojis
     var containEmoji: Bool {
         // http://stackoverflow.com/questions/30757193/find-out-if-character-in-string-is-emoji
-        for scalar in unicodeScalars {
+        for scalar in base.unicodeScalars {
             switch scalar.value {
             case 0x1F600...0x1F64F, // Emoticons
             0x1F300...0x1F5FF, // Misc Symbols and Pictographs
@@ -77,7 +81,7 @@ public extension String {
     
     /// 提取: Emojis
     var emojis: [String] {
-        let elements = unicodeScalars.compactMap { (scalar) -> String? in
+        let elements = base.unicodeScalars.compactMap { (scalar) -> String? in
             switch scalar.value {
             case 0x1F600...0x1F64F, // Emoticons
             0x1F300...0x1F5FF, // Misc Symbols and Pictographs
@@ -100,11 +104,50 @@ public extension String {
     }
     
     func match(pattern: String) -> Bool {
-        return self =~ pattern
+        return base =~ pattern
     }
     
     func match(pattern: RegexPattern) -> Bool {
-        return self =~ pattern.pattern
+        return base =~ pattern.pattern
+    }
+    
+}
+
+
+// MARK: - Validator
+public extension StemValue where Base == String {
+    
+    var isNumeric: Bool {
+        let hasNumbers = base.rangeOfCharacter(from: .decimalDigits, options: .literal, range: nil) != nil
+        let hasLetters = base.rangeOfCharacter(from: .letters, options: .numeric, range: nil) != nil
+        return hasNumbers && !hasLetters
+    }
+    
+    var isEmail: Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
+        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: base)
+    }
+    
+    var isIP4Address: Bool {
+        return confirmIP4isValid(ip4: base)
+    }
+    
+    var isIP6Address: Bool {
+        return confirmIP6isValid(ip6: base)
+    }
+    
+    var isIPAddress: Bool {
+        return confirmIP4isValid(ip4: base) || confirmIP6isValid(ip6: base)
+    }
+    
+    private func confirmIP4isValid(ip4: String) -> Bool {
+        var sin = sockaddr_in()
+        return ip4.withCString { cstring in inet_pton(AF_INET, cstring, &sin.sin_addr) } == 1
+    }
+    
+    private func confirmIP6isValid(ip6: String) -> Bool {
+        var sin6 = sockaddr_in6()
+        return ip6.withCString { cstring in inet_pton(AF_INET6, cstring, &sin6.sin6_addr) } == 1
     }
     
 }
