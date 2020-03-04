@@ -162,11 +162,11 @@ public extension UIColor {
 // MARK: - Brightness
 public extension Stem where Base: UIColor {
     
-    public func lighter(amount: CGFloat = 0.25) -> UIColor {
+    func lighter(amount: CGFloat = 0.25) -> UIColor {
         return hueColor(withBrightnessAmount: 1 + amount)
     }
     
-    public func darker(amount: CGFloat = 0.25) -> UIColor {
+    func darker(amount: CGFloat = 0.25) -> UIColor {
         return hueColor(withBrightnessAmount: 1 - amount)
     }
     

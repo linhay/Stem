@@ -24,7 +24,4 @@ import UIKit
 
 public extension Stem where Base: UIDevice {
 
-    /// 有无刘海
-   static var isHasNotch: Bool { return UIApplication.shared.statusBarFrame.height > 20.0 }
-
 }

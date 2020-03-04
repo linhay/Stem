@@ -22,15 +22,11 @@
 
 import Foundation
 
-extension Date: StemValueCompatible { }
-
 public
-extension StemValue where Base == Date {
-
-    static var now: Date { return Date(timeIntervalSinceNow: 0) }
+extension Stem where Base: ByteCountFormatter {
     
-    func string(use formatter: DateFormatter) -> String {
-        return formatter.string(from: base)
+    func string(from value: Int) -> String {
+       return base.string(fromByteCount: Int64(value))
     }
-
+    
 }
