@@ -7,19 +7,49 @@
 //
 
 import Cocoa
+import Stem
+
+let aEvent = Event<Void>(key: "aa")
 
 class ViewController: NSViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @IBAction func test(_ sender: Any) {
+        aEvent.accept(nil)
     }
 
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        aEvent.subscribe(observer: self) {_ in
+            print("ViewController")
         }
     }
 
+}
+
+
+class AViewController: NSViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        aEvent.subscribe(observer: self) { _ in
+            print("AViewController")
+        }
+    }
 
 }
 
+
+class BViewController: NSViewController {
+
+    @IBAction func pusher(_ sender: NSButton) {
+        aEvent.accept(nil)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        aEvent.subscribe(observer: self) { _ in
+            print("BViewController")
+        }
+    }
+
+}

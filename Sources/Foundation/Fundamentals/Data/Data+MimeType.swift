@@ -100,7 +100,7 @@ public extension Data {
                 self = .rar
             } else if matches(bytes: [0x1F, 0x8B, 0x08]) {
                 self = .gzip
-            }  else if matches(bytes: [0x42, 0x5A, 0x68]) {
+            } else if matches(bytes: [0x42, 0x5A, 0x68]) {
                 self = .bz2
             } else {
                 self = .unknown

@@ -22,43 +22,6 @@
 
 import Foundation
 
-public extension Stem where Base: NSObject {
-
-    #if !os(macOS)
-    var className: String {
-        return type(of: self).className
-    }
-    #endif
-
-    static var className: String {
-        return String(describing: self)
-    }
-
-    /// 内存地址
-    var memoryAddress: String {
-        String(describing: Unmanaged<NSObject>.passUnretained(base).toOpaque())
-    }
-
-}
-
-public extension Stem where Base: NSObject {
-
-    func value<T>(for key: String) -> T? {
-        guard let ivar = class_getInstanceVariable(type(of: base), key) else { return nil }
-        return object_getIvar(base, ivar) as? T
-    }
-
-    func setValue(_ value: Any?, for key: String) {
-        base.setValue(value, forKey: key)
-    }
-
-    func setAssociated<T>(value: T, associatedKey: UnsafeRawPointer, policy: objc_AssociationPolicy = .OBJC_ASSOCIATION_RETAIN_NONATOMIC) {
-        objc_setAssociatedObject(base, associatedKey, value, policy)
-    }
-
-    func getAssociated<T>(associatedKey: UnsafeRawPointer) -> T? {
-        let value = objc_getAssociatedObject(base, associatedKey) as? T
-        return value
-    }
+extension Set {
 
 }

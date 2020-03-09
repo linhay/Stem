@@ -97,6 +97,20 @@ public extension Dictionary {
   
 }
 
+// MARK: - map
+public extension Dictionary {
+
+    func map<NewKey: Hashable, NewValue>(_ block: (Element) throws -> (NewKey, NewValue)) rethrows -> [NewKey: NewValue] {
+        var mapped = [NewKey: NewValue]()
+        for (k, v) in self {
+            let (nk, nv) = try block((k, v))
+            mapped[nk] = nv
+        }
+        return mapped
+    }
+
+}
+
 // MARK: - value
 public extension Dictionary {
 

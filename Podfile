@@ -1,5 +1,4 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '10.0'
 project 'Template.xcodeproj'
 
 def setup_pod
@@ -9,13 +8,15 @@ def setup_pod
 end
 
 target 'iOS' do
+  platform :ios, '10.0'
   setup_pod
 end
 
-target 'macOS' do
-  setup_pod
-end
-
-target 'tvOS' do
-  setup_pod
-end
+#target 'macOS' do
+#  platform :macos, '10.15'
+#  setup_pod
+#end
+#
+#target 'tvOS' do
+#  setup_pod
+#end

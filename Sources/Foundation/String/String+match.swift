@@ -113,7 +113,6 @@ public extension StemValue where Base == String {
     
 }
 
-
 // MARK: - Validator
 public extension StemValue where Base == String {
     
