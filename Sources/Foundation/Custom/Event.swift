@@ -34,12 +34,28 @@ open class EventParsable<Value> {
 
 }
 
+public class EventTokens {
+
+    private var list = [EventToken]()
+
+    public init() {}
+
+    func append(token: EventToken) {
+        list.append(token)
+    }
+
+}
+
 public class EventToken {
     var objectProtocol: NSObjectProtocol?
     public let name: Notification.Name
 
     init(name: Notification.Name) {
         self.name = name
+    }
+
+    public func disposed(_ tokens: EventTokens) {
+        tokens.append(token: self)
     }
 
     deinit {
