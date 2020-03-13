@@ -25,12 +25,13 @@ import UIKit
 private enum AssociatedKey {
 
     static let setNavigationBarHiddenWhenAppearKey = UnsafeRawPointer(bitPattern: "stem.viewController.setNavigationBarHiddenWhenAppearKey".hashValue)!
+    static let isHideBackButtonTextKey = UnsafeRawPointer(bitPattern: "stem.UINavigationBarAppearance.isHideBackButtonText".hashValue)!
 
 }
 
-fileprivate extension UIViewController {
+private extension UIViewController {
 
-    static let swizzing: Void = {
+    static let viewController_swizzing: Void = {
         RunTime.exchange(selector: #selector(UIViewController.viewWillAppear(_:)),
                          by: #selector(UIViewController.stem_viewController_viewWillAppear(_:)),
                          class: UIViewController.self)
@@ -43,30 +44,63 @@ fileprivate extension UIViewController {
     @objc
     func stem_viewController_viewWillAppear(_ animated: Bool) {
         stem_viewController_viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(st.setNavigationBarHiddenWhenAppear, animated: animated)
+        navigationController?.setNavigationBarHidden(navigationItem.st.isHiddenWhenViewWillAppear, animated: animated)
     }
 
     @objc
     func stem_viewController_viewWillDisappear(_ animated: Bool) {
         stem_viewController_viewWillDisappear(animated)
         DispatchQueue.main.asyncAfter(deadline: .now()) {[weak self] in
-            guard let base = self,
-                let vc = base.navigationController?.viewControllers.last,
-                vc.st.setNavigationBarHiddenWhenAppear == false else { return }
-            base.navigationController?.setNavigationBarHidden(false, animated: false)
+            guard let self = self,
+                let vc = self.navigationController?.topViewController,
+                self.navigationItem.st.isHiddenWhenViewWillAppear == false else { return }
+            self.navigationController?.setNavigationBarHidden(vc.navigationItem.st.isHiddenWhenViewWillAppear, animated: false)
         }
     }
 
 }
 
-public extension Stem where Base: UIViewController {
+fileprivate
+extension UINavigationItem {
+    static var isHideBackButtonText: Bool = false
+}
 
-    var setNavigationBarHiddenWhenAppear: Bool {
-        get { self.getAssociated(associatedKey: AssociatedKey.setNavigationBarHiddenWhenAppearKey) ?? false }
+public extension Stem where Base: UINavigationItem {
+
+    var isHiddenWhenViewWillAppear: Bool {
+        get { getAssociated(associatedKey: AssociatedKey.setNavigationBarHiddenWhenAppearKey) ?? false }
         set {
-            UIViewController.swizzing
-            self.setAssociated(value: newValue, associatedKey: AssociatedKey.setNavigationBarHiddenWhenAppearKey)
+            UIViewController.viewController_swizzing
+            setAssociated(value: newValue, associatedKey: AssociatedKey.setNavigationBarHiddenWhenAppearKey)
         }
+    }
+
+    static var isHideBackButtonText: Bool {
+        set {
+            UINavigationController.navigationController_swizzing
+            UINavigationItem.isHideBackButtonText = newValue
+        }
+        get { return UINavigationItem.isHideBackButtonText }
+    }
+
+}
+
+fileprivate
+extension UINavigationController {
+    
+    static let navigationController_swizzing: Void = {
+        RunTime.exchange(selector: #selector(UINavigationController.pushViewController(_:animated:)),
+                         by: #selector(UINavigationController.stem_navigationController_pushViewController(_:animated:)),
+                         class: UINavigationController.self)
+    }()
+
+    @objc
+    func stem_navigationController_pushViewController(_ viewController: UIViewController, animated: Bool) {
+        if UINavigationItem.st.isHideBackButtonText {
+            let backBarButtton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            viewController.navigationItem.backBarButtonItem = backBarButtton
+        }
+        stem_navigationController_pushViewController(viewController, animated: animated)
     }
 
 }
