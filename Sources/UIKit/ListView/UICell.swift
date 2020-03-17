@@ -68,6 +68,10 @@ public extension Stem where Base: UITableView {
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UITableViewCell`
     func dequeueCell<T: STViewProtocol>(_ indexPath: IndexPath) -> T {
+        if let cell = base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as? T {
+            return cell
+        }
+        assertionFailure(String(describing: T.self))
         return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
     }
     

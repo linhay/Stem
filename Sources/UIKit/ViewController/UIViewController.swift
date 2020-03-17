@@ -65,7 +65,7 @@ public extension Stem where Base: UIViewController {
     /// - Parameter animated: 是否显示动画
     /// - Returns: vc
     @discardableResult
-    func pop(animated: Bool) -> UIViewController? {
+    func pop(animated: Bool = true) -> UIViewController? {
         switch base {
         case let nav as UINavigationController:
             return nav.popViewController(animated: animated)
