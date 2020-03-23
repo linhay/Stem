@@ -121,7 +121,7 @@ public extension Stem where Base: NSAttributedString {
                         backgroundColor: UIColor,
                         cornerRadius: CGFloat) -> UIImage? {
 
-        var string = NSMutableAttributedString(attributedString: base)
+        let string = NSMutableAttributedString(attributedString: base)
 
         var textSize = string.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                         height: lineHeight),

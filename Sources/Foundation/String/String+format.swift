@@ -24,6 +24,7 @@ import Foundation
 // MARK: - format
 
 public extension StemValue where Base == String {
+
     /// format: NSNumber
     var number: NSNumber? { return NumberFormatter().number(from: base) }
     /// format: Int
