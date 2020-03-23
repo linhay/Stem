@@ -34,7 +34,11 @@ public extension Array where Element == String {
 }
 
 public extension StemValue where Base == String {
-    
+
+    static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: ClosedRange<Int>) -> String {
+        return random(characters: characters, length: Range<Int>(uncheckedBounds: (lower: length.lowerBound, upper: length.upperBound)))
+    }
+
     static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: Range<Int>) -> String {
         let count = Int.random(in: length)
         return (0...count).map { (_) in
