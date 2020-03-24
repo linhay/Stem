@@ -22,27 +22,20 @@
 
 import Foundation
 
-// MARK: - Array where Element == String
-public extension Array where Element == String {
-    
-    static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: Range<Int>, count: Int) -> [String] {
-        return (0..<count).map { _ -> String in
-            return String.st.random(characters: characters, length: length)
-        }
-    }
-    
-}
-
 public extension StemValue where Base == String {
 
-    static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: ClosedRange<Int>) -> String {
+    static func random(characters: String? = nil, length: ClosedRange<Int>) -> String {
         return random(characters: characters, length: Range<Int>(uncheckedBounds: (lower: length.lowerBound, upper: length.upperBound)))
     }
 
-    static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: Range<Int>) -> String {
+    static func random(characters: String? = nil, length: Range<Int>) -> String {
+        var characters = characters
+        if characters == nil {
+            characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        }
         let count = Int.random(in: length)
         return (0...count).map { (_) in
-            let character = characters[Int.random(in: 0..<characters.count)] ?? ""
+            let character = characters![Int.random(in: 0..<characters!.count)] ?? ""
             return String(character)
         }.joined()
     }
