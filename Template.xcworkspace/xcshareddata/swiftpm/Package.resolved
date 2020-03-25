@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "Stem",
+        "package": "StemCore",
         "repositoryURL": "https://github.com/linhay/Stem.git",
         "state": {
           "branch": "develop",
-          "revision": "53e099d19ee75e89fc40975b985791febf4b2623",
+          "revision": "994df41b170d89e86ff7893ef9888ae780e5147e",
           "version": null
         }
       }

@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		CD394C3F242B8B5000277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* Stem */; };
 		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
-		CD394C5E242BB85500277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C5D242BB85500277F88 /* Stem */; };
-		CD394C5F242BB85500277F88 /* Stem in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CD394C5D242BB85500277F88 /* Stem */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CD8147FD242BBA1800D2DF0A /* StemCore in Frameworks */ = {isa = PBXBuildFile; productRef = CD8147FC242BBA1800D2DF0A /* StemCore */; };
 		CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D6F23C57F0600107BF1 /* ViewController.swift */; };
 		CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7123C57F0600107BF1 /* Main.storyboard */; };
 		CDCF2D7523C57F0700107BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7423C57F0700107BF1 /* Assets.xcassets */; };
@@ -63,7 +62,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CD394C5F242BB85500277F88 /* Stem in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,7 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD394C5E242BB85500277F88 /* Stem in Frameworks */,
+				CD8147FD242BBA1800D2DF0A /* StemCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +298,7 @@
 			);
 			name = macOS;
 			packageProductDependencies = (
-				CD394C5D242BB85500277F88 /* Stem */,
+				CD8147FC242BBA1800D2DF0A /* StemCore */,
 			);
 			productName = macOS;
 			productReference = CD394C56242BB83300277F88 /* macOS */;
@@ -1089,10 +1087,10 @@
 			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
 			productName = Stem;
 		};
-		CD394C5D242BB85500277F88 /* Stem */ = {
+		CD8147FC242BBA1800D2DF0A /* StemCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
-			productName = Stem;
+			productName = StemCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

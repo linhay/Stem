@@ -5,17 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "StemCore",
-    products: [
-        .library(name: "StemCore",
-                 targets: ["Core"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
-    targets: [
-        .target(name: "Core",
-                dependencies: [],
-                path: "Sources/Core")
+    platforms: [.macOS(SupportedPlatform.MacOSVersion.v10_15)],
+    products:  [.library(name: "StemCore", targets: ["Core"])],
+    dependencies: [],
+    targets: [.target(name: "Core", dependencies: [], path: "Sources/Core")
     ]
 )
