@@ -6,8 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Stem",
     products: [
-        .library(name: "Stem",
-                 targets: ["Core"]),
+        .library(name: "Stem",type: .dynamic, targets: ["Core"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.

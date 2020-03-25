@@ -63,6 +63,8 @@
 				Base,
 			);
 			mainGroup = CDCF2E0F23C6026500107BF1;
+			packageReferences = (
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

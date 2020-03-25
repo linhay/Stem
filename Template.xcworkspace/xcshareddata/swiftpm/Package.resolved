@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Stem",
-        "repositoryURL": "/Users/linhey/Desktop/linhey/pod_template_stem/",
+        "repositoryURL": "https://github.com/linhay/Stem.git",
         "state": {
-          "branch": "master",
-          "revision": "080d76736d4728d84e2002c227d7a6c74355d7d4",
+          "branch": "develop",
+          "revision": "6dd237eaa7c720cc86fa9dbddb65659869425bcc",
           "version": null
         }
       }
