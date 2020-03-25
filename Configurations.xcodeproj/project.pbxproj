@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		CD394C16242B724900277F88 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		CDCF2E1623C6029C00107BF1 /* Template.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Template.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CDCF2E1723C6029C00107BF1 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CDCF2E1A23C6088600107BF1 /* Template.docment */ = {isa = PBXFileReference; lastKnownFileType = text; path = Template.docment; sourceTree = "<group>"; };
@@ -23,6 +24,7 @@
 		CDCF2E0F23C6026500107BF1 = {
 			isa = PBXGroup;
 			children = (
+				CD394C16242B724900277F88 /* Package.swift */,
 				CDCF2E3F23C6CB0000107BF1 /* scripts */,
 				CDCF2E4723C6CD0D00107BF1 /* Gemfile */,
 				CDCF2E4A23C6DBAA00107BF1 /* .swiftlint.yml */,
