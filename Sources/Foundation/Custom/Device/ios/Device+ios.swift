@@ -27,7 +27,7 @@ public extension Device {
     ///
     /// - Parameter type: 设备类型
     /// - Returns: true or false
-    static func `is`(_ type: Type) -> Bool {
+    static func `is`(type: Type) -> Bool {
         return self.type == type
     }
     
@@ -35,7 +35,7 @@ public extension Device {
     ///
     /// - Parameter version: 设备版本
     /// - Returns: true or false
-    static func `is`(_ version: Version) -> Bool {
+    static func `is`(version: Version) -> Bool {
         return self.version == version
     }
     
