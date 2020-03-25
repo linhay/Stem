@@ -7,19 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5181247829A015DD2DF2A14B /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53B32020E537F7EEDEEB6B7 /* Pods_iOS.framework */; };
-		CD394C2B242B80DE00277F88 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C2A242B80DE00277F88 /* Tests.swift */; };
-		CD394C34242B813100277F88 /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C33242B813100277F88 /* CoreTests.swift */; };
+		3964F1188BE9101E21F8590D /* libPods-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC134089E3A78F234C184FC /* libPods-macOS.a */; };
 		CD394C3F242B8B5000277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* Stem */; };
-		CD394C41242B8B5800277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C40242B8B5800277F88 /* Stem */; };
+		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
+		CD394C5E242BB85500277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C5D242BB85500277F88 /* Stem */; };
+		CD394C5F242BB85500277F88 /* Stem in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CD394C5D242BB85500277F88 /* Stem */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D6F23C57F0600107BF1 /* ViewController.swift */; };
 		CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7123C57F0600107BF1 /* Main.storyboard */; };
 		CDCF2D7523C57F0700107BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7423C57F0700107BF1 /* Assets.xcassets */; };
 		CDCF2D7823C57F0700107BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7623C57F0700107BF1 /* LaunchScreen.storyboard */; };
-		CDCF2D9223C5D3F400107BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D9123C5D3F400107BF1 /* AppDelegate.swift */; };
-		CDCF2D9423C5D3F400107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D9323C5D3F400107BF1 /* ViewController.swift */; };
-		CDCF2D9623C5D3F500107BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D9523C5D3F500107BF1 /* Assets.xcassets */; };
-		CDCF2D9923C5D3F500107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D9723C5D3F500107BF1 /* Main.storyboard */; };
 		CDCF2DC423C5D98800107BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2DC323C5D98800107BF1 /* AppDelegate.swift */; };
 		CDCF2DC623C5D98800107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2DC523C5D98800107BF1 /* ViewController.swift */; };
 		CDCF2DC823C5D98900107BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2DC723C5D98900107BF1 /* Assets.xcassets */; };
@@ -36,13 +32,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CD394C2D242B80DE00277F88 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CDCF2D4623C57CEA00107BF1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CDCF2D8E23C5D3F400107BF1;
-			remoteInfo = macOS;
-		};
 		CDCF2DD823C5D9B100107BF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CDCF2D4623C57CEA00107BF1 /* Project object */;
@@ -60,6 +49,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		CD394C54242BB83300277F88 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		CD394C60242BB85500277F88 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CD394C5F242BB85500277F88 /* Stem in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDCF2DF723C5D9B200107BF1 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -85,25 +94,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		91AB678527F44120E5F36BBE /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		1B90A2893A3E4EB49AD704D7 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		3EC134089E3A78F234C184FC /* libPods-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A91B7AC082DE5E9D84C878 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD394C28242B80DE00277F88 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD394C2A242B80DE00277F88 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		CD394C2C242B80DE00277F88 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD394C33242B813100277F88 /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
+		CD394C56242BB83300277F88 /* macOS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = macOS; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD394C58242BB83300277F88 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CDCF2D6923C57F0600107BF1 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCF2D6F23C57F0600107BF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CDCF2D7223C57F0600107BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CDCF2D7423C57F0700107BF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CDCF2D7723C57F0700107BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CDCF2D7923C57F0700107BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CDCF2D8F23C5D3F400107BF1 /* macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDCF2D9123C5D3F400107BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CDCF2D9323C5D3F400107BF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		CDCF2D9523C5D3F500107BF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		CDCF2D9823C5D3F500107BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		CDCF2D9A23C5D3F500107BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CDCF2D9B23C5D3F500107BF1 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		CDCF2DC123C5D98800107BF1 /* tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDCF2DC323C5D98800107BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDCF2DC523C5D98800107BF1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -125,8 +127,6 @@
 		CDCF2DF323C5D9B200107BF1 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		CDCF2E9D23C707F800107BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D03465C6BAE4F6B45B67A39D /* Pods-Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.release.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.release.xcconfig"; sourceTree = "<group>"; };
-		E53B32020E537F7EEDEEB6B7 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0BAC1C4258B2D8D1C6A6183 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		F56F5CC005DAD934C2035237 /* Pods-Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.debug.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,10 +138,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CD394C25242B80DE00277F88 /* Frameworks */ = {
+		CD394C53242BB83300277F88 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3964F1188BE9101E21F8590D /* libPods-macOS.a in Frameworks */,
+				CD394C5E242BB85500277F88 /* Stem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,16 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5181247829A015DD2DF2A14B /* Pods_iOS.framework in Frameworks */,
 				CD394C3F242B8B5000277F88 /* Stem in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CDCF2D8C23C5D3F400107BF1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CD394C41242B8B5800277F88 /* Stem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,38 +183,27 @@
 			isa = PBXGroup;
 			children = (
 				A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */,
-				E53B32020E537F7EEDEEB6B7 /* Pods_iOS.framework */,
+				3EC134089E3A78F234C184FC /* libPods-macOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CD394C29242B80DE00277F88 /* Tests */ = {
+		CD394C57242BB83300277F88 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				CD394C32242B811D00277F88 /* CoreTests */,
-				CD394C2A242B80DE00277F88 /* Tests.swift */,
-				CD394C2C242B80DE00277F88 /* Info.plist */,
+				CD394C58242BB83300277F88 /* main.swift */,
 			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		CD394C32242B811D00277F88 /* CoreTests */ = {
-			isa = PBXGroup;
-			children = (
-				CD394C33242B813100277F88 /* CoreTests.swift */,
-			);
-			path = CoreTests;
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		CDCF2D4523C57CEA00107BF1 = {
 			isa = PBXGroup;
 			children = (
 				CDCF2D6A23C57F0600107BF1 /* iOS */,
-				CDCF2D9023C5D3F400107BF1 /* macOS */,
 				CDCF2DC223C5D98800107BF1 /* tvOS */,
 				CDCF2DDA23C5D9B100107BF1 /* watchOS WatchKit App */,
 				CDCF2DE923C5D9B200107BF1 /* watchOS WatchKit Extension */,
-				CD394C29242B80DE00277F88 /* Tests */,
+				CD394C57242BB83300277F88 /* macOS */,
 				CDCF2D4F23C57CEA00107BF1 /* Products */,
 				FA5AF7567AF7EE1128E00793 /* Pods */,
 				890AC7DD7071C163431E4DD5 /* Frameworks */,
@@ -232,12 +214,11 @@
 			isa = PBXGroup;
 			children = (
 				CDCF2D6923C57F0600107BF1 /* iOS.app */,
-				CDCF2D8F23C5D3F400107BF1 /* macOS.app */,
 				CDCF2DC123C5D98800107BF1 /* tvOS.app */,
 				CDCF2DD323C5D9B100107BF1 /* watchOS.app */,
 				CDCF2DD623C5D9B100107BF1 /* watchOS WatchKit App.app */,
 				CDCF2DE523C5D9B200107BF1 /* watchOS WatchKit Extension.appex */,
-				CD394C28242B80DE00277F88 /* Tests.xctest */,
+				CD394C56242BB83300277F88 /* macOS */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,19 +234,6 @@
 				CDCF2D7923C57F0700107BF1 /* Info.plist */,
 			);
 			path = iOS;
-			sourceTree = "<group>";
-		};
-		CDCF2D9023C5D3F400107BF1 /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				CDCF2D9123C5D3F400107BF1 /* AppDelegate.swift */,
-				CDCF2D9323C5D3F400107BF1 /* ViewController.swift */,
-				CDCF2D9523C5D3F500107BF1 /* Assets.xcassets */,
-				CDCF2D9723C5D3F500107BF1 /* Main.storyboard */,
-				CDCF2D9A23C5D3F500107BF1 /* Info.plist */,
-				CDCF2D9B23C5D3F500107BF1 /* macOS.entitlements */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 		CDCF2DC223C5D98800107BF1 /* tvOS */ = {
@@ -309,8 +277,8 @@
 			children = (
 				F56F5CC005DAD934C2035237 /* Pods-Template.debug.xcconfig */,
 				D03465C6BAE4F6B45B67A39D /* Pods-Template.release.xcconfig */,
-				91AB678527F44120E5F36BBE /* Pods-iOS.debug.xcconfig */,
-				F0BAC1C4258B2D8D1C6A6183 /* Pods-iOS.release.xcconfig */,
+				1B90A2893A3E4EB49AD704D7 /* Pods-macOS.debug.xcconfig */,
+				93A91B7AC082DE5E9D84C878 /* Pods-macOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -318,36 +286,38 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CD394C27242B80DE00277F88 /* Tests */ = {
+		CD394C55242BB83300277F88 /* macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CD394C2F242B80DE00277F88 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildConfigurationList = CD394C5A242BB83300277F88 /* Build configuration list for PBXNativeTarget "macOS" */;
 			buildPhases = (
-				CD394C24242B80DE00277F88 /* Sources */,
-				CD394C25242B80DE00277F88 /* Frameworks */,
-				CD394C26242B80DE00277F88 /* Resources */,
+				33B1884F7E2124FFEF9F8C27 /* [CP] Check Pods Manifest.lock */,
+				CD394C52242BB83300277F88 /* Sources */,
+				CD394C53242BB83300277F88 /* Frameworks */,
+				CD394C54242BB83300277F88 /* CopyFiles */,
+				CD394C60242BB85500277F88 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CD394C2E242B80DE00277F88 /* PBXTargetDependency */,
 			);
-			name = Tests;
-			productName = Tests;
-			productReference = CD394C28242B80DE00277F88 /* Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			name = macOS;
+			packageProductDependencies = (
+				CD394C5D242BB85500277F88 /* Stem */,
+			);
+			productName = macOS;
+			productReference = CD394C56242BB83300277F88 /* macOS */;
+			productType = "com.apple.product-type.tool";
 		};
 		CDCF2D6823C57F0600107BF1 /* iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CDCF2D7A23C57F0700107BF1 /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
-				4A84DEE0B9144DA04D3F484C /* [CP] Check Pods Manifest.lock */,
 				CDCF2E1823C606B400107BF1 /* Script-Git */,
 				CDCF2E4823C6D1EC00107BF1 /* Script-license */,
 				CDCF2E4623C6CC5000107BF1 /* Script-SwiftLint */,
 				CDCF2D6523C57F0600107BF1 /* Sources */,
 				CDCF2D6623C57F0600107BF1 /* Frameworks */,
 				CDCF2D6723C57F0600107BF1 /* Resources */,
-				994E0A1FDD8DD88D0FC5A0DF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -359,26 +329,6 @@
 			);
 			productName = iOS;
 			productReference = CDCF2D6923C57F0600107BF1 /* iOS.app */;
-			productType = "com.apple.product-type.application";
-		};
-		CDCF2D8E23C5D3F400107BF1 /* macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CDCF2D9E23C5D3F500107BF1 /* Build configuration list for PBXNativeTarget "macOS" */;
-			buildPhases = (
-				CDCF2D8B23C5D3F400107BF1 /* Sources */,
-				CDCF2D8C23C5D3F400107BF1 /* Frameworks */,
-				CDCF2D8D23C5D3F400107BF1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = macOS;
-			packageProductDependencies = (
-				CD394C40242B8B5800277F88 /* Stem */,
-			);
-			productName = macOS;
-			productReference = CDCF2D8F23C5D3F400107BF1 /* macOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		CDCF2DC023C5D98800107BF1 /* tvOS */ = {
@@ -461,14 +411,10 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = linhey.pod.template.ios;
 				TargetAttributes = {
-					CD394C27242B80DE00277F88 = {
+					CD394C55242BB83300277F88 = {
 						CreatedOnToolsVersion = 11.4;
-						TestTargetID = CDCF2D8E23C5D3F400107BF1;
 					};
 					CDCF2D6823C57F0600107BF1 = {
-						CreatedOnToolsVersion = 11.3;
-					};
-					CDCF2D8E23C5D3F400107BF1 = {
 						CreatedOnToolsVersion = 11.3;
 					};
 					CDCF2DC023C5D98800107BF1 = {
@@ -502,24 +448,16 @@
 			projectRoot = "";
 			targets = (
 				CDCF2D6823C57F0600107BF1 /* iOS */,
-				CDCF2D8E23C5D3F400107BF1 /* macOS */,
 				CDCF2DC023C5D98800107BF1 /* tvOS */,
 				CDCF2DD223C5D9B100107BF1 /* watchOS */,
 				CDCF2DD523C5D9B100107BF1 /* watchOS WatchKit App */,
 				CDCF2DE423C5D9B200107BF1 /* watchOS WatchKit Extension */,
-				CD394C27242B80DE00277F88 /* Tests */,
+				CD394C55242BB83300277F88 /* macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		CD394C26242B80DE00277F88 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CDCF2D6723C57F0600107BF1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -527,15 +465,6 @@
 				CDCF2D7823C57F0700107BF1 /* LaunchScreen.storyboard in Resources */,
 				CDCF2D7523C57F0700107BF1 /* Assets.xcassets in Resources */,
 				CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CDCF2D8D23C5D3F400107BF1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CDCF2D9623C5D3F500107BF1 /* Assets.xcassets in Resources */,
-				CDCF2D9923C5D3F500107BF1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,7 +504,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4A84DEE0B9144DA04D3F484C /* [CP] Check Pods Manifest.lock */ = {
+		33B1884F7E2124FFEF9F8C27 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -590,28 +519,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-iOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-macOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		994E0A1FDD8DD88D0FC5A0DF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CDCF2E1823C606B400107BF1 /* Script-Git */ = {
@@ -671,12 +583,11 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CD394C24242B80DE00277F88 /* Sources */ = {
+		CD394C52242BB83300277F88 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD394C34242B813100277F88 /* CoreTests.swift in Sources */,
-				CD394C2B242B80DE00277F88 /* Tests.swift in Sources */,
+				CD394C59242BB83300277F88 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,15 +597,6 @@
 			files = (
 				CDCF2E9E23C707F800107BF1 /* AppDelegate.swift in Sources */,
 				CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CDCF2D8B23C5D3F400107BF1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CDCF2D9423C5D3F400107BF1 /* ViewController.swift in Sources */,
-				CDCF2D9223C5D3F400107BF1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,11 +622,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CD394C2E242B80DE00277F88 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CDCF2D8E23C5D3F400107BF1 /* macOS */;
-			targetProxy = CD394C2D242B80DE00277F88 /* PBXContainerItemProxy */;
-		};
 		CDCF2DD923C5D9B100107BF1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CDCF2DD523C5D9B100107BF1 /* watchOS WatchKit App */;
@@ -754,14 +651,6 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		CDCF2D9723C5D3F500107BF1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CDCF2D9823C5D3F500107BF1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		CDCF2DC923C5D98900107BF1 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -781,47 +670,31 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		CD394C30242B80DE00277F88 /* Debug */ = {
+		CD394C5B242BB83300277F88 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1B90A2893A3E4EB49AD704D7 /* Pods-macOS.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 3L8RM3MDLS;
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
+				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = linhey.autoasset.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macOS.app/Contents/MacOS/macOS";
 			};
 			name = Debug;
 		};
-		CD394C31242B80DE00277F88 /* Release */ = {
+		CD394C5C242BB83300277F88 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93A91B7AC082DE5E9D84C878 /* Pods-macOS.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 3L8RM3MDLS;
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
+				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = linhey.autoasset.Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/macOS.app/Contents/MacOS/macOS";
 			};
 			name = Release;
 		};
@@ -941,7 +814,6 @@
 		};
 		CDCF2D7B23C57F0700107BF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91AB678527F44120E5F36BBE /* Pods-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -961,7 +833,6 @@
 		};
 		CDCF2D7C23C57F0700107BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0BAC1C4258B2D8D1C6A6183 /* Pods-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -976,52 +847,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		CDCF2D9C23C5D3F500107BF1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3L8RM3MDLS;
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = linhey.pod.template.macOS.macOS;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		CDCF2D9D23C5D3F500107BF1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3L8RM3MDLS;
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = linhey.pod.template.macOS.macOS;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1182,11 +1007,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CD394C2F242B80DE00277F88 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+		CD394C5A242BB83300277F88 /* Build configuration list for PBXNativeTarget "macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CD394C30242B80DE00277F88 /* Debug */,
-				CD394C31242B80DE00277F88 /* Release */,
+				CD394C5B242BB83300277F88 /* Debug */,
+				CD394C5C242BB83300277F88 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1205,15 +1030,6 @@
 			buildConfigurations = (
 				CDCF2D7B23C57F0700107BF1 /* Debug */,
 				CDCF2D7C23C57F0700107BF1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CDCF2D9E23C5D3F500107BF1 /* Build configuration list for PBXNativeTarget "macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CDCF2D9C23C5D3F500107BF1 /* Debug */,
-				CDCF2D9D23C5D3F500107BF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1273,7 +1089,7 @@
 			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
 			productName = Stem;
 		};
-		CD394C40242B8B5800277F88 /* Stem */ = {
+		CD394C5D242BB85500277F88 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
 			productName = Stem;
