@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3964F1188BE9101E21F8590D /* libPods-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC134089E3A78F234C184FC /* libPods-macOS.a */; };
 		CD394C3F242B8B5000277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* Stem */; };
 		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
 		CD394C5E242BB85500277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C5D242BB85500277F88 /* Stem */; };
@@ -142,7 +141,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3964F1188BE9101E21F8590D /* libPods-macOS.a in Frameworks */,
 				CD394C5E242BB85500277F88 /* Stem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,7 +406,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = linhey.pod.template.ios;
 				TargetAttributes = {
 					CD394C55242BB83300277F88 = {
@@ -674,6 +672,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B90A2893A3E4EB49AD704D7 /* Pods-macOS.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3L8RM3MDLS;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -688,6 +687,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 93A91B7AC082DE5E9D84C878 /* Pods-macOS.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3L8RM3MDLS;
 				ENABLE_HARDENED_RUNTIME = YES;
