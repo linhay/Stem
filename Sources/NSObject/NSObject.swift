@@ -22,6 +22,8 @@
 
 import Foundation
 
+extension NSObject: StemCompatible { }
+
 public extension Stem where Base: NSObject {
 
     #if !os(macOS)

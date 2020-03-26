@@ -4,10 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "StemCore",
+    name: "Stem",
     platforms: [.macOS(SupportedPlatform.MacOSVersion.v10_15)],
-    products:  [.library(name: "StemCore", targets: ["Core"])],
-    dependencies: [],
-    targets: [.target(name: "Core", dependencies: [], path: "Sources/Core")
+    products:  [.library(name: "Stem", targets: ["Stem"])],
+    targets: [
+        .target(name: "Stem", dependencies: ["StemCore"]),
+        .target(name: "StemCore", dependencies: [], path: "Sources/Core")
+        .target(name: "StemNSObject", dependencies: ["StemCore"], path: "Sources/NSObject")
+        .target(name: "StemFundamentals", dependencies: ["StemCore"], path: "Sources/Fundamentals")
     ]
 )

@@ -1,3 +1,63 @@
-PODFILE CHECKSUM: 59d73ffe7bec708ecbd857624877531776519532
+PODS:
+  - Stem (0.0.31):
+    - Stem/AVKit (= 0.0.31)
+    - Stem/Core (= 0.0.31)
+    - Stem/Foundation (= 0.0.31)
+    - Stem/Fundamentals (= 0.0.31)
+    - Stem/NSObject (= 0.0.31)
+    - Stem/Runtime (= 0.0.31)
+    - Stem/UIKit (= 0.0.31)
+    - Stem/WebKit (= 0.0.31)
+  - Stem/Core (0.0.31)
+  - Stem/Foundation (0.0.31):
+    - Stem/Core
+    - Stem/Foundation/Coder (= 0.0.31)
+    - Stem/Foundation/Collections (= 0.0.31)
+    - Stem/Foundation/Custom (= 0.0.31)
+    - Stem/Foundation/Date (= 0.0.31)
+    - Stem/Foundation/Dispatch (= 0.0.31)
+    - Stem/Foundation/pre-release (= 0.0.31)
+    - Stem/Foundation/String (= 0.0.31)
+  - Stem/Foundation/Coder (0.0.31):
+    - Stem/Core
+  - Stem/Foundation/Collections (0.0.31):
+    - Stem/Core
+  - Stem/Foundation/Custom (0.0.31):
+    - Stem/Core
+  - Stem/Foundation/Date (0.0.31):
+    - Stem/Core
+  - Stem/Foundation/Dispatch (0.0.31):
+    - Stem/Core
+  - Stem/Foundation/pre-release (0.0.31):
+    - Stem/Core
+  - Stem/Foundation/String (0.0.31):
+    - Stem/Core
+    - Stem/Fundamentals
+  - Stem/Fundamentals (0.0.31):
+    - Stem/Core
+  - Stem/NSObject (0.0.31):
+    - Stem/Core
+  - Stem/Runtime (0.0.31)
+  - Stem/WebKit (0.0.31):
+    - Stem/Core
+  - SwiftLint (0.39.1)
+
+DEPENDENCIES:
+  - Stem (from `./Template.podspec`)
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - SwiftLint
+
+EXTERNAL SOURCES:
+  Stem:
+    :path: "./Template.podspec"
+
+SPEC CHECKSUMS:
+  Stem: 1ed0b9e03a7b5fc4b561bd3448072c37ae99e38a
+  SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
+
+PODFILE CHECKSUM: 65c351abb2634f9870e57f3b5c5eada467bae097
 
 COCOAPODS: 1.9.0

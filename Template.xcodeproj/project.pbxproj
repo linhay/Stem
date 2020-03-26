@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD394C3F242B8B5000277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* Stem */; };
+		B1CFDA6DFF79C90F671B245D /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A331BF9F82C5235F177525 /* Pods_macOS.framework */; };
+		CD394C3F242B8B5000277F88 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* SwiftPackageProductDependency */; };
 		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
-		CD8147FD242BBA1800D2DF0A /* StemCore in Frameworks */ = {isa = PBXBuildFile; productRef = CD8147FC242BBA1800D2DF0A /* StemCore */; };
+		CD8147FD242BBA1800D2DF0A /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = CD8147FC242BBA1800D2DF0A /* SwiftPackageProductDependency */; };
 		CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D6F23C57F0600107BF1 /* ViewController.swift */; };
 		CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7123C57F0600107BF1 /* Main.storyboard */; };
 		CDCF2D7523C57F0700107BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7423C57F0700107BF1 /* Assets.xcassets */; };
@@ -93,6 +94,7 @@
 /* Begin PBXFileReference section */
 		1B90A2893A3E4EB49AD704D7 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		3EC134089E3A78F234C184FC /* libPods-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92A331BF9F82C5235F177525 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A91B7AC082DE5E9D84C878 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD394C56242BB83300277F88 /* macOS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = macOS; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,7 +141,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD8147FD242BBA1800D2DF0A /* StemCore in Frameworks */,
+				CD8147FD242BBA1800D2DF0A /* BuildFile in Frameworks */,
+				B1CFDA6DFF79C90F671B245D /* Pods_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD394C3F242B8B5000277F88 /* Stem in Frameworks */,
+				CD394C3F242B8B5000277F88 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +183,7 @@
 			children = (
 				A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */,
 				3EC134089E3A78F234C184FC /* libPods-macOS.a */,
+				92A331BF9F82C5235F177525 /* Pods_macOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -298,7 +302,7 @@
 			);
 			name = macOS;
 			packageProductDependencies = (
-				CD8147FC242BBA1800D2DF0A /* StemCore */,
+				CD8147FC242BBA1800D2DF0A /* SwiftPackageProductDependency */,
 			);
 			productName = macOS;
 			productReference = CD394C56242BB83300277F88 /* macOS */;
@@ -321,7 +325,7 @@
 			);
 			name = iOS;
 			packageProductDependencies = (
-				CD394C3E242B8B5000277F88 /* Stem */,
+				CD394C3E242B8B5000277F88 /* SwiftPackageProductDependency */,
 			);
 			productName = iOS;
 			productReference = CDCF2D6923C57F0600107BF1 /* iOS.app */;
@@ -437,7 +441,7 @@
 			);
 			mainGroup = CDCF2D4523C57CEA00107BF1;
 			packageReferences = (
-				CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */,
+				CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = CDCF2D4F23C57CEA00107BF1 /* Products */;
 			projectDirPath = "";
@@ -1071,7 +1075,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */ = {
+		CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/linhay/Stem.git";
 			requirement = {
@@ -1082,14 +1086,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CD394C3E242B8B5000277F88 /* Stem */ = {
+		CD394C3E242B8B5000277F88 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
+			package = CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */;
 			productName = Stem;
 		};
-		CD8147FC242BBA1800D2DF0A /* StemCore */ = {
+		CD8147FC242BBA1800D2DF0A /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
+			package = CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */;
 			productName = StemCore;
 		};
 /* End XCSwiftPackageProductDependency section */

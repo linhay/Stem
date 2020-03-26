@@ -42,16 +42,14 @@ Pod::Spec.new do |s|
 
         ss.frameworks = ['Foundation']
         ss.dependency 'Stem/Core'
-        ss.ios.deployment_target     = '8.0'
-        ss.osx.deployment_target     = '10.10'
+        ss.ios.deployment_target = '8.0'
+        ss.osx.deployment_target = '10.10'
 
         subspec_names = ['Coder',
         'Collections',
         'Custom',
         'Date',
         'Dispatch',
-        'Fundamentals',
-        'NSObject',
         'pre-release']
 
         for name in subspec_names
@@ -62,7 +60,7 @@ Pod::Spec.new do |s|
         end
 
         ss.subspec 'String' do |sss|
-            sss.dependency 'Stem/Foundation/Fundamentals'
+            sss.dependency 'Stem/Fundamentals'
             path = base_path + 'String'
             sss.source_files = [path + '/**/*.swift', path + '/*.swift']
         end
@@ -79,8 +77,8 @@ Pod::Spec.new do |s|
         sp.frameworks = ['Foundation', 'UIKit']
         sp.dependency 'Stem/Core'
         sp.dependency 'Stem/Runtime'
-        sp.dependency 'Stem/Foundation/NSObject'
-        sp.dependency 'Stem/Foundation/Fundamentals'
+        sp.dependency 'Stem/NSObject'
+        sp.dependency 'Stem/Fundamentals'
         sp.ios.deployment_target = '8.0'
 
         subspec_names = ['Application',
@@ -115,13 +113,28 @@ Pod::Spec.new do |s|
         end
 
     end
+
+    s.subspec 'NSObject' do |ss|
+        base_path = 'Sources/NSObject/'
+        ss.source_files = [base_path + '*.swift']
+        ss.dependency 'Stem/Core'
+        ss.osx.deployment_target = "10.10"
+        ss.ios.deployment_target = '8.0'
+    end
+
+    s.subspec 'Fundamentals' do |ss|
+        base_path = 'Sources/Fundamentals/'
+        ss.source_files = [base_path + '*.swift']
+        ss.source_files = [base_path + '**/*.swift']
+        ss.dependency 'Stem/Core'
+        ss.ios.deployment_target  = '8.0'
+        ss.osx.deployment_target  = "10.10"
+    end
     
     s.subspec 'AVKit' do |ss|
         base_path = 'Sources/AVKit/'
         ss.source_files = [base_path + '*.swift']
-        ss.frameworks = ['AVFoundation', 'AVKit']
         ss.dependency 'Stem/Core'
-
         ss.ios.deployment_target     = '8.0'
     end
 

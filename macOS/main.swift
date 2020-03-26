@@ -8,7 +8,7 @@
 
 import Foundation
 import StoreKit
-import StemCore
+import Stem
 
 print("Hello, World!")
 

@@ -39,8 +39,6 @@ public extension StemCompatible {
     static var st: Stem<Self>.Type { return Stem<Self>.self }
 }
 
-extension NSObject: StemCompatible { }
-
 public struct StemValue<Base> {
     public let base: Base
     public init(_ base: Base) {
