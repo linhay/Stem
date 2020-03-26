@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B1CFDA6DFF79C90F671B245D /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A331BF9F82C5235F177525 /* Pods_macOS.framework */; };
-		CD394C3F242B8B5000277F88 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* SwiftPackageProductDependency */; };
+		CD394C3F242B8B5000277F88 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD394C3E242B8B5000277F88 /* Stem */; };
 		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
-		CD8147FD242BBA1800D2DF0A /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = CD8147FC242BBA1800D2DF0A /* SwiftPackageProductDependency */; };
 		CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D6F23C57F0600107BF1 /* ViewController.swift */; };
 		CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7123C57F0600107BF1 /* Main.storyboard */; };
 		CDCF2D7523C57F0700107BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7423C57F0700107BF1 /* Assets.xcassets */; };
@@ -141,7 +140,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD8147FD242BBA1800D2DF0A /* BuildFile in Frameworks */,
 				B1CFDA6DFF79C90F671B245D /* Pods_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -150,7 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD394C3F242B8B5000277F88 /* BuildFile in Frameworks */,
+				CD394C3F242B8B5000277F88 /* Stem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,7 +300,6 @@
 			);
 			name = macOS;
 			packageProductDependencies = (
-				CD8147FC242BBA1800D2DF0A /* SwiftPackageProductDependency */,
 			);
 			productName = macOS;
 			productReference = CD394C56242BB83300277F88 /* macOS */;
@@ -325,7 +322,7 @@
 			);
 			name = iOS;
 			packageProductDependencies = (
-				CD394C3E242B8B5000277F88 /* SwiftPackageProductDependency */,
+				CD394C3E242B8B5000277F88 /* Stem */,
 			);
 			productName = iOS;
 			productReference = CDCF2D6923C57F0600107BF1 /* iOS.app */;
@@ -441,7 +438,7 @@
 			);
 			mainGroup = CDCF2D4523C57CEA00107BF1;
 			packageReferences = (
-				CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */,
+				CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */,
 			);
 			productRefGroup = CDCF2D4F23C57CEA00107BF1 /* Products */;
 			projectDirPath = "";
@@ -1075,7 +1072,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */ = {
+		CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/linhay/Stem.git";
 			requirement = {
@@ -1086,15 +1083,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CD394C3E242B8B5000277F88 /* SwiftPackageProductDependency */ = {
+		CD394C3E242B8B5000277F88 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */;
+			package = CD394C3D242B8B5000277F88 /* XCRemoteSwiftPackageReference "Stem" */;
 			productName = Stem;
-		};
-		CD8147FC242BBA1800D2DF0A /* SwiftPackageProductDependency */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD394C3D242B8B5000277F88 /* RemoteSwiftPackageReference */;
-			productName = StemCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

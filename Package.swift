@@ -14,18 +14,7 @@ let package = Package(
     targets: [
         .target(
             name: "Stem",
-            dependencies: []),
-        .target(
-            name: "core",
-            dependencies: ["Stem"],
-            path: "Sources/Core"),
-        .target(
-            name: "NSObject",
-            dependencies: ["Stem"],
-            path: "Sources/NSObject"),
-        .target(
-            name: "fundamentals",
-            dependencies: ["Stem"],
-            path: "Sources/Fundamentals"),
+            path: "Sources",
+            dependencies: [])
     ]
 )
