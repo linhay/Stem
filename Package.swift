@@ -5,12 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "Stem",
+    platforms: [.iOS(.v10), .macOS(.v10_12), .tvOS(.v10), .watchOS(.v3)],
     products: [
-        .library(
-            name: "Stem",
-            targets: ["Stem"]),
+        .library(name: "Stem", targets: ["Stem"]),
     ],
-    dependencies: [],
     targets: [
         .target(
             name: "Stem",
