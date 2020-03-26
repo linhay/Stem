@@ -13,6 +13,6 @@ let package = Package(
         .target(
             name: "Stem",
             path: "Sources",
-            dependencies: [])
+            sources: ["Core", "Fundamentals", "NSObject"])
     ]
 )
