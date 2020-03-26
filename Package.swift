@@ -5,12 +5,27 @@ import PackageDescription
 
 let package = Package(
     name: "Stem",
-    platforms: [.macOS(SupportedPlatform.MacOSVersion.v10_15)],
-    products:  [.library(name: "Stem", targets: ["Stem"])],
+    products: [
+        .library(
+            name: "Stem",
+            targets: ["Stem"]),
+    ],
+    dependencies: [],
     targets: [
-        .target(name: "Stem", dependencies: ["StemCore"]),
-        .target(name: "StemCore", dependencies: [], path: "Sources/Core")
-        .target(name: "StemNSObject", dependencies: ["StemCore"], path: "Sources/NSObject")
-        .target(name: "StemFundamentals", dependencies: ["StemCore"], path: "Sources/Fundamentals")
+        .target(
+            name: "Stem",
+            dependencies: []),
+        .target(
+            name: "core",
+            dependencies: ["Stem"],
+            path: "Sources/Core"),
+        .target(
+            name: "NSObject",
+            dependencies: ["Stem"],
+            path: "Sources/NSObject"),
+        .target(
+            name: "fundamentals",
+            dependencies: ["Stem"],
+            path: "Sources/Fundamentals"),
     ]
 )
