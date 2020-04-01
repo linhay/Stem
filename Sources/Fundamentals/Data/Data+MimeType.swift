@@ -57,7 +57,14 @@ public extension Data {
         init(data: Data) {
             
             func matches(bytes: [UInt8], range: CountableClosedRange<Int>? = nil) -> Bool {
-                return Array(data.st.bytes[range ?? 0...(bytes.count - 1)]) == bytes
+                if let range = range {
+                    guard range.upperBound > bytes.count else {
+                        return false
+                    }
+                    return Array(data.st.bytes[range]) == bytes
+                } else {
+                    return Array(data.st.bytes[0...(bytes.count - 1)]) == bytes
+                }
             }
             
             if matches(bytes: [0x23, 0x21, 0x41, 0x4D, 0x52, 0x0A]) {

@@ -22,6 +22,7 @@
 
 #if canImport(CoreGraphics)
 import Foundation
+import CoreGraphics
 
 extension CGPoint: StemValueCompatible { }
 
