@@ -49,6 +49,7 @@ Pod::Spec.new do |s|
         'Collections',
         'Custom',
         'Date',
+        'Fundamentals',
         'Dispatch',
         'pre-release']
 
