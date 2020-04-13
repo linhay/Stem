@@ -258,8 +258,8 @@ public extension FilePath {
 
     struct FilePathError: Error {
 
-        let message: String
-        let code: Int
+       public let message: String
+       public let code: Int
 
         @discardableResult
         init(message: String, code: Int = 0) {
