@@ -20,9 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+import Foundation
 
-// MARK: - UINavigationBar 扩展
-public extension UINavigationBar {
+extension Character: StemValueCompatible { }
 
+public extension StemValue where Base == Character {
+
+    /// 转换: int
+    var int: Int? {
+        return Int(String(base))
+    }
+    
+    /// 转换: string
+    var string: String {
+        return String(base)
+    }
 }

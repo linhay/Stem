@@ -47,6 +47,7 @@ Pod::Spec.new do |s|
 
         subspec_names = ['Coder',
         'Collections',
+        'new',
         'Custom',
         'Date',
         'Fundamentals',

@@ -20,9 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+import Foundation
 
-// MARK: - UINavigationBar 扩展
-public extension UINavigationBar {
+extension Stem where Base: StringProtocol {
+
+    public func index(from: Int) -> String.Index? {
+        guard from > -1, let index = base.index(base.startIndex, offsetBy: from, limitedBy: base.endIndex) else {
+            return nil
+        }
+
+        return index
+    }
 
 }

@@ -20,9 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+import Foundation
 
-// MARK: - UINavigationBar 扩展
-public extension UINavigationBar {
+extension CharacterSet: StemValueCompatible { }
+
+public extension StemValue where Base == CharacterSet {
+
+    // 对urlQuery中的value转义
+    static let urlQueryValueAllowed = CharacterSet(charactersIn: "&\"#%<>[]^`{|}=").inverted
 
 }
