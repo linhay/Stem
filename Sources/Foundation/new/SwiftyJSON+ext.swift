@@ -20,20 +20,58 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+import Foundation
 
-public protocol STViewProtocol: class {
-    static var id: String { get }
-    static var nib: UINib? { get }
+extension JSON {
+
+    subscript(keys keys: String...) -> LazyMapSequence<[String], JSON> {
+        return keys.lazy.map { (key) -> JSON in
+            return self[key]
+        }
+    }
+
 }
 
-public extension STViewProtocol {
+extension LazyMapSequence where Base == [String], Element == JSON {
 
-    static var id: String {
-        return String(describing: Self.self)
+    private var firstValue: JSON? {
+        first(where: { $0.exists() })
     }
-    static var nib: UINib? {
-        return nil
+
+    var string: String? {
+        firstValue?.string
+    }
+
+    var stringValue: String {
+        firstValue?.stringValue ?? ""
+    }
+
+    var int: Int? {
+        firstValue?.int
+    }
+
+    var intValue: Int {
+        firstValue?.intValue ?? 0
+    }
+
+    var double: Double? {
+        firstValue?.double
+    }
+
+    var doubleValue: Double {
+        firstValue?.double ?? 0
+    }
+
+    var bool: Bool? {
+        firstValue?.bool
+    }
+
+    var boolValue: Bool {
+        firstValue?.boolValue ?? false
+    }
+
+    var url: URL? {
+        firstValue?.url
     }
 
 }

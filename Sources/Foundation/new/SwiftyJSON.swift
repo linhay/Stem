@@ -841,6 +841,7 @@ extension JSON {
 
 extension JSON {
 
+    // swiftlint:disable unused_setter_value
     public var null: NSNull? {
         set {
             object = NSNull()
@@ -852,6 +853,7 @@ extension JSON {
             }
         }
     }
+    // swiftlint:disable unused_setter_value
 
     public func exists() -> Bool {
         if let errorValue = error, (400...1000).contains(errorValue.errorCode) {

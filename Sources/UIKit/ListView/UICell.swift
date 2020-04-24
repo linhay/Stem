@@ -62,23 +62,11 @@ public extension Stem where Base: UITableView {
             base.register(T.self, forCellReuseIdentifier: T.id)
         }
     }
-    
-    /// 从缓存池取出 Cell
-    ///
-    /// - Parameter indexPath: IndexPath
-    /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeueCell<T: STViewProtocol>(_ indexPath: IndexPath) -> T {
-        if let cell = base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as? T {
-            return cell
-        }
-        assertionFailure(String(describing: T.self))
-        return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
-    }
-    
+
     /// 注册 `STViewProtocol` 类型的 UITableViewHeaderFooterView
     ///
     /// - Parameter _: UITableViewHeaderFooterView
-    func registerHeaderFooterView<T: UITableViewHeaderFooterView>(_: T.Type) where T: STViewProtocol {
+    func register<T: UITableViewHeaderFooterView>(_: T.Type) where T: STViewProtocol {
         if let nib = T.nib {
             base.register(nib, forHeaderFooterViewReuseIdentifier: T.id)
         } else {
@@ -86,10 +74,22 @@ public extension Stem where Base: UITableView {
         }
     }
     
+    /// 从缓存池取出 Cell
+    ///
+    /// - Parameter indexPath: IndexPath
+    /// - Returns: 具体类型的 `UITableViewCell`
+    func dequeue<T: STViewProtocol>(at indexPath: IndexPath) -> T {
+        if let cell = base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as? T {
+            return cell
+        }
+        assertionFailure(String(describing: T.self))
+        return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
+    }
+    
     /// 从缓存池取出 UITableViewHeaderFooterView
     ///
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeueHeaderFooterView<T: UITableViewHeaderFooterView>() -> T where T: STViewProtocol {
+    func dequeue<T: UITableViewHeaderFooterView>() -> T where T: STViewProtocol {
         return base.dequeueReusableHeaderFooterView(withIdentifier: T.id) as! T
     }
 }
@@ -102,7 +102,6 @@ public extension UICollectionView {
     /// - footer: footer
     /// - custom: custom
     enum KindType: Equatable {
-        
         case header
         case footer
         case custom(_ value: String)
@@ -130,31 +129,25 @@ public extension Stem where Base: UICollectionView {
             base.register(T.self, forCellWithReuseIdentifier: T.id)
         }
     }
+
+    func register<T: UICollectionReusableView>(_ view: T.Type, for kind: UICollectionView.KindType) where T: STViewProtocol {
+        if let nib = T.nib {
+            base.register(nib, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.id)
+        } else {
+            base.register(T.self, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.id)
+        }
+    }
     
     /// 从缓存池取出 Cell
     ///
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UICollectionViewCell`
-    func dequeueCell<T: UICollectionViewCell>(_ indexPath: IndexPath) -> T where T: STViewProtocol {
+    func dequeue<T: UICollectionViewCell>(at indexPath: IndexPath) -> T where T: STViewProtocol {
         return base.dequeueReusableCell(withReuseIdentifier: T.id, for: indexPath) as! T
     }
     
-    func registerSupplementaryView<T: UICollectionReusableView>(kind: UICollectionView.KindType, _ view: T.Type) where T: STViewProtocol {
-        if let nib = T.nib {
-            base.register(nib,
-                          forSupplementaryViewOfKind: kind.rawValue,
-                          withReuseIdentifier: T.id)
-        } else {
-            base.register(T.self,
-                          forSupplementaryViewOfKind: kind.rawValue,
-                          withReuseIdentifier: T.id)
-        }
-    }
-    
-    func dequeueSupplementaryView<T: UICollectionReusableView>(kind: UICollectionView.KindType, indexPath: IndexPath) -> T where T: STViewProtocol {
-        return base.dequeueReusableSupplementaryView(ofKind: kind.rawValue,
-                                                     withReuseIdentifier: T.id,
-                                                     for: indexPath) as! T
+    func dequeue<T: UICollectionReusableView>(at indexPath: IndexPath, kind: UICollectionView.KindType) -> T where T: STViewProtocol {
+        return base.dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: T.id, for: indexPath) as! T
     }
     
 }
