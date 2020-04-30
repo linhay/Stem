@@ -259,7 +259,7 @@ public extension FilePath {
 // MARK: - Error
 public extension FilePath {
     
-    public struct FilePathError: Error {
+    struct FilePathError: Error {
         
         public let message: String
         public let code: Int
@@ -276,7 +276,7 @@ public extension FilePath {
 // MARK: - Type
 public extension FilePath {
     
-    public enum `Type` {
+    enum `Type` {
         /// 文件夹
         case folder
         /// 文件

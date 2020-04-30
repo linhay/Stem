@@ -24,70 +24,84 @@ import Foundation
 
 // MARK: - 下标/区间截取
 public extension String {
-  /// 获取指定位置字符
-  ///
-  ///     let str = "1234567890"
-  ///     print(str[0])
-  ///     // Print 1
-  ///     print(str[20])
-  ///     // Print nil
-  ///     print(str[-10])
-  ///     // Print nil
-  ///
-  /// - Parameter index: 指定位置
-  subscript(_ index: Int) -> String? {
-    if index < 0 || index >= count { return nil }
-    let index = self.index(startIndex, offsetBy: String.IndexDistance(index))
-    return String(self[index])
-  }
-  
+    /// 获取指定位置字符
+    ///
+    ///     let str = "1234567890"
+    ///     print(str[0])
+    ///     // Print 1
+    ///     print(str[20])
+    ///     // Print nil
+    ///     print(str[-10])
+    ///     // Print nil
+    ///
+    /// - Parameter index: 指定位置
+    subscript(_ index: Int) -> String? {
+        if index < 0 || index >= count { return nil }
+        let index = self.index(startIndex, offsetBy: String.IndexDistance(index))
+        return String(self[index])
+    }
+    
+}
+
+public extension StemValue where Base == String {
+
+    func deleting(prefix: String) -> String {
+        guard base.hasPrefix(prefix) else { return base }
+        return String(base.dropFirst(prefix.count))
+    }
+    
+    func deleting(suffix: String) -> String {
+        guard base.hasSuffix(suffix) else { return base }
+        return String(base.dropLast(suffix.count))
+    }
+    
 }
 
 // MARK: - 截取
-public extension String {
-  /// 截取: 获取指定字符串前的字符
-  ///
-  /// - Parameter str: 指定字符串
-  /// - Returns: 子串
-  func substring(before str: String) -> String {
-    return self.components(separatedBy: str).first ?? ""
-  }
-  
-  /// 截取: 获取指定字符串后的字符
-  ///
-  /// - Parameter str: 指定字符串
-  /// - Returns: 子串
-  func substring(after str: String) -> String {
-    return self.components(separatedBy: str).last ?? ""
-  }
+public extension StemValue where Base == String {
+    /// 截取: 获取指定字符串前的字符
+    ///
+    /// - Parameter str: 指定字符串
+    /// - Returns: 子串
+    func substring(before str: String) -> String {
+        return base.components(separatedBy: str).first ?? ""
+    }
+    
+    /// 截取: 获取指定字符串后的字符
+    ///
+    /// - Parameter str: 指定字符串
+    /// - Returns: 子串
+    func substring(after str: String) -> String {
+        return base.components(separatedBy: str).last ?? ""
+    }
 }
 
 // MARK: - Range
 extension String {
     /// e.g., `"Hello world"[..<5] // → "Hello"`
-     subscript(_ range: PartialRangeUpTo<Int>) -> Substring {
+    subscript(_ range: PartialRangeUpTo<Int>) -> Substring {
         self[..<index(startIndex, offsetBy: range.upperBound)]
     }
-
+    
     /// e.g., `"Hello world"[...4] // → "Hello"`
-     subscript(_ range: PartialRangeThrough<Int>) -> Substring {
+    subscript(_ range: PartialRangeThrough<Int>) -> Substring {
         self[...index(startIndex, offsetBy: range.upperBound)]
     }
-
+    
     /// e.g., `"Hello world"[0...] // → "Hello world"`
-     subscript(_ range: PartialRangeFrom<Int>) -> Substring {
+    subscript(_ range: PartialRangeFrom<Int>) -> Substring {
         self[index(startIndex, offsetBy: range.lowerBound)...]
     }
-
+    
     /// e.g., `"Hello world"[0..<5] // → "Hello"`
-     subscript(_ range: CountableRange<Int>) -> Substring {
+    subscript(_ range: CountableRange<Int>) -> Substring {
         let start = index(startIndex, offsetBy: range.lowerBound)
         let end = index(startIndex, offsetBy: range.upperBound)
         return self[start..<end]
     }
-
+    
     /// e.g., `"Hello world"[0...4] // → "Hello"`
-     subscript(_ range: CountableClosedRange<Int>) -> Substring {
+    subscript(_ range: CountableClosedRange<Int>) -> Substring {
         let start = index(startIndex, offsetBy: range.lowerBound)
         let end = index(startIndex, offsetBy: range.upperBound)
         return self[start...end]
