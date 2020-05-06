@@ -36,6 +36,7 @@ public extension Data {
         case opus
         
         // MARK: - Image Types
+        case pdf
         case png
         case jpeg
         case gif
@@ -70,7 +71,6 @@ public extension Data {
                     return Array(data.st.bytes[0...(bytes.count - 1)]) == bytes
                 }
             }
-            
             if matches(bytes: [0x23, 0x21, 0x41, 0x4D, 0x52, 0x0A]) {
                 self = .amr
             } else if matches(bytes: [0x49, 0x44, 0x33]) || matches(bytes: [0xFF, 0xFB]) {
@@ -87,6 +87,8 @@ public extension Data {
                 self = .m4a
             } else if matches(bytes: [0x4F, 0x70, 0x75, 0x73, 0x48, 0x65, 0x61, 0x64], range: 28...35) {
                 self = .opus
+            } else if matches(bytes: [0x25, 0x50, 0x44, 0x46]) {
+                self = .pdf
             } else if matches(bytes: [0x89, 0x50, 0x4E, 0x47]) {
                 self = .png
             } else if matches(bytes: [0xFF, 0xD8, 0xFF]) {
