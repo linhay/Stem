@@ -94,18 +94,19 @@ public extension FilePath {
     
     /// 根据当前[FilePath]创建文件/文件夹
     /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
-    func create() throws {
+    func create(with data: Data? = nil) throws {
         if isExist {
             throw FilePathError(message: "文件/文件夹 存在, 无法创建")
         }
-        
+        let manager = FileManager.default
+
         switch type {
         case .file:
-            manager.createFile(atPath: url.path, contents: nil, attributes: nil)
+            try manager.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
+            manager.createFile(atPath: url.path, contents: data, attributes: nil)
         case .folder:
-            try manager.createDirectory(atPath: url.path, withIntermediateDirectories: true, attributes: nil)
+            try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         }
-        
     }
     
     /// 在当前路径下创建文件夹
