@@ -132,6 +132,15 @@ Pod::Spec.new do |s|
         ss.ios.deployment_target  = '8.0'
         ss.osx.deployment_target  = "10.10"
     end
+
+    s.subspec 'CoreText' do |ss|
+        base_path = 'Sources/CoreText/'
+        ss.source_files = [base_path + '*.swift']
+        ss.source_files = [base_path + '**/*.swift']
+        ss.dependency 'Stem/Core'
+        ss.ios.deployment_target  = '8.0'
+        ss.osx.deployment_target  = "10.10"
+    end
     
     s.subspec 'AVKit' do |ss|
         base_path = 'Sources/AVKit/'

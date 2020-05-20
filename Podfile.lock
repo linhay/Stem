@@ -2,6 +2,7 @@ PODS:
   - Stem (0.0.31):
     - Stem/AVKit (= 0.0.31)
     - Stem/Core (= 0.0.31)
+    - Stem/CoreText (= 0.0.31)
     - Stem/Foundation (= 0.0.31)
     - Stem/Fundamentals (= 0.0.31)
     - Stem/NSObject (= 0.0.31)
@@ -11,6 +12,8 @@ PODS:
   - Stem/AVKit (0.0.31):
     - Stem/Core
   - Stem/Core (0.0.31)
+  - Stem/CoreText (0.0.31):
+    - Stem/Core
   - Stem/Foundation (0.0.31):
     - Stem/Core
     - Stem/Foundation/Coder (= 0.0.31)
@@ -177,7 +180,7 @@ EXTERNAL SOURCES:
     :path: "./Template.podspec"
 
 SPEC CHECKSUMS:
-  Stem: f3e2d0f79aa3c154eb4a0c013f9e42b06e1dd93a
+  Stem: e9ef5792225398da12581cb40b9fc166375f7422
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
 
 PODFILE CHECKSUM: 68f536f912bb62ad3cbb3514568c5c99f965ec21

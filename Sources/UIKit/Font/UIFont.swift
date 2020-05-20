@@ -22,67 +22,82 @@
 
 import UIKit
 
-extension UIFont {
-  
-  /// Use CTFont to create UIFont
-  ///
-  /// - Parameter ctFont: CTFont
-  convenience init?(ctFont: CTFont) {
-    let name = CTFontCopyPostScriptName(ctFont) as String
-    guard !name.isEmpty else { return nil }
-    let size = CTFontGetSize(ctFont)
-    self.init(name: name, size: size)
-  }
-  
-  /// Use CGFont to create UIFont
-  ///
-  /// - Parameters:
-  ///   - cgFont: CGFont
-  ///   - size: font size
-  convenience init?(cgFont: CGFont, size: CGFloat) {
-    guard let cfName = cgFont.postScriptName else { return nil }
-    let name = cfName as String
-    guard !name.isEmpty else { return nil }
-    self.init(name: name, size: size)
-  }
-  
-  /// Use Data to create UIFont
-  ///
-  /// - Parameter data: Data
-  convenience init?(data: Data) {
-    guard let provider = CGDataProvider(data: (data as CFData)), let cgFont = CGFont(provider) else { return nil }
-    var error: Unmanaged<CFError>?
-    guard CTFontManagerRegisterGraphicsFont(cgFont, &error), let fontName = cgFont.postScriptName else { return nil }
-    self.init(name: fontName as String, size: UIFont.systemFontSize)
-  }
-  
+public extension Stem where Base: UIFont {
+
+    var isBold: Bool {
+        return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitBold.rawValue > 0
+    }
+
+    var isItalic: Bool {
+        return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitItalic.rawValue > 0
+    }
+
+    var isMonoSpace: Bool {
+        return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitMonoSpace.rawValue > 0
+    }
+
+    var isColorGlyphs: Bool {
+        return CTFontGetSymbolicTraits(base as! CTFont).rawValue & CTFontSymbolicTraits.traitColorGlyphs.rawValue != 0
+    }
+
+    var weight: CGFloat {
+        let dict = base.fontDescriptor.fontAttributes[.traits] as? [String: Any]
+        return dict?[UIFontDescriptor.TraitKey.weight.rawValue] as? CGFloat ?? 0
+    }
+
+    var cgFont: CGFont? {
+        return CGFont(base.fontName as CFString)
+    }
+
 }
 
 public extension Stem where Base: UIFont {
-  
-  var isBold: Bool {
-    return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitBold.rawValue > 0
-  }
-  
-  var isItalic: Bool {
-    return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitItalic.rawValue > 0
-  }
-  
-  var isMonoSpace: Bool {
-    return base.fontDescriptor.symbolicTraits.rawValue & UIFontDescriptor.SymbolicTraits.traitMonoSpace.rawValue > 0
-  }
-  
-  var isColorGlyphs: Bool {
-    return CTFontGetSymbolicTraits(base as! CTFont).rawValue & CTFontSymbolicTraits.traitColorGlyphs.rawValue != 0
-  }
-  
-  var weight: CGFloat {
-    let dict = base.fontDescriptor.fontAttributes[.traits] as? [String: Any]
-    return dict?[UIFontDescriptor.TraitKey.weight.rawValue] as? CGFloat ?? 0
-  }
-  
-  var cgFont: CGFont? {
-    return CGFont(base.fontName as CFString)
-  }
-  
+
+    func register() -> Bool {
+        guard let cgFont = cgFont else {
+            return false
+        }
+        var error: Unmanaged<CFError>?
+        let success = CTFontManagerRegisterGraphicsFont(cgFont, &error)
+        guard success else {
+            print("Error registering font: maybe it was already registered.")
+            return false
+        }
+        return true
+    }
+
+}
+
+public extension Stem where Base: UIFont {
+
+    /// Use CTFont to create UIFont
+    ///
+    /// - Parameter ctFont: CTFont
+
+    static func load(from ctFont: CTFont) -> UIFont? {
+        let name = CTFontCopyPostScriptName(ctFont) as String
+        guard !name.isEmpty else { return nil }
+        let size = CTFontGetSize(ctFont)
+        return UIFont(name: name, size: size)
+    }
+
+    /// Use CGFont to create UIFont
+    ///
+    /// - Parameters:
+    ///   - cgFont: CGFont
+    ///   - size: font size
+
+    static func load(from cgFont: CGFont, size: CGFloat = UIFont.systemFontSize) -> UIFont? {
+        guard let name = cgFont.postScriptName as String?, name.isEmpty == false else { return nil }
+        return UIFont(name: name, size: size)
+    }
+
+    /// Use Data to create UIFont
+    ///
+    /// - Parameter data: Data
+    static func load(from data: Data) -> UIFont? {
+        guard let provider = CGDataProvider(data: (data as CFData)), let cgFont = CGFont(provider) else { return nil }
+        return load(from: cgFont, size: UIFont.systemFontSize)
+    }
+
 }

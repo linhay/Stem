@@ -29,4 +29,17 @@ public extension StemValue where Base == CharacterSet {
     // 对urlQuery中的value转义
     static let urlQueryValueAllowed = CharacterSet(charactersIn: "&\"#%<>[]^`{|}=").inverted
 
+
+    /// 获取集中的字符
+    var unicodeScalars: [UnicodeScalar] {
+        var result: [UnicodeScalar] = []
+        for plane in Unicode.UTF8.CodeUnit.min...16 where base.hasMember(inPlane: plane) {
+            for unicode in Unicode.UTF32.CodeUnit(plane) << 16 ..< Unicode.UTF32.CodeUnit(plane + 1) << 16 {
+                if let uniChar = UnicodeScalar(unicode), base.contains(uniChar) {
+                    result.append(uniChar)
+                }
+            }
+        }
+        return result
+    }
 }
