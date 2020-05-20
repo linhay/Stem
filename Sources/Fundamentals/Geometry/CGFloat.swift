@@ -32,18 +32,6 @@ public extension StemValue where Base == CGFloat {
     
 }
 
-public extension StemValue where Base == Float {
-    var cgFloat: CGFloat { return CGFloat(base) }
-}
-
-public extension StemValue where Base == Double {
-    var cgFloat: CGFloat { return CGFloat(base) }
-}
-
-public extension StemValue where Base == Int {
-    var cgFloat: CGFloat { return CGFloat(base) }
-}
-
 public extension StemValue where Base == CGFloat {
     /// 绝对值
     var abs: CGFloat { return Swift.abs(base) }

@@ -84,13 +84,13 @@ public enum CTFontSpecifierConstants: String, CaseIterable {
         case .manufacturer: return kCTFontManufacturerNameKey as String
         case .designer: return kCTFontDesignerNameKey as String
         case .description: return kCTFontDescriptionNameKey as String
-            case .vendorURL: return kCTFontVendorURLNameKey as String
-            case .designerURL: return kCTFontDesignerURLNameKey as String
-            case .license: return kCTFontLicenseNameKey as String
-            case .licenseURL: return kCTFontLicenseURLNameKey as String
-            case .sampleText: return kCTFontSampleTextNameKey as String
-            case .postScriptCID: return kCTFontPostScriptCIDNameKey as String
+        case .vendorURL: return kCTFontVendorURLNameKey as String
+        case .designerURL: return kCTFontDesignerURLNameKey as String
+        case .license: return kCTFontLicenseNameKey as String
+        case .licenseURL: return kCTFontLicenseURLNameKey as String
+        case .sampleText: return kCTFontSampleTextNameKey as String
+        case .postScriptCID: return kCTFontPostScriptCIDNameKey as String
         }
     }
-
+    
 }

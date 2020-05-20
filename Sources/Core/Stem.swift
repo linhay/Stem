@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class Stem<Base> {
+public class Stem<Base: StemCompatible> {
     public let base: Base
     public init(_ base: Base) {
         self.base = base
@@ -39,7 +39,7 @@ public extension StemCompatible {
     static var st: Stem<Self>.Type { return Stem<Self>.self }
 }
 
-public struct StemValue<Base> {
+public struct StemValue<Base: StemValueCompatible> {
     public let base: Base
     public init(_ base: Base) {
         self.base = base

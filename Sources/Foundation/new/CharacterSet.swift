@@ -29,7 +29,6 @@ public extension StemValue where Base == CharacterSet {
     // 对urlQuery中的value转义
     static let urlQueryValueAllowed = CharacterSet(charactersIn: "&\"#%<>[]^`{|}=").inverted
 
-
     /// 获取集中的字符
     var unicodeScalars: [UnicodeScalar] {
         var result: [UnicodeScalar] = []
