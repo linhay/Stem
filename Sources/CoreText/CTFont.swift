@@ -23,6 +23,8 @@
 import Foundation
 import CoreText
 
+extension Stem where Base: CTFont { }
+
 // MARK: - Font Names
 public extension Stem where Base: CTFont {
 
