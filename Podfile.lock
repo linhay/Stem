@@ -99,6 +99,7 @@ PODS:
     - Stem/Runtime
   - Stem/UIKit/Font (0.0.31):
     - Stem/Core
+    - Stem/CoreText
     - Stem/Fundamentals
     - Stem/NSObject
     - Stem/Runtime
@@ -180,7 +181,7 @@ EXTERNAL SOURCES:
     :path: "./Template.podspec"
 
 SPEC CHECKSUMS:
-  Stem: e9ef5792225398da12581cb40b9fc166375f7422
+  Stem: 179e38e4bc5f522550df4b95c610629fee1d62c4
   SwiftLint: 55e96a4a4d537d4a3156859fc1c54bd24851a046
 
 PODFILE CHECKSUM: 68f536f912bb62ad3cbb3514568c5c99f965ec21

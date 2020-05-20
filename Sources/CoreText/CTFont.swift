@@ -23,19 +23,74 @@
 import Foundation
 import CoreText
 
+// MARK: - Font Names
 public extension Stem where Base: CTFont {
 
-    func load(from url: URL) -> CTFont? {
-        guard let descriptors = CTFontManagerCreateFontDescriptorsFromURL(url as CFURL) as? [CTFontDescriptor], let descriptor = descriptors.first else {
-            return nil
-        }
-        return CTFontCreateWithFontDescriptor(descriptor, 0, nil)
+    /// a retained reference to the PostScript name of the font.
+    var postScriptName: String { CTFontCopyPostScriptName(base) as String }
+
+    /// a retained reference to the family name of the font.
+    var familyName: String { CTFontCopyFamilyName(base) as String }
+
+    /// a retained reference to the full name of the font.
+    var fullName: String { CTFontCopyFullName(base) as String }
+
+    /// a retained reference to the localized display name of the font.
+    var displayName: String { CTFontCopyDisplayName(base) as String }
+
+    /// get a reference to the requested name
+    /// - Parameter key: The name specifier. See `CTFontSpecifierConstants`.
+    /// - Returns: This function creates the requested name for the font, or NULL if the font does not have an entry for the requested name. The Unicode version of the name will be preferred, otherwise the first available will be used.
+    func name(with key: CTFontSpecifierConstants) -> String? {
+        return CTFontCopyName(base, key.rawValue as CFString) as String?
     }
 
-    var unicodeMap: [CGGlyph: UnicodeScalar] {
+    /// Returns a reference to a localized font name.
+//    func localizedName(with key: CTFontSpecifierConstants, actualLanguage: [String]?) -> String? {
+//        var actualLanguage = actualLanguage?.map({ Unmanaged<CFString>.passRetained($0 as CFString) })
+//        return CTFontCopyLocalizedName(base, key.rawValue as CFString, &actualLanguage) as String?
+//    }
+}
 
-        let charset = CTFontCopyCharacterSet(base) as CharacterSet
+// MARK: - Font Accessors
+public extension Stem where Base: CTFont {
 
+    /// Returns the normalized font descriptors for the given font reference.
+    var descriptor: CTFontDescriptor { CTFontCopyFontDescriptor(base) }
+
+    /// Returns the value associated with an arbitrary attribute.
+    /// - Parameter attribute: The requested attribute.
+    /// - Returns: This function returns a retained reference to an arbitrary attribute. If the requested attribute is not present, NULL is returned. Refer to the attribute definitions for documentation as to how each attribute is packaged as a CFType.
+    func attribute(_ attribute: String) -> CFTypeRef? {
+        return CTFontCopyAttribute(base, attribute as CFString)
+    }
+
+    /// Returns the point size of the font reference.
+    var size: CGFloat { CTFontGetSize(base) }
+
+    /// Returns the transformation matrix of the font.
+    var matrix: CGAffineTransform { CTFontGetMatrix(base) }
+
+    /// Returns the symbolic font traits.
+    var symbolicTraits: CTFontSymbolicTraits { CTFontGetSymbolicTraits(base) }
+
+    /// Returns the font traits dictionary.
+    var traits: [String: Any] { CTFontCopyTraits(base) as? [String: Any] ?? [:] }
+
+}
+
+// MARK: - Font Encoding
+public extension Stem where Base: CTFont {
+
+    /// Returns the Unicode character set of the font.
+    var characterSet: CharacterSet { CTFontCopyCharacterSet(base) as CharacterSet }
+    /// Returns the best string encoding for legacy format support.
+    var stringEncoding: CFStringEncoding { CTFontGetStringEncoding(base) }
+    /// Returns an array of languages supported by the font.
+    var supportedLanguages: [Any] { CTFontCopySupportedLanguages(base) as! [Any] }
+    /// Performs basic character-to-glyph mapping.
+    var glyphsForCharacters: [CGGlyph: UnicodeScalar] {
+        let charset = characterSet
         var glyphToUnicode = [CGGlyph: UnicodeScalar]() // Start with empty map.
 
         // Enumerate all Unicode scalar values from the character set:
@@ -54,6 +109,16 @@ public extension Stem where Base: CTFont {
             }
         }
         return glyphToUnicode
+    }
+}
+
+public extension Stem where Base: CTFont {
+
+    func load(from url: URL) -> CTFont? {
+        guard let descriptors = CTFontManagerCreateFontDescriptorsFromURL(url as CFURL) as? [CTFontDescriptor], let descriptor = descriptors.first else {
+            return nil
+        }
+        return CTFontCreateWithFontDescriptor(descriptor, 0, nil)
     }
 
 }

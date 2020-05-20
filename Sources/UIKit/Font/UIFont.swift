@@ -60,7 +60,7 @@ public extension Stem where Base: UIFont {
         var error: Unmanaged<CFError>?
         let success = CTFontManagerRegisterGraphicsFont(cgFont, &error)
         guard success else {
-            print("Error registering font: maybe it was already registered.")
+            assert(false, "Error registering font: maybe it was already registered.")
             return false
         }
         return true
@@ -69,6 +69,13 @@ public extension Stem where Base: UIFont {
 }
 
 public extension Stem where Base: UIFont {
+
+    static func load(from url: URL) -> UIFont? {
+        guard let descriptors = CTFontManagerCreateFontDescriptorsFromURL(url as CFURL) as? [CTFontDescriptor], let descriptor = descriptors.first else {
+            return nil
+        }
+        return load(from: CTFontCreateWithFontDescriptor(descriptor, 0, nil))
+    }
 
     /// Use CTFont to create UIFont
     ///

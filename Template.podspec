@@ -87,7 +87,6 @@ Pod::Spec.new do |s|
         'Color',
         'Control',
         'Custom',
-        'Font',
         'GestureRecognizer',
         'Image',
         'ImageView',
@@ -106,6 +105,12 @@ Pod::Spec.new do |s|
                 path = base_path + name
                 ssp.source_files = [path + '/**/*.swift', path + '/*.swift']
             end
+        end
+
+        sp.subspec 'Font' do |ssp|
+            path = base_path + 'Font'
+            ssp.dependency 'Stem/CoreText'
+            ssp.source_files = [path + '/**/*.swift', path + '/*.swift']
         end
 
         sp.subspec 'ListView' do |ssp|
