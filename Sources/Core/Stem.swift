@@ -29,7 +29,7 @@ public class Stem<Base> {
     }
 }
 
-public protocol StemCompatible {
+public protocol StemCompatible: class {
     associatedtype StemCompatibleType
     var st: StemCompatibleType { get }
 }

@@ -23,7 +23,7 @@
 import Foundation
 import CoreText
 
-extension Stem where Base: CTFont { }
+extension CTFont: StemCompatible { }
 
 // MARK: - Font Names
 public extension Stem where Base: CTFont {
@@ -48,10 +48,10 @@ public extension Stem where Base: CTFont {
     }
 
     /// Returns a reference to a localized font name.
-//    func localizedName(with key: CTFontSpecifierConstants, actualLanguage: [String]?) -> String? {
-//        var actualLanguage = actualLanguage?.map({ Unmanaged<CFString>.passRetained($0 as CFString) })
-//        return CTFontCopyLocalizedName(base, key.rawValue as CFString, &actualLanguage) as String?
-//    }
+    //    func localizedName(with key: CTFontSpecifierConstants, actualLanguage: [String]?) -> String? {
+    //        var actualLanguage = actualLanguage?.map({ Unmanaged<CFString>.passRetained($0 as CFString) })
+    //        return CTFontCopyLocalizedName(base, key.rawValue as CFString, &actualLanguage) as String?
+    //    }
 }
 
 // MARK: - Font Accessors
@@ -116,7 +116,7 @@ public extension Stem where Base: CTFont {
 
 public extension Stem where Base: CTFont {
 
-    func load(from url: URL) -> CTFont? {
+    static func load(from url: URL) -> CTFont? {
         guard let descriptors = CTFontManagerCreateFontDescriptorsFromURL(url as CFURL) as? [CTFontDescriptor], let descriptor = descriptors.first else {
             return nil
         }
