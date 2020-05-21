@@ -23,8 +23,8 @@
 import Foundation
 
 public protocol EventParsable {
-   static func value(from notification: Notification) -> Self?
-   static func value(for post: Self?) -> (object: Any?, userInfo: [String: Any]?)
+   init?(from notification: Notification)
+    static var notification: (object: Any?, userInfo: [String: Any]?)
 }
 
 public protocol EventProtocol {
@@ -65,23 +65,21 @@ class EventToken {
 public class Event<Parsable: EventParsable> {
 
     public let key: Notification.Name
-    public let parsable: Parsable?
 
-    public convenience init(key: String, parsable: Parsable? = nil) {
-        self.init(key: Notification.Name(key), parsable: parsable)
+    public convenience init(key: String) {
+        self.init(key: Notification.Name(key))
     }
 
-    public init(key: Notification.Name, parsable: Parsable? = nil) {
+    public init(key: Notification.Name) {
         self.key = key
-        self.parsable = parsable
     }
 
 }
 
 public extension Event {
 
-    func accept(_ value: Parsable?) {
-        let (object, userInfo) = value?.value(for: value) ?? (nil, nil)
+    func accept(_ parsable: Parsable?) {
+        let (object, userInfo) = parsable ?? (nil, nil)
         NotificationCenter.default.post(name: key, object: object, userInfo: userInfo)
     }
 
@@ -99,13 +97,9 @@ public extension Event {
 
     private func subscribe(queue: OperationQueue? = nil, using block: @escaping (Parsable?) -> Void) -> EventToken {
         let token = EventToken(name: key)
-        let objectProtocol = NotificationCenter.default.addObserver(forName: key, object: nil, queue: queue) {[weak self] note in
-            guard let self = self else {
-                return
-            }
-            block(self.parsable?.value(from: note))
+        token.objectProtocol = NotificationCenter.default.addObserver(forName: key, object: nil, queue: queue) { note in
+            block(Parsable(from: note))
         }
-        token.objectProtocol = objectProtocol
         return token
     }
 }
