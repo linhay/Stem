@@ -2,7 +2,7 @@
 project 'Template.xcodeproj'
 
 def setup_pod
-  use_frameworks!
+#  use_frameworks!
   pod 'Stem', :path => './Template.podspec'
   pod 'SwiftLint', :configurations => 'Debug'
 end

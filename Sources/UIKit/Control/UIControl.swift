@@ -65,14 +65,14 @@ extension UIControl {
 
     fileprivate var actionStore: [UInt: (_: UIControl) -> Void] {
         get {
-            if let value: [UInt: (_: UIControl) -> Void] = st.getAssociated(associatedKey: UIControl.ActionKey.actionStore) {
+            if let value: [UInt: (_: UIControl) -> Void] = st.getAssociated(for: UIControl.ActionKey.actionStore) {
                 return value
             } else {
                 self.actionStore = [:]
                 return self.actionStore
             }
         }
-        set { st.setAssociated(value: newValue, associatedKey: UIControl.ActionKey.actionStore) }
+        set { st.setAssociated(value: newValue, for: UIControl.ActionKey.actionStore) }
     }
 
     fileprivate func triggerAction(for: UIControl, event: UIControl.Event) {

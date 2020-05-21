@@ -54,12 +54,20 @@ public extension Stem where Base: NSObject {
         base.setValue(value, forKey: key)
     }
 
-    func setAssociated<T>(value: T, associatedKey: UnsafeRawPointer, policy: objc_AssociationPolicy = .OBJC_ASSOCIATION_RETAIN_NONATOMIC) {
-        objc_setAssociatedObject(base, associatedKey, value, policy)
+    func setAssociated<T>(value: T, for key: String, policy: objc_AssociationPolicy = .OBJC_ASSOCIATION_RETAIN_NONATOMIC) {
+        setAssociated(value: value, for: UnsafeRawPointer(bitPattern: key.hashValue)!, policy: policy)
     }
 
-    func getAssociated<T>(associatedKey: UnsafeRawPointer) -> T? {
-        let value = objc_getAssociatedObject(base, associatedKey) as? T
+    func setAssociated<T>(value: T, for key: UnsafeRawPointer, policy: objc_AssociationPolicy = .OBJC_ASSOCIATION_RETAIN_NONATOMIC) {
+        objc_setAssociatedObject(base, key, value, policy)
+    }
+
+    func getAssociated<T>(for key: String) -> T? {
+        return getAssociated(for: UnsafeRawPointer(bitPattern: key.hashValue)!)
+    }
+
+    func getAssociated<T>(for key: UnsafeRawPointer) -> T? {
+        let value = objc_getAssociatedObject(base, key) as? T
         return value
     }
 

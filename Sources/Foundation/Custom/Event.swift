@@ -22,15 +22,14 @@
 
 import Foundation
 
-open class EventParsable<Value> {
+public protocol EventParsable {
+   static func value(from notification: Notification) -> Self?
+   static func value(for post: Self?) -> (object: Any?, userInfo: [String: Any]?)
+}
 
-    open class func value(from notification: Notification) -> Value? {
-        return nil
-    }
+public protocol EventProtocol {
 
-    open class func value(for post: Value?) -> (object: Any?, userInfo: [String: Any]?) {
-        return (nil, nil)
-    }
+    var eventTokens: EventTokens { get }
 
 }
 
@@ -46,15 +45,15 @@ public class EventTokens {
 
 }
 
-public class EventToken {
+class EventToken {
     var objectProtocol: NSObjectProtocol?
-    public let name: Notification.Name
+    let name: Notification.Name
 
     init(name: Notification.Name) {
         self.name = name
     }
 
-    public func disposed(_ tokens: EventTokens) {
+    func disposed(_ tokens: EventTokens) {
         tokens.append(token: self)
     }
 
@@ -63,16 +62,16 @@ public class EventToken {
     }
 }
 
-public class Event<Value> {
+public class Event<Parsable: EventParsable> {
 
     public let key: Notification.Name
-    public let parsable: EventParsable<Value>.Type?
+    public let parsable: Parsable?
 
-    public convenience init(key: String, parsable: EventParsable<Value>.Type? = nil) {
+    public convenience init(key: String, parsable: Parsable? = nil) {
         self.init(key: Notification.Name(key), parsable: parsable)
     }
 
-    public init(key: Notification.Name, parsable: EventParsable<Value>.Type? = nil) {
+    public init(key: Notification.Name, parsable: Parsable? = nil) {
         self.key = key
         self.parsable = parsable
     }
@@ -81,12 +80,24 @@ public class Event<Value> {
 
 public extension Event {
 
-    func accept(_ value: Value?) {
-        let (object, userInfo) = parsable?.value(for: value) ?? (nil, nil)
+    func accept(_ value: Parsable?) {
+        let (object, userInfo) = value?.value(for: value) ?? (nil, nil)
         NotificationCenter.default.post(name: key, object: object, userInfo: userInfo)
     }
 
-    func subscribe(queue: OperationQueue? = nil, using block: @escaping (Value?) -> Void) -> EventToken {
+    func subscribe(by object: NSObject, queue: OperationQueue? = nil, using block: @escaping (Parsable?) -> Void) {
+        let token = subscribe(queue: queue, using: block)
+        let key = "com.linhey.stem.evet.tokens"
+        var tokens = object.st.getAssociated(for: key) as [EventToken]? ?? []
+        tokens.append(token)
+        object.st.setAssociated(value: tokens, for: key)
+    }
+
+    func subscribe(by object: EventProtocol, queue: OperationQueue? = nil, using block: @escaping (Parsable?) -> Void) {
+        subscribe(queue: queue, using: block).disposed(object.eventTokens)
+    }
+
+    private func subscribe(queue: OperationQueue? = nil, using block: @escaping (Parsable?) -> Void) -> EventToken {
         let token = EventToken(name: key)
         let objectProtocol = NotificationCenter.default.addObserver(forName: key, object: nil, queue: queue) {[weak self] note in
             guard let self = self else {

@@ -28,10 +28,6 @@ class AVC: UIViewController {
     let pusherBtn = UIButton(frame: CGRect(x: 30, y: 200, width: 200, height: 60))
     let acceptBtn = UIButton(frame: CGRect(x: 30, y: 400, width: 200, height: 60))
 
-    deinit {
-        print("deinit: \(name)")
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         pusherBtn.setTitle("push", for: .normal)
@@ -51,6 +47,9 @@ class AVC: UIViewController {
                 return
             }
             let vc = AVC()
+            vc.st.observeDeinit {
+                print("deinit: jaaa")
+            }
             vc.name = self.name + "0"
             self.navigationController?.pushViewController(vc, animated: true)
         }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BEC2C4200F38D1AEB83D628F /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5A8B8B73440E75E50DABD9 /* Pods_iOS.framework */; };
+		4F0333B83930F661E83315A6 /* libPods-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D46439B4C25FCD9E86A881F5 /* libPods-iOS.a */; };
 		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
 		CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D6F23C57F0600107BF1 /* ViewController.swift */; };
 		CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7123C57F0600107BF1 /* Main.storyboard */; };
@@ -92,7 +92,6 @@
 /* Begin PBXFileReference section */
 		0B428DFB3D707843ACC157A6 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		3EC134089E3A78F234C184FC /* libPods-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F5A8B8B73440E75E50DABD9 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03F081F8AA618F26B374C51 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CD394C56242BB83300277F88 /* macOS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = macOS; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +123,7 @@
 		CDCF2DF323C5D9B200107BF1 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		CDCF2E9D23C707F800107BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D03465C6BAE4F6B45B67A39D /* Pods-Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.release.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.release.xcconfig"; sourceTree = "<group>"; };
+		D46439B4C25FCD9E86A881F5 /* libPods-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F56F5CC005DAD934C2035237 /* Pods-Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Template.debug.xcconfig"; path = "Target Support Files/Pods-Template/Pods-Template.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEC2C4200F38D1AEB83D628F /* Pods_iOS.framework in Frameworks */,
+				4F0333B83930F661E83315A6 /* libPods-iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,7 +179,7 @@
 			children = (
 				A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */,
 				3EC134089E3A78F234C184FC /* libPods-macOS.a */,
-				5F5A8B8B73440E75E50DABD9 /* Pods_iOS.framework */,
+				D46439B4C25FCD9E86A881F5 /* libPods-iOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -296,8 +296,6 @@
 			dependencies = (
 			);
 			name = macOS;
-			packageProductDependencies = (
-			);
 			productName = macOS;
 			productReference = CD394C56242BB83300277F88 /* macOS */;
 			productType = "com.apple.product-type.tool";
@@ -313,15 +311,12 @@
 				CDCF2D6523C57F0600107BF1 /* Sources */,
 				CDCF2D6623C57F0600107BF1 /* Frameworks */,
 				CDCF2D6723C57F0600107BF1 /* Resources */,
-				BEEAED5AB6045399D85FF112 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = iOS;
-			packageProductDependencies = (
-			);
 			productName = iOS;
 			productReference = CDCF2D6923C57F0600107BF1 /* iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -435,8 +430,6 @@
 				Base,
 			);
 			mainGroup = CDCF2D4523C57CEA00107BF1;
-			packageReferences = (
-			);
 			productRefGroup = CDCF2D4F23C57CEA00107BF1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -518,23 +511,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BEEAED5AB6045399D85FF112 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CDCF2E1823C606B400107BF1 /* Script-Git */ = {

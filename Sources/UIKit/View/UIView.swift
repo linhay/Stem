@@ -210,12 +210,12 @@ extension UIView {
 public extension Stem where Base: UIView {
     
     var tapGestureRecognizer: UITapGestureRecognizer? {
-        get { return self.getAssociated(associatedKey: UIView.ActionKey.tapGestureRecognizer) }
-        set { self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.tapGestureRecognizer) }
+        get { return self.getAssociated(for: UIView.ActionKey.tapGestureRecognizer) }
+        set { self.setAssociated(value: newValue, for: UIView.ActionKey.tapGestureRecognizer) }
     }
     
     fileprivate var tap: ((UITapGestureRecognizer) -> Void)? {
-        get { return self.getAssociated(associatedKey: UIView.ActionKey.tap) }
+        get { return self.getAssociated(for: UIView.ActionKey.tap) }
         set {
             if newValue != nil, tapGestureRecognizer == nil {
                 tapGestureRecognizer = UITapGestureRecognizer(target: base, action: #selector(UIView.stem_view_tapGesture_event(ges:)))
@@ -227,7 +227,7 @@ public extension Stem where Base: UIView {
                 tapGestureRecognizer = nil
             }
 
-            self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.tap)
+            self.setAssociated(value: newValue, for: UIView.ActionKey.tap)
         }
     }
     
@@ -242,12 +242,12 @@ public extension Stem where Base: UIView {
 public extension Stem where Base: UIView {
     
     var panGestureRecognizer: UIPanGestureRecognizer? {
-        get { return self.getAssociated(associatedKey: UIView.ActionKey.panGestureRecognizer) }
-        set { self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.panGestureRecognizer) }
+        get { return self.getAssociated(for: UIView.ActionKey.panGestureRecognizer) }
+        set { self.setAssociated(value: newValue, for: UIView.ActionKey.panGestureRecognizer) }
     }
     
     fileprivate var pan: ((UIPanGestureRecognizer) -> Void)? {
-        get { return self.getAssociated(associatedKey: UIView.ActionKey.pan) }
+        get { return self.getAssociated(for: UIView.ActionKey.pan) }
         set {
             if newValue != nil, panGestureRecognizer == nil {
                 panGestureRecognizer = UIPanGestureRecognizer(target: base, action: #selector(UIView.stem_view_panGesture_event(ges:)))
@@ -259,7 +259,7 @@ public extension Stem where Base: UIView {
                 panGestureRecognizer = nil
             }
 
-            self.setAssociated(value: newValue, associatedKey: UIView.ActionKey.pan)
+            self.setAssociated(value: newValue, for: UIView.ActionKey.pan)
         }
     }
     

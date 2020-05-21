@@ -68,10 +68,10 @@ extension UINavigationItem {
 public extension Stem where Base: UINavigationItem {
 
     var isHiddenWhenViewWillAppear: Bool {
-        get { getAssociated(associatedKey: AssociatedKey.setNavigationBarHiddenWhenAppearKey) ?? false }
+        get { getAssociated(for: AssociatedKey.setNavigationBarHiddenWhenAppearKey) ?? false }
         set {
             UIViewController.viewController_swizzing
-            setAssociated(value: newValue, associatedKey: AssociatedKey.setNavigationBarHiddenWhenAppearKey)
+            setAssociated(value: newValue, for: AssociatedKey.setNavigationBarHiddenWhenAppearKey)
         }
     }
 
