@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		4F0333B83930F661E83315A6 /* libPods-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D46439B4C25FCD9E86A881F5 /* libPods-iOS.a */; };
+		CD1CC30E2476E56900B379E9 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1CC30D2476E56900B379E9 /* NoticeViewController.swift */; };
 		CD394C59242BB83300277F88 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD394C58242BB83300277F88 /* main.swift */; };
 		CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF2D6F23C57F0600107BF1 /* ViewController.swift */; };
 		CDCF2D7323C57F0600107BF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDCF2D7123C57F0600107BF1 /* Main.storyboard */; };
@@ -94,6 +95,7 @@
 		3EC134089E3A78F234C184FC /* libPods-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E5718611A5FFDDC60392B9 /* Pods_Template.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Template.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03F081F8AA618F26B374C51 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		CD1CC30D2476E56900B379E9 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		CD394C56242BB83300277F88 /* macOS */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = macOS; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD394C58242BB83300277F88 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CDCF2D6923C57F0600107BF1 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +226,7 @@
 			children = (
 				CDCF2E9D23C707F800107BF1 /* AppDelegate.swift */,
 				CDCF2D6F23C57F0600107BF1 /* ViewController.swift */,
+				CD1CC30D2476E56900B379E9 /* NoticeViewController.swift */,
 				CDCF2D7123C57F0600107BF1 /* Main.storyboard */,
 				CDCF2D7423C57F0700107BF1 /* Assets.xcassets */,
 				CDCF2D7623C57F0700107BF1 /* LaunchScreen.storyboard */,
@@ -547,7 +550,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# \"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		CDCF2E4823C6D1EC00107BF1 /* Script-license */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -583,6 +586,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDCF2E9E23C707F800107BF1 /* AppDelegate.swift in Sources */,
+				CD1CC30E2476E56900B379E9 /* NoticeViewController.swift in Sources */,
 				CDCF2D7023C57F0600107BF1 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
