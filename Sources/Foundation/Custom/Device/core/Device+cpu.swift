@@ -23,25 +23,22 @@
 import Foundation
 
 public extension Device {
-  
+
     static let cpu = CPU()
-  
-    struct CPU {
+
+    struct CPU { }
+
+}
+
+public extension Device.CPU {
+
     /// cpu 核心数
-    public var count: Int {
-      return ProcessInfo.processInfo.activeProcessorCount
+    var count: Int { ProcessInfo.processInfo.activeProcessorCount }
+
+    var usage: Double { usagePerProcessor.reduce(0.0, { return $0 + $1 }) }
+
+    var usagePerProcessor: [Double] {
+        return []
     }
-    
-    public var usage: Double {
-      let cpus = self.usagePerProcessor
-      return cpus.reduce(0.0, { return $0 + $1 })
-    }
-    
-    public var usagePerProcessor: [Double] {
-      //todo
-      return []
-    }
-    
-  }
-  
+
 }

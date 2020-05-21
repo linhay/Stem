@@ -70,6 +70,10 @@ public extension Stem where Base: UIFont {
 
 public extension Stem where Base: UIFont {
 
+    static func load(from path: String) -> UIFont? {
+        load(from: URL(fileURLWithPath: path))
+    }
+
     static func load(from url: URL) -> UIFont? {
         guard let descriptors = CTFontManagerCreateFontDescriptorsFromURL(url as CFURL) as? [CTFontDescriptor], let descriptor = descriptors.first else {
             return nil
