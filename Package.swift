@@ -5,19 +5,14 @@ import PackageDescription
 
 let package = Package(
     name: "Stem",
+    platforms: [.iOS(.v10), .macOS(.v10_12), .tvOS(.v10), .watchOS(.v3)],
     products: [
-        .library(name: "Stem",
-                 targets: ["Core"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .library(name: "Stem", targets: ["Stem"]),
     ],
     targets: [
-        .target(name: "Core",
-                dependencies: [],
-                path: "Sources/Core"),
-        .testTarget(name: "CoreTests",
-                    dependencies: ["Core"]),
+        .target(
+            name: "Stem",
+            path: "Sources",
+            sources: ["Core", "Fundamentals", "NSObject", "Foundation/new", "CoreText"])
     ]
 )

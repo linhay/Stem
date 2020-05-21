@@ -1,24 +1,24 @@
-/// MIT License
-///
-/// Copyright (c) 2020 linhey
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all
-/// copies or substantial portions of the Software.
+// MIT License
+//
+// Copyright (c) 2020 linhey
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 import Foundation
 
@@ -32,21 +32,21 @@ public class RunTime {
     }
 
     /// 交换方法
-    ///
     /// - Parameters:
-    ///   - target: 被交换的方法名
-    ///   - replace: 用于交换的方法名
+    ///   - selector: 被交换的方法
+    ///   - newSelector: 用于交换的方法
     ///   - classType: 所属类型
+    ///   - kind: 方法类型 | [类方法 | 对象方法]
     public static func exchange(selector: String, by newSelector: String, class classType: AnyClass, kind: MethodKind = .instance) {
         exchange(selector: Selector(selector), by: Selector(newSelector), class: classType, kind: kind)
     }
 
     /// 交换方法
-    ///
     /// - Parameters:
     ///   - selector: 被交换的方法
-    ///   - by: 用于交换的方法
+    ///   - newSelector: 用于交换的方法
     ///   - classType: 所属类型
+    ///   - kind: 方法类型 | [类方法 | 对象方法]
     public static func exchange(selector: Selector, by newSelector: Selector, class classType: AnyClass, kind: MethodKind = .instance) {
 
         let original: Method?

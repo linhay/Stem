@@ -1,24 +1,24 @@
-/// MIT License
-///
-/// Copyright (c) 2020 linhey
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all
-/// copies or substantial portions of the Software.
+// MIT License
+//
+// Copyright (c) 2020 linhey
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-/// SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 import Foundation
 
@@ -94,19 +94,16 @@ public extension Stem where Base: NSAttributedString {
      - Parameter insets: 上下左右间距
      - Parameter backgroundColor: 背景色
      - Parameter cornerRadius: 圆角
+     - Parameter border: 描边
 
      - Example:
 
      ```
-
-    let image = NSAttributedString(string: "createTagImage",
-                                   attributes: [.foregroundColor: UIColor.white,
-                                   .font: UIFont.systemFont(ofSize: 10, weight: .medium),
-                                   .baselineOffset: 1.2])
-                .dxy.createTagImage(lineHeight: 14,
-                                    insets: UIEdgeInsets(top: 0.5, left: 4, bottom: 0.5, right: 4),
-                                    backgroundColor: UIColor(model.tagColor),
-                                    cornerRadius: 2)
+     let image = NSAttributedString(string: "测试").createTagImage(lineHeight: 20,
+                                                                    insets: .zero,
+                                                                    backgroundColor: UIColor.white,
+                                                                    cornerRadius: 4,
+                                                                    border: (width: 1, color: UIColor.red))
 
      ```
 
@@ -115,23 +112,27 @@ public extension Stem where Base: NSAttributedString {
      - # lineHeight: 是文字行高 不是 标签文本高度
      - # insets: 不论咋设置, 文字都将居中显示
      - # 文字偏移: 由于字体差异, 可能需要单独设置 `baselineOffset` 来校正上下偏移
+     - Returns: 图片
      */
     func createTagImage(lineHeight: CGFloat,
                         insets: UIEdgeInsets,
                         backgroundColor: UIColor,
-                        cornerRadius: CGFloat) -> UIImage? {
+                        cornerRadius: CGFloat,
+                        border: (width: CGFloat, color: UIColor)? = nil) -> UIImage? {
 
         let string = NSMutableAttributedString(attributedString: base)
 
-        var textSize = string.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude,
+        let textSize = string.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                         height: lineHeight),
                                            options: [.usesLineFragmentOrigin, .usesFontLeading],
                                            context: nil).size
 
-        textSize = CGSize(width: ceil(textSize.width), height: lineHeight)
+        var insets = insets
+        if let border = border {
+            insets = UIEdgeInsets(top: insets.top + border.width, left: insets.left + border.width, bottom: insets.bottom + border.width, right: insets.right + border.width)
+        }
 
-        let rect = CGRect(origin: .zero, size: CGSize(width: textSize.width + insets.left + insets.right,
-                                                      height: textSize.height + insets.top + insets.bottom))
+        let rect = CGRect(origin: .zero, size: CGSize(width: textSize.width + insets.left + insets.right, height: lineHeight + insets.top + insets.bottom))
 
         UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         defer { UIGraphicsEndImageContext() }
@@ -140,7 +141,16 @@ public extension Stem where Base: NSAttributedString {
         bezierPath.addClip()
         backgroundColor.setFill()
         UIRectFill(rect)
+
         let textRect = CGRect(origin: CGPoint(x: insets.left, y: (rect.height - textSize.height) * 0.5), size: textSize)
+
+        if let border = border {
+            bezierPath.lineWidth = border.width
+            bezierPath.lineJoinStyle = .miter
+            border.color.setStroke()
+            bezierPath.stroke()
+        }
+
         string.draw(in: textRect)
         guard UIGraphicsGetCurrentContext() != nil else { return nil }
         return UIGraphicsGetImageFromCurrentImageContext()
@@ -156,6 +166,7 @@ public extension Stem where Base: NSAttributedString {
     /// - Parameters:
     ///   - font: 字体大小
     ///   - size: 字符串长宽限制
+    ///   - option: option
     /// - Returns: 字符串的Bounds
     func bounds(size: CGSize = CGSize(width: CGFloat.greatestFiniteMagnitude,
                                       height: CGFloat.greatestFiniteMagnitude),

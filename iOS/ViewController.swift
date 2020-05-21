@@ -10,55 +10,10 @@ import Foundation
 import UIKit
 import Stem
 
-let aEvent = Event<Void>(key: "a")
+class ViewController: UITableViewController {
 
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationController?.pushViewController(AVC(), animated: true)
+    @IBAction func Notice(_ sender: UIButton) {
+        st.push(vc: NoticeViewController())
     }
 
 }
-
-class AVC: UIViewController {
-
-    let tokens = EventTokens()
-    var name: String = "AVC"
-    let pusherBtn = UIButton(frame: CGRect(x: 30, y: 200, width: 200, height: 60))
-    let acceptBtn = UIButton(frame: CGRect(x: 30, y: 400, width: 200, height: 60))
-
-    deinit {
-        print("deinit: \(name)")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        pusherBtn.setTitle("push", for: .normal)
-        acceptBtn.setTitle("accept", for: .normal)
-        view.st.addSubviews(pusherBtn, acceptBtn)
-        view.backgroundColor = UIColor.st.random
-
-        aEvent.subscribe(using: { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            print(self.name)
-        }).disposed(tokens)
-
-        pusherBtn.st.add(for: .touchUpInside) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            let vc = AVC()
-            vc.name = self.name + "0"
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-
-        acceptBtn.st.add(for: .touchUpInside) { _ in
-            aEvent.accept(nil)
-        }
-    }
-
-}
-

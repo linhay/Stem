@@ -21,6 +21,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		CD394C4B242BB80200277F88 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CDCF2E0F23C6026500107BF1 = {
 			isa = PBXGroup;
 			children = (
@@ -31,6 +38,7 @@
 				CDCF2E1723C6029C00107BF1 /* LICENSE */,
 				CDCF2E1A23C6088600107BF1 /* Template.docment */,
 				CDCF2E1623C6029C00107BF1 /* Template.podspec */,
+				CD394C4B242BB80200277F88 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +60,7 @@
 		CDCF2E1023C6026500107BF1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1130;
 			};
 			buildConfigurationList = CDCF2E1323C6026500107BF1 /* Build configuration list for PBXProject "Configurations" */;
@@ -63,6 +72,9 @@
 				Base,
 			);
 			mainGroup = CDCF2E0F23C6026500107BF1;
+			packageReferences = (
+			);
+			productRefGroup = CD394C4B242BB80200277F88 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
