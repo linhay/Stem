@@ -24,13 +24,14 @@ import Foundation
 
 public class NoticeType {
 
-   public class Void: NoticeParsable {
+    public class Void: NoticeParsable {
 
-    required public init(from notification: Notification) {}
+        required public init(from notification: Notification) {}
 
-    public var notification: (object: Any?, userInfo: [String : Any]?) {
+        public var notification: (object: Any?, userInfo: [String : Any]?) {
             return (nil, nil)
         }
+
     }
     
 }

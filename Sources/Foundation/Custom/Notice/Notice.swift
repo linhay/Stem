@@ -48,12 +48,20 @@ public extension Notice where Parsable: NoticeNotificationParsable {
         self.init(key: Parsable.noticeName)
     }
 
+    convenience init(use parsable: Parsable.Type) {
+        self.init(key: parsable.noticeName)
+    }
+
 }
 
 public extension Notice where Parsable: NoticeCustomParsable {
 
     convenience init() {
         self.init(key: Notification.Name(Parsable.noticeName))
+    }
+
+    convenience init(use parsable: Parsable.Type) {
+        self.init(key: parsable.noticeName)
     }
 
 }

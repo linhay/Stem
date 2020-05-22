@@ -36,7 +36,7 @@ extension NoticeType {
 class NoticeViewController: UIViewController {
 
     let voidEvent = Notice<NoticeType.Void>(key: UIApplication.willTerminateNotification)
-    let didEnterBackgroundEvent = Notice<NoticeType.DidEnterBackground>()
+    let didEnterBackgroundEvent = Notice(use: NoticeType.DidEnterBackground.self)
     var index = -1
 
     override func viewDidLoad() {
