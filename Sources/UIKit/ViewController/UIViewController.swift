@@ -172,7 +172,7 @@ public extension Stem where Base: UIViewController {
     ///   - animated: 是否显示动画
     ///   - completion: 完成后事件
     func present(vc: UIViewController?, animated: Bool = true, completion: (() -> Void)? = nil) {
-        guard let vc = vc else { return }
+        guard let vc = vc, base.presentedViewController == nil else { return }
         base.present(vc, animated: animated, completion: completion)
     }
     
