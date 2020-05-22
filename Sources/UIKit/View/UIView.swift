@@ -235,6 +235,17 @@ public extension Stem where Base: UIView {
         self.tap = ges
         base.isUserInteractionEnabled = true
     }
+
+    func setTapGesture(_ ges: (() -> Void)?) {
+        if let ges = ges {
+            self.tap = { _ in
+                ges()
+            }
+        } else {
+            self.tap = nil
+        }
+        base.isUserInteractionEnabled = true
+    }
     
 }
 

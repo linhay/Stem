@@ -10,7 +10,6 @@ import UIKit
 import Stem
 
 extension NoticeType {
-
     class DidEnterBackground: NoticeNotificationParsable {
 
         static let noticeName: Notification.Name = UIApplication.didEnterBackgroundNotification
@@ -30,11 +29,9 @@ extension NoticeType {
         }
 
     }
-
 }
 
 class NoticeViewController: UIViewController {
-
     let voidEvent = Notice<NoticeType.Void>(key: UIApplication.willTerminateNotification)
     let didEnterBackgroundEvent = Notice(use: NoticeType.DidEnterBackground.self)
     var index = -1
@@ -47,17 +44,22 @@ class NoticeViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            print("subscribe: \(self.index) - \(self.st.memoryAddress)")
+            print("subscribe: \(self.index) - \(self.st.memoryAddress) - \(not.application)")
         }
+
+        let control = UIControl(frame: view.bounds)
+        control.frame.origin.y = 88
+        view.addSubview(control)
+        control.addTarget(self, action: #selector(controlPushAction), for: .touchUpInside)
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        didEnterBackgroundEvent.accept(.init())
-        self.st.push(vc: Self.init())
+    @objc
+    func controlPushAction() {
+        self.didEnterBackgroundEvent.accept(.init())
+        self.st.push(vc: NoticeViewController())
     }
 
     deinit {
         print("deinit: \(index)")
     }
-
 }
