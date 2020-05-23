@@ -37,34 +37,37 @@ public class FilePath: Equatable {
     
     /// 生成 FilePath
     /// - Parameters:
-    ///   - path: 文件路径
-    ///   - type: 指定文件类型, nil: 自动检测
-    /// - Throws: FilePathError - path解析错误 | 目标路径不是文件路径 | 目标路径不存在
-    public convenience init(path: String, type: Type? = nil) throws {
-        guard let url = URLComponents(url: URL(fileURLWithPath: path), resolvingAgainstBaseURL: true)?.url else {
-            throw FilePathError(message: "path解析错误: \(path)")
-        }
-        try self.init(url: url, type: type)
-    }
-    
-    /// 生成 FilePath
-    /// - Parameters:
     ///   - url: 文件路径
-    ///   - type: 指定文件类型, nil: 自动检测
+    ///   - type: 指定文件类型
     /// - Throws: FilePathError - 目标路径不是文件路径 | 目标路径不存在
-    public init(url: URL, type: Type? = nil) throws {
+    public init(url: URL, type: Type) throws {
         guard url.isFileURL else {
             throw FilePathError(message: "目标路径不是文件路径")
         }
         
         self.url = url
-        if let type = type {
-            self.type = type
-        } else {
-            self.type = try FilePath.checkType(url: url)
-        }
-        
+        self.type = type
         attributes = Attributes(path: url)
+    }
+
+    /// 生成 FilePath
+    /// - Parameters:
+    ///   - path: 文件路径
+    ///   - type: 指定文件类型
+    /// - Throws: FilePathError - path解析错误 | 目标路径不是文件路径 | 目标路径不存在
+    public convenience init(path: String, type: Type) throws {
+        guard let url = URLComponents(url: URL(fileURLWithPath: path), resolvingAgainstBaseURL: true)?.url else {
+            throw FilePathError(message: "path解析错误: \(path)")
+        }
+        try self.init(url: url, type: type)
+    }
+
+    public convenience init(path: String) throws {
+        try self.init(path: path, type: try FilePath.checkType(path))
+    }
+
+    public convenience init(url: URL) throws {
+        try self.init(url: url, type: try FilePath.checkType(url))
     }
     
 }
@@ -95,10 +98,15 @@ public extension FilePath {
     /// 根据当前[FilePath]创建文件/文件夹
     /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
     func create(with data: Data? = nil) throws {
+        
         if isExist {
-            throw FilePathError(message: "文件/文件夹 存在, 无法创建")
+            switch type {
+            case .file:
+                throw FilePathError(message: "文件存在, 无法创建")
+            case .folder:
+                break
+            }
         }
-        let manager = FileManager.default
 
         switch type {
         case .file:
@@ -108,6 +116,14 @@ public extension FilePath {
             try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         }
     }
+
+    @discardableResult
+    func create(file name: String, data: Data? = nil) throws -> FilePath {
+        let folder = url.appendingPathComponent(name, isDirectory: false)
+        let filePath = try FilePath(url: folder, type: .file)
+        try filePath.create(with: data)
+        return filePath
+    }
     
     /// 在当前路径下创建文件夹
     /// - Parameter name: 文件夹名
@@ -116,16 +132,9 @@ public extension FilePath {
     @discardableResult
     func create(folder name: String) throws -> FilePath {
         let folder = url.appendingPathComponent(name, isDirectory: true)
-        let exist = manager.fileExists(atPath: folder.path)
-        
-        guard exist == false else {
-            return try FilePath(url: folder, type: .folder)
-        }
-        
-        try manager.createDirectory(at: folder,
-                                    withIntermediateDirectories: true,
-                                    attributes: nil)
-        return try FilePath(url: folder, type: .folder)
+        let filePath = try FilePath(url: folder, type: .folder)
+        try filePath.create()
+        return filePath
     }
     
 }
@@ -234,19 +243,23 @@ public extension FilePath {
     /// - Parameter url: 文件路径
     /// - Throws: FilePathError - "目标路径文件不存在: url"
     /// - Returns: 类型
-    static func checkType(url: URL) throws -> Type {
+    static func checkType(_ url: URL) throws -> Type {
+        return try checkType(url.path)
+    }
+
+    static func checkType(_ path: String) throws -> Type {
         var isDir: ObjCBool = false
-        if manager.fileExists(atPath: url.path, isDirectory: &isDir) {
+        if manager.fileExists(atPath: path, isDirectory: &isDir) {
             if isDir.boolValue {
                 return .folder
             } else {
                 return .file
             }
         } else {
-            throw FilePathError(message: "目标路径文件不存在: \(url.description)")
+            throw FilePathError(message: "目标路径文件不存在: \(path)")
         }
     }
-    
+
 }
 
 public extension FilePath {
