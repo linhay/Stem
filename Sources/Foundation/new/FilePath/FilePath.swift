@@ -42,7 +42,7 @@ public class FilePath: Equatable {
     /// - Throws: FilePathError - 目标路径不是文件路径 | 目标路径不存在
     public init(url: URL, type: Type) throws {
         guard url.isFileURL else {
-            throw FilePathError(message: "目标路径不是文件路径")
+            throw Error(message: "目标路径不是文件路径")
         }
         
         self.url = url
@@ -57,7 +57,7 @@ public class FilePath: Equatable {
     /// - Throws: FilePathError - path解析错误 | 目标路径不是文件路径 | 目标路径不存在
     public convenience init(path: String, type: Type) throws {
         guard let url = URLComponents(url: URL(fileURLWithPath: path), resolvingAgainstBaseURL: true)?.url else {
-            throw FilePathError(message: "path解析错误: \(path)")
+            throw Error(message: "path解析错误: \(path)")
         }
         try self.init(url: url, type: type)
     }
@@ -102,7 +102,7 @@ public extension FilePath {
         if isExist {
             switch type {
             case .file:
-                throw FilePathError(message: "文件存在, 无法创建")
+                throw Error(message: "文件存在, 无法创建: \(url.path)")
             case .folder:
                 break
             }
@@ -152,7 +152,7 @@ public extension FilePath {
             let fileURL = path.url.appendingPathComponent(attributes.name)
             try manager.moveItem(at: url, to: fileURL)
         case (.folder, .file):
-            throw FilePathError(message: "无法 [文件夹 -> 文件] 转移")
+            throw Error(message: "无法 [文件夹 -> 文件] 转移")
         }
     }
     
@@ -172,17 +172,17 @@ public extension FilePath {
         switch (type, path.type) {
         case (.file, .file), (.folder, .folder):
             if path.isExist {
-                throw FilePathError(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
+                throw Error(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
             }
             try manager.copyItem(at: url, to: path.url)
         case (.file, .folder):
             let path = try FilePath(url: path.url.appendingPathComponent(attributes.name), type: type)
             if path.isExist {
-                throw FilePathError(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
+                throw Error(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
             }
             try manager.copyItem(at: url, to: path.url)
         case (.folder, .file):
-            throw FilePathError(message: "无法 [文件夹 -> 文件] 拷贝")
+            throw Error(message: "无法 [文件夹 -> 文件] 拷贝")
         }
     }
     
@@ -196,7 +196,7 @@ public extension FilePath {
     /// - Returns: [FilePath]
     func allSubFilePaths() throws -> [FilePath] {
         guard self.type == .folder else {
-            throw FilePathError(message: "目标路径不是文件夹类型")
+            throw Error(message: "目标路径不是文件夹类型")
         }
         guard let enumerator = manager.enumerator(atPath: url.path) else {
             return []
@@ -225,7 +225,7 @@ public extension FilePath {
     /// - Returns: [FilePath]
     func subFilePaths() throws -> [FilePath] {
         guard self.type == .folder else {
-            throw FilePathError(message: "目标路径不是文件夹类型")
+            throw Error(message: "目标路径不是文件夹类型")
         }
         
         return try manager
@@ -256,7 +256,7 @@ public extension FilePath {
                 return .file
             }
         } else {
-            throw FilePathError(message: "目标路径文件不存在: \(path)")
+            throw Error(message: "目标路径文件不存在: \(path)")
         }
     }
 
@@ -273,14 +273,16 @@ public extension FilePath {
 // MARK: - Error
 public extension FilePath {
     
-    struct FilePathError: Error {
+    struct Error: LocalizedError {
         
         public let message: String
         public let code: Int
+        public var errorDescription: String?
         
         @discardableResult
         public init(message: String, code: Int = 0) {
             self.message = message
+            self.errorDescription = message
             self.code = code
         }
     }
