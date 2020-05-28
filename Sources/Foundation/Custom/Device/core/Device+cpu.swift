@@ -37,6 +37,16 @@ public extension Device.CPU {
 
     var usage: Double { usagePerProcessor.reduce(0.0, { return $0 + $1 }) }
 
+
+    /// cpu 滴答数, 纳秒级精度
+    var absoluteTime: Int64 {
+        // 获取转换因子
+        var info = mach_timebase_info_data_t()
+        mach_timebase_info(&info)
+        // 获取开始时间
+        return Int64(mach_absolute_time())
+    }
+
     var usagePerProcessor: [Double] {
         return []
     }
