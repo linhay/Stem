@@ -194,13 +194,22 @@ public extension FilePath {
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Returns: [FilePath]
-    func allSubFilePaths() throws -> [FilePath] {
+    func allSubFilePaths(predicate: ((FilePath) throws -> Bool)? = nil) throws -> [FilePath] {
         guard self.type == .folder else {
             throw Error(message: "目标路径不是文件夹类型")
         }
         guard let enumerator = manager.enumerator(atPath: url.path) else {
             return []
         }
+
+        var predicates = [(FilePath) throws -> Bool]()
+        predicates.append { item -> Bool in
+            return item.attributes.name.hasPrefix(".") == false
+        }
+        if let predicate = predicate {
+            predicates.append(predicate)
+        }
+
         var list = [FilePath]()
         for case let path as String in enumerator {
             guard path.hasPrefix(".") == false else {
@@ -212,7 +221,7 @@ public extension FilePath {
             guard let item = try? FilePath(url: URL(fileURLWithPath: fullPath + path)) else {
                 continue
             }
-            guard item.attributes.name.hasPrefix(".") == false else {
+            guard try predicates.contains(where: { try $0(item) }) else {
                 continue
             }
             list.append(item)
