@@ -205,7 +205,6 @@ public extension FilePath {
 
 }
 
-// MARK: - <#detail#>
 extension Array where Element == FilePath.SearchPredicate {
 
     func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath) throws -> Bool]) {
@@ -250,10 +249,22 @@ extension Array where Element == FilePath.SearchPredicate {
 
 }
 
+
 public extension FilePath {
+
+    /// 获取所在文件夹
+    /// - Returns: 所在文件夹
+    func parentFolder() -> FilePath? {
+        let parent = url.deletingLastPathComponent()
+        guard parent != url else {
+            return nil
+        }
+        return try? FilePath(url: parent, type: .folder)
+    }
     
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
     func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
         try allSubFilePaths(predicates: predicates)
@@ -261,6 +272,7 @@ public extension FilePath {
     
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
     func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         guard self.type == .folder else {
@@ -295,9 +307,18 @@ public extension FilePath {
         
         return list
     }
-    
-    /// 获取文件夹中文件/文件夹
+
+    /// 获取当前文件夹中文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
+    /// - Returns: [FilePath]
+    func subFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+        try subFilePaths(predicates: predicates)
+    }
+
+    /// 获取当前文件夹中文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
     func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         guard self.type == .folder else {
