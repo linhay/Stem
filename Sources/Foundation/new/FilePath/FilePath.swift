@@ -49,7 +49,7 @@ public class FilePath: Equatable {
         self.type = type
         attributes = Attributes(path: url)
     }
-
+    
     /// 生成 FilePath
     /// - Parameters:
     ///   - path: 文件路径
@@ -61,11 +61,11 @@ public class FilePath: Equatable {
         }
         try self.init(url: url, type: type)
     }
-
+    
     public convenience init(path: String) throws {
         try self.init(path: path, type: try FilePath.checkType(path))
     }
-
+    
     public convenience init(url: URL) throws {
         try self.init(url: url, type: try FilePath.checkType(url))
     }
@@ -107,7 +107,7 @@ public extension FilePath {
                 break
             }
         }
-
+        
         switch type {
         case .file:
             try manager.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
@@ -116,7 +116,7 @@ public extension FilePath {
             try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         }
     }
-
+    
     @discardableResult
     func create(file name: String, data: Data? = nil) throws -> FilePath {
         let folder = url.appendingPathComponent(name, isDirectory: false)
@@ -190,23 +190,25 @@ public extension FilePath {
 
 // MARK: - get subFilePaths
 public extension FilePath {
-
+    
     enum SearchPredicate {
         case skipsSubdirectoryDescendants
         case skipsPackageDescendants
         case skipsHiddenFiles
+        @available(iOS 13.0, *) @available(OSX 10.15, *)
         case includesDirectoriesPostOrder
+        @available(iOS 13.0, *) @available(OSX 10.15, *)
         case producesRelativePathURLs
         case custom((FilePath) throws -> Bool)
     }
-
+    
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Returns: [FilePath]
     func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
         try allSubFilePaths(predicates: predicates)
     }
-
+    
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Returns: [FilePath]
@@ -214,10 +216,10 @@ public extension FilePath {
         guard self.type == .folder else {
             throw Error(message: "目标路径不是文件夹类型")
         }
-
+        
         var systemPredicates: FileManager.DirectoryEnumerationOptions = []
         var customPredicates = [(FilePath) throws -> Bool]()
-
+        
         predicates.forEach { item in
             switch item {
             case .skipsSubdirectoryDescendants:
@@ -227,18 +229,30 @@ public extension FilePath {
             case .skipsHiddenFiles:
                 systemPredicates.insert(.skipsHiddenFiles)
             case .includesDirectoriesPostOrder:
+                #if os(iOS) || os(tvOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
+                #elseif os(OSX)
+                if #available(OSX 10.15, *) {
+                    systemPredicates.insert(.includesDirectoriesPostOrder)
+                }
+                #endif
             case .producesRelativePathURLs:
+                #if os(iOS) || os(tvOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
+                #elseif os(OSX)
+                if #available(OSX 10.15, *) {
+                    systemPredicates.insert(.producesRelativePathURLs)
+                }
+                #endif
             case .custom(let v):
                 customPredicates.append(v)
             }
         }
-
+        
         let resourceValues: [URLResourceKey] = [.isDirectoryKey]
         guard let enumerator = manager.enumerator(at: url,
                                                   includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
@@ -246,7 +260,7 @@ public extension FilePath {
                                                   errorHandler: nil) else {
                                                     return []
         }
-
+        
         var list = [FilePath]()
         for case let fileURL as URL in enumerator {
             guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues))
@@ -254,15 +268,15 @@ public extension FilePath {
                 else {
                     continue
             }
-
+            
             let item = try FilePath(url: fileURL, type: isDirectory ? .folder : .file)
             if try customPredicates.first(where: { try $0(item) == false }) != nil {
                 continue
             }
-
+            
             list.append(item)
         }
-
+        
         return list
     }
     
@@ -292,7 +306,7 @@ public extension FilePath {
     static func checkType(_ url: URL) throws -> Type {
         return try checkType(url.path)
     }
-
+    
     static func checkType(_ path: String) throws -> Type {
         var isDir: ObjCBool = false
         if manager.fileExists(atPath: path, isDirectory: &isDir) {
@@ -305,7 +319,7 @@ public extension FilePath {
             throw Error(message: "目标路径文件不存在: \(path)")
         }
     }
-
+    
 }
 
 public extension FilePath {
