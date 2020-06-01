@@ -25,7 +25,13 @@ import UIKit
 public extension Stem where Base: UISearchBar {
 
     /// 输入控件
-    var searchField: UITextField? { return value(for: "_searchField") }
+    var searchField: UITextField? {
+        if #available(iOS 13.0, *) {
+            return base.searchTextField
+        } else {
+             return value(for: "_searchField")
+        }
+    }
 
     /// 占位文本控件
     var placeholderLabel: UILabel? { return searchField?.st.value(for: "_placeholderLabel") }

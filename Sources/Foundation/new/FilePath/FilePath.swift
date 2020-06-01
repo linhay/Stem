@@ -190,42 +190,79 @@ public extension FilePath {
 
 // MARK: - get subFilePaths
 public extension FilePath {
-    
+
+    enum SearchPredicate {
+        case skipsSubdirectoryDescendants
+        case skipsPackageDescendants
+        case skipsHiddenFiles
+        case includesDirectoriesPostOrder
+        case producesRelativePathURLs
+        case custom((FilePath) throws -> Bool)
+    }
+
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicate: ((FilePath) throws -> Bool)? = nil) throws -> [FilePath] {
+    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+        try allSubFilePaths(predicates: predicates)
+    }
+
+    /// 递归获取文件夹中所有文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Returns: [FilePath]
+    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         guard self.type == .folder else {
             throw Error(message: "目标路径不是文件夹类型")
         }
-        guard let enumerator = manager.enumerator(atPath: url.path) else {
-            return []
+
+        var systemPredicates: FileManager.DirectoryEnumerationOptions = []
+        var customPredicates = [(FilePath) throws -> Bool]()
+
+        predicates.forEach { item in
+            switch item {
+            case .skipsSubdirectoryDescendants:
+                systemPredicates.insert(.skipsSubdirectoryDescendants)
+            case .skipsPackageDescendants:
+                systemPredicates.insert(.skipsPackageDescendants)
+            case .skipsHiddenFiles:
+                systemPredicates.insert(.skipsHiddenFiles)
+            case .includesDirectoriesPostOrder:
+                if #available(iOS 13.0, *) {
+                    systemPredicates.insert(.includesDirectoriesPostOrder)
+                }
+            case .producesRelativePathURLs:
+                if #available(iOS 13.0, *) {
+                    systemPredicates.insert(.producesRelativePathURLs)
+                }
+            case .custom(let v):
+                customPredicates.append(v)
+            }
         }
 
-        var predicates = [(FilePath) throws -> Bool]()
-        predicates.append { item -> Bool in
-            return item.attributes.name.hasPrefix(".") == false
-        }
-        if let predicate = predicate {
-            predicates.append(predicate)
+        let resourceValues: [URLResourceKey] = [.isDirectoryKey]
+        guard let enumerator = manager.enumerator(at: url,
+                                                  includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
+                                                  options: systemPredicates,
+                                                  errorHandler: nil) else {
+                                                    return []
         }
 
         var list = [FilePath]()
-        for case let path as String in enumerator {
-            guard path.hasPrefix(".") == false else {
+        for case let fileURL as URL in enumerator {
+            guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues))
+                , let isDirectory = resourceValues.isDirectory
+                else {
+                    continue
+            }
+
+            let item = try FilePath(url: fileURL, type: isDirectory ? .folder : .file)
+            if try customPredicates.first(where: { try $0(item) == false }) != nil {
                 continue
             }
-            guard let fullPath = enumerator.value(forKey: "path") as? String else {
-                continue
-            }
-            guard let item = try? FilePath(url: URL(fileURLWithPath: fullPath + path)) else {
-                continue
-            }
-            guard try predicates.contains(where: { try $0(item) }) else {
-                continue
-            }
+
             list.append(item)
         }
+
         return list
     }
     
