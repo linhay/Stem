@@ -201,26 +201,18 @@ public extension FilePath {
         case producesRelativePathURLs
         case custom((FilePath) throws -> Bool)
     }
-    
-    /// 递归获取文件夹中所有文件/文件夹
-    /// - Throws: FilePathError - "目标路径不是文件夹类型"
-    /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
-        try allSubFilePaths(predicates: predicates)
-    }
-    
-    /// 递归获取文件夹中所有文件/文件夹
-    /// - Throws: FilePathError - "目标路径不是文件夹类型"
-    /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
-        guard self.type == .folder else {
-            throw Error(message: "目标路径不是文件夹类型")
-        }
-        
+
+
+}
+
+// MARK: - <#detail#>
+extension Array where Element == FilePath.SearchPredicate {
+
+    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath) throws -> Bool]) {
         var systemPredicates: FileManager.DirectoryEnumerationOptions = []
         var customPredicates = [(FilePath) throws -> Bool]()
-        
-        predicates.forEach { item in
+
+        self.forEach { item in
             switch item {
             case .skipsSubdirectoryDescendants:
                 systemPredicates.insert(.skipsSubdirectoryDescendants)
@@ -252,6 +244,30 @@ public extension FilePath {
                 customPredicates.append(v)
             }
         }
+
+        return (systemPredicates, customPredicates)
+    }
+
+}
+
+public extension FilePath {
+    
+    /// 递归获取文件夹中所有文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Returns: [FilePath]
+    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+        try allSubFilePaths(predicates: predicates)
+    }
+    
+    /// 递归获取文件夹中所有文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Returns: [FilePath]
+    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
+        guard self.type == .folder else {
+            throw Error(message: "目标路径不是文件夹类型")
+        }
+        
+        let (systemPredicates, customPredicates) = predicates.split()
         
         let resourceValues: [URLResourceKey] = [.isDirectoryKey]
         guard let enumerator = manager.enumerator(at: url,
@@ -270,7 +286,7 @@ public extension FilePath {
             }
             
             let item = try FilePath(url: fileURL, type: isDirectory ? .folder : .file)
-            if try customPredicates.first(where: { try $0(item) == false }) != nil {
+            if try customPredicates.contains(where: { try $0(item) == false }) {
                 continue
             }
             
@@ -283,16 +299,21 @@ public extension FilePath {
     /// 获取文件夹中文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Returns: [FilePath]
-    func subFilePaths() throws -> [FilePath] {
+    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         guard self.type == .folder else {
             throw Error(message: "目标路径不是文件夹类型")
         }
-        
+
+        let (systemPredicates, customPredicates) = predicates.split()
+
         return try manager
             .contentsOfDirectory(at: url,
                                  includingPropertiesForKeys: nil,
-                                 options: .skipsHiddenFiles)
+                                 options: systemPredicates)
             .compactMap({ try? FilePath(url: $0) })
+            .filter({ item -> Bool in
+                try customPredicates.contains(where: { try $0(item) == false }) == false
+            })
     }
     
 }
