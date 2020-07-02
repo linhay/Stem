@@ -1,7 +1,0 @@
-module Stem {
-  umbrella header "Stem-7ac0a380-umbrella.h"
-  exclude header "Stem-2052538e-umbrella.h"
-
-  export *
-  module * { export * }
-}
