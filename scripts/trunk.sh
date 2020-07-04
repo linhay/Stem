@@ -5,9 +5,9 @@ cd ..
 value=./*.podspec
 file=${value##*/}
 
-echo "podspec:"  ${file}
+echo "podspec:" ${file}
 #获取podspec 中版本号
-version=`grep -m1 "s.version" ${file}|awk '{print $NF}'|sed "s/\'//g"`
+version=`grep -m1 "spec.version" ${file}|awk '{print $NF}'|sed "s/\'//g"`
 echo "version:"  ${version}
 #git提交
 git add .
