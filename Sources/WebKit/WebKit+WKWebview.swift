@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(WebKit)
 import WebKit
 
 extension Stem where Base: WKWebView {
@@ -35,3 +36,4 @@ extension Stem where Base: WKWebView {
     }
 
 }
+#endif

@@ -20,12 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+#if canImport(UIKit) && canImport(AVFoundation)
 
-#if canImport(AVFoundation)
 import AVFoundation
 public extension Stem where Base: UIDevice {
-
+    
     /// 闪光灯 亮度等级 0 ~ 1
     var torchLevel: Double {
         set {

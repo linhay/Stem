@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+
+import QuartzCore
 
 public extension Stem where Base: CALayer {
 
@@ -67,21 +68,6 @@ public extension Stem where Base: CALayer {
 
      - Authors: linhey
      - Date: 2019/11/28
-
-     - Parameter <#parameter#>: <#desc#>
-
-     - Example:
-
-     ```
-
-     <#code#>
-
-     ```
-
-     - Important:
-
-     - # <#key#>: <#desc#>
-
      */
     func setSketchShadow(color: UIColor,
                          alpha: CGFloat,
