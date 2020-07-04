@@ -62,7 +62,7 @@ public class Gcd {
 
     /// 耗时(秒)
     /// - Parameter block: 需要测试执行的代码
-    public class func duration(_ closure: () -> Void) -> TimeInterval {
+    public class func duration(unit: Double = 1e-9, _ closure: () -> Void) -> TimeInterval {
         // 获取转换因子
         var info = mach_timebase_info_data_t()
         mach_timebase_info(&info)
@@ -71,7 +71,7 @@ public class Gcd {
         closure()
         // 获取结束时间
         let t1 = mach_absolute_time()
-        return TimeInterval(Int(t1 - t0) * Int(info.numer) / Int(info.denom)) * 1e-9
+        return TimeInterval(Int(t1 - t0) * Int(info.numer) / Int(info.denom)) * unit
     }
 
     /// 异步线程组
@@ -81,7 +81,7 @@ public class Gcd {
     ///   - notify: 全部完成回调
     public class func group(asyncs: (() -> Void)..., notify: @escaping () -> Void) {
         let group = DispatchGroup()
-        let randromLabel = "stone.gcd.group.\(arc4random())"
+        let randromLabel = "stem.gcd.group.\(Int.random(in: 0...10000))"
         var flag = 0
 
         for item in asyncs {

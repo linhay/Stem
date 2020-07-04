@@ -23,22 +23,23 @@
 import UIKit
 
 // MARK: - convenience init
-public extension UIStoryboard {
-    
-    convenience init(name: String, in bundle: Bundle? = nil) {
-        self.init(name: name, bundle: bundle)
+public extension Stem where Base: UIStoryboard {
+
+   static func load(name: String, in bundle: Bundle? = nil) -> Base {
+        return Base(name: name, bundle: bundle)
     }
 
-    convenience init<T: UIViewController>(vc: T.Type, in bundle: Bundle? = nil) {
+   static func load<T: UIViewController>(vc: T.Type, in bundle: Bundle? = nil) -> Base {
         let name = String(describing: T.self)
-        self.init(name: name, in: bundle)
+        return Base(name: name, bundle: bundle)
     }
 
 }
+
 public extension Stem where Base: UIViewController {
 
     static var storyboard: UIViewController? {
-        let storyboard = UIStoryboard(name: String(describing: Base.self), in: Bundle(for: Base.self))
+        let storyboard = UIStoryboard.st.load(vc: Base.self, in: Bundle(for: Base.self))
         let vc = storyboard.instantiateInitialViewController() as? Base
         return vc
     }

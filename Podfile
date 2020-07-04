@@ -4,7 +4,7 @@ project 'Template.xcodeproj'
 def setup_pod
 #  use_frameworks!
   pod 'Stem', :path => './Template.podspec'
-#  pod 'SwiftLint', :configurations => 'Debug'
+  pod 'SwiftLint', :configurations => 'Debug'
 end
 #
 target 'iOS' do
@@ -12,10 +12,10 @@ target 'iOS' do
   setup_pod
 end
 
-#target 'macOS' do
-#  platform :macos, '10.15'
-#  setup_pod
-#end
+target 'macOS' do
+  platform :macos, '10.15'
+  setup_pod
+end
 #
 #target 'tvOS' do
 #  setup_pod

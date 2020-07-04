@@ -22,13 +22,21 @@
 
 import Foundation
 
-public class Delegate<Input, Output> {
+public final class Delegate<Input, Output> {
+    
     public init() {}
     
     private var block: ((Input) -> Output?)?
+    
     public func delegate<T: AnyObject>(on target: T, block: ((T, Input) -> Output)?) {
         self.block = { [weak target] input in
             guard let target = target else { return nil }
+            return block?(target, input)
+        }
+    }
+
+    public func delegate<T: Any>(on target: T, block: ((T, Input) -> Output)?) {
+        self.block = { input in
             return block?(target, input)
         }
     }
@@ -39,7 +47,9 @@ public class Delegate<Input, Output> {
 }
 
 public extension Delegate where Input == Void {
+
     func call() -> Output? {
         return call(())
     }
+
 }

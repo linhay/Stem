@@ -128,15 +128,6 @@ public extension Stem where Base: UIImage {
                      borderWidth: CGFloat = 0,
                      borderColor: UIColor? = nil,
                      borderLineJoin: CGLineJoin = .miter) -> UIImage {
-        var corners = corners
-        if corners != UIRectCorner.allCorners {
-            var rawValue: UInt = 0
-            if (corners.rawValue & UIRectCorner.topLeft.rawValue) != 0 { rawValue = rawValue | UIRectCorner.bottomLeft.rawValue }
-            if (corners.rawValue & UIRectCorner.topRight.rawValue) != 0 { rawValue = rawValue | UIRectCorner.bottomRight.rawValue }
-            if (corners.rawValue & UIRectCorner.bottomLeft.rawValue) != 0 { rawValue = rawValue | UIRectCorner.topLeft.rawValue }
-            if (corners.rawValue & UIRectCorner.bottomRight.rawValue) != 0 { rawValue = rawValue | UIRectCorner.topRight.rawValue }
-            corners = UIRectCorner(rawValue: rawValue)
-        }
         UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
         defer { UIGraphicsEndImageContext() }
         

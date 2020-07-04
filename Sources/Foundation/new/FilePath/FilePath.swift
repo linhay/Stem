@@ -37,34 +37,37 @@ public class FilePath: Equatable {
     
     /// 生成 FilePath
     /// - Parameters:
-    ///   - path: 文件路径
-    ///   - type: 指定文件类型, nil: 自动检测
-    /// - Throws: FilePathError - path解析错误 | 目标路径不是文件路径 | 目标路径不存在
-    public convenience init(path: String, type: Type? = nil) throws {
-        guard let url = URLComponents(url: URL(fileURLWithPath: path), resolvingAgainstBaseURL: true)?.url else {
-            throw FilePathError(message: "path解析错误: \(path)")
+    ///   - url: 文件路径
+    ///   - type: 指定文件类型
+    /// - Throws: FilePathError - 目标路径不是文件路径 | 目标路径不存在
+    public init(url: URL, type: Type) throws {
+        guard url.isFileURL else {
+            throw Error(message: "目标路径不是文件路径")
         }
-        try self.init(url: url, type: type)
+        
+        self.url = url
+        self.type = type
+        attributes = Attributes(path: url)
     }
     
     /// 生成 FilePath
     /// - Parameters:
-    ///   - url: 文件路径
-    ///   - type: 指定文件类型, nil: 自动检测
-    /// - Throws: FilePathError - 目标路径不是文件路径 | 目标路径不存在
-    public init(url: URL, type: Type? = nil) throws {
-        guard url.isFileURL else {
-            throw FilePathError(message: "目标路径不是文件路径")
+    ///   - path: 文件路径
+    ///   - type: 指定文件类型
+    /// - Throws: FilePathError - path解析错误 | 目标路径不是文件路径 | 目标路径不存在
+    public convenience init(path: String, type: Type) throws {
+        guard let url = URLComponents(url: URL(fileURLWithPath: path), resolvingAgainstBaseURL: true)?.url else {
+            throw Error(message: "path解析错误: \(path)")
         }
-        
-        self.url = url
-        if let type = type {
-            self.type = type
-        } else {
-            self.type = try FilePath.checkType(url: url)
-        }
-        
-        attributes = Attributes(path: url)
+        try self.init(url: url, type: type)
+    }
+    
+    public convenience init(path: String) throws {
+        try self.init(path: path, type: try FilePath.checkType(path))
+    }
+    
+    public convenience init(url: URL) throws {
+        try self.init(url: url, type: try FilePath.checkType(url))
     }
     
 }
@@ -95,11 +98,16 @@ public extension FilePath {
     /// 根据当前[FilePath]创建文件/文件夹
     /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
     func create(with data: Data? = nil) throws {
+        
         if isExist {
-            throw FilePathError(message: "文件/文件夹 存在, 无法创建")
+            switch type {
+            case .file:
+                throw Error(message: "文件存在, 无法创建: \(url.path)")
+            case .folder:
+                break
+            }
         }
-        let manager = FileManager.default
-
+        
         switch type {
         case .file:
             try manager.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
@@ -109,6 +117,14 @@ public extension FilePath {
         }
     }
     
+    @discardableResult
+    func create(file name: String, data: Data? = nil) throws -> FilePath {
+        let folder = url.appendingPathComponent(name, isDirectory: false)
+        let filePath = try FilePath(url: folder, type: .file)
+        try filePath.create(with: data)
+        return filePath
+    }
+    
     /// 在当前路径下创建文件夹
     /// - Parameter name: 文件夹名
     /// - Throws: FileManager error
@@ -116,16 +132,9 @@ public extension FilePath {
     @discardableResult
     func create(folder name: String) throws -> FilePath {
         let folder = url.appendingPathComponent(name, isDirectory: true)
-        let exist = manager.fileExists(atPath: folder.path)
-        
-        guard exist == false else {
-            return try FilePath(url: folder, type: .folder)
-        }
-        
-        try manager.createDirectory(at: folder,
-                                    withIntermediateDirectories: true,
-                                    attributes: nil)
-        return try FilePath(url: folder, type: .folder)
+        let filePath = try FilePath(url: folder, type: .folder)
+        try filePath.create()
+        return filePath
     }
     
 }
@@ -143,7 +152,7 @@ public extension FilePath {
             let fileURL = path.url.appendingPathComponent(attributes.name)
             try manager.moveItem(at: url, to: fileURL)
         case (.folder, .file):
-            throw FilePathError(message: "无法 [文件夹 -> 文件] 转移")
+            throw Error(message: "无法 [文件夹 -> 文件] 转移")
         }
     }
     
@@ -163,17 +172,17 @@ public extension FilePath {
         switch (type, path.type) {
         case (.file, .file), (.folder, .folder):
             if path.isExist {
-                throw FilePathError(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
+                throw Error(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
             }
             try manager.copyItem(at: url, to: path.url)
         case (.file, .folder):
             let path = try FilePath(url: path.url.appendingPathComponent(attributes.name), type: type)
             if path.isExist {
-                throw FilePathError(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
+                throw Error(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
             }
             try manager.copyItem(at: url, to: path.url)
         case (.folder, .file):
-            throw FilePathError(message: "无法 [文件夹 -> 文件] 拷贝")
+            throw Error(message: "无法 [文件夹 -> 文件] 拷贝")
         }
     }
     
@@ -182,48 +191,150 @@ public extension FilePath {
 // MARK: - get subFilePaths
 public extension FilePath {
     
-    /// 递归获取文件夹中所有文件/文件夹
-    /// - Throws: FilePathError - "目标路径不是文件夹类型"
-    /// - Returns: [FilePath]
-    func allSubFilePaths() throws -> [FilePath] {
-        guard self.type == .folder else {
-            throw FilePathError(message: "目标路径不是文件夹类型")
+    enum SearchPredicate {
+        case skipsSubdirectoryDescendants
+        case skipsPackageDescendants
+        case skipsHiddenFiles
+        @available(iOS 13.0, *) @available(OSX 10.15, *)
+        case includesDirectoriesPostOrder
+        @available(iOS 13.0, *) @available(OSX 10.15, *)
+        case producesRelativePathURLs
+        case custom((FilePath) throws -> Bool)
+    }
+
+
+}
+
+extension Array where Element == FilePath.SearchPredicate {
+
+    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath) throws -> Bool]) {
+        var systemPredicates: FileManager.DirectoryEnumerationOptions = []
+        var customPredicates = [(FilePath) throws -> Bool]()
+
+        self.forEach { item in
+            switch item {
+            case .skipsSubdirectoryDescendants:
+                systemPredicates.insert(.skipsSubdirectoryDescendants)
+            case .skipsPackageDescendants:
+                systemPredicates.insert(.skipsPackageDescendants)
+            case .skipsHiddenFiles:
+                systemPredicates.insert(.skipsHiddenFiles)
+            case .includesDirectoriesPostOrder:
+                #if os(iOS) || os(tvOS)
+                if #available(iOS 13.0, *) {
+                    systemPredicates.insert(.includesDirectoriesPostOrder)
+                }
+                #elseif os(OSX)
+                if #available(OSX 10.15, *) {
+                    systemPredicates.insert(.includesDirectoriesPostOrder)
+                }
+                #endif
+            case .producesRelativePathURLs:
+                #if os(iOS) || os(tvOS)
+                if #available(iOS 13.0, *) {
+                    systemPredicates.insert(.producesRelativePathURLs)
+                }
+                #elseif os(OSX)
+                if #available(OSX 10.15, *) {
+                    systemPredicates.insert(.producesRelativePathURLs)
+                }
+                #endif
+            case .custom(let v):
+                customPredicates.append(v)
+            }
         }
-        guard let enumerator = manager.enumerator(atPath: url.path) else {
-            return []
+
+        return (systemPredicates, customPredicates)
+    }
+
+}
+
+
+public extension FilePath {
+
+    /// 获取所在文件夹
+    /// - Returns: 所在文件夹
+    func parentFolder() -> FilePath? {
+        let parent = url.deletingLastPathComponent()
+        guard parent != url else {
+            return nil
         }
-        var list = [FilePath]()
-        for case let path as String in enumerator {
-            guard path.hasPrefix(".") == false else {
-                continue
-            }
-            guard let fullPath = enumerator.value(forKey: "path") as? String else {
-                continue
-            }
-            guard let item = try? FilePath(url: URL(fileURLWithPath: fullPath + path)) else {
-                continue
-            }
-            guard item.attributes.name.hasPrefix(".") == false else {
-                continue
-            }
-            list.append(item)
-        }
-        return list
+        return try? FilePath(url: parent, type: .folder)
     }
     
-    /// 获取文件夹中文件/文件夹
+    /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths() throws -> [FilePath] {
+    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+        try allSubFilePaths(predicates: predicates)
+    }
+    
+    /// 递归获取文件夹中所有文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
+    /// - Returns: [FilePath]
+    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         guard self.type == .folder else {
-            throw FilePathError(message: "目标路径不是文件夹类型")
+            throw Error(message: "目标路径不是文件夹类型")
         }
         
+        let (systemPredicates, customPredicates) = predicates.split()
+        
+        let resourceValues: [URLResourceKey] = [.isDirectoryKey]
+        guard let enumerator = manager.enumerator(at: url,
+                                                  includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
+                                                  options: systemPredicates,
+                                                  errorHandler: nil) else {
+                                                    return []
+        }
+        
+        var list = [FilePath]()
+        for case let fileURL as URL in enumerator {
+            guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues))
+                , let isDirectory = resourceValues.isDirectory
+                else {
+                    continue
+            }
+            
+            let item = try FilePath(url: fileURL, type: isDirectory ? .folder : .file)
+            if try customPredicates.contains(where: { try $0(item) == false }) {
+                continue
+            }
+            
+            list.append(item)
+        }
+        
+        return list
+    }
+
+    /// 获取当前文件夹中文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
+    /// - Returns: [FilePath]
+    func subFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+        try subFilePaths(predicates: predicates)
+    }
+
+    /// 获取当前文件夹中文件/文件夹
+    /// - Throws: FilePathError - "目标路径不是文件夹类型"
+    /// - Parameter predicates: 查找条件
+    /// - Returns: [FilePath]
+    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
+        guard self.type == .folder else {
+            throw Error(message: "目标路径不是文件夹类型")
+        }
+
+        let (systemPredicates, customPredicates) = predicates.split()
+
         return try manager
             .contentsOfDirectory(at: url,
                                  includingPropertiesForKeys: nil,
-                                 options: .skipsHiddenFiles)
+                                 options: systemPredicates)
             .compactMap({ try? FilePath(url: $0) })
+            .filter({ item -> Bool in
+                try customPredicates.contains(where: { try $0(item) == false }) == false
+            })
     }
     
 }
@@ -234,16 +345,20 @@ public extension FilePath {
     /// - Parameter url: 文件路径
     /// - Throws: FilePathError - "目标路径文件不存在: url"
     /// - Returns: 类型
-    static func checkType(url: URL) throws -> Type {
+    static func checkType(_ url: URL) throws -> Type {
+        return try checkType(url.path)
+    }
+    
+    static func checkType(_ path: String) throws -> Type {
         var isDir: ObjCBool = false
-        if manager.fileExists(atPath: url.path, isDirectory: &isDir) {
+        if manager.fileExists(atPath: path, isDirectory: &isDir) {
             if isDir.boolValue {
                 return .folder
             } else {
                 return .file
             }
         } else {
-            throw FilePathError(message: "目标路径文件不存在: \(url.description)")
+            throw Error(message: "目标路径文件不存在: \(path)")
         }
     }
     
@@ -260,14 +375,16 @@ public extension FilePath {
 // MARK: - Error
 public extension FilePath {
     
-    struct FilePathError: Error {
+    struct Error: LocalizedError {
         
         public let message: String
         public let code: Int
+        public var errorDescription: String?
         
         @discardableResult
         public init(message: String, code: Int = 0) {
             self.message = message
+            self.errorDescription = message
             self.code = code
         }
     }

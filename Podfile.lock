@@ -166,9 +166,15 @@ PODS:
     - Stem/Runtime
   - Stem/WebKit (0.0.31):
     - Stem/Core
+  - SwiftLint (0.39.2)
 
 DEPENDENCIES:
   - Stem (from `./Template.podspec`)
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - SwiftLint
 
 EXTERNAL SOURCES:
   Stem:
@@ -176,7 +182,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Stem: 179e38e4bc5f522550df4b95c610629fee1d62c4
+  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: ae2b9441c4dea24545fd16a138554740fb198efb
+PODFILE CHECKSUM: 91a86deb0437732c391fbd3cf734d29fb450441e
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.3

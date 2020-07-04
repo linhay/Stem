@@ -23,15 +23,15 @@
 import UIKit
 
 // MARK: - convenience init
-public extension UINib {
-
-    convenience init(name: String, in bundle: Bundle? = nil) {
-        self.init(nibName: name, bundle: bundle)
+public extension Stem where Base: UINib {
+    
+    static func load(name: String, in bundle: Bundle? = nil) -> Base {
+        return Base(nibName: name, bundle: bundle)
     }
-
-    convenience init<T: UIView>(vc: T.Type) {
+    
+    static func load<T: UIView>(vc: T.Type, in bundle: Bundle? = nil) -> Base {
         let name = String(describing: T.self)
-        self.init(name: name, in: Bundle(for: T.self))
+        return Base(nibName: name, bundle: bundle)
     }
-
+    
 }

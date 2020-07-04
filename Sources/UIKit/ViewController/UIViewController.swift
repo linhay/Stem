@@ -113,14 +113,14 @@ public extension Stem where Base: UIViewController {
     static var current: UIViewController? {
         func find(rawVC: UIViewController) -> UIViewController {
             switch rawVC {
+            case let vc where vc.presentedViewController != nil:
+                return find(rawVC: vc.presentedViewController!)
             case let nav as UINavigationController:
                 guard let vc = nav.viewControllers.last else { return rawVC }
                 return find(rawVC: vc)
             case let tab as UITabBarController:
                 guard let vc = tab.selectedViewController else { return rawVC }
                 return find(rawVC: vc)
-            case let vc where vc.presentedViewController != nil:
-                return find(rawVC: vc.presentedViewController!)
             default:
                 return rawVC
             }
@@ -172,7 +172,7 @@ public extension Stem where Base: UIViewController {
     ///   - animated: 是否显示动画
     ///   - completion: 完成后事件
     func present(vc: UIViewController?, animated: Bool = true, completion: (() -> Void)? = nil) {
-        guard let vc = vc else { return }
+        guard let vc = vc, base.presentedViewController == nil else { return }
         base.present(vc, animated: animated, completion: completion)
     }
     

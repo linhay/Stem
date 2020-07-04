@@ -31,7 +31,10 @@ public extension Stem where Base: UIImage {
         guard let alpha = base.cgImage?.alphaInfo else {
             return false
         }
-        return alpha == .first || alpha == .last || alpha == .premultipliedFirst || alpha == .premultipliedLast
+        return alpha == .first
+            || alpha == .last
+            || alpha == .premultipliedFirst
+            || alpha == .premultipliedLast
     }
 
     /// exif信息

@@ -48,12 +48,20 @@ public extension Notice where Parsable: NoticeNotificationParsable {
         self.init(key: Parsable.noticeName)
     }
 
+    convenience init(use parsable: Parsable.Type) {
+        self.init(key: parsable.noticeName)
+    }
+
 }
 
 public extension Notice where Parsable: NoticeCustomParsable {
 
     convenience init() {
         self.init(key: Notification.Name(Parsable.noticeName))
+    }
+
+    convenience init(use parsable: Parsable.Type) {
+        self.init(key: parsable.noticeName)
     }
 
 }
@@ -85,9 +93,13 @@ public extension Notice {
 
     func subscribe(by object: NSObject, queue: OperationQueue? = nil, using block: @escaping (Parsable) -> Void) {
         let token = subscribe(queue: queue, using: block)
-        let key = "com.linhey.stem.evet.tokens"
-        var tokens = object.st.getAssociated(for: key) as [NoticeToken]? ?? []
-        tokens.append(token)
+        let key = "com.linhey.stem.notice.tokens"
+        if let tokens = object.st.getAssociated(for: key) as NoticeTokens? {
+            token.disposed(tokens)
+            return
+        }
+        let tokens = NoticeTokens()
+        token.disposed(tokens)
         object.st.setAssociated(value: tokens, for: key)
     }
 

@@ -99,27 +99,6 @@ public class RunTime {
     
 }
 
-public // MARK: - hook
-extension RunTime {
-
-    /// 全局hook objc_setAssociatedObject 唯一指针
-    @available(OSX 10.15, *) @available(iOS 13.0, *) @available(tvOS 13.0, *) @available(watchOS 6.0, *)
-    private static var hookSetAssociatedObjectPoint = UnsafeMutablePointer<objc_hook_setAssociatedObject?>.allocate(capacity: MemoryLayout<objc_hook_setAssociatedObject?>.size)
-
-    /// 全局hook objc_setAssociatedObject 函数
-    /// - Parameter call: call
-    @available(OSX 10.15, *) @available(iOS 13.0, *) @available(tvOS 13.0, *) @available(watchOS 6.0, *)
-    static func hookSetAssociatedObject(hook: objc_hook_setAssociatedObject?) {
-        guard let hook = hook else {
-            let hook: objc_hook_setAssociatedObject = { _, _, _, _ in }
-            objc_setHook_setAssociatedObject(hook, hookSetAssociatedObjectPoint)
-            return
-        }
-        objc_setHook_setAssociatedObject(hook, hookSetAssociatedObjectPoint)
-    }
-    
-}
-
 public extension RunTime {
 
     /// 获取类型元类

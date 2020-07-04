@@ -24,31 +24,12 @@ import Foundation
 
 public extension Device {
 
-    static let cpu = CPU()
+    static let information = Information()
 
-    struct CPU { }
+    struct Information { }
 
 }
 
-public extension Device.CPU {
-
-    /// cpu 核心数
-    var count: Int { ProcessInfo.processInfo.activeProcessorCount }
-
-    var usage: Double { usagePerProcessor.reduce(0.0, { return $0 + $1 }) }
-
-
-    /// cpu 滴答数, 纳秒级精度
-    var absoluteTime: Int64 {
-        // 获取转换因子
-        var info = mach_timebase_info_data_t()
-        mach_timebase_info(&info)
-        // 获取开始时间
-        return Int64(mach_absolute_time())
-    }
-
-    var usagePerProcessor: [Double] {
-        return []
-    }
+public extension Device.Information {
 
 }

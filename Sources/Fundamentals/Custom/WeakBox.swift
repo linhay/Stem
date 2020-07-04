@@ -24,10 +24,12 @@ import Foundation
 
 public final class WeakBox<T: AnyObject> {
 
-   public weak var value: T?
+    public weak var value: T?
 
-   public init(_ value: T) {
+    public init(_ value: T) {
         self.value = value
     }
+
+    public init() {}
 
 }

@@ -10,13 +10,13 @@
         <!--Navigation Controller-->
         <scene sceneID="axd-y8-dbS">
             <objects>
-                <navigationController id="JYn-x3-4Jl" sceneMemberID="viewController">
+                <navigationController hidesBottomBarWhenPushed="YES" id="JYn-x3-4Jl" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6Vh-QY-UdW">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="rs7-wB-Nih" kind="relationship" relationship="rootViewController" id="cMV-b8-Q7r"/>
+                        <segue destination="rs7-wB-Nih" kind="relationship" relationship="rootViewController" id="BjG-EV-CLZ"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pCU-Xb-WtN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

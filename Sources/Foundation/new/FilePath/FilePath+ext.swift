@@ -53,7 +53,11 @@ extension FilePath {
     convenience init(path: String, inSanbox rootPath: SanboxRootPath, type: Type? = nil) throws {
         var rootURL = try rootPath.url()
         rootURL.appendPathComponent(path)
-        try self.init(url: rootURL, type: type)
+        if let type = type {
+            try self.init(url: rootURL, type: type)
+        } else {
+            try self.init(url: rootURL)
+        }
     }
 
 }
