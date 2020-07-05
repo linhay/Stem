@@ -31,7 +31,7 @@ public extension STNibProtocol {
     }
 
     static var nib: UINib? {
-        return UINib(nibName: String(describing: Self.self), bundle: nil)
+        return UINib(nibName: String(describing: Self.self), bundle: Bundle(for: Self.self))
     }
 
     static var loadFromNib: Self {
