@@ -35,9 +35,9 @@ public extension StemValue where Base == String {
             characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         }
 
-        let count = Int.random(in: length)
+        let count = Swift.max(Int.random(in: length), 0)
 
-        return (0...count).map { (_) in
+        return (0..<count).map { (_) in
             let character = characters![Int.random(in: 0..<characters!.count)] ?? ""
             return String(character)
         }.joined()
