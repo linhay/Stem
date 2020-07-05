@@ -24,16 +24,19 @@ import Foundation
 
 public extension StemValue where Base == String {
 
-    static func random(characters: String? = nil, length: ClosedRange<Int>) -> String {
-        return random(characters: characters, length: Range<Int>(uncheckedBounds: (lower: length.lowerBound, upper: length.upperBound)))
+    static func random(characters: String? = nil, length: Int) -> String {
+        return random(characters: characters, length: length...length)
     }
 
-    static func random(characters: String? = nil, length: Range<Int>) -> String {
+    static func random(characters: String? = nil, length: ClosedRange<Int>) -> String {
         var characters = characters
+
         if characters == nil {
             characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         }
+
         let count = Int.random(in: length)
+
         return (0...count).map { (_) in
             let character = characters![Int.random(in: 0..<characters!.count)] ?? ""
             return String(character)
