@@ -29,17 +29,16 @@ public extension StemValue where Base == String {
     }
 
     static func random(characters: String? = nil, length: ClosedRange<Int>) -> String {
-        var characters = characters
+        let characters = characters ?? "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-        if characters == nil {
-            characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        guard characters.isEmpty == false else {
+            return ""
         }
 
         let count = Swift.max(Int.random(in: length), 0)
 
-        return (0..<count).map { (_) in
-            let character = characters![Int.random(in: 0..<characters!.count)] ?? ""
-            return String(character)
+        return (0..<count).compactMap { _ -> String? in
+            characters[Int.random(in: 0..<characters.count)]?.description
         }.joined()
     }
     
