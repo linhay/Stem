@@ -94,6 +94,7 @@ Pod::Spec.new do |spec|
             'Sources/' + name + '/*.swift',
             'Sources/' + name + '/**/*.swift',
             'Sources/' + name + '/**/**/*.swift'
+            'Sources/' + name + '/**/**/**/*.swift'
             ]
         end
     end
