@@ -90,6 +90,22 @@ public extension Stem where Base: UIColor {
         return (red: r, green: g, blue: b, alpha: a)
     }
     
+    var xyz: (x: CGFloat, y: CGFloat, z: CGFloat) {
+        let rgb = self.rgb
+        
+        let deltaR: (CGFloat) -> CGFloat = { R in
+            return (R > 0.04045) ? pow((R + 0.055)/1.055, 2.40) : (R/12.92)
+        }
+        let R = deltaR(rgb.red)
+        let G = deltaR(rgb.green)
+        let B = deltaR(rgb.blue)
+        let X = (R*41.24 + G*35.76 + B*18.05)
+        let Y = (R*21.26 + G*71.52 + B*7.22)
+        let Z = (R*1.93 + G*11.92 + B*95.05)
+        
+        return (X, Y, Z)
+    }
+    
     /// 获取hex字符
     var hexString: String {
         let rgb = self.rgb
@@ -160,7 +176,7 @@ public extension UIColor {
 }
 
 public extension Stem where Base: UIColor {
-
+    
     var invert: UIColor {
         let (red, green, blue, alpha) = self.rgb
         return UIColor(red:1.0-(red / 255.0),
@@ -168,7 +184,7 @@ public extension Stem where Base: UIColor {
                        blue: 1.0-(blue / 255.0),
                        alpha: alpha)
     }
-
+    
 }
 
 // MARK: - Brightness
