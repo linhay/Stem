@@ -90,7 +90,6 @@ public extension Stem where Base: UIImage {
 
 public extension Stem where Base: UIImage {
 
-    @available(iOS 12.0, *)
     var colors: [UIColor: Int] {
         var result = [UIColor: Int]()
         generator { (color) in
@@ -103,7 +102,6 @@ public extension Stem where Base: UIImage {
         return result
     }
 
-    @available(iOS 12.0, *)
     var pixels: [UIColor] {
         guard let cgImage = base.cgImage else {
             return []
@@ -117,35 +115,21 @@ public extension Stem where Base: UIImage {
         return result
     }
 
-    @available(iOS 12.0, *)
     func generator(callback: (UIColor) -> Void) {
-        guard let cgImage = base.cgImage else {
-            return
+        guard let cgImage = base.cgImage,
+              let data = cgImage.dataProvider?.data,
+              let bytes = CFDataGetBytePtr(data) else {
+            fatalError("Couldn't access image data")
         }
-        assert(cgImage.bitsPerPixel == 32, "only support 32 bit images")
-        assert(cgImage.bitsPerComponent == 8,  "only support 8 bit per channel")
-        guard let imageData = cgImage.dataProvider?.data as Data? else {
-            return
-        }
-        let size = cgImage.width * cgImage.height
-        let buffer = UnsafeMutableBufferPointer<UInt32>.allocate(capacity: size)
-        _ = imageData.copyBytes(to: buffer)
-        for pixel in buffer {
-            var r : UInt32 = 0
-            var g : UInt32 = 0
-            var b : UInt32 = 0
-            if cgImage.byteOrderInfo == .orderDefault || cgImage.byteOrderInfo == .order32Big {
-                r = pixel & 255
-                g = (pixel >> 8) & 255
-                b = (pixel >> 16) & 255
-            } else if cgImage.byteOrderInfo == .order32Little {
-                r = (pixel >> 16) & 255
-                g = (pixel >> 8) & 255
-                b = pixel & 255
+        assert(cgImage.colorSpace?.model == .rgb)
+
+        let bytesPerPixel = cgImage.bitsPerPixel / cgImage.bitsPerComponent
+        for y in 0 ..< cgImage.height {
+            for x in 0 ..< cgImage.width {
+                let offset = (y * cgImage.bytesPerRow) + (x * bytesPerPixel)
+                let components = (r: CGFloat(bytes[offset]), g: CGFloat(bytes[offset + 1]), b: CGFloat(bytes[offset + 2]))
+                callback(UIColor(red: components.r / 255, green: components.g / 255, blue: components.b / 255, alpha: 1))
             }
-            let color = UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
-            callback(color)
         }
     }
-
 }

@@ -16,4 +16,14 @@ class ViewController: UITableViewController {
         st.push(vc: NoticeViewController())
     }
 
+    @IBAction func colors(_ sender: UIButton) {
+        var image = UIImage(named: "colors")
+        image = image?.st.scale(toWidth: image?.size.width ?? 0)
+        let pixels = image?.st.pixels
+        print(pixels?.count)
+        pixels?.forEach({ color in
+            print(color.st.hexString)
+        })
+    }
+
 }
