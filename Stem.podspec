@@ -93,7 +93,7 @@ Pod::Spec.new do |spec|
             sp.source_files = [
             'Sources/' + name + '/*.swift',
             'Sources/' + name + '/**/*.swift',
-            'Sources/' + name + '/**/**/*.swift'
+            'Sources/' + name + '/**/**/*.swift',
             'Sources/' + name + '/**/**/**/*.swift'
             ]
         end
