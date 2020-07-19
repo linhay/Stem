@@ -163,7 +163,10 @@ public extension Stem where Base: UIColor {
 
     var invert: UIColor {
         let (red, green, blue, alpha) = self.rgb
-        return UIColor(red:1.0-red, green: 1.0-green, blue: 1.0-blue, alpha: alpha)
+        return UIColor(red:1.0-(red / 255.0),
+                       green: 1.0-(green / 255.0),
+                       blue: 1.0-(blue / 255.0),
+                       alpha: alpha)
     }
 
 }
