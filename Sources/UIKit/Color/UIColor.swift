@@ -159,6 +159,15 @@ public extension UIColor {
     
 }
 
+public extension Stem where Base: UIColor {
+
+    var invert: UIColor {
+        let (red, green, blue, alpha) = self.rgb
+        return UIColor(red:1.0-red, green: 1.0-green, blue: 1.0-blue, alpha: alpha)
+    }
+
+}
+
 // MARK: - Brightness
 public extension Stem where Base: UIColor {
     

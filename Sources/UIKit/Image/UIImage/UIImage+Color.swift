@@ -91,20 +91,45 @@ public extension Stem where Base: UIImage {
 public extension Stem where Base: UIImage {
 
     @available(iOS 12.0, *)
+    var colors: [UIColor: Int] {
+        var result = [UIColor: Int]()
+        generator { (color) in
+            if result[color] == nil {
+                result[color] = 1
+            } else {
+                result[color] = result[color]! + 1
+            }
+        }
+        return result
+    }
+
+    @available(iOS 12.0, *)
     var pixels: [UIColor] {
         guard let cgImage = base.cgImage else {
             return []
         }
+        let size = cgImage.width * cgImage.height
+        var result = [UIColor]()
+        result.reserveCapacity(size)
+        generator { (color) in
+            result.append(color)
+        }
+        return result
+    }
+
+    @available(iOS 12.0, *)
+    func generator(callback: (UIColor) -> Void) {
+        guard let cgImage = base.cgImage else {
+            return
+        }
         assert(cgImage.bitsPerPixel == 32, "only support 32 bit images")
         assert(cgImage.bitsPerComponent == 8,  "only support 8 bit per channel")
         guard let imageData = cgImage.dataProvider?.data as Data? else {
-            return []
+            return
         }
         let size = cgImage.width * cgImage.height
         let buffer = UnsafeMutableBufferPointer<UInt32>.allocate(capacity: size)
         _ = imageData.copyBytes(to: buffer)
-        var result = [UIColor]() 
-        result.reserveCapacity(size)
         for pixel in buffer {
             var r : UInt32 = 0
             var g : UInt32 = 0
@@ -119,9 +144,8 @@ public extension Stem where Base: UIImage {
                 b = pixel & 255
             }
             let color = UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
-            result.append(color)
+            callback(color)
         }
-        return result
     }
 
 }

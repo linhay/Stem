@@ -24,6 +24,24 @@ import Foundation
 
 public class Gcd {
 
+    public enum QueueType {
+        case main
+        case global(DispatchQoS.QoSClass)
+        case custom(String)
+
+        var queue: DispatchQueue {
+            switch self {
+            case .main:
+                return DispatchQueue.main
+            case .global(let qos):
+                return DispatchQueue.global(qos: qos)
+            case .custom(let label):
+                return DispatchQueue(label: label)
+            }
+        }
+
+    }
+
     /// 原子锁
     ///
     /// - Parameters:
@@ -35,27 +53,15 @@ public class Gcd {
         objc_sync_exit(lock)
     }
 
-    /// 主线程异步延时
-    ///
-    /// - Parameters:
-    ///   - time: 时间 (秒)
-    ///   - event: 延时事件
-    public class func delay(_ time: Double, event: @escaping () -> Void) {
-        let time = DispatchTime.now() + .milliseconds(Int(time * 1000))
-        DispatchQueue.main.asyncAfter(deadline: time) {
-            event()
-        }
-    }
-
     /// 子线程线程异步延时
     ///
     /// - Parameters:
     ///   - label: 标识
     ///   - time: 时间 (秒)
     ///   - event: 延时事件
-    public class func delay(label: String, seconds: TimeInterval, event: @escaping () -> Void) {
+    public class func delay(_ queueType: QueueType = .main, seconds: TimeInterval, event: @escaping () -> Void) {
         let time = DispatchTime.now() + .milliseconds(Int(seconds * 1000))
-        DispatchQueue(label: label).asyncAfter(deadline: time) {
+        queueType.queue.asyncAfter(deadline: time) {
             event()
         }
     }
@@ -165,7 +171,7 @@ public class Gcd {
         timer.setEventHandler {
             DispatchQueue.main.async { event(timer) }
         }
-        
+
         timer.resume()
         return timer
     }
