@@ -23,36 +23,37 @@
 import UIKit
 
 extension Stem where Base: NSLayoutConstraint {
-  
-  /// 改变Constant 增加或者减少
-  /// - Parameter offSet: 变化量
-  public func change(offest: CGFloat) {
-    let nowConstant = base.constant
-    base.constant = nowConstant + offest
-  }
-  
-  /// 修改倍率
-  ///
-  /// - Parameter multiplier: 新倍率
-  /// - Returns: Constraint
-  public func change(multiplier: CGFloat) -> NSLayoutConstraint {
-    NSLayoutConstraint.deactivate([base])
-    
-    let newConstraint = NSLayoutConstraint(
-      item: base.firstItem as Any,
-      attribute: base.firstAttribute,
-      relatedBy: base.relation,
-      toItem: base.secondItem,
-      attribute: base.secondAttribute,
-      multiplier: multiplier,
-      constant: base.constant)
-    
-    newConstraint.priority = base.priority
-    newConstraint.shouldBeArchived = base.shouldBeArchived
-    newConstraint.identifier = base.identifier
-    
-    NSLayoutConstraint.activate([newConstraint])
-    return newConstraint
-  }
-  
+
+    /// 改变Constant 增加或者减少
+    /// - Parameter offSet: 变化量
+    public func change(offest: CGFloat) {
+        let nowConstant = base.constant
+        base.constant = nowConstant + offest
+    }
+
+    /// 修改倍率
+    ///
+    /// - Parameter multiplier: 新倍率
+    /// - Returns: Constraint
+    @discardableResult
+    public func change(multiplier: CGFloat) -> NSLayoutConstraint {
+        NSLayoutConstraint.deactivate([base])
+
+        let newConstraint = NSLayoutConstraint(
+            item: base.firstItem as Any,
+            attribute: base.firstAttribute,
+            relatedBy: base.relation,
+            toItem: base.secondItem,
+            attribute: base.secondAttribute,
+            multiplier: multiplier,
+            constant: base.constant)
+
+        newConstraint.priority = base.priority
+        newConstraint.shouldBeArchived = base.shouldBeArchived
+        newConstraint.identifier = base.identifier
+
+        NSLayoutConstraint.activate([newConstraint])
+        return newConstraint
+    }
+
 }
