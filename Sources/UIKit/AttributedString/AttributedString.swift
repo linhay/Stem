@@ -158,6 +158,22 @@ public extension Stem where Base: NSAttributedString {
 
 }
 
+public extension Stem where Base: NSMutableAttributedString {
+
+    private var paragraphStyle: NSMutableParagraphStyle {
+        if base.length > 0, let style = base.attributes(at: 0, effectiveRange: nil)[.paragraphStyle] as? NSParagraphStyle {
+            return style.mutableCopy() as! NSMutableParagraphStyle
+        }
+        return NSMutableParagraphStyle()
+    }
+
+    func setAttributes(_ value: [NSAttributedString.Key: Any]?, range: NSRange?) -> Base {
+        base.setAttributes(value, range: range ?? NSRange(location: 0, length: base.length))
+        return base
+    }
+
+}
+
 // MARK: - NSAttributedString
 public extension Stem where Base: NSAttributedString {
 
@@ -177,14 +193,7 @@ public extension Stem where Base: NSAttributedString {
         }
 
         let mutableCopy = NSMutableAttributedString(attributedString: base)
-
-        if let style = base.attributes(at: 0, effectiveRange: nil)[.paragraphStyle] as? NSParagraphStyle,
-            style.lineBreakMode != .byWordWrapping,
-            let mutableParagraphStyle = style.mutableCopy() as? NSMutableParagraphStyle {
-            mutableParagraphStyle.lineBreakMode = .byWordWrapping
-            mutableCopy.setAttributes([.paragraphStyle: mutableParagraphStyle], range: NSRange(location: 0, length: base.length))
-        }
-
+        mutableCopy.st.paragraphStyle.lineBreakMode = .byWordWrapping
         return mutableCopy.boundingRect(with: size, options: option, context: nil)
     }
 
