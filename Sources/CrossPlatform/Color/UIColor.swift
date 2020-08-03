@@ -22,146 +22,106 @@
 
 #if canImport(UIKit)
 import UIKit
-public typealias STColor = UIColor
+public typealias STWrapperColor = UIColor
 #elseif canImport(AppKit)
 import AppKit
-public typealias STColor = NSColor
+public typealias STWrapperColor = NSColor
 #endif
 
+public extension StemColor {
+
+    var color: STWrapperColor {
+        STWrapperColor(red: rgbSpace.red, green: rgbSpace.green, blue: rgbSpace.blue, alpha: alpha)
+    }
+
+    convenience init(cgColor color: CGColor) {
+        guard let components = color.components, components.count >= 4 else {
+            self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
+            return
+        }
+
+        let red   = Double(components[0]) * 255
+        let green = Double(components[1]) * 255
+        let blue  = Double(components[2]) * 255
+        let alpha = Double(components[3])
+
+        self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
+    }
+
+    convenience init(color: STWrapperColor) {
+        self.init(cgColor: color.cgColor)
+    }
+
+}
+
+public extension Stem where Base: STWrapperColor {
+
+    var stemColor: StemColor {
+        .init(color: base)
+    }
+
+}
+
 // MARK: - static Api
-public extension Stem where Base: STColor {
+public extension Stem where Base: STWrapperColor {
     
     /// 是否启用sRGB色彩模式
-    static var isDisplayP3Enabled: Bool {
-        set { STColor.isDisplayP3Enabled = newValue }
-        get { return STColor.isDisplayP3Enabled }
+    static var displayMode: STWrapperColor.DisplayMode {
+        set { STWrapperColor.displayMode = newValue }
+        get { return STWrapperColor.displayMode }
     }
-    
-    /// hex to RGB value
-    /// - Parameter value: hex
-    static func rgb(from value: UInt32) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
-        return (red: CGFloat((value & 0xFF0000) >> 16),
-                green: CGFloat((value & 0x00FF00) >> 8),
-                blue: CGFloat(value & 0x0000FF))
-    }
-    
-    /// hex to RGB value
-    /// - Parameter str: value: hex
-    static func rgb(from str: String) -> (red: CGFloat, green: CGFloat, blue: CGFloat)? {
-        var cString = str.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
-        if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
-        if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
-        if cString.count != 6 { return nil }
-        
-        var value: UInt32 = 0x0
-        Scanner(string: String(cString)).scanHexInt32(&value)
-        
-        return rgb(from: value)
-    }
-    
+
 }
 
 // MARK: - api
-public extension Stem where Base: STColor {
+public extension Stem where Base: STWrapperColor {
     
     /// 随机色
-    static var random: STColor {
-        let r = CGFloat.random(in: 0.0 ... 255)
-        let g = CGFloat.random(in: 0.0 ... 255)
-        let b = CGFloat.random(in: 0.0 ... 255)
-        return STColor(r: r, g: g, b: b, a: 1.0)
-    }
+    static var random: STWrapperColor { StemColor.random.color }
     
     /// 透明度
-    var alpha: CGFloat {
-        return base.cgColor.alpha
-    }
+    var alpha: CGFloat { base.cgColor.alpha }
     
     /// 设置透明度
     ///
     /// - Parameter alpha: 透明度
     /// - Returns: uicolor
-    func with(alpha: CGFloat) -> STColor { return base.withAlphaComponent(alpha) }
-    
-    /// 获取RGB色值
-    var rgb: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
-        guard let components = base.cgColor.components, components.count >= 4 else {
-            return (red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        }
-        let r = components[0] * 255
-        let g = components[1] * 255
-        let b = components[2] * 255
-        let a = components[3]
-        return (red: r, green: g, blue: b, alpha: a)
-    }
-    
-    var xyz: (x: CGFloat, y: CGFloat, z: CGFloat) {
-        let rgb = self.rgb
-        
-        let deltaR: (CGFloat) -> CGFloat = { R in
-            return (R > 0.04045) ? pow((R + 0.055)/1.055, 2.40) : (R/12.92)
-        }
-        let R = deltaR(rgb.red)
-        let G = deltaR(rgb.green)
-        let B = deltaR(rgb.blue)
-        let X = (R*41.24 + G*35.76 + B*18.05)
-        let Y = (R*21.26 + G*71.52 + B*7.22)
-        let Z = (R*1.93 + G*11.92 + B*95.05)
-        
-        return (X, Y, Z)
-    }
-    
-    /// 获取hex字符
-    var hexString: String {
-        let rgb = self.rgb
-        if rgb.alpha == 1 {
-            return String(format: "#%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue))
-        } else {
-            return String(format: "#%02lX%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue), Int(rgb.alpha))
-        }
-    }
-    
-    /// 获取颜色16进制
-    var uInt: UInt {
-        let rgb = self.rgb
-        var colorAsUInt32: UInt32 = 0
-        colorAsUInt32 += UInt32(rgb.red * 255.0) << 16
-        colorAsUInt32 += UInt32(rgb.green * 255.0) << 8
-        colorAsUInt32 += UInt32(rgb.blue * 255.0)
-        return UInt(colorAsUInt32)
-    }
+    func with(alpha: CGFloat) -> STWrapperColor { return base.withAlphaComponent(alpha) }
     
 }
 
 // MARK: - private api
-private extension STColor {
+ extension STWrapperColor {
+
+ public enum DisplayMode {
+        case srgb
+        case p3
+        case rgb
+    }
     
-    /// 是否启用sRGB色彩模式
-    static var isDisplayP3Enabled = false
+    static var displayMode = DisplayMode.srgb
     
 }
 
 // MARK: - init
-public extension STColor {
+public extension STWrapperColor {
     
     /// 十六进制色: 0x666666
     ///
     /// - Parameter str: "#666666" / "0X666666" / "0x666666"
-    convenience init(_ str: String) {
-        guard let value = STColor.st.rgb(from: str) else {
-            self.init(red: 1, green: 1, blue: 1, alpha: 1)
-            return
-        }
-        self.init(r: value.red, g: value.green, b: value.blue)
+    convenience init(_ value: String) {
+        let color = StemColor(hex: value)
+        let rgbSpace = color.rgbSpace
+        self.init(red: rgbSpace.red, green: rgbSpace.green, blue: rgbSpace.blue, alpha: color.alpha)
     }
     
     /// 十六进制色: 0x666666
     ///
     /// - Parameter RGBValue: 十六进制颜色
-    convenience init(_ value: UInt32) {
-        let value = STColor.st.rgb(from: value)
-        self.init(r: value.red, g: value.green, b: value.blue)
+    convenience init(_ value: Int) {
+        let color = StemColor(hex: value)
+        let rgbSpace = color.rgbSpace
+        self.init(red: rgbSpace.red, green: rgbSpace.green, blue: rgbSpace.blue, alpha: color.alpha)
     }
     
     /// 设置RGBA颜色
@@ -170,41 +130,40 @@ public extension STColor {
     ///   - r: red    0 - 255
     ///   - g: green  0 - 255
     ///   - b: blue   0 - 255
-    ///   - a: alpha  0 - 255
-    convenience init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1) {
-        if #available(iOS 10.0, *), STColor.isDisplayP3Enabled {
-            self.init(displayP3Red: r / 255, green: g / 255, blue: b / 255, alpha: a)
-        } else {
-            self.init(red: r / 255, green: g / 255, blue: b / 255, alpha: a)
+    ///   - a: alpha  0 - 1
+    convenience init(red: Double, green: Double, blue: Double, alpha: Double = 1) {
+        let red = CGFloat(red)
+        let green = CGFloat(green)
+        let blue = CGFloat(blue)
+        let alpha = CGFloat(alpha)
+        switch Self.displayMode {
+        case .srgb:
+            self.init(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+        case .p3:
+            if #available(iOS 10.0, *) {
+                self.init(displayP3Red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+            } else {
+                self.init(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+            }
+        case .rgb:
+            self.init(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
         }
     }
-    
-}
 
-public extension Stem where Base: STColor {
-    
-    var invert: STColor {
-        let (red, green, blue, alpha) = self.rgb
-        return STColor(red:1.0-(red / 255.0),
-                       green: 1.0-(green / 255.0),
-                       blue: 1.0-(blue / 255.0),
-                       alpha: alpha)
-    }
-    
 }
 
 // MARK: - Brightness
-public extension Stem where Base: STColor {
+public extension Stem where Base: STWrapperColor {
     
-    func lighter(amount: CGFloat = 0.25) -> STColor {
+    func lighter(amount: CGFloat = 0.25) -> STWrapperColor {
         return hueColor(withBrightnessAmount: 1 + amount)
     }
     
-    func darker(amount: CGFloat = 0.25) -> STColor {
+    func darker(amount: CGFloat = 0.25) -> STWrapperColor {
         return hueColor(withBrightnessAmount: 1 - amount)
     }
     
-    private func hueColor(withBrightnessAmount amount: CGFloat) -> STColor {
+    private func hueColor(withBrightnessAmount amount: CGFloat) -> STWrapperColor {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
         var brightness: CGFloat = 0
@@ -220,10 +179,10 @@ public extension Stem where Base: STColor {
         return base
         #else
         base.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        return STColor(hue: hue,
-                       saturation: saturation,
-                       brightness: brightness * amount,
-                       alpha: alpha)
+        return STWrapperColor(hue: hue,
+                              saturation: saturation,
+                              brightness: brightness * amount,
+                              alpha: alpha)
         #endif
     }
     
