@@ -1,0 +1,51 @@
+PODS:
+  - Stem (0.0.32):
+    - Stem/AVKit (= 0.0.32)
+    - Stem/Core (= 0.0.32)
+    - Stem/CoreText (= 0.0.32)
+    - Stem/CrossPlatform (= 0.0.32)
+    - Stem/Custom (= 0.0.32)
+    - Stem/Foundation (= 0.0.32)
+    - Stem/Fundamentals (= 0.0.32)
+    - Stem/NSObject (= 0.0.32)
+    - Stem/Runtime (= 0.0.32)
+    - Stem/UIKit (= 0.0.32)
+    - Stem/WebKit (= 0.0.32)
+  - Stem/AVKit (0.0.32):
+    - Stem/Core
+  - Stem/Core (0.0.32)
+  - Stem/CoreText (0.0.32):
+    - Stem/Core
+  - Stem/CrossPlatform (0.0.32):
+    - Stem/Core
+    - Stem/Foundation
+    - Stem/NSObject
+    - Stem/Runtime
+  - Stem/Custom (0.0.32):
+    - Stem/Core
+    - Stem/NSObject
+  - Stem/Foundation (0.0.32):
+    - Stem/Core
+    - Stem/Fundamentals
+  - Stem/Fundamentals (0.0.32):
+    - Stem/Core
+  - Stem/NSObject (0.0.32):
+    - Stem/Core
+  - Stem/Runtime (0.0.32):
+    - Stem/Core
+  - Stem/WebKit (0.0.32):
+    - Stem/Core
+
+DEPENDENCIES:
+  - Stem (from `../Stem.podspec`)
+
+EXTERNAL SOURCES:
+  Stem:
+    :path: "../Stem.podspec"
+
+SPEC CHECKSUMS:
+  Stem: badd4e871d1dae882864974f79f91ad594586996
+
+PODFILE CHECKSUM: 34ec18ca7ca34f11a5437e217ca92e349e0ea876
+
+COCOAPODS: 1.9.3

@@ -16,17 +16,18 @@ Pod::Spec.new do |spec|
     spec.authors     = { "linhey" => "is.linhey@outlook.com" }
     spec.source      = { :git => "https://github.com/linhay/Stem.git", :tag => spec.version }
 
-    spec.swift_versions = ['4.0', '4.2', '5.0']
+    spec.swift_versions = ['4.0', '4.2', '5.0', '5.1', '5.2', '5.3']
 
     spec.requires_arc = true
 
     spec.ios.deployment_target     = "10.0"
+    spec.osx.deployment_target     = "10.15"
 
     subspecs = {}
     subspecs['Core'] = Proc.new { |sp|
         sp.tvos.deployment_target    = "10.0"
         sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.12"
+        sp.osx.deployment_target     = "10.15"
         sp.watchos.deployment_target = "3.0"
     }
 
@@ -34,7 +35,7 @@ Pod::Spec.new do |spec|
         sp.dependency 'Stem/Core'
         sp.tvos.deployment_target    = "10.0"
         sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.12"
+        sp.osx.deployment_target     = "10.15"
         sp.watchos.deployment_target = "3.0"
     }
 
@@ -42,7 +43,7 @@ Pod::Spec.new do |spec|
         sp.dependency 'Stem/Core'
         sp.tvos.deployment_target    = "10.0"
         sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.12"
+        sp.osx.deployment_target     = "10.15"
         sp.watchos.deployment_target = "3.0"
     }
 
@@ -50,7 +51,7 @@ Pod::Spec.new do |spec|
         sp.dependency 'Stem/Core'
         sp.tvos.deployment_target    = "10.0"
         sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.12"
+        sp.osx.deployment_target     = "10.15"
         sp.watchos.deployment_target = "3.0"
     }
 
@@ -58,7 +59,7 @@ Pod::Spec.new do |spec|
         sp.frameworks = ['AVFoundation']
         sp.dependency 'Stem/Core'
         sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.12"
+        sp.osx.deployment_target     = "10.15"
     }
 
     subspecs['CoreText'] = Proc.new { |sp|
@@ -73,6 +74,15 @@ Pod::Spec.new do |spec|
     subspecs['Foundation'] = Proc.new { |sp|
         sp.dependency 'Stem/Core'
         sp.dependency 'Stem/Fundamentals'
+    }
+
+    subspecs['CrossPlatform'] = Proc.new { |sp|
+        sp.dependency 'Stem/Core'
+        sp.dependency 'Stem/Runtime'
+        sp.dependency 'Stem/NSObject'
+        sp.dependency 'Stem/Foundation'
+        sp.ios.deployment_target = '10.0'
+        sp.osx.deployment_target = "10.15"
     }
 
     subspecs['UIKit'] = Proc.new { |sp|
