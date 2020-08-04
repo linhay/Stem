@@ -351,5 +351,19 @@ public extension StemColor {
                                     blue:  1 - rgbSpace.blue),
                          alpha: alpha)
     }
+
+    func lighter(amount: Double = 0.25) -> StemColor {
+        var space = hsbSpace
+        let brightness = space.brightness * (1 + amount)
+        space = HSBSpace(hue: space.hue, saturation: space.saturation, brightness: brightness)
+        return .init(hsb: space)
+    }
+
+    func darker(amount: Double = 0.25) -> StemColor {
+        var space = hsbSpace
+        let brightness = space.brightness * (1 - amount)
+        space = HSBSpace(hue: space.hue, saturation: space.saturation, brightness: brightness)
+        return .init(hsb: space)
+    }
     
 }

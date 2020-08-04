@@ -31,7 +31,10 @@ public typealias STWrapperColor = NSColor
 public extension StemColor {
 
     var color: STWrapperColor {
-        STWrapperColor(red: rgbSpace.red, green: rgbSpace.green, blue: rgbSpace.blue, alpha: alpha)
+        STWrapperColor(red: rgbSpace.red * 255,
+                       green: rgbSpace.green * 255,
+                       blue: rgbSpace.blue * 255,
+                       alpha: alpha)
     }
 
     convenience init(cgColor color: CGColor) {
@@ -91,9 +94,9 @@ public extension Stem where Base: STWrapperColor {
 }
 
 // MARK: - private api
- extension STWrapperColor {
+extension STWrapperColor {
 
- public enum DisplayMode {
+    public enum DisplayMode {
         case srgb
         case p3
         case rgb
@@ -150,40 +153,4 @@ public extension STWrapperColor {
         }
     }
 
-}
-
-// MARK: - Brightness
-public extension Stem where Base: STWrapperColor {
-    
-    func lighter(amount: CGFloat = 0.25) -> STWrapperColor {
-        return hueColor(withBrightnessAmount: 1 + amount)
-    }
-    
-    func darker(amount: CGFloat = 0.25) -> STWrapperColor {
-        return hueColor(withBrightnessAmount: 1 - amount)
-    }
-    
-    private func hueColor(withBrightnessAmount amount: CGFloat) -> STWrapperColor {
-        var hue: CGFloat = 0
-        var saturation: CGFloat = 0
-        var brightness: CGFloat = 0
-        var alpha: CGFloat = 0
-        
-        #if os (iOS) || os (tvOS) || os (watchOS)
-        if base.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
-            return UIColor(hue: hue,
-                           saturation: saturation,
-                           brightness: brightness * amount,
-                           alpha: alpha)
-        }
-        return base
-        #else
-        base.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        return STWrapperColor(hue: hue,
-                              saturation: saturation,
-                              brightness: brightness * amount,
-                              alpha: alpha)
-        #endif
-    }
-    
 }
