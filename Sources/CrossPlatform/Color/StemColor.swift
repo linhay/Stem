@@ -69,6 +69,40 @@ public class StemColor {
             }
             
         }
+
+        public init(space: HSLSpace) {
+            func map(v1: Double, v2: Double, hue: Double) -> Double {
+                if 6 * hue < 1 {
+                    return v1 + (v2 - v1) * 6 * hue
+                }
+                if 2 * hue < 1 {
+                    return v2
+                }
+                if 3 * hue < 2 {
+                    return v1 + (v2 - v1) * (2/3 - hue) * 6
+                }
+                return v1
+            }
+
+            if space.saturation == 0 {
+                self.red = 1
+                self.green = 1
+                self.blue = 1
+            } else {
+                let var2: Double
+                if space.lightness < 0.5 {
+                    var2 = space.lightness * (1 + space.saturation)
+                } else {
+                    var2 = (space.lightness + space.saturation) - (space.saturation * space.lightness)
+                }
+
+                let var1 = 2 * space.lightness - var2
+
+                self.red   = map(v1: var1, v2: var2, hue: space.hue + 1/3)
+                self.green = map(v1: var1, v2: var2, hue: space.hue)
+                self.blue  = map(v1: var1, v2: var2, hue: space.hue + 2/3)
+            }
+        }
         
     }
     
@@ -82,7 +116,7 @@ public class StemColor {
         public let lightness: Double
         
         public init(hue: Double, saturation: Double, lightness: Double) {
-            self.hue = max(min(hue, 1), 0)
+            self.hue = abs(hue.truncatingRemainder(dividingBy: 1))
             self.saturation = max(min(saturation, 1), 0)
             self.lightness = max(min(lightness, 1), 0)
         }
@@ -99,7 +133,6 @@ public class StemColor {
             let lightness = (Max + Min) / 2
             self.lightness = lightness
             
-            //h 0-360
             if delMax == 0 {
                 hue = 0
                 saturation = 0
@@ -118,13 +151,13 @@ public class StemColor {
                 if red == Max {
                     hue = delBlue - delGreen
                 } else if green == Max {
-                    hue = (1 / 3) + delRed - delBlue
+                    hue = 1/3 + delRed - delBlue
                 } else if blue == Max {
-                    hue = (2 / 3) + delGreen - delRed
+                    hue = 2/3 + delGreen - delRed
                 } else {
                     hue = 0
                 }
-                self.hue = hue
+                self.hue = abs(hue.truncatingRemainder(dividingBy: 1))
             }
         }
         
@@ -139,7 +172,7 @@ public class StemColor {
         let brightness: Double
 
         public init(hue: Double, saturation: Double, brightness: Double) {
-            self.hue = max(min(hue, 1), 0)
+            self.hue = hue.truncatingRemainder(dividingBy: 1)
             self.saturation = max(min(saturation, 1), 0)
             self.brightness = max(min(brightness, 1), 0)
         }
@@ -176,7 +209,7 @@ public class StemColor {
                 } else {
                     hue = 0
                 }
-                self.hue = hue
+                self.hue = hue.truncatingRemainder(dividingBy: 1)
             }
             
         }
@@ -204,9 +237,14 @@ public class StemColor {
     
     public var rgbSpace: RGBSpace
     public var xyzSpace: XYZSpace { XYZSpace(from: rgbSpace) }
-    public var hlsSpace: HSLSpace { HSLSpace(from: rgbSpace) }
+    public var hslSpace: HSLSpace { HSLSpace(from: rgbSpace) }
     public var hsbSpace: HSBSpace { HSBSpace(from: rgbSpace) }
-    
+
+    public init(hsl space: HSLSpace, alpha: Double = 1) {
+        self.rgbSpace = RGBSpace(space: space)
+        self.alpha = alpha
+    }
+
     public init(hsb space: HSBSpace, alpha: Double = 1) {
         self.rgbSpace = RGBSpace(space: space)
         self.alpha = alpha

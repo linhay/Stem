@@ -30,8 +30,9 @@ class macOSTests: XCTestCase {
         print(color.st.stemColor.rgbSpace)
         print(color.st.stemColor.xyzSpace)
         print(StemColor(hsb: color.st.stemColor.hsbSpace).rgbSpace)
+        print(StemColor(hsl: color.st.stemColor.hslSpace).rgbSpace)
         print(color.st.stemColor.hsbSpace)
-        print(color.st.stemColor.hlsSpace)
+        print(color.st.stemColor.hslSpace)
     }
 
     func testPerformanceExample() throws {
