@@ -267,7 +267,7 @@ public extension StemColor {
         if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
         if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
         guard cString.count == 6 || cString.count == 8 else {
-            assert(false)
+            assertionFailure("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
             self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
             return
         }
@@ -300,7 +300,7 @@ public extension StemColor {
                                     blue:  Double(value & 0x000000FF) / 255),
                       alpha: Double((value & 0xFF000000) >> 24) / 255)
         } else {
-            assert(false)
+            assertionFailure("StemColor: 位数错误, 只支持 6 或 8 位, count: \(count)")
             self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
         }
     }
