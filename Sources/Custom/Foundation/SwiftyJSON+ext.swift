@@ -22,56 +22,56 @@
 
 import Foundation
 
-extension JSON {
-
+public extension JSON {
+    
     subscript(keys keys: String...) -> LazyMapSequence<[String], JSON> {
         return keys.lazy.map { (key) -> JSON in
             return self[key]
         }
     }
-
+    
 }
 
-extension LazyMapSequence where Base == [String], Element == JSON {
-
+public extension LazyMapSequence where Base == [String], Element == JSON {
+    
     private var firstValue: JSON? {
         first(where: { $0.exists() })
     }
-
+    
     var string: String? {
         firstValue?.string
     }
-
+    
     var stringValue: String {
         firstValue?.stringValue ?? ""
     }
-
+    
     var int: Int? {
         firstValue?.int
     }
-
+    
     var intValue: Int {
         firstValue?.intValue ?? 0
     }
-
+    
     var double: Double? {
         firstValue?.double
     }
-
+    
     var doubleValue: Double {
         firstValue?.double ?? 0
     }
-
+    
     var bool: Bool? {
         firstValue?.bool
     }
-
+    
     var boolValue: Bool {
         firstValue?.boolValue ?? false
     }
-
+    
     var url: URL? {
         firstValue?.url
     }
-
+    
 }
