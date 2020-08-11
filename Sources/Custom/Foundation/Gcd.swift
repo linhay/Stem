@@ -59,7 +59,7 @@ public class Gcd {
     ///   - label: 标识
     ///   - time: 时间 (秒)
     ///   - event: 延时事件
-    public class func delay(_ queueType: QueueType = .main, seconds: TimeInterval, event: @escaping () -> Void) {
+    public class func delay(_ queueType: QueueType = .main, seconds: TimeInterval = 0, event: @escaping () -> Void) {
         let time = DispatchTime.now() + .milliseconds(Int(seconds * 1000))
         queueType.queue.asyncAfter(deadline: time) {
             event()

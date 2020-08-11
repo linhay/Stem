@@ -25,14 +25,17 @@ class macOSTests: XCTestCase {
     }
 
     func testColor() {
-        let color = NSColor("#889966")
+        let color = NSColor("#666666")
         NSColor.st.displayMode = .rgb
         print(color.st.stemColor.rgbSpace)
         print(color.st.stemColor.xyzSpace)
+        print(color.st.stemColor.labSpace)
+        print(color.st.stemColor.cmySpace)
+        print(color.st.stemColor.cmykSpace)
         print(StemColor(hsb: color.st.stemColor.hsbSpace).rgbSpace)
         print(StemColor(hsl: color.st.stemColor.hslSpace).rgbSpace)
-        print(color.st.stemColor.hsbSpace)
-        print(color.st.stemColor.hslSpace)
+        print(StemColor(xyz: color.st.stemColor.xyzSpace).rgbSpace)
+        print(StemColor(xyz: color.st.stemColor.xyzSpace).labSpace)
     }
 
     func testPerformanceExample() throws {

@@ -85,12 +85,6 @@ public extension Stem where Base: STWrapperColor {
     /// 透明度
     var alpha: CGFloat { base.cgColor.alpha }
     
-    /// 设置透明度
-    ///
-    /// - Parameter alpha: 透明度
-    /// - Returns: uicolor
-    func with(alpha: CGFloat) -> STWrapperColor { return base.withAlphaComponent(alpha) }
-    
 }
 
 // MARK: - private api
@@ -135,21 +129,21 @@ public extension STWrapperColor {
     ///   - b: blue   0 - 255
     ///   - a: alpha  0 - 1
     convenience init(red: Double, green: Double, blue: Double, alpha: Double = 1) {
-        let red = CGFloat(red)
-        let green = CGFloat(green)
-        let blue = CGFloat(blue)
+        let red = CGFloat(red) / 255
+        let green = CGFloat(green) / 255
+        let blue = CGFloat(blue) / 255
         let alpha = CGFloat(alpha)
         switch Self.displayMode {
         case .srgb:
-            self.init(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+            self.init(red: red, green: green, blue: blue, alpha: alpha)
         case .p3:
             if #available(iOS 10.0, *) {
-                self.init(displayP3Red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+                self.init(displayP3Red: red, green: green, blue: blue, alpha: alpha)
             } else {
-                self.init(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+                self.init(red: red, green: green, blue: blue, alpha: alpha)
             }
         case .rgb:
-            self.init(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+            self.init(red: red, green: green, blue: blue, alpha: alpha)
         }
     }
 

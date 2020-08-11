@@ -27,7 +27,26 @@ public class StemColor {
             self.green = max(min(green, 1), 0)
             self.blue  = max(min(blue,  1), 0)
         }
-        
+
+        public init(space: XYZSpace) {
+            let x = space.x
+            let y = space.y
+            let z = space.z
+
+            func map(_ value: Double) -> Double {
+                let value = value / 100
+                if value > 0.0031308 {
+                    return 1.055 * pow(value, 1/2.4) - 0.055
+                } else {
+                    return 12.92 * value
+                }
+            }
+
+            red   = map(x *  3.2404542 + y * -1.5371385 + z * -0.4985314)
+            green = map(x * -0.9692660 + y *  1.8760108 + z *  0.0415560)
+            blue  = map(x *  0.0556434 + y * -0.2040259 + z *  1.0572252)
+        }
+
         public init(space: HSBSpace) {
             if space.saturation == 0 {
                 self.red   = space.brightness
@@ -103,7 +122,12 @@ public class StemColor {
                 self.blue  = map(v1: var1, v2: var2, hue: space.hue + 2/3)
             }
         }
-        
+
+        public init(space: CMYSpace) {
+            self.red   = 1 - space.cyan
+            self.green = 1 - space.magenta
+            self.blue  = 1 - space.yellow
+        }
     }
     
     public struct HSLSpace {
@@ -222,23 +246,131 @@ public class StemColor {
         public let z: Double
         
         public init(from value: RGBSpace) {
-            let map: (Double) -> Double = { value in
-                return (value > 0.04045) ? pow((value + 0.055) / 1.055, 2.40) : (value / 12.92)
+            func map(_ value: Double) -> Double {
+                if value > 0.04045 {
+                   return pow((value + 0.055) / 1.055, 2.4)
+                } else {
+                    return value / 12.92
+                }
             }
-            let red   = map(value.red   / 255)
-            let green = map(value.green / 255)
-            let blue  = map(value.blue  / 255)
-            x = (red * 41.24 + green * 35.76 + blue * 18.05)
-            y = (red * 21.26 + green * 71.52 + blue * 7.22)
-            z = (red * 1.93  + green * 11.92 + blue * 95.05)
+
+            let r = map(value.red)
+            let g = map(value.green)
+            let b = map(value.blue)
+
+            x = r * 41.24564 + g * 35.75761 + b * 18.04375
+            y = r * 21.26729 + g * 71.51522 + b * 07.21750
+            z = r * 01.93339 + g * 11.91920 + b * 95.03041
+        }
+
+        public init(from value: LABSpace) {
+            func map(_ value: Double) -> Double {
+                let value3 = value * value * value
+                return value3 > 0.008856 ? value3 : (value - 0.1379310) / 7.787036
+            }
+
+            let y = (value.l + 16) / 116
+            let x = y + (value.a / 500)
+            let z = y - (value.b / 200)
+
+            self.x = map(x) * 0.95047
+            self.y = map(y) * 1
+            self.z = map(z) * 1.08883
         }
         
     }
-    
+
+    public struct LABSpace {
+        
+        public let l: Double
+        public let a: Double
+        public let b: Double
+
+        public init(from value: XYZSpace) {
+            func map(_ value: Double) -> Double {
+                return value > 0.008856 ? pow(value, 1.0 / 3.0) : (7.787036 * value) + (16 / 116)
+            }
+
+            let fx = map(value.x / 0.95047)
+            let fy = map(value.y / 1)
+            let fz = map(value.z / 1.08883)
+
+            l = 116 * fy - 16
+            a = 500 * (fx - fy)
+            b = 200 * (fy - fz)
+        }
+
+    }
+
+    public struct CMYSpace {
+        // value: 0 - 1.0
+        public let cyan: Double
+        // value: 0 - 1.0
+        public let magenta: Double
+        // value: 0 - 1.0
+        public let yellow: Double
+
+        public init(from value: RGBSpace) {
+            cyan    = 1 - value.red
+            magenta = 1 - value.green
+            yellow  = 1 - value.blue
+        }
+
+        public init(from value: CMYKSpace) {
+            cyan    = value.cyan * (1 - value.key) + value.key
+            magenta = value.magenta * (1 - value.key) + value.key
+            yellow  = value.yellow * (1 - value.key) + value.key
+        }
+    }
+
+    public struct CMYKSpace {
+        // value: 0 - 1.0
+        public let cyan: Double
+        // value: 0 - 1.0
+        public let magenta: Double
+        // value: 0 - 1.0
+        public let yellow: Double
+        // value: 0 - 1.0
+        public let key: Double
+
+        public init(from value: CMYSpace) {
+            let key = min(value.cyan, value.magenta, value.yellow)
+            self.key = key
+            
+            if key == 1 {
+                cyan = 0
+                magenta = 0
+                yellow = 0
+            } else {
+                cyan    = (value.cyan - key) / (1 - key)
+                magenta = (value.magenta - key) / (1 - key)
+                yellow  = (value.yellow - key) / (1 - key)
+            }
+        }
+    }
+
     public var rgbSpace: RGBSpace
-    public var xyzSpace: XYZSpace { XYZSpace(from: rgbSpace) }
-    public var hslSpace: HSLSpace { HSLSpace(from: rgbSpace) }
-    public var hsbSpace: HSBSpace { HSBSpace(from: rgbSpace) }
+    public var xyzSpace: XYZSpace   { .init(from: rgbSpace) }
+    public var labSpace: LABSpace   { .init(from: xyzSpace) }
+    public var hslSpace: HSLSpace   { .init(from: rgbSpace) }
+    public var hsbSpace: HSBSpace   { .init(from: rgbSpace) }
+    public var cmySpace: CMYSpace   { .init(from: rgbSpace) }
+    public var cmykSpace: CMYKSpace { .init(from: cmySpace) }
+
+    public init(cmyk space: CMYKSpace, alpha: Double = 1) {
+        self.rgbSpace = .init(space: CMYSpace(from: space))
+        self.alpha = alpha
+    }
+
+    public init(cmy space: CMYSpace, alpha: Double = 1) {
+        self.rgbSpace = RGBSpace(space: space)
+        self.alpha = alpha
+    }
+
+    public init(xyz space: XYZSpace, alpha: Double = 1) {
+        self.rgbSpace = RGBSpace(space: space)
+        self.alpha = alpha
+    }
 
     public init(hsl space: HSLSpace, alpha: Double = 1) {
         self.rgbSpace = RGBSpace(space: space)

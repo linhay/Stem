@@ -102,15 +102,20 @@ public extension Stem where Base: UIImage {
         return result
     }
 
-    var pixels: [UIColor] {
+    var pixels: [[UIColor]] {
         guard let cgImage = base.cgImage else {
             return []
         }
         let size = cgImage.width * cgImage.height
-        var result = [UIColor]()
+        var result = [[UIColor]]()
+        var queue  = [UIColor]()
         result.reserveCapacity(size)
         generator { (color) in
-            result.append(color)
+            queue.append(color)
+            if queue.count == cgImage.width {
+                result.append(queue)
+                queue.removeAll()
+            }
         }
         return result
     }

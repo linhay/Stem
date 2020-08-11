@@ -45,6 +45,20 @@ public extension Stem where Base: UIImage {
 // MARK: - scale(缩放)
 public extension Stem where Base: UIImage {
 
+    func scale(size: CGSize, opaque: Bool = false) -> UIImage? {
+        if #available(iOS 10.0, *) {
+            let renderer = UIGraphicsImageRenderer(size: size)
+            return renderer.image { (context) in
+                base.draw(in: CGRect(origin: .zero, size: size))
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(size, opaque, 0)
+            defer { UIGraphicsEndImageContext() }
+            base.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            return UIGraphicsGetImageFromCurrentImageContext()
+        }
+    }
+
     /// 缩放至指定高度
     ///
     /// - Parameters:
@@ -52,12 +66,8 @@ public extension Stem where Base: UIImage {
     ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
     /// - Returns: 新的图片
     func scale(toHeight: CGFloat, opaque: Bool = false) -> UIImage? {
-        let scale = toHeight / base.size.height
-        let newWidth = base.size.width * scale
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: newWidth, height: toHeight), opaque, 0)
-        defer { UIGraphicsEndImageContext() }
-        base.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: toHeight))
-        return UIGraphicsGetImageFromCurrentImageContext()
+        let newWidth = base.size.width / base.size.height * toHeight
+        return scale(size: CGSize(width: newWidth, height: toHeight), opaque: opaque)
     }
 
     /// 缩放至指定宽度
@@ -67,12 +77,8 @@ public extension Stem where Base: UIImage {
     ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
     /// - Returns: 新的图片
     func scale(toWidth: CGFloat, opaque: Bool = false) -> UIImage? {
-        let scale = toWidth / base.size.width
-        let newHeight = base.size.height * scale
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: toWidth, height: newHeight), opaque, 0)
-        defer { UIGraphicsEndImageContext() }
-        base.draw(in: CGRect(x: 0, y: 0, width: toWidth, height: newHeight))
-        return UIGraphicsGetImageFromCurrentImageContext()
+        let newHeight = base.size.height / base.size.width * toWidth
+        return scale(size: CGSize(width: toWidth, height: newHeight), opaque: opaque)
     }
 
 }
