@@ -286,6 +286,12 @@ public class StemColor {
         public let a: Double
         public let b: Double
 
+        public init(l: Double, a: Double, b: Double) {
+            self.l = l
+            self.a = a
+            self.b = b
+        }
+
         public init(from value: XYZSpace) {
             func map(_ value: Double) -> Double {
                 return value > 0.008856 ? pow(value, 1.0 / 3.0) : (7.787036 * value) + (16 / 116)
