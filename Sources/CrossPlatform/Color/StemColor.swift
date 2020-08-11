@@ -10,7 +10,8 @@ import Foundation
 // http://www.easyrgb.com/en/math.php
 // https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4
 public class StemColor {
-    
+    static let D65tristimulus = XYZSpace(x: 5.047, y: 100.0, z: 108.883)
+
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
     
@@ -244,6 +245,12 @@ public class StemColor {
         public let x: Double
         public let y: Double
         public let z: Double
+
+        public init(x: Double, y: Double, z: Double) {
+            self.x = x
+            self.y = y
+            self.z = z
+        }
         
         public init(from value: RGBSpace) {
             func map(_ value: Double) -> Double {
@@ -263,25 +270,25 @@ public class StemColor {
             z = r * 01.93339 + g * 11.91920 + b * 95.03041
         }
 
-        public init(from value: LABSpace) {
+        public init(from value: LABSpace, tristimulus: XYZSpace? = nil) {
             func map(_ value: Double) -> Double {
-                let value3 = value * value * value
-                return value3 > 0.008856 ? value3 : (value - 0.1379310) / 7.787036
-            }
+                if (value > (6.0 / 29.0)) {
+                    return pow(value, 3.0)
+                } else {
+                    return 3.0 * pow(6.0 / 29.0, 2.0) * (value - (4.0 / 29.0))
+                }
+            };
+            let y = (1.0 / 116.0) * (value.l + 16.0)
 
-            let y = (value.l + 16) / 116
-            let x = y + (value.a / 500)
-            let z = y - (value.b / 200)
-
-            self.x = map(x) * 0.95047
-            self.y = map(y) * 1
-            self.z = map(z) * 1.08883
+            let tristimulus = tristimulus ?? D65tristimulus
+            self.y = tristimulus.y * map(y)
+            self.x = tristimulus.x * map(y + value.a / 500.0)
+            self.z = tristimulus.z * map(y - value.b / 200.0)
         }
         
     }
 
     public struct LABSpace {
-        
         public let l: Double
         public let a: Double
         public let b: Double
@@ -292,16 +299,22 @@ public class StemColor {
             self.b = b
         }
 
-        public init(from value: XYZSpace) {
+        public init(from value: XYZSpace, tristimulus: XYZSpace? = nil) {
+
             func map(_ value: Double) -> Double {
-                return value > 0.008856 ? pow(value, 1.0 / 3.0) : (7.787036 * value) + (16 / 116)
+                if (value > pow(6.0 / 29.0, 3.0)) {
+                    return pow(value, 1.0 / 3.0)
+                } else {
+                    return ((1.0 / 3.0) * pow(29.0 / 6.0, 2.0) * value) + (4.0 / 29.0)
+                }
             }
 
-            let fx = map(value.x / 0.95047)
-            let fy = map(value.y / 1)
-            let fz = map(value.z / 1.08883)
+            let tristimulus = tristimulus ?? D65tristimulus
+            let fx = map(value.x / tristimulus.x)
+            let fy = map(value.y / tristimulus.y)
+            let fz = map(value.z / tristimulus.z)
 
-            l = 116 * fy - 16
+            l = (116.0 * fy) - 16.0
             a = 500 * (fx - fy)
             b = 200 * (fy - fz)
         }

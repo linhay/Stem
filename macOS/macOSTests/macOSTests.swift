@@ -36,6 +36,9 @@ class macOSTests: XCTestCase {
         print(StemColor(hsl: color.st.stemColor.hslSpace).rgbSpace)
         print(StemColor(xyz: color.st.stemColor.xyzSpace).rgbSpace)
         print(StemColor(xyz: color.st.stemColor.xyzSpace).labSpace)
+
+        let lab = StemColor(xyz: color.st.stemColor.xyzSpace).labSpace
+        print(StemColor(xyz: StemColor.XYZSpace(from: lab, tristimulus: nil)).rgbSpace)
     }
 
     func testPerformanceExample() throws {
