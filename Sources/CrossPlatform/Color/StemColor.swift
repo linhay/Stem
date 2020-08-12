@@ -11,11 +11,11 @@ import Foundation
 // https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4
 public class StemColor {
     static let D65tristimulus = XYZSpace(x: 95.047, y: 100.0, z: 108.883)
-
+    
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
     
-    public struct RGBSpace {
+    public struct RGBSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let red: Double
         // value: 0 - 1.0
@@ -28,12 +28,12 @@ public class StemColor {
             self.green = max(min(green, 1), 0)
             self.blue  = max(min(blue,  1), 0)
         }
-
+        
         public init(space: XYZSpace) {
             let x = space.x
             let y = space.y
             let z = space.z
-
+            
             func map(_ value: Double) -> Double {
                 let value = value / 100
                 if value > 0.0031308 {
@@ -42,12 +42,12 @@ public class StemColor {
                     return 12.92 * value
                 }
             }
-
+            
             red   = map(x *  3.2404542 + y * -1.5371385 + z * -0.4985314)
             green = map(x * -0.9692660 + y *  1.8760108 + z *  0.0415560)
             blue  = map(x *  0.0556434 + y * -0.2040259 + z *  1.0572252)
         }
-
+        
         public init(space: HSBSpace) {
             if space.saturation == 0 {
                 self.red   = space.brightness
@@ -59,7 +59,7 @@ public class StemColor {
                 let var1 = space.brightness * (1 - space.saturation)
                 let var2 = space.brightness * (1 - space.saturation * (hue - varI))
                 let var3 = space.brightness * (1 - space.saturation * (1 - (hue - varI)))
-
+                
                 switch varI {
                 case 0:
                     self.red = space.brightness
@@ -89,7 +89,7 @@ public class StemColor {
             }
             
         }
-
+        
         public init(space: HSLSpace) {
             func map(v1: Double, v2: Double, hue: Double) -> Double {
                 if 6 * hue < 1 {
@@ -103,7 +103,7 @@ public class StemColor {
                 }
                 return v1
             }
-
+            
             if space.saturation == 0 {
                 self.red = 1
                 self.green = 1
@@ -115,15 +115,15 @@ public class StemColor {
                 } else {
                     var2 = (space.lightness + space.saturation) - (space.saturation * space.lightness)
                 }
-
+                
                 let var1 = 2 * space.lightness - var2
-
+                
                 self.red   = map(v1: var1, v2: var2, hue: space.hue + 1/3)
                 self.green = map(v1: var1, v2: var2, hue: space.hue)
                 self.blue  = map(v1: var1, v2: var2, hue: space.hue + 2/3)
             }
         }
-
+        
         public init(space: CMYSpace) {
             self.red   = 1 - space.cyan
             self.green = 1 - space.magenta
@@ -131,7 +131,7 @@ public class StemColor {
         }
     }
     
-    public struct HSLSpace {
+    public struct HSLSpace: Codable, Equatable {
         
         // value: 0 - 1.0
         public let hue: Double
@@ -188,14 +188,14 @@ public class StemColor {
         
     }
     
-    public struct HSBSpace {
+    public struct HSBSpace: Codable, Equatable {
         // value: 0 - 1.0
         let hue: Double
         // value: 0 - 1.0
         let saturation: Double
         // value: 0 - 1.0
         let brightness: Double
-
+        
         public init(hue: Double, saturation: Double, brightness: Double) {
             self.hue = hue.truncatingRemainder(dividingBy: 1)
             self.saturation = max(min(saturation, 1), 0)
@@ -240,12 +240,12 @@ public class StemColor {
         }
     }
     
-    public struct XYZSpace {
+    public struct XYZSpace: Codable, Equatable {
         
         public let x: Double
         public let y: Double
         public let z: Double
-
+        
         public init(x: Double, y: Double, z: Double) {
             self.x = x
             self.y = y
@@ -255,21 +255,21 @@ public class StemColor {
         public init(from value: RGBSpace) {
             func map(_ value: Double) -> Double {
                 if value > 0.04045 {
-                   return pow((value + 0.055) / 1.055, 2.4)
+                    return pow((value + 0.055) / 1.055, 2.4)
                 } else {
                     return value / 12.92
                 }
             }
-
+            
             let r = map(value.red)
             let g = map(value.green)
             let b = map(value.blue)
-
+            
             x = r * 41.24564 + g * 35.75761 + b * 18.04375
             y = r * 21.26729 + g * 71.51522 + b * 07.21750
             z = r * 01.93339 + g * 11.91920 + b * 95.03041
         }
-
+        
         public init(from value: LABSpace, tristimulus: XYZSpace? = nil) {
             func map(_ value: Double) -> Double {
                 if (value > (6.0 / 29.0)) {
@@ -279,7 +279,7 @@ public class StemColor {
                 }
             };
             let y = (1.0 / 116.0) * (value.l + 16.0)
-
+            
             let tristimulus = tristimulus ?? D65tristimulus
             self.y = tristimulus.y * map(y)
             self.x = tristimulus.x * map(y + value.a / 500.0)
@@ -287,20 +287,20 @@ public class StemColor {
         }
         
     }
-
-    public struct LABSpace {
+    
+    public struct LABSpace: Codable, Equatable {
         public let l: Double
         public let a: Double
         public let b: Double
-
+        
         public init(l: Double, a: Double, b: Double) {
             self.l = l
             self.a = a
             self.b = b
         }
-
+        
         public init(from value: XYZSpace, tristimulus: XYZSpace? = nil) {
-
+            
             func map(_ value: Double) -> Double {
                 if (value > pow(6.0 / 29.0, 3.0)) {
                     return pow(value, 1.0 / 3.0)
@@ -308,41 +308,41 @@ public class StemColor {
                     return ((1.0 / 3.0) * pow(29.0 / 6.0, 2.0) * value) + (4.0 / 29.0)
                 }
             }
-
+            
             let tristimulus = tristimulus ?? D65tristimulus
             let fx = map(value.x / tristimulus.x)
             let fy = map(value.y / tristimulus.y)
             let fz = map(value.z / tristimulus.z)
-
+            
             l = (116.0 * fy) - 16.0
             a = 500 * (fx - fy)
             b = 200 * (fy - fz)
         }
-
+        
     }
-
-    public struct CMYSpace {
+    
+    public struct CMYSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
         public let magenta: Double
         // value: 0 - 1.0
         public let yellow: Double
-
+        
         public init(from value: RGBSpace) {
             cyan    = 1 - value.red
             magenta = 1 - value.green
             yellow  = 1 - value.blue
         }
-
+        
         public init(from value: CMYKSpace) {
             cyan    = value.cyan * (1 - value.key) + value.key
             magenta = value.magenta * (1 - value.key) + value.key
             yellow  = value.yellow * (1 - value.key) + value.key
         }
     }
-
-    public struct CMYKSpace {
+    
+    public struct CMYKSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
@@ -351,7 +351,7 @@ public class StemColor {
         public let yellow: Double
         // value: 0 - 1.0
         public let key: Double
-
+        
         public init(from value: CMYSpace) {
             let key = min(value.cyan, value.magenta, value.yellow)
             self.key = key
@@ -367,7 +367,7 @@ public class StemColor {
             }
         }
     }
-
+    
     public var rgbSpace: RGBSpace
     public var xyzSpace: XYZSpace   { .init(from: rgbSpace) }
     public var labSpace: LABSpace   { .init(from: xyzSpace) }
@@ -375,27 +375,27 @@ public class StemColor {
     public var hsbSpace: HSBSpace   { .init(from: rgbSpace) }
     public var cmySpace: CMYSpace   { .init(from: rgbSpace) }
     public var cmykSpace: CMYKSpace { .init(from: cmySpace) }
-
+    
     public init(cmyk space: CMYKSpace, alpha: Double = 1) {
         self.rgbSpace = .init(space: CMYSpace(from: space))
         self.alpha = alpha
     }
-
+    
     public init(cmy space: CMYSpace, alpha: Double = 1) {
         self.rgbSpace = RGBSpace(space: space)
         self.alpha = alpha
     }
-
+    
     public init(xyz space: XYZSpace, alpha: Double = 1) {
         self.rgbSpace = RGBSpace(space: space)
         self.alpha = alpha
     }
-
+    
     public init(hsl space: HSLSpace, alpha: Double = 1) {
         self.rgbSpace = RGBSpace(space: space)
         self.alpha = alpha
     }
-
+    
     public init(hsb space: HSBSpace, alpha: Double = 1) {
         self.rgbSpace = RGBSpace(space: space)
         self.alpha = alpha
@@ -463,10 +463,15 @@ public extension StemColor {
     /// 获取hex字符
     var hexString: String {
         let rgb = self.rgbSpace
+
+        func map(_ value: Double) -> Int {
+            return Int(value * 255)
+        }
+
         if alpha == 1 {
-            return String(format: "#%02lX%02lX%02lX", Int(rgb.red), Int(rgb.green), Int(rgb.blue))
+            return String(format: "#%02lX%02lX%02lX", map(rgb.red), map(rgb.green), map(rgb.blue))
         } else {
-            return String(format: "#%02lX%02lX%02lX%02lX", Int(alpha), Int(rgb.red), Int(rgb.green), Int(rgb.blue))
+            return String(format: "#%02lX%02lX%02lX%02lX", map(alpha), map(rgb.red), map(rgb.green), map(rgb.blue))
         }
     }
     
@@ -502,14 +507,14 @@ public extension StemColor {
                                     blue:  1 - rgbSpace.blue),
                          alpha: alpha)
     }
-
+    
     func lighter(amount: Double = 0.25) -> StemColor {
         var space = hsbSpace
         let brightness = space.brightness * (1 + amount)
         space = HSBSpace(hue: space.hue, saturation: space.saturation, brightness: brightness)
         return .init(hsb: space)
     }
-
+    
     func darker(amount: Double = 0.25) -> StemColor {
         var space = hsbSpace
         let brightness = space.brightness * (1 - amount)

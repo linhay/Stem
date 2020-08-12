@@ -34,7 +34,7 @@ public extension UIImage {
         defer { UIGraphicsEndImageContext() }
         color.setFill()
         UIRectFill(CGRect(origin: .zero, size: size))
-        
+
         guard let cgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
             self.init()
             return
@@ -52,7 +52,7 @@ public extension Stem where Base: UIImage {
 }
 
 public extension Stem where Base: UIImage {
-    
+
     /// 修改单色系图片颜色
     ///
     /// - Parameter color: 颜色
@@ -67,7 +67,7 @@ public extension Stem where Base: UIImage {
         base.draw(in: bounds, blendMode: .destinationIn, alpha: 1)
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }
-    
+
     /// 修改单色系图片颜色
     ///
     /// - Parameter color: 颜色
@@ -92,7 +92,7 @@ public extension Stem where Base: UIImage {
 
     var colors: [UIColor: Int] {
         var result = [UIColor: Int]()
-        generator { (color) in
+        base.cgImage?.st.generator { (_, color) in
             if result[color] == nil {
                 result[color] = 1
             } else {
@@ -110,7 +110,7 @@ public extension Stem where Base: UIImage {
         var result = [[UIColor]]()
         var queue  = [UIColor]()
         result.reserveCapacity(size)
-        generator { (color) in
+        base.cgImage?.st.generator { (_, color)  in
             queue.append(color)
             if queue.count == cgImage.width {
                 result.append(queue)
@@ -118,23 +118,5 @@ public extension Stem where Base: UIImage {
             }
         }
         return result
-    }
-
-    func generator(callback: (UIColor) -> Void) {
-        guard let cgImage = base.cgImage,
-              let data = cgImage.dataProvider?.data,
-              let bytes = CFDataGetBytePtr(data) else {
-            fatalError("Couldn't access image data")
-        }
-        assert(cgImage.colorSpace?.model == .rgb)
-
-        let bytesPerPixel = cgImage.bitsPerPixel / cgImage.bitsPerComponent
-        for y in 0 ..< cgImage.height {
-            for x in 0 ..< cgImage.width {
-                let offset = (y * cgImage.bytesPerRow) + (x * bytesPerPixel)
-                let components = (r: CGFloat(bytes[offset]), g: CGFloat(bytes[offset + 1]), b: CGFloat(bytes[offset + 2]))
-                callback(UIColor(red: components.r / 255, green: components.g / 255, blue: components.b / 255, alpha: 1))
-            }
-        }
     }
 }

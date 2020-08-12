@@ -22,38 +22,41 @@
 
 import CoreImage
 
+extension CGImage: StemCompatible {}
+
+fileprivate struct RGBAPixel {
+    let r: UInt8
+    let g: UInt8
+    let b: UInt8
+    let a: UInt8
+}
+
 public extension Stem where Base: CGImage {
 
-    func colors(at: [CGPoint]) -> [UIColor]? {
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bytesPerPixel = 4
-        let bytesPerRow = bytesPerPixel * base.width
-        let bitsPerComponent = 8
-        let bitmapInfo: UInt32 = CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue
-
+    func generator(callback: (_ point: CGPoint, _ color: UIColor) -> Void) {
+        let width = Int(base.width)
+        let height = Int(base.height)
         guard let context = CGContext(data: nil,
-                                      width: base.width,
-                                      height: base.height,
-                                      bitsPerComponent: bitsPerComponent,
-                                      bytesPerRow: bytesPerRow,
-                                      space: colorSpace,
-                                      bitmapInfo: bitmapInfo),
-            let ptr = context.data?.assumingMemoryBound(to: UInt8.self) else {
-            return nil
-        }
-
-        context.draw(base, in: CGRect(x: 0, y: 0, width: base.width, height: base.height))
-
-        return at.map { p in
-            let i = bytesPerRow * Int(p.y) + bytesPerPixel * Int(p.x)
-
-            let a = CGFloat(ptr[i + 3]) / 255.0
-            let r = (CGFloat(ptr[i]) / a) / 255.0
-            let g = (CGFloat(ptr[i + 1]) / a) / 255.0
-            let b = (CGFloat(ptr[i + 2]) / a) / 255.0
-
-            return UIColor(red: r, green: g, blue: b, alpha: a)
+                                width: width,
+                                height: height,
+                                bitsPerComponent: 8,
+                                bytesPerRow: width * 4,
+                                space: CGColorSpaceCreateDeviceRGB(),
+                                bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue) else {
+        return
+       }
+        context.draw(base, in: .init(origin: .zero, size: .init(width: width, height: height)))
+        let data = unsafeBitCast(context.data, to: UnsafeMutablePointer<RGBAPixel>.self)
+        for y in 0 ..< height {
+            for x in 0 ..< width {
+                let rgba = data[Int(x + y * width)]
+                callback(.init(x: x, y: y), UIColor(red: CGFloat(rgba.r) / 255,
+                                                    green: CGFloat(rgba.g) / 255,
+                                                    blue: CGFloat(rgba.b) / 255,
+                                                    alpha: CGFloat(rgba.a) / 255))
+            }
         }
     }
+
 
 }
