@@ -10,7 +10,7 @@ import Foundation
 // http://www.easyrgb.com/en/math.php
 // https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4
 public class StemColor {
-    static let D65tristimulus = XYZSpace(x: 5.047, y: 100.0, z: 108.883)
+    static let D65tristimulus = XYZSpace(x: 95.047, y: 100.0, z: 108.883)
 
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
