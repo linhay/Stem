@@ -43,16 +43,22 @@ public class StemColor {
                 }
             }
             
-            red   = map(x *  3.2404542 + y * -1.5371385 + z * -0.4985314)
-            green = map(x * -0.9692660 + y *  1.8760108 + z *  0.0415560)
-            blue  = map(x *  0.0556434 + y * -0.2040259 + z *  1.0572252)
+            let red   = map(x *  3.2404542 + y * -1.5371385 + z * -0.4985314)
+            let green = map(x * -0.9692660 + y *  1.8760108 + z *  0.0415560)
+            let blue  = map(x *  0.0556434 + y * -0.2040259 + z *  1.0572252)
+
+            self.init(red: red, green: green, blue: blue)
         }
         
         public init(space: HSBSpace) {
+            var red = 0.0
+            var green = 0.0
+            var blue = 0.0
+
             if space.saturation == 0 {
-                self.red   = space.brightness
-                self.green = space.brightness
-                self.blue  = space.brightness
+                red   = space.brightness
+                green = space.brightness
+                blue  = space.brightness
             } else {
                 let hue = space.hue * 6
                 let varI = floor(hue)
@@ -62,32 +68,32 @@ public class StemColor {
                 
                 switch varI {
                 case 0:
-                    self.red = space.brightness
-                    self.green = var3
-                    self.blue = var1
+                    red = space.brightness
+                    green = var3
+                    blue = var1
                 case 1:
-                    self.red = var2
-                    self.green = space.brightness
-                    self.blue = var1
+                    red = var2
+                    green = space.brightness
+                    blue = var1
                 case 2:
-                    self.red = var1
-                    self.green = space.brightness
-                    self.blue = var3
+                    red = var1
+                    green = space.brightness
+                    blue = var3
                 case 3:
-                    self.red = var1
-                    self.green = var2
-                    self.blue = space.brightness
+                    red = var1
+                    green = var2
+                    blue = space.brightness
                 case 4:
-                    self.red = var3
-                    self.green = var1
-                    self.blue = space.brightness
+                    red = var3
+                    green = var1
+                    blue = space.brightness
                 default:
-                    self.red = space.brightness
-                    self.green = var1
-                    self.blue = var2
+                    red = space.brightness
+                    green = var1
+                    blue = var2
                 }
             }
-            
+            self.init(red: red, green: green, blue: blue)
         }
         
         public init(space: HSLSpace) {
@@ -104,30 +110,26 @@ public class StemColor {
                 return v1
             }
             
-            if space.saturation == 0 {
-                self.red = 1
-                self.green = 1
-                self.blue = 1
+            let var2: Double
+            if space.lightness < 0.5 {
+                var2 = space.lightness * (1 + space.saturation)
             } else {
-                let var2: Double
-                if space.lightness < 0.5 {
-                    var2 = space.lightness * (1 + space.saturation)
-                } else {
-                    var2 = (space.lightness + space.saturation) - (space.saturation * space.lightness)
-                }
-                
-                let var1 = 2 * space.lightness - var2
-                
-                self.red   = map(v1: var1, v2: var2, hue: space.hue + 1/3)
-                self.green = map(v1: var1, v2: var2, hue: space.hue)
-                self.blue  = map(v1: var1, v2: var2, hue: space.hue + 2/3)
+                var2 = (space.lightness + space.saturation) - (space.saturation * space.lightness)
             }
+
+            let var1 = 2 * space.lightness - var2
+
+            let red   = map(v1: var1, v2: var2, hue: space.hue + 1/3)
+            let green = map(v1: var1, v2: var2, hue: space.hue)
+            let blue  = map(v1: var1, v2: var2, hue: space.hue + 2/3)
+
+            self.init(red: red, green: green, blue: blue)
         }
         
         public init(space: CMYSpace) {
-            self.red   = 1 - space.cyan
-            self.green = 1 - space.magenta
-            self.blue  = 1 - space.yellow
+            self.init(red: 1 - space.cyan,
+                      green: 1 - space.magenta,
+                      blue: 1 - space.yellow)
         }
     }
     
@@ -190,11 +192,11 @@ public class StemColor {
     
     public struct HSBSpace: Codable, Equatable {
         // value: 0 - 1.0
-        let hue: Double
+        public let hue: Double
         // value: 0 - 1.0
-        let saturation: Double
+        public let saturation: Double
         // value: 0 - 1.0
-        let brightness: Double
+        public let brightness: Double
         
         public init(hue: Double, saturation: Double, brightness: Double) {
             self.hue = hue.truncatingRemainder(dividingBy: 1)
@@ -376,29 +378,28 @@ public class StemColor {
     public var cmySpace: CMYSpace   { .init(from: rgbSpace) }
     public var cmykSpace: CMYKSpace { .init(from: cmySpace) }
     
-    public init(cmyk space: CMYKSpace, alpha: Double = 1) {
-        self.rgbSpace = .init(space: CMYSpace(from: space))
-        self.alpha = alpha
+    public convenience init(cmyk space: CMYKSpace, alpha: Double = 1) {
+        self.init(rgb: RGBSpace(space: CMYSpace(from: space)), alpha: alpha)
+    }
+
+    public convenience init(lab space: LABSpace, alpha: Double = 1) {
+        self.init(rgb: RGBSpace(space: XYZSpace(from: space)), alpha: alpha)
+    }
+
+    public convenience init(cmy space: CMYSpace, alpha: Double = 1) {
+        self.init(rgb: RGBSpace(space: space), alpha: alpha)
     }
     
-    public init(cmy space: CMYSpace, alpha: Double = 1) {
-        self.rgbSpace = RGBSpace(space: space)
-        self.alpha = alpha
+    public convenience init(xyz space: XYZSpace, alpha: Double = 1) {
+        self.init(rgb: RGBSpace(space: space), alpha: alpha)
     }
     
-    public init(xyz space: XYZSpace, alpha: Double = 1) {
-        self.rgbSpace = RGBSpace(space: space)
-        self.alpha = alpha
+    public convenience init(hsl space: HSLSpace, alpha: Double = 1) {
+        self.init(rgb: RGBSpace(space: space), alpha: alpha)
     }
     
-    public init(hsl space: HSLSpace, alpha: Double = 1) {
-        self.rgbSpace = RGBSpace(space: space)
-        self.alpha = alpha
-    }
-    
-    public init(hsb space: HSBSpace, alpha: Double = 1) {
-        self.rgbSpace = RGBSpace(space: space)
-        self.alpha = alpha
+    public convenience init(hsb space: HSBSpace, alpha: Double = 1) {
+        self.init(rgb: RGBSpace(space: space), alpha: alpha)
     }
     
     public init(rgb space: RGBSpace, alpha: Double = 1) {
@@ -465,7 +466,7 @@ public extension StemColor {
         let rgb = self.rgbSpace
 
         func map(_ value: Double) -> Int {
-            return Int(value * 255)
+            return Int(round(value * 255))
         }
 
         if alpha == 1 {
@@ -477,12 +478,17 @@ public extension StemColor {
     
     /// 获取颜色16进制
     var uInt: UInt {
-        var colorAsUInt32: UInt = 0
-        colorAsUInt32 += UInt(alpha * 255)    << 24
-        colorAsUInt32 += UInt(rgbSpace.red)   << 16
-        colorAsUInt32 += UInt(rgbSpace.green) << 8
-        colorAsUInt32 += UInt(rgbSpace.blue)
-        return UInt(colorAsUInt32)
+        var value: UInt = 0
+
+        func map(_ value: Double) -> UInt {
+            return UInt(round(value * 255))
+        }
+
+        value += map(alpha) << 24
+        value += map(rgbSpace.red)   << 16
+        value += map(rgbSpace.green) << 8
+        value += map(rgbSpace.blue)
+        return value
     }
     
 }

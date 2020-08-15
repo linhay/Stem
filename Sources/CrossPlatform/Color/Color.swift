@@ -43,9 +43,9 @@ public extension StemColor {
             return
         }
 
-        let red   = Double(components[0])
-        let green = Double(components[1])
-        let blue  = Double(components[2]) 
+        let red   = Double(components[0]) * 255
+        let green = Double(components[1]) * 255
+        let blue  = Double(components[2]) * 255
         let alpha = Double(components[3])
 
         self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)

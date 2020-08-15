@@ -25,20 +25,37 @@ class macOSTests: XCTestCase {
     }
 
     func testColor() {
-        let color = NSColor("#666666")
+        let hex = "#008080"
         NSColor.st.displayMode = .rgb
-        print(color.st.stemColor.rgbSpace)
-        print(color.st.stemColor.xyzSpace)
-        print(color.st.stemColor.labSpace)
-        print(color.st.stemColor.cmySpace)
-        print(color.st.stemColor.cmykSpace)
-        print(StemColor(hsb: color.st.stemColor.hsbSpace).rgbSpace)
-        print(StemColor(hsl: color.st.stemColor.hslSpace).rgbSpace)
-        print(StemColor(xyz: color.st.stemColor.xyzSpace).rgbSpace)
-        print(StemColor(xyz: color.st.stemColor.xyzSpace).labSpace)
+        let color = NSColor(hex)
+        let stemColor = color.st.stemColor
+        assert(stemColor.hexString == hex)
 
-        let lab = StemColor(xyz: color.st.stemColor.xyzSpace).labSpace
-        print(StemColor(xyz: StemColor.XYZSpace(from: lab, tristimulus: nil)).rgbSpace)
+
+        let rgbSpace  = color.st.stemColor.rgbSpace
+        let xyzSpace  = color.st.stemColor.xyzSpace
+        let labSpace  = color.st.stemColor.labSpace
+        let hsbSpace  = color.st.stemColor.hsbSpace
+        let hslSpace  = color.st.stemColor.hslSpace
+        let cmySpace  = color.st.stemColor.cmySpace
+        let cmykSpace = color.st.stemColor.cmykSpace
+
+        print("rgb: ", rgbSpace)
+        print("xyz: ", xyzSpace)
+        print("lab: ", labSpace)
+        print("hsb: ", hsbSpace)
+        print("hsl: ", hslSpace)
+        print("cmy: ", cmySpace)
+        print("cmyk: ", cmykSpace)
+
+
+        assert(StemColor(xyz: xyzSpace).hexString == hex)
+        assert(StemColor(lab: labSpace).hexString == hex)
+        assert(StemColor(hsb: hsbSpace).hexString == hex)
+        assert(StemColor(hsl: hslSpace).hexString == hex, "\(StemColor(hsl: hslSpace).rgbSpace)")
+        assert(StemColor(cmy: cmySpace).hexString == hex)
+        assert(StemColor(cmyk: cmykSpace).hexString == hex)
+
     }
 
     func testPerformanceExample() throws {
