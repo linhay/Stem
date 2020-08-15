@@ -43,9 +43,9 @@ public extension StemColor {
             return
         }
 
-        let red   = Double(components[0]) * 255
-        let green = Double(components[1]) * 255
-        let blue  = Double(components[2]) * 255
+        let red   = Double(components[0])
+        let green = Double(components[1])
+        let blue  = Double(components[2])
         let alpha = Double(components[3])
 
         self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
@@ -96,7 +96,7 @@ extension STWrapperColor {
         case rgb
     }
     
-    static var displayMode = DisplayMode.srgb
+    static var displayMode = DisplayMode.rgb
     
 }
 
@@ -129,10 +129,18 @@ public extension STWrapperColor {
     ///   - b: blue   0 - 255
     ///   - a: alpha  0 - 1
     convenience init(red: Double, green: Double, blue: Double, alpha: Double = 1) {
-        let red = CGFloat(red) / 255
-        let green = CGFloat(green) / 255
-        let blue = CGFloat(blue) / 255
+
+        var red   = CGFloat(red)
+        var green = CGFloat(green)
+        var blue  = CGFloat(blue)
         let alpha = CGFloat(alpha)
+
+        if red > 1 || green > 1 || blue > 1 {
+             red   = red / 255
+             green = green / 255
+             blue  = green / 255
+        }
+
         switch Self.displayMode {
         case .srgb:
             self.init(red: red, green: green, blue: blue, alpha: alpha)

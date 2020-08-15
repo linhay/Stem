@@ -41,6 +41,7 @@ class macOSTests: XCTestCase {
         let cmykSpace = color.st.stemColor.cmykSpace
 
         print("rgb: ", rgbSpace)
+        print("rgb: ", rgbSpace.red * 255, rgbSpace.green * 255, rgbSpace.blue * 255)
         print("xyz: ", xyzSpace)
         print("lab: ", labSpace)
         print("hsb: ", hsbSpace)
