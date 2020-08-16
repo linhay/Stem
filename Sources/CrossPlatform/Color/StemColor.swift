@@ -7,9 +7,12 @@
 
 import Foundation
 
-public protocol StemColorUnPack {
+public protocol StemColorUnpack {
+
     associatedtype UnPack
     var unpack: UnPack { get }
+    var list: [Double] { get }
+
 }
 
 // http://www.easyrgb.com/en/math.php
@@ -20,7 +23,7 @@ public class StemColor {
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
     
-    public struct RGBSpace: Codable, Equatable, StemColorUnPack {
+    public struct RGBSpace: Codable, Equatable, StemColorUnpack {
         // value: 0 - 1.0
         public let red: Double
         // value: 0 - 1.0
@@ -29,7 +32,12 @@ public class StemColor {
         public let blue: Double
 
         public var unpack: (red: Double, green: Double, blue: Double) { (red, green, blue) }
-        
+        public var list: [Double] { [red, green, blue] }
+        public var intUnpack: (red: Int, green: Int, blue: Int) {
+            func map(_ v: Double) -> Int { Int(round(v * 255)) }
+            return (map(red), map(green), map(blue))
+        }
+
         public init(red: Double, green: Double, blue: Double) {
             self.red   = max(min(red,   1), 0)
             self.green = max(min(green, 1), 0)
@@ -137,7 +145,7 @@ public class StemColor {
         }
     }
     
-    public struct HSLSpace: Codable, Equatable, StemColorUnPack {
+    public struct HSLSpace: Codable, Equatable, StemColorUnpack {
         
         // value: 0 - 1.0
         public let hue: Double
@@ -147,7 +155,8 @@ public class StemColor {
         public let lightness: Double
 
         public var unpack: (hue: Double, saturation: Double, lightness: Double) { (hue, saturation, lightness) }
-        
+        public var list: [Double] { [hue, saturation, lightness] }
+
         public init(hue: Double, saturation: Double, lightness: Double) {
             self.hue = abs(hue.truncatingRemainder(dividingBy: 1))
             self.saturation = max(min(saturation, 1), 0)
@@ -196,7 +205,7 @@ public class StemColor {
         
     }
     
-    public struct HSBSpace: Codable, Equatable, StemColorUnPack {
+    public struct HSBSpace: Codable, Equatable, StemColorUnpack {
         // value: 0 - 1.0
         public let hue: Double
         // value: 0 - 1.0
@@ -205,7 +214,8 @@ public class StemColor {
         public let brightness: Double
 
         public var unpack: (hue: Double, saturation: Double, brightness: Double) { (hue, saturation, brightness) }
-        
+        public var list: [Double] { [hue, saturation, brightness] }
+
         public init(hue: Double, saturation: Double, brightness: Double) {
             self.hue = hue.truncatingRemainder(dividingBy: 1)
             self.saturation = max(min(saturation, 1), 0)
@@ -250,14 +260,15 @@ public class StemColor {
         }
     }
     
-    public struct XYZSpace: Codable, Equatable, StemColorUnPack {
+    public struct XYZSpace: Codable, Equatable, StemColorUnpack {
         
         public let x: Double
         public let y: Double
         public let z: Double
 
         public var unpack: (x: Double, y: Double, z: Double) { (x, y, z) }
-        
+        public var list: [Double] { [x, y, z] }
+
         public init(x: Double, y: Double, z: Double) {
             self.x = x
             self.y = y
@@ -300,13 +311,14 @@ public class StemColor {
         
     }
     
-    public struct LABSpace: Codable, Equatable, StemColorUnPack {
+    public struct LABSpace: Codable, Equatable, StemColorUnpack {
         public let l: Double
         public let a: Double
         public let b: Double
 
         public var unpack: (l: Double, a: Double, b: Double) { (l, a, b) }
-        
+        public var list: [Double] { [l, a, b] }
+
         public init(l: Double, a: Double, b: Double) {
             self.l = l
             self.a = a
@@ -335,7 +347,7 @@ public class StemColor {
         
     }
     
-    public struct CMYSpace: Codable, Equatable, StemColorUnPack {
+    public struct CMYSpace: Codable, Equatable, StemColorUnpack {
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
@@ -344,7 +356,8 @@ public class StemColor {
         public let yellow: Double
 
         public var unpack: (cyan: Double, magenta: Double, yellow: Double) { (cyan, magenta, yellow) }
-        
+        public var list: [Double] { [cyan, magenta, yellow] }
+
         public init(from value: RGBSpace) {
             cyan    = 1 - value.red
             magenta = 1 - value.green
@@ -358,7 +371,7 @@ public class StemColor {
         }
     }
     
-    public struct CMYKSpace: Codable, Equatable, StemColorUnPack {
+    public struct CMYKSpace: Codable, Equatable, StemColorUnpack {
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
@@ -369,7 +382,8 @@ public class StemColor {
         public let key: Double
 
         public var unpack: (cyan: Double, magenta: Double, yellow: Double, key: Double) { (cyan, magenta, yellow, key) }
-        
+        public var list: [Double] { [cyan, magenta, yellow, key] }
+
         public init(from value: CMYSpace) {
             let key = min(value.cyan, value.magenta, value.yellow)
             self.key = key

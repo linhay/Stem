@@ -25,12 +25,11 @@ class macOSTests: XCTestCase {
     }
 
     func testColor() {
-        let hex = "#008080"
+        let hex = "#C3EFFC"
         NSColor.st.displayMode = .rgb
         let color = NSColor(hex)
         let stemColor = color.st.stemColor
         assert(stemColor.hexString == hex)
-
 
         let rgbSpace  = color.st.stemColor.rgbSpace
         let xyzSpace  = color.st.stemColor.xyzSpace
@@ -50,12 +49,13 @@ class macOSTests: XCTestCase {
         print("cmyk: ", cmykSpace)
 
 
+        assert(StemColor(lab: labSpace).rgbSpace.intUnpack == rgbSpace.intUnpack)
         assert(StemColor(xyz: xyzSpace).hexString == hex)
         assert(StemColor(lab: labSpace).hexString == hex)
         assert(StemColor(hsb: hsbSpace).hexString == hex)
-        assert(StemColor(hsl: hslSpace).hexString == hex, "\(StemColor(hsl: hslSpace).rgbSpace)")
         assert(StemColor(cmy: cmySpace).hexString == hex)
         assert(StemColor(cmyk: cmykSpace).hexString == hex)
+        assert(StemColor(hsl: hslSpace).hexString == hex, "\(StemColor(hsl: hslSpace).rgbSpace)")
 
     }
 
