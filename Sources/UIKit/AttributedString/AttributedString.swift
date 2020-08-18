@@ -245,7 +245,7 @@ public extension NSAttributedString {
     ///   - string: 字符串
     ///   - attributes: 富文本属性
     convenience init(string: String, attributes: Attribute...) {
-        self.init(string: string, attributes: attributes.attributes)
+        self.init(string: string, attributes: attributes)
     }
 
     /// 初始化函数
@@ -254,7 +254,7 @@ public extension NSAttributedString {
     ///   - string: 字符串
     ///   - attributes: 富文本属性
     convenience init(string: String, attributes: [Attribute]) {
-        self.init(string: string, attributes: attributes.attributes)
+        self.init(string: string, attributes: Attribute.create(from: attributes))
     }
 
 }

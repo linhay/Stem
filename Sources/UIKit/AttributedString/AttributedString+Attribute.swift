@@ -25,129 +25,280 @@ import Foundation
 public extension NSAttributedString {
 
     /// 富文本属性
-    ///
-    /// - font: 字体, [default: Helvetica(Neue) 12]
-    /// - paragraphStyle: 段落属性, [default: NSParagraphStyle.default]
-    /// - foregroundColor: 文本前景颜色 [default: blackColor]
-    /// - backgroundColor: 文本背景颜色 [default nil]
-    /// - ligature: 连体属性
-    /// - kern: 字距，负值间距变窄，正值间距变宽
-    /// - strikethroughStyle: 删除线样式
-    /// - strikethroughColor: 删除线颜色
-    /// - underlineColor: 下划线颜色
-    /// - underlineStyle: 下划线样式
-    /// - strokeColor: 笔刷颜色
-    /// - strokeWidth: 笔刷样式
-    /// - shadow: 阴影 [default: nil]
-    /// - verticalGlyphForm: 文字排版方向
-    /// - textEffect: 文本特殊效果
-    /// - attachment: 文本附件
-    /// - link: 超链接
-    /// - baselineOffset: 基线偏移值 正值上偏，负值下偏 [default: 0]
-    /// - obliqueness: 设置字体倾斜度，正值右倾，负值左倾
-    /// - expansion: 字体的横向拉伸，正值拉伸，负值压缩
-    /// - writingDirection: 文字的书写方向
     enum Attribute {
-        case font(_ : UIFont)
-        case paragraphStyle(_: NSParagraphStyle)
-        case foregroundColor(_: UIColor)
-        case backgroundColor(_: UIColor)
-        case ligature(_: AttributeLigatureType)
-        case kern(_: CGFloat)
-        case strikethroughStyle(_: NSUnderlineStyle)
-        case strikethroughColor(_: UIColor)
-        case underlineColor(_: UIColor)
-        case underlineStyle(_: NSUnderlineStyle)
-        case strokeColor(_: UIColor)
-        case strokeWidth(_: CGFloat)
-        case shadow(_: NSShadow)
+        /// 字体, [default: Helvetica(Neue) 12]
+        case font(UIFont)
+        /// 文本前景颜色 [default: blackColor]
+        case foregroundColor(UIColor)
+        /// 文本背景颜色 [default nil]
+        case backgroundColor(UIColor)
+        /// 删除线颜色
+        case strikethroughColor(UIColor)
+        /// 下划线颜色
+        case underlineColor(UIColor)
+        /// 笔刷颜色
+        case strokeColor(UIColor)
+        /// 字距，负值间距变窄，正值间距变宽
+        case kern(CGFloat)
+        /// 基线偏移值 正值上偏，负值下偏 [default: 0]
+        case baselineOffset(CGFloat)
+        /// 设置字体倾斜度，正值右倾，负值左倾
+        case obliqueness(CGFloat)
+        /// 字体的横向拉伸，正值拉伸，负值压缩
+        case expansion(CGFloat)
+        /// 笔刷样式
+        case strokeWidth(CGFloat)
+        /// 删除线样式
+        case strikethroughStyle(NSUnderlineStyle)
+        /// 下划线样式
+        case underlineStyle(NSUnderlineStyle)
+        /// 阴影 [default: nil]
+        case shadow(NSShadow)
+        /// 文本特殊效果
+        case textEffect(TextEffectStyle)
+        /// 文本附件
+        case attachment(NSTextAttachment)
+        /// 超链接
+        case link(Any)
+        /// 文字的书写方向
+        case writingDirection([NSWritingDirection])
+        /// 段落属性
+        case paragraphStyle([ParagraphStyle])
+        /// 连体属性
+        case ligature(AttributeLigatureType)
+        /// 文字排版方向
         case verticalGlyphForm(_: VerticalGlyphFormStyle)
-        case textEffect(_: TextEffectStyle)
-        case attachment(_: NSTextAttachment)
-        case link(_: Any)
-        case baselineOffset(_: CGFloat)
-        case obliqueness(_: CGFloat)
-        case expansion(_: CGFloat)
-        case writingDirection(_: [NSWritingDirection])
 
-        public init?(key: NSAttributedString.Key, value: Any) {
-            switch key {
-            case .font:                if let v = value as? UIFont { self = .font(v) } else { return nil }
-            case .paragraphStyle:      if let v = value as? NSParagraphStyle { self = .paragraphStyle(v) } else { return nil }
-            case .foregroundColor:     if let v = value as? UIColor { self = .foregroundColor(v) } else { return nil }
-            case .backgroundColor:     if let v = value as? UIColor { self = .backgroundColor(v) } else { return nil }
-            case .ligature:
-                if let v = value as? Int, let t = AttributeLigatureType(rawValue: v) {
-                    self = .ligature(t)
-                } else { return nil }
-            case .kern:                if let v = value as? CGFloat { self = .kern(v) } else { return nil }
-            case .strikethroughStyle:  if let v = value as? NSUnderlineStyle { self = .strikethroughStyle(v) } else { return nil }
-            case .strikethroughColor:  if let v = value as? UIColor { self = .strikethroughColor(v) } else { return nil }
-            case .underlineColor:      if let v = value as? UIColor { self = .underlineColor(v) } else { return nil }
-            case .underlineStyle:      if let v = value as? NSUnderlineStyle { self = .underlineStyle(v) } else { return nil }
-            case .strokeColor:         if let v = value as? UIColor { self = .strokeColor(v) } else { return nil }
-            case .strokeWidth:         if let v = value as? CGFloat { self = .strokeWidth(v) } else { return nil }
-            case .shadow:              if let v = value as? NSShadow { self = .shadow(v) } else { return nil }
-            case .verticalGlyphForm:
-                if let v = value as? Int, let t = VerticalGlyphFormStyle(rawValue: v) {
-                    self = .verticalGlyphForm(t)
-                } else { return nil }
-            case .textEffect:          if let v = value as? TextEffectStyle { self = .textEffect(v) } else { return nil }
-            case .attachment:          if let v = value as? NSTextAttachment { self = .attachment(v) } else { return nil }
-            case .link:                self = .link(value)
-            case .baselineOffset:      if let v = value as? CGFloat { self = .baselineOffset(v) } else { return nil }
-            case .obliqueness:         if let v = value as? CGFloat { self = .obliqueness(v) } else { return nil }
-            case .expansion:           if let v = value as? CGFloat { self = .expansion(v) } else { return nil }
-            case .writingDirection:    if let v = value as? [NSWritingDirection] { self = .writingDirection(v) } else { return nil }
-            default:                   return nil
+        public static func create(from value: [NSAttributedString.Key: Any]) -> [Attribute] {
+            var list = [Attribute]()
+            list.reserveCapacity(value.keys.count)
+
+            value.forEach { (key, value) in
+                if key == .font, let result = value as? UIFont {
+                    list.append(.font(result))
+                }
+                else if key == .foregroundColor, let result = value as? UIColor {
+                    list.append(.foregroundColor(result))
+                }
+                else if key == .backgroundColor, let result = value as? UIColor {
+                    list.append(.backgroundColor(result))
+                }
+                else if key == .strikethroughColor, let result = value as? UIColor {
+                    list.append(.strikethroughColor(result))
+                }
+                else if key == .underlineColor, let result = value as? UIColor {
+                    list.append(.underlineColor(result))
+                }
+                else if key == .strokeColor, let result = value as? UIColor {
+                    list.append(.strokeColor(result))
+                }
+                else if key == .kern, let result = value as? CGFloat {
+                    list.append(.kern(result))
+                }
+                else if key == .baselineOffset, let result = value as? CGFloat {
+                    list.append(.baselineOffset(result))
+                }
+                else if key == .obliqueness, let result = value as? CGFloat {
+                    list.append(.obliqueness(result))
+                }
+                else if key == .expansion, let result = value as? CGFloat {
+                    list.append(.expansion(result))
+                }
+                else if key == .strokeWidth, let result = value as? CGFloat {
+                        list.append(.strokeWidth(result))
+                    }
+                else if key == .strikethroughStyle, let result = value as? NSUnderlineStyle {
+                    list.append(.strikethroughStyle(result))
+                }
+                else if key == .underlineStyle, let result = value as? NSUnderlineStyle {
+                    list.append(.underlineStyle(result))
+                }
+                else if key == .shadow, let result = value as? NSShadow {
+                    list.append(.shadow(result))
+                }
+                else if key == .textEffect, let result = value as? TextEffectStyle {
+                    list.append(.textEffect(result))
+                }
+                else if key == .attachment, let result = value as? NSTextAttachment {
+                    list.append(.attachment(result))
+                }
+                else if key == .link {
+                    list.append(.link(value))
+                }
+                else if key == .writingDirection, let result = value as? [NSWritingDirection] {
+                    list.append(.writingDirection(result))
+                }
+                else if key == .paragraphStyle, let result = value as? NSParagraphStyle {
+                    list.append(.paragraphStyle(ParagraphStyle.create(from: result)))
+                }
+                else if key == .ligature, let result = value as? Int {
+                    list.append(.ligature(AttributeLigatureType(rawValue: result) ?? .default))
+                }
+                else if key == .verticalGlyphForm, let result = value as? Int {
+                    list.append(.verticalGlyphForm(VerticalGlyphFormStyle(rawValue: result) ?? .horizontal))
+                }
+
             }
+
+            return list
+        }
+
+        public static func create(from value: [Attribute]) -> [NSAttributedString.Key: Any] {
+            var dict = [NSAttributedString.Key: Any]()
+
+            value.forEach { item in
+                switch item {
+                case .font(let v):
+                    dict[.font] = v
+                case .paragraphStyle(let v):
+                    dict[.paragraphStyle] = ParagraphStyle.create(from: v)
+                case .foregroundColor(let v):
+                    dict[.foregroundColor] = v
+                case .backgroundColor(let v):
+                    dict[.backgroundColor] = v
+                case .ligature(let v):
+                    dict[.ligature] = v
+                case .kern(let v):
+                    dict[.kern] = v
+                case .strikethroughStyle(let v):
+                    dict[.strikethroughStyle] = v
+                case .strikethroughColor(let v):
+                    dict[.strikethroughColor] = v
+                case .underlineColor(let v):
+                    dict[.underlineColor] = v
+                case .underlineStyle(let v):
+                    dict[.underlineStyle] = v
+                case .strokeColor(let v):
+                    dict[.strokeColor] = v
+                case .strokeWidth(let v):
+                    dict[.strokeWidth] = v
+                case .shadow(let v):
+                    dict[.shadow] = v
+                case .verticalGlyphForm(let v):
+                    dict[.verticalGlyphForm] = v.rawValue
+                case .textEffect(let v):
+                    dict[.textEffect] = v
+                case .attachment(let v):
+                    dict[.attachment] = v
+                case .link(let v):
+                    dict[.link] = v
+                case .baselineOffset(let v):
+                    dict[.baselineOffset] = v
+                case .obliqueness(let v):
+                    dict[.obliqueness] = v
+                case .expansion(let v):
+                    dict[.expansion] = v
+                case .writingDirection(let v):
+                    dict[.writingDirection] = v
+                }
+            }
+            return dict
+        }
+
+    }
+
+    enum ParagraphStyle {
+        case lineSpacing(CGFloat)
+        case paragraphSpacing(CGFloat)
+        case alignment(NSTextAlignment)
+        case firstLineHeadIndent(CGFloat)
+        case headIndent(CGFloat)
+        case tailIndent(CGFloat)
+        case lineBreakMode(NSLineBreakMode)
+        case minimumLineHeight(CGFloat)
+        case maximumLineHeight(CGFloat)
+        case baseWritingDirection(NSWritingDirection)
+        case lineHeightMultiple(CGFloat)
+        case paragraphSpacingBefore(CGFloat)
+        case hyphenationFactor(Float)
+        @available(iOS 7.0, *)
+        case tabStops([NSTextTab])
+        @available(iOS 7.0, *)
+        case defaultTabInterval(CGFloat)
+        @available(iOS 9.0, *)
+        case allowsDefaultTighteningForTruncation(Bool)
+
+        public static func create(from value: [ParagraphStyle]) -> NSParagraphStyle {
+            let result = NSMutableParagraphStyle()
+
+            value.forEach { item in
+                switch item {
+                case .lineSpacing(let v):
+                    result.lineSpacing = v
+                case .paragraphSpacing(let v):
+                    result.paragraphSpacing = v
+                case .alignment(let v):
+                    result.alignment = v
+                case .firstLineHeadIndent(let v):
+                    result.firstLineHeadIndent = v
+                case .headIndent(let v):
+                    result.headIndent = v
+                case .tailIndent(let v):
+                    result.tailIndent = v
+                case .lineBreakMode(let v):
+                    result.lineBreakMode = v
+                case .minimumLineHeight(let v):
+                    result.minimumLineHeight = v
+                case .maximumLineHeight(let v):
+                    result.maximumLineHeight = v
+                case .baseWritingDirection(let v):
+                    result.baseWritingDirection = v
+                case .lineHeightMultiple(let v):
+                    result.lineHeightMultiple = v
+                case .paragraphSpacingBefore(let v):
+                    result.paragraphSpacingBefore = v
+                case .hyphenationFactor(let v):
+                    result.hyphenationFactor = v
+                case .tabStops(let v):
+                    result.tabStops = v
+                case .defaultTabInterval(let v):
+                    result.defaultTabInterval = v
+                case .allowsDefaultTighteningForTruncation(let v):
+                    result.allowsDefaultTighteningForTruncation = v
+                }
+            }
+
+            return result
+        }
+
+        public static func create(from value: NSParagraphStyle) -> [ParagraphStyle] {
+
+            return [.lineSpacing(value.lineSpacing),
+                    .paragraphSpacing(value.paragraphSpacing),
+                    .alignment(value.alignment),
+                    .firstLineHeadIndent(value.firstLineHeadIndent),
+                    .headIndent(value.headIndent),
+                    .tailIndent(value.tailIndent),
+                    .lineBreakMode(value.lineBreakMode),
+                    .minimumLineHeight(value.minimumLineHeight),
+                    .maximumLineHeight(value.maximumLineHeight),
+                    .baseWritingDirection(value.baseWritingDirection),
+                    .lineHeightMultiple(value.lineHeightMultiple),
+                    .paragraphSpacingBefore(value.paragraphSpacingBefore),
+                    .hyphenationFactor(value.hyphenationFactor),
+                    .tabStops(value.tabStops),
+                    .defaultTabInterval(value.defaultTabInterval),
+                    .allowsDefaultTighteningForTruncation(value.allowsDefaultTighteningForTruncation)]
 
         }
 
-        var rawValue: (key: NSAttributedString.Key, value: Any?) {
-            switch self {
-            case .font(let value):                return (NSAttributedString.Key.font, value)
-            case .paragraphStyle(let value):      return (NSAttributedString.Key.paragraphStyle, value)
-            case .foregroundColor(let value):     return (NSAttributedString.Key.foregroundColor, value)
-            case .backgroundColor(let value):     return (NSAttributedString.Key.backgroundColor, value)
-            case .ligature(let value):            return (NSAttributedString.Key.ligature, value)
-            case .kern(let value):                return (NSAttributedString.Key.kern, value)
-            case .strikethroughStyle(let value):  return (NSAttributedString.Key.strikethroughStyle, value)
-            case .strikethroughColor(let value):  return (NSAttributedString.Key.strikethroughColor, value)
-            case .underlineColor(let value):      return (NSAttributedString.Key.underlineColor, value)
-            case .underlineStyle(let value):      return (NSAttributedString.Key.underlineStyle, value)
-            case .strokeColor(let value):         return (NSAttributedString.Key.strokeColor, value)
-            case .strokeWidth(let value):         return (NSAttributedString.Key.strokeWidth, value)
-            case .shadow(let value):              return (NSAttributedString.Key.shadow, value)
-            case .verticalGlyphForm(let value):   return (NSAttributedString.Key.verticalGlyphForm, value)
-            case .textEffect(let value):          return (NSAttributedString.Key.textEffect, value)
-            case .attachment(let value):          return (NSAttributedString.Key.attachment, value)
-            case .link(let value):                return (NSAttributedString.Key.link, value)
-            case .baselineOffset(let value):      return (NSAttributedString.Key.baselineOffset, value)
-            case .obliqueness(let value):         return (NSAttributedString.Key.obliqueness, value)
-            case .expansion(let value):           return (NSAttributedString.Key.expansion, value)
-            case .writingDirection(let value):    return (NSAttributedString.Key.writingDirection, value)
-            }
-        }
     }
 
     /// 文字排版方向
-    ///
-    /// - horizontal: 横排文本 [default]
-    /// - vertical: 竖排文本 [iOS 不支持]
     enum VerticalGlyphFormStyle: Int {
+        /// 横排文本 [default]
         case horizontal = 0
+        /// 竖排文本 [iOS 不支持]
         case vertical = 1
     }
 
     /// 连字符
-    ///
-    /// - none: 没有连体字符
-    /// - `default`: 默认的连体字符 [default]
-    /// - all: 所有连体符号 [iOS 不支持]
     enum AttributeLigatureType: Int {
+        /// 没有连体字符
         case none = 0
+        /// 默认的连体字符 [default]
         case `default` = 1
+        /// 所有连体符号 [iOS 不支持]
         case all = 2
     }
 
@@ -155,27 +306,6 @@ public extension NSAttributedString {
         let attr = NSMutableAttributedString(attributedString: lhs)
         attr.append(rhs)
         return attr
-    }
-
-}
-
-extension Array where Element == NSAttributedString.Attribute {
-
-    var attributes: [NSAttributedString.Key: Any] {
-        return self.reduce([NSAttributedString.Key: Any]()) { (dict, item) -> [NSAttributedString.Key: Any] in
-            var dict = dict
-            dict[item.rawValue.key] = item.rawValue.value
-            return dict
-        }
-    }
-
-}
-
-// MARK: - convenience [NSAttributedString.Attribute]
-extension Dictionary where Key == NSAttributedString.Key {
-
-    var attributes: [NSAttributedString.Attribute] {
-        return self.compactMap { return NSAttributedString.Attribute(key: $0.key, value: $0.value) }
     }
 
 }

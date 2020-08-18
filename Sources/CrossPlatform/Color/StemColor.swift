@@ -480,10 +480,10 @@ public extension StemColor {
             let blue    = Double( value & 0x0000FF       ) / divisor
             self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: 1)
         } else if count <= 8 {
-            let red     = Double((value & 0xFF000000) >> 24) / divisor
-            let green   = Double((value & 0x00FF0000) >> 16) / divisor
-            let blue    = Double((value & 0x0000FF00) >>  8) / divisor
-            let alpha   = Double( value & 0x000000FF       ) / divisor
+            let red     = Double((Int64(value) & 0xFF000000) >> 24) / divisor
+            let green   = Double((Int64(value) & 0x00FF0000) >> 16) / divisor
+            let blue    = Double((Int64(value) & 0x0000FF00) >>  8) / divisor
+            let alpha   = Double( Int64(value) & 0x000000FF       ) / divisor
             self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
         } else {
             assertionFailure("StemColor: 位数错误, 只支持 6 或 8 位, count: \(count)")
