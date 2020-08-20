@@ -24,6 +24,12 @@ class macOSTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
+    func testHexColor() {
+        let hex = "0xF1EBFF"
+        let color = StemColor(hex: hex)
+        print(color.hexString)
+    }
+
     func testColor() {
         let hex = "#C3EFFC"
         NSColor.st.displayMode = .rgb
