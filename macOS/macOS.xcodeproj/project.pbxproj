@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		CD3F165E24D7F0B30090E84D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD3F165D24D7F0B30090E84D /* Assets.xcassets */; };
 		CD3F166124D7F0B30090E84D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD3F165F24D7F0B30090E84D /* Main.storyboard */; };
 		CD5D142D24D82956004328DF /* macOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D142C24D82956004328DF /* macOSTests.swift */; };
+		CD9D94FA24EE4F4B00247776 /* TestSelectedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		CD5D142A24D82956004328DF /* macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5D142C24D82956004328DF /* macOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSTests.swift; sourceTree = "<group>"; };
 		CD5D142E24D82956004328DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSelectedProtocol.swift; sourceTree = "<group>"; };
 		D6E18D766169B7E1A317D27F /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				CD5D142C24D82956004328DF /* macOSTests.swift */,
+				CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */,
 				CD5D142E24D82956004328DF /* Info.plist */,
 			);
 			path = macOSTests;
@@ -317,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD9D94FA24EE4F4B00247776 /* TestSelectedProtocol.swift in Sources */,
 				CD5D142D24D82956004328DF /* macOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
