@@ -136,9 +136,9 @@ public extension STWrapperColor {
         let alpha = CGFloat(alpha)
 
         if red > 1 || green > 1 || blue > 1 {
-             red   = red / 255
+             red   = red   / 255
              green = green / 255
-             blue  = green / 255
+             blue  = blue  / 255
         }
 
         switch Self.displayMode {
