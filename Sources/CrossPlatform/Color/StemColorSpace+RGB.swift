@@ -11,6 +11,6 @@ public extension StemColor.RGBSpace {
 
     func red(with value: Double)   -> StemColor.RGBSpace { .init(red: value, green: green, blue: blue)  }
     func green(with value: Double) -> StemColor.RGBSpace { .init(red: red,   green: value, blue: blue)  }
-    func blue(with value: Double)  -> StemColor.RGBSpace { .init(red: blue,  green: green, blue: value) }
+    func blue(with value: Double)  -> StemColor.RGBSpace { .init(red: red,   green: green, blue: value) }
 
 }
