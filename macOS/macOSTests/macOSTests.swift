@@ -31,20 +31,19 @@ class macOSTests: XCTestCase {
     }
 
     func testColor() {
-        let hex = "#C3EFFC"
         NSColor.st.displayMode = .rgb
-        let color = NSColor(hex)
-        let stemColor = color.st.stemColor
-        assert(stemColor.hexString == hex)
+        let color = StemColor.random
 
-        let rgbSpace  = color.st.stemColor.rgbSpace
-        let xyzSpace  = color.st.stemColor.xyzSpace
-        let labSpace  = color.st.stemColor.labSpace
-        let hsbSpace  = color.st.stemColor.hsbSpace
-        let hslSpace  = color.st.stemColor.hslSpace
-        let cmySpace  = color.st.stemColor.cmySpace
-        let cmykSpace = color.st.stemColor.cmykSpace
+        let hex       = color.hexString
+        let rgbSpace  = color.rgbSpace
+        let xyzSpace  = color.xyzSpace
+        let labSpace  = color.labSpace
+        let hsbSpace  = color.hsbSpace
+        let hslSpace  = color.hslSpace
+        let cmySpace  = color.cmySpace
+        let cmykSpace = color.cmykSpace
 
+        print("hex: ", hex)
         print("rgb: ", rgbSpace)
         print("rgb: ", rgbSpace.red * 255, rgbSpace.green * 255, rgbSpace.blue * 255)
         print("xyz: ", xyzSpace)
