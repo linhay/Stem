@@ -20,10 +20,13 @@ Pod::Spec.new do |spec|
 
     spec.requires_arc = true
 
-    spec.ios.deployment_target     = "10.0"
-    spec.osx.deployment_target     = "10.15"
-
     subspecs = {}
+
+    subspecs['STUIKit'] = Proc.new { |sp|
+        sp.dependency 'Stem/UIKit'
+        sp.ios.deployment_target = '11.0'
+    }
+
     subspecs['Core'] = Proc.new { |sp|
         sp.tvos.deployment_target    = "10.0"
         sp.ios.deployment_target     = "10.0"

@@ -9,6 +9,7 @@ PODS:
     - Stem/Fundamentals (= 0.0.32)
     - Stem/NSObject (= 0.0.32)
     - Stem/Runtime (= 0.0.32)
+    - Stem/STUIKit (= 0.0.32)
     - Stem/UIKit (= 0.0.32)
     - Stem/WebKit (= 0.0.32)
   - Stem/AVKit (0.0.32):
@@ -33,6 +34,8 @@ PODS:
     - Stem/Core
   - Stem/Runtime (0.0.32):
     - Stem/Core
+  - Stem/STUIKit (0.0.32):
+    - Stem/UIKit
   - Stem/UIKit (0.0.32):
     - Stem/Core
     - Stem/Foundation
@@ -55,7 +58,7 @@ EXTERNAL SOURCES:
     :path: "../Stem.podspec"
 
 SPEC CHECKSUMS:
-  Stem: badd4e871d1dae882864974f79f91ad594586996
+  Stem: fa3287de5d52fbf54454bc7ff4e0a033bd36d5de
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
 PODFILE CHECKSUM: 81732c1b7c7b7ada7b9b58db8ae676ceeac0f17e
