@@ -168,11 +168,27 @@ public extension FilePath {
     /// - Throws: FilePathError - 文件重复 | 无法 [文件夹 -> 文件] 拷贝
     func copy(to path: FilePath) throws {
         switch (type, path.type) {
-        case (.file, .file), (.folder, .folder):
+        case (.file, .file):
             if path.isExist {
-                throw Error(message: "文件重复: \n\(self.url.absoluteString)\n\(path.url.absoluteString)")
+                throw Error(message: "文件重复: \n\(self.url.path)\n\(path.url.path)")
             }
             try manager.copyItem(at: url, to: path.url)
+        case (.folder, .folder):
+            let files = try subFilePaths()
+            let fromPrefix = self.url.standardizedFileURL.absoluteString
+            try files.forEach { filePath in
+                let type = filePath.type
+                var toURL = filePath.url
+
+                if filePath.url.standardizedFileURL.absoluteString.hasPrefix(fromPrefix) {
+                    let toPath = filePath.url.absoluteString.st.deleting(prefix: fromPrefix)
+                    toURL = path.url.appendingPathComponent(toPath)
+                }
+
+                let toFilePath = try FilePath(url: toURL, type: type)
+                try? toFilePath.parentFolder()?.create()
+                try filePath.copy(to: toFilePath)
+            }
         case (.file, .folder):
             let path = try FilePath(url: path.url.appendingPathComponent(attributes.name), type: type)
             if path.isExist {
@@ -182,6 +198,7 @@ public extension FilePath {
         case (.folder, .file):
             throw Error(message: "无法 [文件夹 -> 文件] 拷贝")
         }
+
     }
     
 }
