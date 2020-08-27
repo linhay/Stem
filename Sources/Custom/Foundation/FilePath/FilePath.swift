@@ -45,7 +45,7 @@ public class FilePath: Equatable {
             throw Error(message: "目标路径不是文件路径")
         }
         
-        self.url = url
+        self.url = url.standardized
         self.type = type
         attributes = Attributes(path: url)
     }
@@ -86,9 +86,7 @@ public extension FilePath {
 public extension FilePath {
     
     /// 当前路径是否存在
-    var isExist: Bool {
-        return manager.fileExists(atPath: url.path)
-    }
+    var isExist: Bool { manager.fileExists(atPath: url.path) }
     
 }
 
