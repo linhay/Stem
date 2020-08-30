@@ -27,10 +27,6 @@ open class SectionCollectionViewController: UIViewController {
     public let sectionView  = SectionCollectionView()
     public lazy var manager = SectionCollectionManager(sectionView: sectionView)
 
-    public convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
-
     open override func viewDidLoad() {
         super.viewDidLoad()
         if view.backgroundColor == nil {
