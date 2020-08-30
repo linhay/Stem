@@ -33,9 +33,9 @@ open class SingleTypeSection<Cell: UICollectionViewCell>: SectionCollectionProto
     /// cell 样式配置
     public let configCellStyleEvent = Delegate<(row: Int, cell: Cell), Void>()
 
-    public var minimumLineSpacing: CGFloat = 0
-    public var minimumInteritemSpacing: CGFloat = 0
-    public var sectionInset: UIEdgeInsets = .zero
+    open var minimumLineSpacing: CGFloat = 0
+    open var minimumInteritemSpacing: CGFloat = 0
+    open var sectionInset: UIEdgeInsets = .zero
 
     public let headerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
     public let headerSizeProvider = Delegate<UICollectionView, CGSize>()
@@ -44,7 +44,7 @@ open class SingleTypeSection<Cell: UICollectionViewCell>: SectionCollectionProto
     public let footerSizeProvider = Delegate<UICollectionView, CGSize>()
 
     public var core: SectionCore?
-    public var itemCount: Int { models.count }
+    open var itemCount: Int { models.count }
 
     public init(_ models: [Cell.Model] = []) {
         self.models = models
@@ -64,31 +64,24 @@ open class SingleTypeSection<Cell: UICollectionViewCell>: SectionCollectionProto
         selectedRowEvent.call(row)
     }
 
-}
+    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
+    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
 
-public extension SingleTypeSection {
+    open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
+    open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
 
-    var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
-    var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
-    var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
-    var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
-
-}
-
-public extension SingleTypeSection {
-
-    func config(sectionView: UICollectionView) {
+    open func config(sectionView: UICollectionView) {
         sectionView.st.register(Cell.self)
     }
 
-    func item(at row: Int) -> UICollectionViewCell {
+    open func item(at row: Int) -> UICollectionViewCell {
         let cell = dequeue(at: row) as Cell
         cell.config(models[row])
         configCellStyleEvent.call((row: row, cell: cell))
         return cell
     }
 
-    func willDisplayItem(at row: Int) {
+    open func willDisplayItem(at row: Int) {
         willDisplayEvent.call(row)
     }
 
