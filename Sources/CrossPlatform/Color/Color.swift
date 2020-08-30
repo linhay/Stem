@@ -78,10 +78,7 @@ public extension Stem where Base: STWrapperColor {
 
 // MARK: - api
 public extension Stem where Base: STWrapperColor {
-    
-    /// 随机色
-    static var random: STWrapperColor { StemColor.random.color }
-    
+        
     /// 透明度
     var alpha: CGFloat { base.cgColor.alpha }
     

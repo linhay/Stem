@@ -7,14 +7,6 @@
 
 import Foundation
 
-public protocol StemColorUnpack {
-
-    associatedtype UnPack
-    var unpack: UnPack { get }
-    var list: [Double] { get }
-
-}
-
 // http://www.easyrgb.com/en/math.php
 // https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4
 public class StemColor {
@@ -23,20 +15,13 @@ public class StemColor {
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
 
-    public struct RGBSpace: Codable, Equatable, StemColorUnpack {
+    public struct RGBSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let red: Double
         // value: 0 - 1.0
         public let green: Double
         // value: 0 - 1.0
         public let blue: Double
-
-        public var unpack: (red: Double, green: Double, blue: Double) { (red, green, blue) }
-        public var list: [Double] { [red, green, blue] }
-        public var intUnpack: (red: Int, green: Int, blue: Int) {
-            func map(_ v: Double) -> Int { Int(round(v * 255)) }
-            return (map(red), map(green), map(blue))
-        }
 
         public init(red: Double, green: Double, blue: Double) {
             self.red   = max(min(red,   1), 0)
@@ -148,7 +133,7 @@ public class StemColor {
         }
     }
 
-    public struct HSLSpace: Codable, Equatable, StemColorUnpack {
+    public struct HSLSpace: Codable, Equatable {
 
         // value: 0 - 1.0
         public let hue: Double
@@ -156,9 +141,6 @@ public class StemColor {
         public let saturation: Double
         // value: 0 - 1.0
         public let lightness: Double
-
-        public var unpack: (hue: Double, saturation: Double, lightness: Double) { (hue, saturation, lightness) }
-        public var list: [Double] { [hue, saturation, lightness] }
 
         public init(hue: Double, saturation: Double, lightness: Double) {
             if hue > 1 {
@@ -211,16 +193,13 @@ public class StemColor {
 
     }
 
-    public struct HSBSpace: Codable, Equatable, StemColorUnpack {
+    public struct HSBSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let hue: Double
         // value: 0 - 1.0
         public let saturation: Double
         // value: 0 - 1.0
         public let brightness: Double
-
-        public var unpack: (hue: Double, saturation: Double, brightness: Double) { (hue, saturation, brightness) }
-        public var list: [Double] { [hue, saturation, brightness] }
 
         public init(hue: Double, saturation: Double, brightness: Double) {
             if hue > 1 {
@@ -270,14 +249,11 @@ public class StemColor {
         }
     }
 
-    public struct XYZSpace: Codable, Equatable, StemColorUnpack {
+    public struct XYZSpace: Codable, Equatable {
 
         public let x: Double
         public let y: Double
         public let z: Double
-
-        public var unpack: (x: Double, y: Double, z: Double) { (x, y, z) }
-        public var list: [Double] { [x, y, z] }
 
         public init(x: Double, y: Double, z: Double) {
             self.x = x
@@ -321,13 +297,10 @@ public class StemColor {
 
     }
 
-    public struct LABSpace: Codable, Equatable, StemColorUnpack {
+    public struct LABSpace: Codable, Equatable {
         public let l: Double
         public let a: Double
         public let b: Double
-
-        public var unpack: (l: Double, a: Double, b: Double) { (l, a, b) }
-        public var list: [Double] { [l, a, b] }
 
         public init(l: Double, a: Double, b: Double) {
             self.l = l
@@ -357,16 +330,13 @@ public class StemColor {
 
     }
 
-    public struct CMYSpace: Codable, Equatable, StemColorUnpack {
+    public struct CMYSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
         public let magenta: Double
         // value: 0 - 1.0
         public let yellow: Double
-
-        public var unpack: (cyan: Double, magenta: Double, yellow: Double) { (cyan, magenta, yellow) }
-        public var list: [Double] { [cyan, magenta, yellow] }
 
         public init(cyan: Double, magenta: Double, yellow: Double) {
             self.cyan = cyan
@@ -387,7 +357,7 @@ public class StemColor {
         }
     }
 
-    public struct CMYKSpace: Codable, Equatable, StemColorUnpack {
+    public struct CMYKSpace: Codable, Equatable {
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
@@ -396,9 +366,6 @@ public class StemColor {
         public let yellow: Double
         // value: 0 - 1.0
         public let key: Double
-
-        public var unpack: (cyan: Double, magenta: Double, yellow: Double, key: Double) { (cyan, magenta, yellow, key) }
-        public var list: [Double] { [cyan, magenta, yellow, key] }
 
         public init(cyan: Double, magenta: Double, yellow: Double, key: Double) {
             self.cyan = cyan
@@ -457,6 +424,11 @@ public class StemColor {
 
     public init(rgb space: RGBSpace, alpha: Double = 1) {
         self.rgbSpace = space
+        self.alpha = max(min(alpha, 1), 0)
+    }
+
+    public init(alpha: Double = 1) {
+        self.rgbSpace = .init(red: 1, green: 1, blue: 1)
         self.alpha = max(min(alpha, 1), 0)
     }
 
@@ -550,17 +522,6 @@ public extension StemColor {
 
 }
 
-public extension StemColor {
-
-    /// 随机色
-    static var random: StemColor {
-        let red   = Double.random(in: 0.0 ... 255) / 255
-        let green = Double.random(in: 0.0 ... 255) / 255
-        let blue  = Double.random(in: 0.0 ... 255) / 255
-        return .init(rgb: .init(red: red, green: green, blue: blue), alpha: 1)
-    }
-
-}
 
 public extension StemColor {
 
@@ -571,18 +532,112 @@ public extension StemColor {
                          alpha: alpha)
     }
 
-    func lighter(amount: Double = 0.25) -> StemColor {
-        var space = hsbSpace
-        let brightness = space.brightness * (1 + amount)
-        space = HSBSpace(hue: space.hue, saturation: space.saturation, brightness: brightness)
-        return .init(hsb: space)
+}
+
+public extension StemColor {
+
+    enum Mixer {
+        case kubelkaMunk
     }
 
-    func darker(amount: Double = 0.25) -> StemColor {
-        var space = hsbSpace
-        let brightness = space.brightness * (1 - amount)
-        space = HSBSpace(hue: space.hue, saturation: space.saturation, brightness: brightness)
-        return .init(hsb: space)
+    private func coth(_ value: Double) -> Double {
+        return cosh(value) / sinh(value)
+    }
+
+    private func acoth(_ value: Double) -> Double {
+        return 0.5 * log((1 + 1 / value) / (1 - 1 / value))
+    }
+
+    private func kubelkaMunk(with color: StemColor) -> StemColor {
+    let V_c = 1.0
+    let V_s = 1.0
+
+    let w_c = 1.0
+    let w_s = 1.0
+
+    let V_ac = 1.0
+    let V_as = 1.0
+
+
+    var c = [Double](repeating: 0, count: 6)
+    var s = [Double](repeating: 0, count: 6)
+    var f = [Double](repeating: 0, count: 3)
+
+    c[0] = rgbSpace.red
+    c[1] = rgbSpace.green
+    c[2] = rgbSpace.blue
+
+    c[0] = color.rgbSpace.red
+    c[1] = color.rgbSpace.green
+    c[2] = color.rgbSpace.blue
+
+    for index in 0..<3 {
+        if c[index] == 1 { c[index] -= 0.4 / 255 }
+        if c[index] == 0 { c[index] += 0.4 / 255 }
+        if s[index] == 1 { c[index] -= 0.4 / 255 }
+        if s[index] == 0 { c[index] += 0.4 / 255 }
+
+        c[index+3] = c[index] - (0.4 / 255) * c[index]
+        s[index+3] = s[index] - (0.4 / 255) * s[index]
+    }
+
+    var a_c = 0.0
+    var b_c = 0.0
+
+    var a_s = 0.0
+    var b_s = 0.0
+
+    var a_f = 0.0
+    var b_f = 0.0
+
+    var S_c = 0.0
+    var S_s = 0.0
+    var S_f = 0.0
+
+    var K_c = 0.0
+    var K_s = 0.0
+    var K_f = 0.0
+
+    var c_f = 0.0
+    var R_f = 0.0
+    var T_f = 0.0
+
+    for index in 0..<3 {
+        a_c = 0.5 * (c[index] + (c[index + 3] - c[index] + 1) / c[index + 3])
+        a_s = 0.5 * (s[index] + (s[index + 3] - s[index] + 1) / s[index + 3])
+
+        b_c = sqrt(pow(a_c, 2) - 1)
+        b_s = sqrt(pow(a_s, 2) - 1)
+
+        S_c = (1 / b_c) * acoth((pow(b_c, 2) - (a_c - c[index]) * (a_c - 1)) / (b_c * (1 - c[index])))
+        S_s = (1 / b_s) * acoth((pow(b_s, 2) - (a_s - s[index]) * (a_s - 1)) / (b_s * (1 - s[index])))
+
+        K_c = S_c * (a_c - 1)
+        K_s = S_s * (a_s - 1)
+
+        S_f = (V_ac * S_c + V_as * S_s) / (V_ac + V_as)
+        K_f = (V_ac * K_c + V_as * K_s) / (V_ac + V_as)
+
+        c_f = sqrt((K_f / S_f) * (K_f / S_f + 2))
+
+        let THICKNESS = 1.0
+
+        R_f = 1 / (1 + (K_f / S_f) + c_f * coth(c_f * S_f * THICKNESS))
+        T_f = c_f * R_f * (1 / sinh(c_f * S_f * THICKNESS))
+
+        f[index] = min(max(R_f + T_f, 0), 1)
+    }
+
+    let space = RGBSpace(f)
+
+    return .init(rgb: space)
+}
+
+    func mix(with color: StemColor, use mixer: Mixer) -> StemColor {
+        switch mixer {
+        case .kubelkaMunk:
+            return kubelkaMunk(with: color)
+        }
     }
 
 }
