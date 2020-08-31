@@ -540,103 +540,44 @@ public extension StemColor {
         case kubelkaMunk
     }
 
-    private func coth(_ value: Double) -> Double {
-        return cosh(value) / sinh(value)
+    private func calculateAbsorbance(_ value: Double) -> Double {
+        return pow(1 - value, 2) / (2.0 * value)
     }
 
-    private func acoth(_ value: Double) -> Double {
-        return 0.5 * log((1 + 1 / value) / (1 - 1 / value))
+    private func calculateReflectance(_ value: Double) -> Double {
+        return 1.0 + value - sqrt(pow(value, 2) + 2 * value)
     }
 
-    private func kubelkaMunk(with color: StemColor) -> StemColor {
-    let V_c = 1.0
-    let V_s = 1.0
+    private func kubelkaMunk(with colors: [StemColor]) -> StemColor {
+        if colors.isEmpty {
+            return self
+        }
 
-    let w_c = 1.0
-    let w_s = 1.0
+        let colors = [self] + colors
 
-    let V_ac = 1.0
-    let V_as = 1.0
+        let concentration = 1.0 / Double(colors.count)
+
+        let list = colors
+            .map { $0.rgbSpace.list }
+            .map { $0.map({ max($0, 0.00001) * concentration }) }
+            .reduce([0.0, 0.0, 0.0]) { (item, result) -> [Double] in
+                var result = result
+                result[0] += item[0]
+                result[1] += item[1]
+                result[2] += item[2]
+                return result
+            }
+            .map { calculateReflectance($0) }
 
 
-    var c = [Double](repeating: 0, count: 6)
-    var s = [Double](repeating: 0, count: 6)
-    var f = [Double](repeating: 0, count: 3)
-
-    c[0] = rgbSpace.red
-    c[1] = rgbSpace.green
-    c[2] = rgbSpace.blue
-
-    c[0] = color.rgbSpace.red
-    c[1] = color.rgbSpace.green
-    c[2] = color.rgbSpace.blue
-
-    for index in 0..<3 {
-        if c[index] == 1 { c[index] -= 0.4 / 255 }
-        if c[index] == 0 { c[index] += 0.4 / 255 }
-        if s[index] == 1 { c[index] -= 0.4 / 255 }
-        if s[index] == 0 { c[index] += 0.4 / 255 }
-
-        c[index+3] = c[index] - (0.4 / 255) * c[index]
-        s[index+3] = s[index] - (0.4 / 255) * s[index]
-    }
-
-    var a_c = 0.0
-    var b_c = 0.0
-
-    var a_s = 0.0
-    var b_s = 0.0
-
-    var a_f = 0.0
-    var b_f = 0.0
-
-    var S_c = 0.0
-    var S_s = 0.0
-    var S_f = 0.0
-
-    var K_c = 0.0
-    var K_s = 0.0
-    var K_f = 0.0
-
-    var c_f = 0.0
-    var R_f = 0.0
-    var T_f = 0.0
-
-    for index in 0..<3 {
-        a_c = 0.5 * (c[index] + (c[index + 3] - c[index] + 1) / c[index + 3])
-        a_s = 0.5 * (s[index] + (s[index + 3] - s[index] + 1) / s[index + 3])
-
-        b_c = sqrt(pow(a_c, 2) - 1)
-        b_s = sqrt(pow(a_s, 2) - 1)
-
-        S_c = (1 / b_c) * acoth((pow(b_c, 2) - (a_c - c[index]) * (a_c - 1)) / (b_c * (1 - c[index])))
-        S_s = (1 / b_s) * acoth((pow(b_s, 2) - (a_s - s[index]) * (a_s - 1)) / (b_s * (1 - s[index])))
-
-        K_c = S_c * (a_c - 1)
-        K_s = S_s * (a_s - 1)
-
-        S_f = (V_ac * S_c + V_as * S_s) / (V_ac + V_as)
-        K_f = (V_ac * K_c + V_as * K_s) / (V_ac + V_as)
-
-        c_f = sqrt((K_f / S_f) * (K_f / S_f + 2))
-
-        let THICKNESS = 1.0
-
-        R_f = 1 / (1 + (K_f / S_f) + c_f * coth(c_f * S_f * THICKNESS))
-        T_f = c_f * R_f * (1 / sinh(c_f * S_f * THICKNESS))
-
-        f[index] = min(max(R_f + T_f, 0), 1)
-    }
-
-    let space = RGBSpace(f)
-
+    let space = RGBSpace(list)
     return .init(rgb: space)
 }
 
     func mix(with color: StemColor, use mixer: Mixer) -> StemColor {
         switch mixer {
         case .kubelkaMunk:
-            return kubelkaMunk(with: color)
+            return kubelkaMunk(with: [color])
         }
     }
 
