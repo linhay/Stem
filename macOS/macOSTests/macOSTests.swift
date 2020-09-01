@@ -43,7 +43,7 @@ class macOSTests: XCTestCase {
 
     func testColor() {
         NSColor.st.displayMode = .rgb
-        let color = StemColor(hex: 0xfafafa) //StemColor.random
+        let color = StemColor.random
 
         let hex       = color.hexString
         let rgbSpace  = color.rgbSpace
@@ -53,10 +53,12 @@ class macOSTests: XCTestCase {
         let hslSpace  = color.hslSpace
         let cmySpace  = color.cmySpace
         let cmykSpace = color.cmykSpace
+        let rybSpace  = color.rybSpace
 
         print("hex: ", hex)
         print("rgb: ", rgbSpace)
         print("rgb: ", rgbSpace.intUnpack)
+        print("ryb: ", rybSpace)
         print("xyz: ", xyzSpace)
         print("lab: ", labSpace)
         print("hsb: ", hsbSpace)
@@ -66,6 +68,7 @@ class macOSTests: XCTestCase {
 
 
         assert(StemColor(xyz: xyzSpace).hexString == hex)
+        assert(StemColor(ryb: rybSpace).hexString == hex)
         assert(StemColor(hsb: hsbSpace).hexString == hex)
         assert(StemColor(cmy: cmySpace).hexString == hex)
         assert(StemColor(cmyk: cmykSpace).hexString == hex)

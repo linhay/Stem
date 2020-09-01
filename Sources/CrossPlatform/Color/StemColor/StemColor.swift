@@ -54,12 +54,13 @@ public class StemColor {
     public private(set) var alpha: Double = 1
 
     public var rgbSpace: RGBSpace
-    public var xyzSpace: CIEXYZSpace   { .init(space: rgbSpace) }
-    public var labSpace: CIELABSpace   { xyzSpace.labSpace }
+    public var rybSpace: RYBSpace   { .init(space: rgbSpace) }
     public var hslSpace: HSLSpace   { .init(space: rgbSpace) }
     public var hsbSpace: HSBSpace   { .init(space: rgbSpace) }
     public var cmySpace: CMYSpace   { .init(space: rgbSpace) }
     public var cmykSpace: CMYKSpace { cmySpace.cmykSpace }
+    public var xyzSpace: CIEXYZSpace { .init(space: rgbSpace) }
+    public var labSpace: CIELABSpace { xyzSpace.labSpace }
 
     public convenience init(cmyk space: CMYKSpace, alpha: Double = 1) {
         self.init(rgb: CMYSpace(space: space).rgbSpace, alpha: alpha)
@@ -78,6 +79,10 @@ public class StemColor {
     }
 
     public convenience init(hsl space: HSLSpace, alpha: Double = 1) {
+        self.init(rgb: space.rgbSpace, alpha: alpha)
+    }
+
+    public convenience init(ryb space: RYBSpace, alpha: Double = 1) {
         self.init(rgb: space.rgbSpace, alpha: alpha)
     }
 
