@@ -65,7 +65,7 @@ public extension Device {
         public var ssidData: Data?
 
         public init?() {
-            guard let interfaceNames = CNCopySupportedInterfaces() as? [String] else { return nil }
+            guard #available(macCatalyst 14.0, *), let interfaceNames = CNCopySupportedInterfaces() as? [String] else { return nil }
             interfaceNames.forEach { (name) in
                 guard let info = CNCopyCurrentNetworkInfo(name as CFString) as? [String: Any] else { return }
                 if let res = info[kCNNetworkInfoKeySSID as String] as? String { ssid = res }
