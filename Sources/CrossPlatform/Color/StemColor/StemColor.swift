@@ -22,7 +22,7 @@
 
 import Foundation
 
-extension StemColorRGBSpaceConversion {
+public extension StemColorRGBSpaceConversion {
 
     init(space: StemColor.RGBSpace) {
         self.init(red: space.red, green: space.green, blue: space.blue)
@@ -35,7 +35,7 @@ extension StemColorRGBSpaceConversion {
 
 }
 
-extension StemColorCMYKSpaceConversion {
+public extension StemColorCMYKSpaceConversion {
 
     init(space: StemColor.CMYKSpace) {
         self.init(cyan: space.cyan, magenta: space.magenta, yellow: space.yellow, key: space.key)
@@ -48,7 +48,7 @@ extension StemColorCMYKSpaceConversion {
 
 }
 
-extension StemColorCIELABSpaceConversion {
+public extension StemColorCIELABSpaceConversion {
 
     init(space: StemColor.CIELABSpace) {
         self.init(l: space.l, a: space.a, b: space.b)
@@ -204,7 +204,6 @@ public extension StemColor {
     }
 
 }
-
 
 public extension StemColor {
 
