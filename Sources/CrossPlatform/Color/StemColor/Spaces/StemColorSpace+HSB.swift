@@ -25,6 +25,7 @@ import Foundation
 public extension StemColor {
 
     struct HSBSpace: StemColorSpace {
+        public private(set)  var ranges: [ClosedRange<Double>] = [0...1, 0...1, 0...1]
         // value: 0 - 1.0
         public let hue: Double
         // value: 0 - 1.0

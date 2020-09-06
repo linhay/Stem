@@ -25,6 +25,7 @@ import Foundation
 public extension StemColor {
 
     struct RYBSpace: StemColorSpace {
+        public private(set) var ranges: [ClosedRange<Double>] = [0...1, 0...1, 0...1]
 
         public let red: Double
         public let yellow: Double

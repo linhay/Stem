@@ -27,6 +27,7 @@ public protocol StemColorSpacePack {
     associatedtype UnPack
     var unpack: UnPack { get }
     var list: [Double] { get }
+    var ranges: [ClosedRange<Double>] { get }
     init(_ list: [Double])
     init()
     

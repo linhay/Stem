@@ -34,6 +34,7 @@ public protocol StemColorCMYKSpaceConversion {
 }
 
 public protocol StemColorCIELABSpaceConversion {
-    init(l: Double, a: Double, b: Double)
-    var convertToLAB: (l: Double, a: Double, b: Double) { get }
+
+    init(l: Double, a: Double, b: Double, illuminants: CIEStandardIlluminants)
+    func convertToLAB(illuminants: CIEStandardIlluminants) -> (l: Double, a: Double, b: Double)
 }

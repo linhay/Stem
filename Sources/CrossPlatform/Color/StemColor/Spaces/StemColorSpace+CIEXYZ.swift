@@ -26,13 +26,19 @@ public extension StemColor {
 
     struct CIEXYZSpace: StemColorSpace {
 
-        static let D65tristimulus = CIEXYZSpace(x: 95.047, y: 100.0, z: 108.883)
+        public var ranges: [ClosedRange<Double>] {
+            [0...illuminants.rawValue[0],
+             0...illuminants.rawValue[1],
+             0...illuminants.rawValue[2]]
+        }
 
+        public let illuminants: CIEStandardIlluminants
         public let x: Double
         public let y: Double
         public let z: Double
 
-        public init(x: Double, y: Double, z: Double) {
+        public init(x: Double, y: Double, z: Double, illuminants: CIEStandardIlluminants) {
+            self.illuminants = illuminants
             self.x = x
             self.y = y
             self.z = z
@@ -43,15 +49,15 @@ public extension StemColor {
 
 public extension StemColor.CIEXYZSpace {
 
-    func x(with value: Double) -> Self { .init(x: value, y: y, z: z) }
-    func y(with value: Double) -> Self { .init(x: x, y: value, z: z) }
-    func z(with value: Double) -> Self { .init(x: x, y: y, z: value) }
+    func x(with value: Double) -> Self { .init(x: value, y: y, z: z, illuminants: illuminants) }
+    func y(with value: Double) -> Self { .init(x: x, y: value, z: z, illuminants: illuminants) }
+    func z(with value: Double) -> Self { .init(x: x, y: y, z: value, illuminants: illuminants) }
 
 }
 
 extension StemColor.CIEXYZSpace: StemColorCIELABSpaceConversion {
 
-    public var convertToLAB: (l: Double, a: Double, b: Double) {
+    public func convertToLAB(illuminants: CIEStandardIlluminants) -> (l: Double, a: Double, b: Double) {
         func map(_ value: Double) -> Double {
             if (value > pow(6.0 / 29.0, 3.0)) {
                 return pow(value, 1.0 / 3.0)
@@ -60,11 +66,9 @@ extension StemColor.CIEXYZSpace: StemColorCIELABSpaceConversion {
             }
         }
 
-        let tristimulus = StemColor.CIEXYZSpace.D65tristimulus
-
-        let fx = map(x / tristimulus.x)
-        let fy = map(y / tristimulus.y)
-        let fz = map(z / tristimulus.z)
+        let fx = map(x / (illuminants.rawValue[0] * 100))
+        let fy = map(y / (illuminants.rawValue[1] * 100))
+        let fz = map(z / (illuminants.rawValue[2] * 100))
 
         let l = (116.0 * fy) - 16.0
         let a = 500 * (fx - fy)
@@ -73,7 +77,7 @@ extension StemColor.CIEXYZSpace: StemColorCIELABSpaceConversion {
         return (l, a, b)
     }
 
-    public init(l: Double, a: Double, b: Double) {
+    public init(l: Double, a: Double, b: Double, illuminants: CIEStandardIlluminants) {
         func map(_ value: Double) -> Double {
             if (value > (6.0 / 29.0)) {
                 return pow(value, 3.0)
@@ -83,11 +87,11 @@ extension StemColor.CIEXYZSpace: StemColorCIELABSpaceConversion {
         }
 
         let y = (1.0 / 116.0) * (l + 16.0)
-        let tristimulus = StemColor.CIEXYZSpace.D65tristimulus
 
-        self.init(x: tristimulus.x * map(y + a / 500.0),
-                  y: tristimulus.y * map(y),
-                  z: tristimulus.z * map(y - b / 200.0))
+        self.init(x: illuminants.rawValue[0] * 100 * map(y + a / 500.0),
+                  y: illuminants.rawValue[1] * 100 * map(y),
+                  z: illuminants.rawValue[2] * 100 * map(y - b / 200.0),
+                  illuminants: illuminants)
     }
 
 }
@@ -129,7 +133,7 @@ extension StemColor.CIEXYZSpace: StemColorRGBSpaceConversion {
         let y = (r * 21.26729 + g * 71.51522 + b * 07.21750) / 100
         let z = (r * 01.93339 + g * 11.91920 + b * 95.03041) / 100
         
-        self.init(x: x, y: y, z: z)
+        self.init(x: x, y: y, z: z, illuminants: .D65)
     }
 
 }
@@ -140,7 +144,7 @@ extension StemColor.CIEXYZSpace: StemColorSpacePack {
     public var list: [Double] { [x, y, z] }
 
     public init(_ list: [Double]) {
-        self.init(x: list[0], y: list[1], z: list[2])
+        self.init(x: list[0], y: list[1], z: list[2], illuminants: .D65)
     }
 
     public init() {

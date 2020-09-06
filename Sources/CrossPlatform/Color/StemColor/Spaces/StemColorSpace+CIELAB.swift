@@ -25,6 +25,7 @@ import Foundation
 public extension StemColor {
 
     struct CIELABSpace: StemColorSpace {
+        
         public let l: Double
         public let a: Double
         public let b: Double
@@ -48,6 +49,13 @@ public extension StemColor.CIELABSpace {
 }
 
 extension StemColor.CIELABSpace: StemColorSpacePack {
+
+    public var ranges: [ClosedRange<Double>] {
+       let list = CIEStandardIlluminants.D65.rawValue
+        return [0...list[0],
+                0...list[1],
+                0...list[2]]
+    }
 
     public var unpack: (l: Double, a: Double, b: Double) { (l, a, b) }
     public var list: [Double] { [l, a, b] }

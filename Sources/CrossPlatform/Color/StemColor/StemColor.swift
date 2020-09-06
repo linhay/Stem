@@ -51,11 +51,11 @@ public extension StemColorCMYKSpaceConversion {
 public extension StemColorCIELABSpaceConversion {
 
     init(space: StemColor.CIELABSpace) {
-        self.init(l: space.l, a: space.a, b: space.b)
+        self.init(l: space.l, a: space.a, b: space.b, illuminants: .D65)
     }
 
     var labSpace: StemColor.CIELABSpace {
-        let (l, a, b) = convertToLAB
+        let (l, a, b) = convertToLAB(illuminants: .D65)
         return .init(l: l, a: a, b: b)
     }
 

@@ -25,6 +25,7 @@ import Foundation
 public extension StemColor {
 
      struct CMYKSpace: StemColorSpace {
+        public let ranges: [ClosedRange<Double>] = [0...1, 0...1, 0...1, 0...1]
         // value: 0 - 1.0
         public let cyan: Double
         // value: 0 - 1.0
