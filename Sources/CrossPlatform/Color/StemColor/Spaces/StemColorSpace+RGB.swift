@@ -34,9 +34,16 @@ public extension StemColor {
         public let blue: Double
 
         public init(red: Double, green: Double, blue: Double) {
-            self.red   = max(min(red,   1), 0)
-            self.green = max(min(green, 1), 0)
-            self.blue  = max(min(blue,  1), 0)
+            func map(_ value: Double) -> Double {
+                var value = value
+                if value > 0.9999 { value = 1 }
+                else if value < 0 { value = 0 }
+                return value
+            }
+            
+            self.red   = map(red)
+            self.green = map(green)
+            self.blue  = map(blue)
         }
 
     }
