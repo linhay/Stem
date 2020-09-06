@@ -51,10 +51,9 @@ public extension StemColor.CIELABSpace {
 extension StemColor.CIELABSpace: StemColorSpacePack {
 
     public var ranges: [ClosedRange<Double>] {
-       let list = CIEStandardIlluminants.D65.rawValue
-        return [0...list[0],
-                0...list[1],
-                0...list[2]]
+        return [0...1,
+                -1.28...1.27,
+                -1.28...1.27]
     }
 
     public var unpack: (l: Double, a: Double, b: Double) { (l, a, b) }
