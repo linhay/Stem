@@ -26,10 +26,8 @@ public final class WeakBox<T: AnyObject> {
 
     public weak var value: T?
 
-    public init(_ value: T) {
+    public init(_ value: T? = nil) {
         self.value = value
     }
-
-    public init() {}
 
 }
