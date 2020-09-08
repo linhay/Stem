@@ -53,6 +53,7 @@ public class SectionManager<SectionView: UIView> {
         if sections.isEmpty || sections.count <= index {
             return .reload
         } else {
+            sections.remove(at: index)
             sections = calculator(sections: sections, in: sectionView)
             return .delete(IndexSet([index]))
         }
@@ -74,7 +75,7 @@ public class SectionManager<SectionView: UIView> {
         if sections.isEmpty || sections.count <= index {
             sections.append(section)
             sections = calculator(sections: sections, in: sectionView)
-            return isEmpty ? .reload : .insert(IndexSet([sections.count]))
+            return isEmpty ? .reload : .insert(IndexSet([sections.count - 1]))
         } else {
             sections.insert(section, at: index)
             sections = calculator(sections: sections, in: sectionView)
