@@ -118,7 +118,7 @@ public extension SectionCollectionProtocol {
 public extension SectionCollectionProtocol {
 
     func insert(at row: Int, willUpdate: (() -> Void)? = nil) {
-        insert(at: [row])
+        insert(at: [row], willUpdate: willUpdate)
     }
 
     func insert(at rows: [Int], willUpdate: (() -> Void)? = nil) {

@@ -113,7 +113,7 @@ public extension SectionTableProtocol {
     func insert(at row: Int,
                 with animation: UITableView.RowAnimation = .none,
                 willUpdate: (() -> Void)? = nil) {
-        insert(at: [row])
+        insert(at: [row], with: animation, willUpdate: willUpdate)
     }
 
     func insert(at rows: [Int],
