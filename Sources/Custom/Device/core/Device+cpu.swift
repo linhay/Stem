@@ -24,20 +24,18 @@ import Foundation
 
 public extension Device {
 
-    static let cpu = CPU()
+    static let processor = Processor()
 
-    struct CPU { }
+    struct Processor { }
 
 }
 
-public extension Device.CPU {
+public extension Device.Processor {
 
-    /// cpu 核心数
-    var count: Int { ProcessInfo.processInfo.activeProcessorCount }
-
-    var usage: Double { usagePerProcessor.reduce(0.0, { return $0 + $1 }) }
-
-
+    /// 处理器数
+    var count: Int { ProcessInfo.processInfo.processorCount }
+    /// 活动处理器数
+    var activeCount: Int { ProcessInfo.processInfo.activeProcessorCount }
     /// cpu 滴答数, 纳秒级精度
     var absoluteTime: Int64 {
         // 获取转换因子
@@ -46,9 +44,5 @@ public extension Device.CPU {
         // 获取开始时间
         return Int64(mach_absolute_time())
     }
-
-    var usagePerProcessor: [Double] {
-        return []
-    }
-
+    
 }

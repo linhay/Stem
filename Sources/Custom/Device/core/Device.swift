@@ -23,3 +23,48 @@
 import Foundation
 
 public class Device { }
+
+public extension Device {
+
+    class Battery { }
+
+}
+
+
+#if canImport(UIKit)
+import UIKit
+
+public extension Device.Battery {
+
+    /// 电量比例
+    var level: Double {
+        let device = UIDevice.current
+        let isBatteryMonitoringEnabled = device.isBatteryMonitoringEnabled
+        defer { device.isBatteryMonitoringEnabled = isBatteryMonitoringEnabled }
+        device.isBatteryMonitoringEnabled = true
+        return Double(device.batteryLevel)
+    }
+
+
+    /// 是否正在充电
+    var isCharging: Bool {
+        let device = UIDevice.current
+        let isBatteryMonitoringEnabled = device.isBatteryMonitoringEnabled
+        defer { device.isBatteryMonitoringEnabled = isBatteryMonitoringEnabled }
+        device.isBatteryMonitoringEnabled = true
+        return device.batteryState == .charging
+    }
+
+
+    /// 是否是满电
+    var isFull: Bool {
+        let device = UIDevice.current
+        let isBatteryMonitoringEnabled = device.isBatteryMonitoringEnabled
+        defer { device.isBatteryMonitoringEnabled = isBatteryMonitoringEnabled }
+        device.isBatteryMonitoringEnabled = true
+        return device.batteryState == .full
+    }
+
+}
+
+#endif
