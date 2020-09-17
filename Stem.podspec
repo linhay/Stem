@@ -23,7 +23,9 @@ Pod::Spec.new do |spec|
     subspecs = {}
 
     subspecs['STUIKit'] = Proc.new { |sp|
+        sp.dependency 'Stem/Core'
         sp.dependency 'Stem/UIKit'
+        sp.dependency 'Stem/Runtime'
         sp.ios.deployment_target = '11.0'
     }
 

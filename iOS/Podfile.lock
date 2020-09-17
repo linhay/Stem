@@ -35,6 +35,8 @@ PODS:
   - Stem/Runtime (0.0.32):
     - Stem/Core
   - Stem/STUIKit (0.0.32):
+    - Stem/Core
+    - Stem/Runtime
     - Stem/UIKit
   - Stem/UIKit (0.0.32):
     - Stem/Core
@@ -58,7 +60,7 @@ EXTERNAL SOURCES:
     :path: "../Stem.podspec"
 
 SPEC CHECKSUMS:
-  Stem: fa3287de5d52fbf54454bc7ff4e0a033bd36d5de
+  Stem: 1c46d15e7800bc731d0475ccc72930d650e60e4e
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
 PODFILE CHECKSUM: 81732c1b7c7b7ada7b9b58db8ae676ceeac0f17e
