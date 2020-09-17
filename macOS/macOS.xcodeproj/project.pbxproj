@@ -159,8 +159,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD5D143324D82956004328DF /* Build configuration list for PBXNativeTarget "macOSTests" */;
 			buildPhases = (
-				CDAB9E432505317A00BBF287 /* ShellScript */,
 				A0B0F9173CB24084051E7498 /* [CP] Check Pods Manifest.lock */,
+				CDAB9E432505317A00BBF287 /* ShellScript */,
 				CD5D142624D82956004328DF /* Sources */,
 				CD5D142724D82956004328DF /* Frameworks */,
 				CD5D142824D82956004328DF /* Resources */,

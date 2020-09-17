@@ -22,8 +22,7 @@
 
 import Foundation
 
-public
-extension Stem where Base: ByteCountFormatter {
+public extension Stem where Base: ByteCountFormatter {
     
     func string(from value: Int) -> String {
        return base.string(fromByteCount: Int64(value))
