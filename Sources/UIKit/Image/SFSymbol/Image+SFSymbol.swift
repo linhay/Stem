@@ -20,52 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+#if canImport(SwiftUI)
 
-public protocol StemColorSpacePack {
+import SwiftUI
 
-    associatedtype UnPack
-    var unpack: UnPack { get }
-    var list: [Double] { get }
-    var ranges: [ClosedRange<Double>] { get }
-    init(_ list: [Double])
-    init()
-    
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+public extension SwiftUI.Image {
+
+    /// Creates a instance of `Image` with a system symbol image of the given type.
+    ///
+    /// - Parameter systemSymbol: The `SFSymbol` describing this image.
+    @available(macOS, unavailable)
+    init(systemSymbol: SFSymbol) {
+        self.init(systemName: systemSymbol.rawValue)
+    }
 }
 
-extension StemColorSpacePack {
-
-    func average(with spaces: [Self]) -> Self {
-        return ([self] + spaces).averageItem!
-    }
-
-    static func average(_ spaces: [Self]) -> Self {
-        return spaces.averageItem!
-    }
-
-}
-
-extension Array where Element: StemColorSpacePack {
-
-    var averageItem: Element? {
-        let count = Double(self.count)
-        let values = self.map(\.list)
-
-        guard let firstItem = values.first else {
-            return nil
-        }
-
-        let list = values
-            .dropFirst()
-            .reduce(firstItem) { (item, result) -> [Double] in
-                var result = result
-                for index in 0..<item.count {
-                    result[index] += item[index]
-                }
-                return result
-        }
-        .map { $0 / count }
-        return .init(list)
-    }
-
-}
+#endif

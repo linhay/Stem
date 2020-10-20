@@ -40,7 +40,7 @@ public extension UIImage {
     /// - Parameter configuration: The `UIImage.Configuration` applied to this system image.
     @available(iOS 13.0, tvOS 13.0, *)
     @available(watchOS, unavailable)
-    convenience init(sfSymbol: SFSymbol, withConfiguration configuration: UIImage.Configuration?) {
+    convenience init(sfSymbol: SFSymbol, with configuration: UIImage.SymbolConfiguration?) {
         self.init(systemName: sfSymbol.rawValue, withConfiguration: configuration)!
     }
 }

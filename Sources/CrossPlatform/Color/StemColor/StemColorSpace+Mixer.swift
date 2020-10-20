@@ -25,15 +25,23 @@ import Foundation
 public extension StemColor {
 
     enum Mixer {
-        case cmykAverage
-        case kubelkaMunk
+        case cmykAverage([StemColor])
+        case kubelkaMunk([StemColor])
     }
 
-    private func cmykAverage(with colors: [StemColor]) -> StemColor {
-        return .init(cmyk: self.cmykSpace.average(with: colors.map(\.cmykSpace)))
+    private static func cmykAverage(with colors: [StemColor]) -> StemColor? {
+        if colors.isEmpty {
+            return nil
+        }
+        return .init(cmyk: CMYKSpace.average(colors.map(\.cmykSpace)))
     }
 
-    private func kubelkaMunk(with colors: [StemColor]) -> StemColor {
+    private static func kubelkaMunk(with colors: [StemColor]) -> StemColor? {
+
+        if colors.isEmpty {
+            return nil
+        }
+
         func absorbance(_ value: Double) -> Double {
             return pow(1 - value, 2) / (2.0 * value)
         }
@@ -42,16 +50,10 @@ public extension StemColor {
             return 1.0 + value - sqrt(pow(value, 2) + 2 * value)
         }
 
-        if colors.isEmpty {
-            return self
-        }
-
-        let colors = [self] + colors
-
         let concentration = 1.0 / Double(colors.count)
 
         let list = colors
-            .map { $0.rgbSpace.list }
+            .map(\.rgbSpace.list)
             .map { $0
                 .map({ max($0, 0.00001) * concentration })
 //                .map { absorbance($0) }
@@ -70,11 +72,20 @@ public extension StemColor {
         return .init(rgb: space)
     }
 
-    func mix(with colors: [StemColor], use mixer: Mixer) -> StemColor {
+    func mix(use mixer: Mixer) -> StemColor {
         switch mixer {
-        case .kubelkaMunk:
+        case .kubelkaMunk(let colors):
+            return Self.kubelkaMunk(with: [self] + colors) ?? self
+        case .cmykAverage(let colors):
+            return Self.cmykAverage(with: [self] + colors) ?? self
+        }
+    }
+
+    static func mix(use mixer: Mixer) -> StemColor? {
+        switch mixer {
+        case .kubelkaMunk(let colors):
             return kubelkaMunk(with: colors)
-        case .cmykAverage:
+        case .cmykAverage(let colors):
             return cmykAverage(with: colors)
         }
     }

@@ -28,43 +28,6 @@ import AppKit
 public typealias STWrapperColor = NSColor
 #endif
 
-public extension StemColor {
-
-    var color: STWrapperColor {
-        STWrapperColor(red: rgbSpace.red * 255,
-                       green: rgbSpace.green * 255,
-                       blue: rgbSpace.blue * 255,
-                       alpha: alpha)
-    }
-
-    convenience init(cgColor color: CGColor) {
-        guard let components = color.components, components.count >= 4 else {
-            self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
-            return
-        }
-
-        let red   = Double(components[0])
-        let green = Double(components[1])
-        let blue  = Double(components[2])
-        let alpha = Double(components[3])
-
-        self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
-    }
-
-    convenience init(color: STWrapperColor) {
-        self.init(cgColor: color.cgColor)
-    }
-
-}
-
-public extension Stem where Base: STWrapperColor {
-
-    var stemColor: StemColor {
-        .init(color: base)
-    }
-
-}
-
 // MARK: - static Api
 public extension Stem where Base: STWrapperColor {
     
@@ -89,11 +52,11 @@ extension STWrapperColor {
 
     public enum DisplayMode {
         case srgb
-        case p3
+        case displayP3
         case rgb
     }
     
-    static var displayMode = DisplayMode.rgb
+    static var displayMode = DisplayMode.displayP3
     
 }
 
@@ -141,7 +104,7 @@ public extension STWrapperColor {
         switch Self.displayMode {
         case .srgb:
             self.init(red: red, green: green, blue: blue, alpha: alpha)
-        case .p3:
+        case .displayP3:
             if #available(iOS 10.0, *) {
                 self.init(displayP3Red: red, green: green, blue: blue, alpha: alpha)
             } else {
