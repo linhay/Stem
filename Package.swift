@@ -1,6 +1,4 @@
-// swift-tools-version:5.2
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:5.1
 import PackageDescription
 
 let package = Package(
@@ -8,17 +6,17 @@ let package = Package(
     platforms: [.iOS(.v10), .macOS(.v10_12), .tvOS(.v10), .watchOS(.v3)],
     products: [
         .library(name: "Stem", targets: ["Stem"]),
+        .library(name: "StemDynamic", type: .dynamic, targets: ["Stem"]),
+        .library(name: "StemStatic", type: .static, targets: ["Stem"]),
     ],
     targets: [
         .target(
             name: "Stem",
             path: "Sources",
-            sources: ["Core",
-                      "Fundamentals",
-                      "NSObject",
-                      "Foundation/new",
+            exclude: ["Core", 
                       "CrossPlatform",
-                      "Custom/Foundation",
-                      "CoreText"])
+                      "STUIKit",
+                      "UIKit"]
+        )
     ]
 )

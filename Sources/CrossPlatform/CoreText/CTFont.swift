@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(CoreText)
 import Foundation
 import CoreText
 
@@ -124,3 +125,4 @@ public extension Stem where Base: CTFont {
     }
 
 }
+#endif

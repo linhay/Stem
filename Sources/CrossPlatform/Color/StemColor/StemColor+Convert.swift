@@ -23,38 +23,38 @@
 import Foundation
 
 public extension StemColor {
-
+    
     func convert() -> STWrapperColor {
         STWrapperColor(red: rgbSpace.red * 255,
                        green: rgbSpace.green * 255,
                        blue: rgbSpace.blue * 255,
                        alpha: alpha)
     }
-
+    
     convenience init(_ color: STWrapperColor) {
         self.init(color.cgColor)
     }
-
+    
 }
 
 #if canImport(CoreGraphics)
 import CoreGraphics
 public extension StemColor {
-
+    
     convenience init(_ color: CGColor) {
         guard let components = color.components, components.count >= 4 else {
             self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
             return
         }
-
+        
         let red   = Double(components[0])
         let green = Double(components[1])
         let blue  = Double(components[2])
         let alpha = Double(components[3])
-
+        
         self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
     }
-
+    
     @available(iOS 13.0, *)
     func convert() -> CGColor {
         return .init(red: CGFloat(rgbSpace.red),
@@ -62,7 +62,7 @@ public extension StemColor {
                      blue: CGFloat(rgbSpace.blue),
                      alpha: CGFloat(alpha))
     }
-
+    
 }
 #endif
 
@@ -78,12 +78,14 @@ import AppKit
 @available(iOSApplicationExtension 13.0, *)
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension StemColor {
-
+    
+    #if canImport(UIKit)
     @available(iOS 14.0, *)
     convenience init(_ color: SwiftUI.Color) {
         self.init(UIColor(color).cgColor)
     }
-
+    #endif
+    
     func convert() -> SwiftUI.Color {
         return Color(.displayP3,
                      red: rgbSpace.red,
@@ -91,6 +93,6 @@ public extension StemColor {
                      blue: rgbSpace.blue,
                      opacity: alpha)
     }
-
+    
 }
 #endif

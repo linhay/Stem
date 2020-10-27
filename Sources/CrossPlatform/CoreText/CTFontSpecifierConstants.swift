@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(CoreText)
 import Foundation
 import CoreText
 
@@ -94,3 +95,4 @@ public enum CTFontSpecifierConstants: String, CaseIterable {
     }
     
 }
+#endif

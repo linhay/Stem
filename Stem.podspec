@@ -26,18 +26,11 @@ Pod::Spec.new do |spec|
         sp.dependency 'Stem/Core'
         sp.dependency 'Stem/UIKit'
         sp.dependency 'Stem/Runtime'
+        sp.dependency 'Stem/CrossPlatform'
         sp.ios.deployment_target = '11.0'
     }
 
     subspecs['Core'] = Proc.new { |sp|
-        sp.tvos.deployment_target    = "10.0"
-        sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.15"
-        sp.watchos.deployment_target = "3.0"
-    }
-
-    subspecs['NSObject'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
         sp.tvos.deployment_target    = "10.0"
         sp.ios.deployment_target     = "10.0"
         sp.osx.deployment_target     = "10.15"
@@ -52,40 +45,9 @@ Pod::Spec.new do |spec|
         sp.watchos.deployment_target = "3.0"
     }
 
-    subspecs['Fundamentals'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
-        sp.tvos.deployment_target    = "10.0"
-        sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.15"
-        sp.watchos.deployment_target = "3.0"
-    }
-
-    subspecs['AVKit'] = Proc.new { |sp|
-        sp.frameworks = ['AVFoundation']
-        sp.dependency 'Stem/Core'
-        sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.15"
-    }
-
-    subspecs['CoreText'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
-    }
-
-    subspecs['Custom'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
-        sp.dependency 'Stem/NSObject'
-    }
-
-    subspecs['Foundation'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
-        sp.dependency 'Stem/Fundamentals'
-    }
-
     subspecs['CrossPlatform'] = Proc.new { |sp|
         sp.dependency 'Stem/Core'
         sp.dependency 'Stem/Runtime'
-        sp.dependency 'Stem/NSObject'
-        sp.dependency 'Stem/Foundation'
         sp.ios.deployment_target = '10.0'
         sp.osx.deployment_target = "10.15"
     }
@@ -93,13 +55,8 @@ Pod::Spec.new do |spec|
     subspecs['UIKit'] = Proc.new { |sp|
         sp.dependency 'Stem/Core'
         sp.dependency 'Stem/Runtime'
-        sp.dependency 'Stem/NSObject'
-        sp.dependency 'Stem/Foundation'
+        sp.dependency 'Stem/CrossPlatform'
         sp.ios.deployment_target = '10.0'
-    }
-
-    subspecs['WebKit'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
     }
 
     subspecs.each do |name, callback|

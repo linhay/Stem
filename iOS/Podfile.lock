@@ -1,51 +1,26 @@
 PODS:
   - Stem (0.0.32):
-    - Stem/AVKit (= 0.0.32)
     - Stem/Core (= 0.0.32)
-    - Stem/CoreText (= 0.0.32)
     - Stem/CrossPlatform (= 0.0.32)
-    - Stem/Custom (= 0.0.32)
-    - Stem/Foundation (= 0.0.32)
-    - Stem/Fundamentals (= 0.0.32)
-    - Stem/NSObject (= 0.0.32)
     - Stem/Runtime (= 0.0.32)
     - Stem/STUIKit (= 0.0.32)
     - Stem/UIKit (= 0.0.32)
-    - Stem/WebKit (= 0.0.32)
-  - Stem/AVKit (0.0.32):
-    - Stem/Core
   - Stem/Core (0.0.32)
-  - Stem/CoreText (0.0.32):
-    - Stem/Core
   - Stem/CrossPlatform (0.0.32):
     - Stem/Core
-    - Stem/Foundation
-    - Stem/NSObject
     - Stem/Runtime
-  - Stem/Custom (0.0.32):
-    - Stem/Core
-    - Stem/NSObject
-  - Stem/Foundation (0.0.32):
-    - Stem/Core
-    - Stem/Fundamentals
-  - Stem/Fundamentals (0.0.32):
-    - Stem/Core
-  - Stem/NSObject (0.0.32):
-    - Stem/Core
   - Stem/Runtime (0.0.32):
     - Stem/Core
   - Stem/STUIKit (0.0.32):
     - Stem/Core
+    - Stem/CrossPlatform
     - Stem/Runtime
     - Stem/UIKit
   - Stem/UIKit (0.0.32):
     - Stem/Core
-    - Stem/Foundation
-    - Stem/NSObject
+    - Stem/CrossPlatform
     - Stem/Runtime
-  - Stem/WebKit (0.0.32):
-    - Stem/Core
-  - SwiftLint (0.39.2)
+  - SwiftLint (0.40.3)
 
 DEPENDENCIES:
   - Stem (from `../Stem.podspec`)
@@ -60,9 +35,9 @@ EXTERNAL SOURCES:
     :path: "../Stem.podspec"
 
 SPEC CHECKSUMS:
-  Stem: 1c46d15e7800bc731d0475ccc72930d650e60e4e
-  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  Stem: 2ba44849102fc984b3e1d7a59f1dad966b229b55
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
 PODFILE CHECKSUM: 81732c1b7c7b7ada7b9b58db8ae676ceeac0f17e
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0
