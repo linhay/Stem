@@ -117,6 +117,18 @@ public class StemColor {
 
 }
 
+extension StemColor: Hashable, Equatable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rgbSpace.hashValue)
+    }
+    
+    public static func == (lhs: StemColor, rhs: StemColor) -> Bool {
+        lhs.rgbSpace == rhs.rgbSpace
+    }
+    
+}
+
 public extension StemColor {
 
     /// 十六进制色: 0x666666

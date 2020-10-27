@@ -24,7 +24,7 @@ import CoreImage
 
 extension CGImage: StemCompatible {}
 
-fileprivate struct RGBAPixel {
+fileprivate struct STRGBAPixel {
     let r: UInt8
     let g: UInt8
     let b: UInt8
@@ -32,31 +32,27 @@ fileprivate struct RGBAPixel {
 }
 
 public extension Stem where Base: CGImage {
-
-    func generator(callback: (_ point: CGPoint, _ color: UIColor) -> Void) {
+    
+    func generator(callback: (_ point: CGPoint, _ color: StemColor) -> Void) {
         let width = Int(base.width)
         let height = Int(base.height)
         guard let context = CGContext(data: nil,
-                                width: width,
-                                height: height,
-                                bitsPerComponent: 8,
-                                bytesPerRow: width * 4,
-                                space: CGColorSpaceCreateDeviceRGB(),
-                                bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue) else {
-        return
-       }
+                                      width: width,
+                                      height: height,
+                                      bitsPerComponent: 8,
+                                      bytesPerRow: width * 4,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue) else {
+            return
+        }
         context.draw(base, in: .init(origin: .zero, size: .init(width: width, height: height)))
-        let data = unsafeBitCast(context.data, to: UnsafeMutablePointer<RGBAPixel>.self)
+        let data = unsafeBitCast(context.data, to: UnsafeMutablePointer<STRGBAPixel>.self)
         for y in 0 ..< height {
             for x in 0 ..< width {
                 let rgba = data[Int(x + y * width)]
-                callback(.init(x: x, y: y), UIColor(red: CGFloat(rgba.r) / 255,
-                                                    green: CGFloat(rgba.g) / 255,
-                                                    blue: CGFloat(rgba.b) / 255,
-                                                    alpha: CGFloat(rgba.a) / 255))
+                callback(.init(x: x, y: y), .init(rgb: .init([rgba.r, rgba.g, rgba.b].map({ Double($0) / 255 })),
+                                                  alpha: Double(rgba.a) / 255))
             }
         }
     }
-
-
 }

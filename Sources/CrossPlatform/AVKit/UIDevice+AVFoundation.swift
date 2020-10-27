@@ -22,7 +22,9 @@
 
 #if canImport(UIKit) && canImport(AVFoundation)
 
+import UIKit
 import AVFoundation
+
 public extension Stem where Base: UIDevice {
     
     /// 闪光灯 亮度等级 0 ~ 1

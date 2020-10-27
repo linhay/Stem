@@ -55,6 +55,7 @@ public extension StemColor {
         self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
     }
     
+    #if !targetEnvironment(macCatalyst)
     @available(iOS 13.0, *)
     func convert() -> CGColor {
         return .init(red: CGFloat(rgbSpace.red),
@@ -62,6 +63,7 @@ public extension StemColor {
                      blue: CGFloat(rgbSpace.blue),
                      alpha: CGFloat(alpha))
     }
+    #endif
     
 }
 #endif
@@ -79,7 +81,7 @@ import AppKit
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public extension StemColor {
     
-    #if canImport(UIKit)
+    #if canImport(UIKit) && !targetEnvironment(macCatalyst)
     @available(iOS 14.0, *)
     convenience init(_ color: SwiftUI.Color) {
         self.init(UIColor(color).cgColor)

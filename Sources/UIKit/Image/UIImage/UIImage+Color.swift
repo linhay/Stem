@@ -90,8 +90,8 @@ public extension Stem where Base: UIImage {
 
 public extension Stem where Base: UIImage {
 
-    var colors: [UIColor: Int] {
-        var result = [UIColor: Int]()
+    var colors: [StemColor: Int] {
+        var result = [StemColor: Int]()
         base.cgImage?.st.generator { (_, color) in
             if result[color] == nil {
                 result[color] = 1
@@ -102,13 +102,13 @@ public extension Stem where Base: UIImage {
         return result
     }
 
-    var pixels: [[UIColor]] {
+    var pixels: [[StemColor]] {
         guard let cgImage = base.cgImage else {
             return []
         }
         let size = cgImage.width * cgImage.height
-        var result = [[UIColor]]()
-        var queue  = [UIColor]()
+        var result = [[StemColor]]()
+        var queue  = [StemColor]()
         result.reserveCapacity(size)
         base.cgImage?.st.generator { (_, color)  in
             queue.append(color)

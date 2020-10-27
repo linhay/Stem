@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(AVFoundation)
+#if canImport(AVFoundation) && canImport(UIKit)
+import UIKit
 import AVFoundation
 
 public struct TapticEngine {
