@@ -128,19 +128,19 @@ public extension CIFilter.Generator {
      Generates an output image representing the input data according to the ISO/IEC 15417:2007 standard. The width of each module (vertical line) of the barcode in the output image is one pixel. The height of the barcode is 32 pixels. To create a barcode from a string or URL, convert it to an NSData object using the NSASCIIStringEncoding string encoding.
      */
     ///  Available in OS X v10.10 and later and in iOS 8.0 and later.
-     struct Code128Barcode: CIFilterContainerProtocol {
+    struct Code128Barcode: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .code128BarcodeGenerator)
         
         ///  The data to be encoded as a Code 128 barcode. Must not contain non-ASCII characters. An NSData object whose display name is Message.
         @CIFilterValueBox
-        var message: Data?
+        public var message: Data?
         
         ///  The number of pixels of added white space on each side of the barcode. An NSNumber object whose attribute type is CIAttributeTypeScalar and whose display name is QuietSpace.
         ///  Default value: 7.00 Minimum: 0.00 Maximum: 20.00 Slider minimum: 0.00 Slider maximum: 20.00 Identity: 0.00
         @CIFilterValueBox
-        var quietSpace: NSNumber
+        public var quietSpace: NSNumber
         
-        init() {
+        public init() {
             _message.cofig(filter: filter, name: "inputMessage", default: nil)
             _quietSpace.cofig(filter: filter, name: "inputQuietSpace", default: 7.00)
         }
@@ -149,12 +149,12 @@ public extension CIFilter.Generator {
      Discussion
      You typically use the output of this filter as the input to another filter.
      */
-     struct ConstantColor: CIFilterContainerProtocol {
+    struct ConstantColor: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .constantColorGenerator)
         
         ///  A CIColor object whose display name is Color.
         @CIFilterValueBox
-        var color: CIColor?
+        public var color: CIColor?
         
         init() {
             _color.cofig(filter: filter, name: "inputColor", default: nil)
@@ -165,7 +165,7 @@ public extension CIFilter.Generator {
      This filter is typically applied to another image to simulate lens flares and similar effects.
      */
     ///   and later and in iOS 9 and later.
-     struct LenticularHalo: CIFilterContainerProtocol {
+    struct LenticularHalo: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .lenticularHaloGenerator)
         
         ///  The center of the lens flare. A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
@@ -223,7 +223,7 @@ public extension CIFilter.Generator {
      Generates an output image representing the input data according to the ISO 15438 standard. PDF417 codes are commonly used in postage, package tracking, personal identification documents, and coffeeshop membership cards. The width and height of each module (square dot) of the code in the output image is one point. To create a PDF417 code from a string or URL, convert it to an NSData object using the NSISOLatin1StringEncoding string encoding.
      */
     ///  Available in OS X v10.11 and later and in iOS 9 and later.
-     struct PDF417Barcode: CIFilterContainerProtocol {
+    struct PDF417Barcode: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .pDF417BarcodeGenerator)
         
         ///  The data to be encoded as a barcode. An NSData object whose display name is Message.
@@ -315,7 +315,7 @@ public extension CIFilter.Generator {
      Q: 25%
      H: 30%
      */
-     class QRCode: CIFilterContainerProtocol {
+    class QRCode: CIFilterContainerProtocol {
         public let filter: CIFilter = CIFilter(generator: .qRCodeGenerator)
         
         /// 纠错等级
@@ -380,7 +380,7 @@ public extension CIFilter.Generator {
         }
     }
     
-     struct Random: CIFilterContainerProtocol {
+    struct Random: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .randomGenerator)
     }
     
@@ -388,7 +388,7 @@ public extension CIFilter.Generator {
      Discussion
      The output image is typically used as input to another filter.
      */
-     struct StarShine: CIFilterContainerProtocol {
+    struct StarShine: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .starShineGenerator)
         
         ///  The center of the flare. A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
@@ -445,7 +445,7 @@ public extension CIFilter.Generator {
      Discussion
      You can control the color of the stripes, the spacing, and the contrast.
      */
-     struct Stripes: CIFilterContainerProtocol {
+    struct Stripes: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .stripesGenerator)
         
         ///  A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.
@@ -484,7 +484,7 @@ public extension CIFilter.Generator {
      You typically use the output of the sunbeams filter as input to a composite filter.
      */
     ///   and later and in iOS 9 and later.
-     struct Sunbeams: CIFilterContainerProtocol {
+    struct Sunbeams: CIFilterContainerProtocol {
         public var filter: CIFilter = CIFilter(generator: .sunbeamsGenerator)
         
         ///  A CIVector object whose attribute type is CIAttributeTypePosition and whose display name is Center.

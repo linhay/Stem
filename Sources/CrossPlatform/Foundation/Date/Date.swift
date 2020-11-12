@@ -26,11 +26,14 @@ extension Date: StemValueCompatible { }
 
 public
 extension StemValue where Base == Date {
-
-    static var now: Date { return Date(timeIntervalSinceNow: 0) }
     
     func string(use formatter: DateFormatter) -> String {
         return formatter.string(from: base)
+    }
+    
+    func string(use closure: (DateFormatter) -> DateFormatter) -> String {
+        let formatter = closure(.init())
+        return self.string(use: formatter)
     }
 
 }

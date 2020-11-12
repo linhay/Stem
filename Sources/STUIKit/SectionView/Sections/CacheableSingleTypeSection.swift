@@ -23,26 +23,29 @@
 import UIKit
 
 open class CacheableSingleTypeSection<Cell: UICollectionViewCell>: SingleTypeSection<Cell> where Cell: ConfigurableView & STViewProtocol, Cell.Model: Hashable {
-
-    var itemSizeCache = [Cell.Model: CGSize]()
-
-   open override func config(models: [Cell.Model]) {
-        super.config(models: models)
-
-        var itemSizeCache = [Cell.Model: CGSize]()
+    
+    private var itemSizeCache = [Int: CGSize]()
+    
+    open override func config(models: [Cell.Model]) {
+        var itemSizeCache = [Int: CGSize]()
         for model in models {
-            itemSizeCache[model] = self.itemSizeCache[model]
+            itemSizeCache[model.hashValue] = self.itemSizeCache[model.hashValue]
         }
         self.itemSizeCache = itemSizeCache
+        
+        super.config(models: models)
     }
-
-   open override func itemSize(at row: Int) -> CGSize {
-        guard let model = models.value(at: row) else {
+    
+    open override func itemSize(at row: Int) -> CGSize {
+        guard let hashValue = models.value(at: row)?.hashValue else {
             return super.itemSize(at: row)
         }
+        if let size = itemSizeCache[hashValue] {
+            return size
+        }
         let size = super.itemSize(at: row)
-        itemSizeCache[model] = size
+        itemSizeCache[hashValue] = size
         return size
     }
-
+    
 }

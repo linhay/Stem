@@ -46,14 +46,14 @@ public extension CIFilterContainerProtocol {
 }
 
 @propertyWrapper
-class CIFilterValueBox<Value> {
+public class CIFilterValueBox<Value> {
 
     weak var filter: CIFilter?
 
     var name: String = ""
     var defaultValue: Value?
 
-    var wrappedValue: Value {
+    public var wrappedValue: Value {
         set { filter?.setValue(newValue, forKey: name) }
         get {
             if let value = filter?.value(forKey: name) as? Value {
@@ -63,7 +63,7 @@ class CIFilterValueBox<Value> {
         }
     }
 
-    init() {}
+    public init() {}
 
     func cofig(filter: CIFilter, name: String, default value: Value) {
         self.filter = filter
