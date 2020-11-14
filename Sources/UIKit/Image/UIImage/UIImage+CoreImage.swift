@@ -25,8 +25,9 @@ import UIKit
 public extension UIImage {
 
     /// 生成二维码
-    convenience init?(qrCode: String, correctionLevel: CIFilter.Generator.QRCode.CorrectionLevel = .m) {
-        let data = qrCode.data(using: .utf8)
+    convenience init?(qrCode: String,
+                      correctionLevel: CIFilter.Generator.QRCode.CorrectionLevel = .m) {
+        let data = qrCode.data(using: .isoLatin1)
         let filter = CIFilter.Generator.QRCode()
         filter.message = data
         filter.level = correctionLevel

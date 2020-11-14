@@ -38,7 +38,7 @@ public extension Stem where Base: UIStoryboard {
 
 public extension Stem where Base: UIViewController {
 
-    static var storyboard: UIViewController? {
+    static func storyboard() -> Base? {
         let storyboard = UIStoryboard.st.load(vc: Base.self, in: Bundle(for: Base.self))
         let vc = storyboard.instantiateInitialViewController() as? Base
         return vc
