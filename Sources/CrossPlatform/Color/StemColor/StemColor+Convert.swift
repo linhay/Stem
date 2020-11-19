@@ -68,25 +68,26 @@ public extension StemColor {
 }
 #endif
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && canImport(Combine)
+import Combine
 import SwiftUI
 
-#if canImport(UIKit)
-import UIKit
-#elseif canImport(AppKit)
-import AppKit
-#endif
-
 @available(iOSApplicationExtension 13.0, *)
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, OSX 11.0, tvOS 13.0, watchOS 6.0, *)
 public extension StemColor {
     
-    #if canImport(UIKit) && !targetEnvironment(macCatalyst)
-    @available(iOS 14.0, *)
     convenience init(_ color: SwiftUI.Color) {
+        #if canImport(UIKit)
         self.init(UIColor(color).cgColor)
+        #elseif canImport(AppKit)
+        if let color = color.cgColor {
+            self.init(color)
+        } else {
+            assertionFailure()
+            self.init(NSColor.black.cgColor)
+        }
+        #endif
     }
-    #endif
     
     func convert() -> SwiftUI.Color {
         return Color(.displayP3,

@@ -16,47 +16,42 @@ Pod::Spec.new do |spec|
     spec.authors     = { "linhey" => "is.linhey@outlook.com" }
     spec.source      = { :git => "https://github.com/linhay/Stem.git", :tag => spec.version }
 
-    spec.swift_versions = ['4.0', '4.2', '5.0', '5.1', '5.2', '5.3']
+    spec.swift_version = "4.2"
+    spec.swift_versions = ['4.0', '4.2', '5.0']
 
     spec.requires_arc = true
+    
+    spec.ios.deployment_target     = "11.0"
+    spec.tvos.deployment_target    = "10.0"
+    spec.osx.deployment_target     = "10.12"
+    spec.watchos.deployment_target = "3.0"
 
     subspecs = {}
 
+    subspecs['Core'] = Proc.new { |sp|
+        sp.tvos.deployment_target    = "10.0"
+        sp.ios.deployment_target     = "11.0"
+        sp.osx.deployment_target     = "10.12"
+        sp.watchos.deployment_target = "3.0"
+    }
+    
     subspecs['STUIKit'] = Proc.new { |sp|
         sp.dependency 'Stem/Core'
         sp.dependency 'Stem/UIKit'
-        sp.dependency 'Stem/Runtime'
         sp.dependency 'Stem/CrossPlatform'
-        sp.ios.deployment_target = '11.0'
-    }
-
-    subspecs['Core'] = Proc.new { |sp|
-        sp.tvos.deployment_target    = "10.0"
-        sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.15"
-        sp.watchos.deployment_target = "3.0"
-    }
-
-    subspecs['Runtime'] = Proc.new { |sp|
-        sp.dependency 'Stem/Core'
-        sp.tvos.deployment_target    = "10.0"
-        sp.ios.deployment_target     = "10.0"
-        sp.osx.deployment_target     = "10.15"
-        sp.watchos.deployment_target = "3.0"
+        sp.ios.deployment_target     = "11.0"
     }
 
     subspecs['CrossPlatform'] = Proc.new { |sp|
         sp.dependency 'Stem/Core'
-        sp.dependency 'Stem/Runtime'
-        sp.ios.deployment_target = '10.0'
-        sp.osx.deployment_target = "10.15"
+        sp.ios.deployment_target     = "11.0"
+        sp.osx.deployment_target     = "10.12"
     }
 
     subspecs['UIKit'] = Proc.new { |sp|
         sp.dependency 'Stem/Core'
-        sp.dependency 'Stem/Runtime'
         sp.dependency 'Stem/CrossPlatform'
-        sp.ios.deployment_target = '10.0'
+        sp.ios.deployment_target     = "11.0"
     }
 
     subspecs.each do |name, callback|
