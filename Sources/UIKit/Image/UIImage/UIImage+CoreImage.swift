@@ -25,14 +25,32 @@ import UIKit
 public extension UIImage {
 
     /// 生成二维码
+    /// - Parameters:
+    ///   - qrCode: 字符
+    ///   - correctionLevel: 纠错等级
+    ///   - width: 需要的图宽
     convenience init?(qrCode: String,
-                      correctionLevel: CIFilter.Generator.QRCode.CorrectionLevel = .m) {
-        let data = qrCode.data(using: .isoLatin1)
+                      correctionLevel: CIFilter.Generator.QRCode.CorrectionLevel = .m,
+                      width: CGFloat? = nil) {
+        let data: Data
+        if let result = qrCode.data(using: .isoLatin1) {
+            data = result
+        } else if let result = qrCode.data(using: .utf8) {
+            data = result
+        } else {
+            data = Data()
+        }
+        
         let filter = CIFilter.Generator.QRCode()
         filter.message = data
         filter.level = correctionLevel
-        let transform = CGAffineTransform(scaleX: UIScreen.main.scale, y: UIScreen.main.scale)
-        guard let output = filter.outputImage?.transformed(by: transform) else { return nil }
+        guard var output = filter.outputImage else { return nil }
+        
+        if let width = width {
+            let scale = width / output.extent.size.width
+            output = output.transformed(by: .init(scaleX: scale, y: scale))
+        }
+        
         self.init(ciImage: output)
     }
 

@@ -43,7 +43,7 @@ class macOSTests: XCTestCase {
 
     func testColor() {
         NSColor.st.displayMode = .rgb
-        let color = StemColor.random
+        let color = StemColor(hex: "0x2748A3")
 
         let hex       = color.hexString
         let rgbSpace  = color.rgbSpace

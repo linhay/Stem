@@ -316,6 +316,7 @@ public extension CIFilter.Generator {
      H: 30%
      */
     class QRCode: CIFilterContainerProtocol {
+        
         public let filter: CIFilter = CIFilter(generator: .qRCodeGenerator)
         
         /// 纠错等级
@@ -341,21 +342,15 @@ public extension CIFilter.Generator {
             init(level: Double) {
                 if  level < CorrectionLevel.m.level {
                     self = .l
-                    return
-                }
-                if level >= CorrectionLevel.m.level || level < CorrectionLevel.q.level {
+                } else if level < CorrectionLevel.q.level {
                     self = .m
-                    return
-                }
-                if level >= CorrectionLevel.q.level || level < CorrectionLevel.h.level {
+                } else if level < CorrectionLevel.h.level {
                     self = .q
-                    return
-                }
-                if level >= CorrectionLevel.h.level {
+                } else if level >= CorrectionLevel.h.level {
                     self = .h
-                    return
+                }else {
+                    self = .m
                 }
-                self = .m
             }
             
         }
