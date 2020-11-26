@@ -20,13 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 open class SectionCollectionViewController: UIViewController {
+    
+    public private(set) lazy var sectionView  = SectionCollectionView()
+    public private(set) lazy var manager = SectionCollectionManager(sectionView: sectionView)
 
-    public let sectionView  = SectionCollectionView()
-    public lazy var manager = SectionCollectionManager(sectionView: sectionView)
-
+    public convenience init() {
+        self.init(nibName: nil, bundle: nil)
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         if view.backgroundColor == nil {
@@ -36,11 +41,11 @@ open class SectionCollectionViewController: UIViewController {
         let safeArea = view.safeAreaLayoutGuide
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         layout(anchor1: sectionView.topAnchor, anchor2: safeArea.topAnchor)
-        layout(anchor1: sectionView.bottomAnchor, anchor2: safeArea.bottomAnchor)
+        layout(anchor1: sectionView.bottomAnchor, anchor2: view.bottomAnchor)
         layout(anchor1: sectionView.rightAnchor, anchor2: safeArea.rightAnchor)
         layout(anchor1: sectionView.leftAnchor, anchor2: safeArea.leftAnchor)
     }
-
+    
     private func layout(anchor1: NSLayoutYAxisAnchor, anchor2: NSLayoutYAxisAnchor) {
         let constraint = anchor1.constraint(equalTo: anchor2)
         constraint.priority = .defaultLow
@@ -52,5 +57,17 @@ open class SectionCollectionViewController: UIViewController {
         constraint.priority = .defaultLow
         constraint.isActive = true
     }
-
+    
+    open override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        guard sectionView.contentInset.bottom == 0 else {
+            return
+        }
+        sectionView.contentInset = .init(top: sectionView.contentInset.top,
+                                         left: sectionView.contentInset.left,
+                                         bottom: view.safeAreaInsets.bottom,
+                                         right: sectionView.contentInset.right)
+    }
+    
 }
+#endif

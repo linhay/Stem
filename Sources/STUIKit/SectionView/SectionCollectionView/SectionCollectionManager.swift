@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public class SectionCollectionManager: SectionScrollManager {
@@ -152,3 +153,5 @@ extension SectionCollectionManager: UICollectionViewDelegateFlowLayout {
         return sections[section].itemCount == 0 ? .zero : sections[section].sectionInset
     }
 }
+#endif
+

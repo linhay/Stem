@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public class SectionManager<SectionView: UIView> {
@@ -112,3 +113,4 @@ private extension SectionManager {
     }
 
 }
+#endif

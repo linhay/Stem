@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public protocol SectionProtocol: class {
@@ -66,3 +67,4 @@ public extension SectionProtocol {
     func canMove(at: Int) -> Bool { false }
     func move(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) { }
 }
+#endif

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 open class CacheableSingleTypeSection<Cell: UICollectionViewCell>: SingleTypeSection<Cell> where Cell: ConfigurableView & STViewProtocol, Cell.Model: Hashable {
@@ -49,3 +50,4 @@ open class CacheableSingleTypeSection<Cell: UICollectionViewCell>: SingleTypeSec
     }
     
 }
+#endif

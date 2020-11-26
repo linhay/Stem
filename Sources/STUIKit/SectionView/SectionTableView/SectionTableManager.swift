@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public class SectionTableManager: SectionScrollManager {
@@ -134,3 +135,4 @@ extension SectionTableManager: UITableViewDelegate, UITableViewDataSource {
         return sections[indexPath.section].canMove(at: indexPath.item)
     }
 }
+#endif

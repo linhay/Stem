@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import UIKit
+#if canImport(UIKit)
+import Foundation
 
 public class SectionCore {
     var index: Int = 0
@@ -28,3 +29,4 @@ public class SectionCore {
 
     internal init() { }
 }
+#endif

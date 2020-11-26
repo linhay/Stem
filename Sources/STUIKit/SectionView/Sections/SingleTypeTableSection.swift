@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol where Cell: ConfigurableView & STViewProtocol {
@@ -85,3 +86,4 @@ open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol w
     }
 
 }
+#endif
