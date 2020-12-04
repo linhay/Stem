@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 // MARK: - format(格式转换)
@@ -51,3 +52,4 @@ public extension Stem where Base: UIImage {
     }
 
 }
+#endif

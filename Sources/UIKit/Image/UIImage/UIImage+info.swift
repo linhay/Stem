@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit) && canImport(ImageIO)
 import UIKit
 import ImageIO
 
@@ -45,3 +46,4 @@ public extension Stem where Base: UIImage {
 //    }
 
 }
+#endif

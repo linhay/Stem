@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -44,3 +45,4 @@ public extension UIImage {
         self.init(systemName: sfSymbol.rawValue, withConfiguration: configuration)!
     }
 }
+#endif

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 import QuartzCore
 
@@ -90,3 +91,4 @@ public extension Stem where Base: CALayer {
         base.shadowPath = path.cgPath
     }
 }
+#endif
