@@ -23,34 +23,41 @@
 #if canImport(UIKit)
 import UIKit
 
-public protocol NavigationStyleThief: UIViewController { }
+protocol NavigationStyleThiefProtocol: UIViewController {
+    
+    /// 修复 UIScrollView 应为 navigationBar 的 isTranslucent 由 true 到 false 引起的位置偏移
+    var recoverRecordScrollView: UIScrollView? { get }
+    
+}
 
-public extension NavigationStyleThief {
+extension NavigationStyleThiefProtocol {
 
     var recoverManager: NavigationStyleThiefManager {
-        if let recoverManager = navigationStyleThiefManager {
+        if let recoverManager = recoverNavigationManager {
             return recoverManager
         } else {
             return NavigationStyleThiefManager.obseve(self)
         }
     }
+    
+    var recoverRecordScrollView: UIScrollView? { nil }
 
 }
 
 fileprivate extension UINavigationController {
-
+    
     @objc
     func recover_popViewController(animated: Bool) -> UIViewController? {
         let currentVC = recover_popViewController(animated: animated)
         let nextVC    = topViewController
 
-        guard let manager = (currentVC as? NavigationStyleThief)?.navigationStyleThiefManager else {
+        guard let manager = (currentVC as? NavigationStyleThiefProtocol)?.recoverNavigationManager else {
             return nextVC
         }
 
         manager.store(for: .current)
 
-        if (nextVC is NavigationStyleThief) == false {
+        if (nextVC is NavigationStyleThiefProtocol) == false {
             manager.recover(for: .last)
         }
 
@@ -60,17 +67,17 @@ fileprivate extension UINavigationController {
     @objc
     func recover_pushViewController(_ viewController: UIViewController, animated: Bool) {
         if viewControllers.count == 1,
-           let topViewController = topViewController as? NavigationStyleThief,
-           topViewController.navigationStyleThiefManager == nil {
+           let topViewController = topViewController as? NavigationStyleThiefProtocol,
+           topViewController.recoverNavigationManager == nil {
             NavigationStyleThiefManager.obseve(topViewController)
         }
 
-        if viewController is NavigationStyleThief {
+        if viewController is NavigationStyleThiefProtocol {
             NavigationStyleThiefManager.obseve(viewController)
         }
 
-        let fromManager = (topViewController as? NavigationStyleThief)?.navigationStyleThiefManager
-        let toManager   = (viewController as? NavigationStyleThief)?.navigationStyleThiefManager
+        let fromManager = (topViewController as? NavigationStyleThiefProtocol)?.recoverNavigationManager
+        let toManager   = (viewController as? NavigationStyleThiefProtocol)?.recoverNavigationManager
 
         fromManager?.canChangeStyle = false
         fromManager?.store(for: .current)
@@ -113,21 +120,33 @@ fileprivate extension UIViewController {
         }
     }
 
-    var navigationStyleThiefManager: NavigationStyleThiefManager? {
+    var recoverNavigationManager: NavigationStyleThiefManager? {
         set {
             objc_setAssociatedObject(self,
-                                     NavigationStyleThiefManager.AssociatedKey.manager,
+                                     NavigationStyleThiefManager.AssociatedKey.navigationManager,
                                      newValue,
                                      .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            objc_getAssociatedObject(self, NavigationStyleThiefManager.AssociatedKey.manager) as? NavigationStyleThiefManager
+            objc_getAssociatedObject(self, NavigationStyleThiefManager.AssociatedKey.navigationManager) as? NavigationStyleThiefManager
         }
     }
-
+    
+    var recordScrollOffsetManager: NavigationStyleThiefRecordScrollOffsetManager? {
+        set {
+            objc_setAssociatedObject(self,
+                                     NavigationStyleThiefManager.AssociatedKey.recordScrollManager,
+                                     newValue,
+                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            objc_getAssociatedObject(self, NavigationStyleThiefManager.AssociatedKey.recordScrollManager) as? NavigationStyleThiefRecordScrollOffsetManager
+        }
+    }
+    
     @objc
     func recover_viewWillAppear(_ animated: Bool) {
-        guard let manager = navigationStyleThiefManager else {
+        guard let manager = recoverNavigationManager else {
             if isFromNavigationManager {
                 NavigationStyleThiefManager.recover(style: .normal, with: navigationController)
             }
@@ -137,18 +156,83 @@ fileprivate extension UIViewController {
 
         manager.recover(for: .current)
         recover_viewWillAppear(animated)
+        
+        if let manager = recordScrollOffsetManager {
+            manager.willAppear()
+        } else if let vcProtocol = self as? NavigationStyleThiefProtocol, let scrollView = vcProtocol.recoverRecordScrollView {
+            let recordManager = NavigationStyleThiefRecordScrollOffsetManager(recoverManager: manager, scrollView: scrollView)
+            recordManager?.willAppear()
+            recordScrollOffsetManager = recordManager
+        }
     }
-
+    
+    @objc
+    func recover_viewWillDisappear(_ animated: Bool) {
+        recordScrollOffsetManager?.willDisappear()
+        self.recover_viewWillDisappear(animated)
+    }
+    
+    @objc
+    func recover_viewLayoutMarginsDidChange() {
+        self.recover_viewLayoutMarginsDidChange()
+        recordScrollOffsetManager?.layoutMarginsDidChange(view: view)
+    }
 }
 
-public class NavigationStyleThiefManager {
+private class NavigationStyleThiefRecordScrollOffsetManager {
+    
+    private var enableRecord: Bool = false
+    private var offset: CGFloat
+    private var token: NSKeyValueObservation?
+    private weak var scrollView: UIScrollView?
+    var recoverManager: NavigationStyleThiefManager
 
-    fileprivate enum AssociatedKey {
-        static let manager = UnsafeRawPointer(bitPattern: "NavigationStyleThiefManager.AssociatedKey".hashValue)!
-        static let isFromNavigationManager = UnsafeRawPointer(bitPattern: "NavigationStyleThiefManager.isFromNavigationManager".hashValue)!
+    init?(recoverManager: NavigationStyleThiefManager, scrollView: UIScrollView?) {
+        guard let scrollView = scrollView else {
+            return nil
+        }
+        self.scrollView = scrollView
+        self.enableRecord = true
+        self.offset = scrollView.contentOffset.y
+        self.recoverManager = recoverManager
+        self.observe(scrollView: scrollView)
     }
+    
+    private func observe(scrollView: UIScrollView) {
+        token?.invalidate()
+        token = scrollView.observe(\.contentOffset, options: [.new], changeHandler: { [weak self] (_, result) in
+            guard let self = self, self.recoverManager.canChangeStyle, self.enableRecord, let y = result.newValue?.y else {
+                return
+            }
+            self.offset = y
+        })
+    }
+    
+    func willAppear() {
+        self.enableRecord = true
+    }
+    
+    func willDisappear() {
+        enableRecord = false
+    }
+    
+    func layoutMarginsDidChange(view: UIView) {
+        let safeTopInset = view.safeAreaInsets.top
+        let bestSafeTopInset = UIApplication.shared.statusBarFrame.height + 44
+        let different = bestSafeTopInset - safeTopInset + offset
+        scrollView?.setContentOffset(.init(x: 0, y: different), animated: false)
+    }
+    
+}
 
-    private var titleLabel: UILabel!
+class NavigationStyleThiefManager {
+    
+    fileprivate enum AssociatedKey {
+        static let navigationManager       = UnsafeRawPointer(bitPattern: "recover.key.navigationManager".hashValue)!
+        static let recordScrollManager     = UnsafeRawPointer(bitPattern: "recover.key.recordScrollManager".hashValue)!
+        static let isFromNavigationManager = UnsafeRawPointer(bitPattern: "recover.key.isFromNavigationManager".hashValue)!
+    }
+    
     fileprivate(set) var canChangeStyle = true
     private weak var viewController: UIViewController?
     private weak var storedNavigationController: UINavigationController?
@@ -168,7 +252,7 @@ public class NavigationStyleThiefManager {
         var shadowImage: UIImage?
         var backgroundImage: UIImage?
         var isHidden: Bool = false
-
+        var titleTextAttributes: [NSAttributedString.Key : Any]?
         static var normal: Style {
             let style = Style()
             style.isTranslucent   = UINavigationBar.appearance().isTranslucent
@@ -177,6 +261,7 @@ public class NavigationStyleThiefManager {
             style.tintColor       = UINavigationBar.appearance().tintColor
             style.shadowImage     = UINavigationBar.appearance().shadowImage
             style.backgroundImage = UINavigationBar.appearance().backgroundImage(for: .default)
+            style.titleTextAttributes = UINavigationBar.appearance().titleTextAttributes
             return style
         }
     }
@@ -191,11 +276,17 @@ public class NavigationStyleThiefManager {
 
 }
 
-public extension NavigationStyleThiefManager {
+extension NavigationStyleThiefManager {
 
     private static let swizzing: Void = {
         RunTime.exchange(selector: #selector(UIViewController.viewWillAppear(_:)),
                          by: #selector(UIViewController.recover_viewWillAppear(_:)),
+                         class: UIViewController.self)
+        RunTime.exchange(selector: #selector(UIViewController.viewLayoutMarginsDidChange),
+                         by: #selector(UIViewController.recover_viewLayoutMarginsDidChange),
+                         class: UIViewController.self)
+        RunTime.exchange(selector: #selector(UIViewController.viewWillDisappear(_:)),
+                         by: #selector(UIViewController.recover_viewWillDisappear(_:)),
                          class: UIViewController.self)
         RunTime.exchange(selector: #selector(UINavigationController.pushViewController(_:animated:)),
                          by: #selector(UINavigationController.recover_pushViewController(_:animated:)),
@@ -213,7 +304,7 @@ public extension NavigationStyleThiefManager {
     static func obseve(_ viewController: UIViewController) -> NavigationStyleThiefManager {
         _ = Self.swizzing
         let manager = NavigationStyleThiefManager(viewController: viewController)
-        viewController.navigationStyleThiefManager = manager
+        viewController.recoverNavigationManager = manager
         return manager
     }
 
@@ -235,6 +326,7 @@ extension NavigationStyleThiefManager {
         style.tintColor       = navigationBar.tintColor
         style.shadowImage     = navigationBar.shadowImage
         style.backgroundImage = navigationBar.backgroundImage(for: .default)
+        style.titleTextAttributes = navigationBar.titleTextAttributes
         return style
     }
 
@@ -270,6 +362,7 @@ extension NavigationStyleThiefManager {
         navigationBar.barTintColor  = style.barTintColor
         navigationBar.tintColor     = style.tintColor
         navigationBar.shadowImage   = style.shadowImage
+        navigationBar.titleTextAttributes = style.titleTextAttributes
         navigationController.setNavigationBarHidden(style.isHidden, animated: false)
         navigationBar.setBackgroundImage(style.backgroundImage, for: .default)
     }
@@ -287,4 +380,5 @@ extension NavigationStyleThiefManager {
     }
 
 }
+
 #endif
