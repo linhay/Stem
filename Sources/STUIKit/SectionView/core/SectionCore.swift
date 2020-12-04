@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #if canImport(UIKit)
-import Foundation
+import UIKit
 
 public class SectionCore {
     var index: Int = 0
