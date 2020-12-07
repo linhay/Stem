@@ -66,9 +66,9 @@ extension StemColor.CIEXYZSpace: StemColorCIELABSpaceConversion {
             }
         }
 
-        let fx = map(x / (illuminants.rawValue[0] * 100))
-        let fy = map(y / (illuminants.rawValue[1] * 100))
-        let fz = map(z / (illuminants.rawValue[2] * 100))
+        let fx = map(x * 100 / (illuminants.rawValue[0] * 100))
+        let fy = map(y * 100 / (illuminants.rawValue[1] * 100))
+        let fz = map(z * 100 / (illuminants.rawValue[2] * 100))
 
         let l = (116.0 * fy) - 16.0
         let a = 500 * (fx - fy)

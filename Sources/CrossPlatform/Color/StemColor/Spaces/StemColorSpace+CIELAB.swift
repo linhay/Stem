@@ -51,9 +51,9 @@ public extension StemColor.CIELABSpace {
 extension StemColor.CIELABSpace: StemColorSpacePack {
 
     public var ranges: [ClosedRange<Double>] {
-        return [0...1,
-                -1.28...1.27,
-                -1.28...1.27]
+        return [0...100,
+                -128...128,
+                -128...128]
     }
 
     public var unpack: (l: Double, a: Double, b: Double) { (l, a, b) }

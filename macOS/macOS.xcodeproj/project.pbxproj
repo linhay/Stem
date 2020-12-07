@@ -15,6 +15,9 @@
 		CD3F165E24D7F0B30090E84D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD3F165D24D7F0B30090E84D /* Assets.xcassets */; };
 		CD3F166124D7F0B30090E84D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD3F165F24D7F0B30090E84D /* Main.storyboard */; };
 		CD5D142D24D82956004328DF /* macOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D142C24D82956004328DF /* macOSTests.swift */; };
+		CD738492257E3D000039E3AE /* LabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD73848E257E3D000039E3AE /* LabTests.swift */; };
+		CD738493257E3D000039E3AE /* XYZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD73848F257E3D000039E3AE /* XYZTests.swift */; };
+		CD738494257E3D010039E3AE /* RGBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD738490257E3D000039E3AE /* RGBTests.swift */; };
 		CD9D94FA24EE4F4B00247776 /* TestSelectedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +48,9 @@
 		CD5D142A24D82956004328DF /* macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5D142C24D82956004328DF /* macOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSTests.swift; sourceTree = "<group>"; };
 		CD5D142E24D82956004328DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD73848E257E3D000039E3AE /* LabTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabTests.swift; sourceTree = "<group>"; };
+		CD73848F257E3D000039E3AE /* XYZTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYZTests.swift; sourceTree = "<group>"; };
+		CD738490257E3D000039E3AE /* RGBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGBTests.swift; sourceTree = "<group>"; };
 		CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSelectedProtocol.swift; sourceTree = "<group>"; };
 		D6E18D766169B7E1A317D27F /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -125,12 +131,23 @@
 		CD5D142B24D82956004328DF /* macOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				CD73848C257E3D000039E3AE /* colors */,
 				CD5D142C24D82956004328DF /* macOSTests.swift */,
 				CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */,
 				CD3ABE1D24F7A6FF00255A12 /* TestFilePath.swift */,
 				CD5D142E24D82956004328DF /* Info.plist */,
 			);
 			path = macOSTests;
+			sourceTree = "<group>";
+		};
+		CD73848C257E3D000039E3AE /* colors */ = {
+			isa = PBXGroup;
+			children = (
+				CD73848E257E3D000039E3AE /* LabTests.swift */,
+				CD73848F257E3D000039E3AE /* XYZTests.swift */,
+				CD738490257E3D000039E3AE /* RGBTests.swift */,
+			);
+			path = colors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,7 +359,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD9D94FA24EE4F4B00247776 /* TestSelectedProtocol.swift in Sources */,
+				CD738492257E3D000039E3AE /* LabTests.swift in Sources */,
+				CD738493257E3D000039E3AE /* XYZTests.swift in Sources */,
 				CD5D142D24D82956004328DF /* macOSTests.swift in Sources */,
+				CD738494257E3D010039E3AE /* RGBTests.swift in Sources */,
 				CD3ABE1E24F7A6FF00255A12 /* TestFilePath.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
