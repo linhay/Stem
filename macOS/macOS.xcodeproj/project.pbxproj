@@ -18,6 +18,7 @@
 		CD738492257E3D000039E3AE /* LabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD73848E257E3D000039E3AE /* LabTests.swift */; };
 		CD738493257E3D000039E3AE /* XYZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD73848F257E3D000039E3AE /* XYZTests.swift */; };
 		CD738494257E3D010039E3AE /* RGBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD738490257E3D000039E3AE /* RGBTests.swift */; };
+		CD738542257F72140039E3AE /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD738541257F72140039E3AE /* Double.swift */; };
 		CD9D94FA24EE4F4B00247776 /* TestSelectedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		CD73848E257E3D000039E3AE /* LabTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabTests.swift; sourceTree = "<group>"; };
 		CD73848F257E3D000039E3AE /* XYZTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYZTests.swift; sourceTree = "<group>"; };
 		CD738490257E3D000039E3AE /* RGBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGBTests.swift; sourceTree = "<group>"; };
+		CD738541257F72140039E3AE /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSelectedProtocol.swift; sourceTree = "<group>"; };
 		D6E18D766169B7E1A317D27F /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -136,6 +138,7 @@
 				CD9D94F924EE4F4B00247776 /* TestSelectedProtocol.swift */,
 				CD3ABE1D24F7A6FF00255A12 /* TestFilePath.swift */,
 				CD5D142E24D82956004328DF /* Info.plist */,
+				CD738541257F72140039E3AE /* Double.swift */,
 			);
 			path = macOSTests;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				CD5D142D24D82956004328DF /* macOSTests.swift in Sources */,
 				CD738494257E3D010039E3AE /* RGBTests.swift in Sources */,
 				CD3ABE1E24F7A6FF00255A12 /* TestFilePath.swift in Sources */,
+				CD738542257F72140039E3AE /* Double.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

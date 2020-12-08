@@ -14,25 +14,25 @@ class LabTests: XCTestCase {
     func testGreen() {
         let color = StemColor(NSColor.green)
         let space = color.labSpace
-        XCTAssertEqual((space.l * 100).rounded(), 8773)
-        XCTAssertEqual((space.a * 100).rounded(), -8618)
-        XCTAssertEqual((space.b * 100).rounded(), 8318)
+        XCTAssertEqual(space.l.rounded(precision: 100),  87.73)
+        XCTAssertEqual(space.a.rounded(precision: 100), -86.18)
+        XCTAssertEqual(space.b.rounded(precision: 100),  83.18)
     }
     
     func testWhite() {
         let color = StemColor(NSColor.white)
         let space = color.labSpace
-        XCTAssertEqual((space.l * 100).rounded(), 10000)
-        XCTAssertEqual((space.a * 100).rounded(), 0)
-        XCTAssertEqual((space.b * 100).rounded(), 0)
+        XCTAssertEqual(space.l.rounded(precision: 100), 100)
+        XCTAssertEqual(space.a.rounded(precision: 100), 0.00)
+        XCTAssertEqual(space.b.rounded(precision: 100), 0.00)
     }
     
     func testArbitrary() {
         let color = StemColor(NSColor(red: 129.0, green: 200.0, blue: 10.0, alpha: 1))
         let space = color.labSpace
-        XCTAssertEqual((space.l * 100).rounded(), 7354)
-        XCTAssertEqual((space.a * 100).rounded(), -4643)
-        XCTAssertEqual((space.b * 100).rounded(), 7205)
+        XCTAssertEqual(space.l.rounded(precision: 100), 73.54)
+        XCTAssertEqual(space.a.rounded(precision: 100), -46.43)
+        XCTAssertEqual(space.b.rounded(precision: 100), 72.05)
     }
     
 }
