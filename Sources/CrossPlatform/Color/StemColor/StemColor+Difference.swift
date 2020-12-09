@@ -54,16 +54,16 @@ public extension StemColor {
     
     static func differenceCIE94(_ lhs: CIELABSpace, _ rhs: CIELABSpace, values: CIE94Values) -> Double {
         
-        let kC: Double = 1.0
-        let kH: Double = 1.0
+        let kC = 1.0
+        let kH = 1.0
         
-        let kL: Double = values.kL
-        let k1: Double = values.k1
-        let k2: Double = values.k2
-        
-        let sL: Double = 1.0
+        let kL = values.kL
+        let k1 = values.k1
+        let k2 = values.k2
         
         let c1 = sqrt(pow(lhs.a, 2) + pow(lhs.b, 2))
+        
+        let sL = 1.0
         let sC = 1 + k1 * c1
         let sH = 1 + k2 * c1
         
