@@ -1,15 +1,11 @@
 PODS:
-  - Stem (0.0.32):
-    - Stem/Core (= 0.0.32)
-    - Stem/CrossPlatform (= 0.0.32)
-    - Stem/Runtime (= 0.0.32)
-    - Stem/STUIKit (= 0.0.32)
-    - Stem/UIKit (= 0.0.32)
-  - Stem/Core (0.0.32)
-  - Stem/CrossPlatform (0.0.32):
-    - Stem/Core
-    - Stem/Runtime
-  - Stem/Runtime (0.0.32):
+  - Stem (0.0.33):
+    - Stem/Core (= 0.0.33)
+    - Stem/CrossPlatform (= 0.0.33)
+    - Stem/STUIKit (= 0.0.33)
+    - Stem/UIKit (= 0.0.33)
+  - Stem/Core (0.0.33)
+  - Stem/CrossPlatform (0.0.33):
     - Stem/Core
 
 DEPENDENCIES:
@@ -20,7 +16,7 @@ EXTERNAL SOURCES:
     :path: "../Stem.podspec"
 
 SPEC CHECKSUMS:
-  Stem: 2ba44849102fc984b3e1d7a59f1dad966b229b55
+  Stem: 4cff14a2aa3febfb7e1aff2163b4f684e8fa9e34
 
 PODFILE CHECKSUM: 7bf800043c1943ec9d380241b7bf6ac4476e7dba
 

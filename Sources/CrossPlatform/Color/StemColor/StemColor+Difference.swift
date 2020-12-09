@@ -25,6 +25,7 @@ import Foundation
 public extension StemColor {
 
     enum Difference {
+        case cie76(StemColor)
         case cie94(StemColor, CIE94Values)
         case ciede2000(StemColor)
     }
@@ -45,12 +46,20 @@ public extension StemColor {
             return Self.differenceCIE94(labSpace, color.labSpace, values: values)
         case .ciede2000(let color):
             return Self.differenceCIEDE2000(labSpace, color.labSpace)
+        case .cie76(let color):
+            return Self.differenceCIE76(labSpace, color.labSpace)
         }
     }
     
 }
 
 public extension StemColor {
+    
+    static func differenceCIE76(_ lhs: CIELABSpace, _ rhs: CIELABSpace) -> Double {
+        return sqrt(pow(lhs.l - rhs.l, 2)
+                  + pow(lhs.a - rhs.a, 2)
+                  + pow(lhs.b - rhs.b, 2))
+    }
     
     static func differenceCIE94(_ lhs: CIELABSpace, _ rhs: CIELABSpace, values: CIE94Values) -> Double {
         
