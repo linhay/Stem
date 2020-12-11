@@ -48,7 +48,6 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
         guard let attributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as? [UICollectionViewLayoutAttributes],
-            
             let collectionView = collectionView else {
                 return nil
         }
