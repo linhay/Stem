@@ -190,7 +190,11 @@ public extension StemColor {
         let rgb = self.rgbSpace
 
         func map(_ value: Double) -> Int {
-            return Int(round(value * 255))
+            if value.isNaN {
+                return 255
+            } else {
+                return Int(round(value * 255))
+            }
         }
 
         if alpha == 1 {

@@ -86,11 +86,11 @@ extension StemColor.CIEXYZSpace: StemColorCIELABSpaceConversion {
             }
         }
 
-        let y = (1.0 / 116.0) * (l + 16.0)
+        let y = (l + 16.0) / 116
 
-        self.init(x: illuminants.rawValue[0] * 100 * map(y + a / 500.0),
-                  y: illuminants.rawValue[1] * 100 * map(y),
-                  z: illuminants.rawValue[2] * 100 * map(y - b / 200.0),
+        self.init(x: illuminants.rawValue[0] * map(y + a / 500.0),
+                  y: illuminants.rawValue[1] * map(y),
+                  z: illuminants.rawValue[2] * map(y - b / 200.0),
                   illuminants: illuminants)
     }
 

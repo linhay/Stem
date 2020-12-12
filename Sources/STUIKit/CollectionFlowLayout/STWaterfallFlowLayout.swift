@@ -127,10 +127,9 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
             colStore[index]    = [attributes]
             return attributes
         }
-        
-        if let index = widthStore
-            .compactMap({ $0.value == size.width ? $0.key : nil })
-            .sorted (by: { (colStore[$0]?.last?.frame.maxY ?? 0) < (colStore[$1]?.last?.frame.maxY ?? 0) }).first,
+                
+        if let index = widthStore.compactMap({ $0.value == size.width ? $0.key : nil })
+            .sorted (by: { heightStore[$0] == heightStore[$1] ? $0 < $1 : heightStore[$0]! < heightStore[$1]! }).first,
            let lastItem = colStore[index]?.last {
             attributes.frame.origin = .init(x: lastItem.frame.minX, y: lastItem.frame.maxY + lineSpacer)
             colStore[index] = (colStore[index] ?? []) + [attributes]

@@ -22,18 +22,10 @@
 
 import Foundation
 
-extension Double: StemValueCompatible {}
+extension Decimal: StemValueCompatible {}
 
-public extension StemValue where Base == Double {
-
-    /// 取小数点后几位
-    /// - Parameter scale: 位数
-    /// - Returns: double
-    func roundedDecimal(scale: Int) -> Base {
-        var value = Decimal(base)
-        var result = Decimal()
-        NSDecimalRound(&result, &value, scale, .plain)
-        return result.st.doubleValue
-    }
+public extension StemValue where Base == Decimal {
     
+    var doubleValue: Double { NSDecimalNumber(decimal: base).doubleValue }
+
 }

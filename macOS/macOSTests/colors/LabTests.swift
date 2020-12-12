@@ -35,4 +35,17 @@ class LabTests: XCTestCase {
         XCTAssertEqual(space.b.rounded(precision: 100), 72.05)
     }
     
+    func testConvertResetValues() {
+        let color = StemColor(NSColor(red: 129.0, green: 200.0, blue: 10.0, alpha: 1))
+        let space = color.labSpace
+        XCTAssertEqual(StemColor.CIELABSpace.resetValues(space.compressionValues()), space.list)
+    }
+    
+    func testConvertXYZ() {
+        let color = StemColor(NSColor(red: 129.0, green: 200.0, blue: 10.0, alpha: 1))
+        let xyz = color.xyzSpace
+        let lab = color.labSpace
+        XCTAssertEqual(xyz.labSpace, lab)
+        XCTAssertEqual(StemColor(lab: lab).xyzSpace.list, xyz.list)
+    }
 }

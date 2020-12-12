@@ -32,8 +32,8 @@ public extension StemColor {
     
     struct CIE94Values {
         
-        static let graphicArts = CIE94Values(kL: 1, k1: 0.045, k2: 0.015)
-        static let textiles    = CIE94Values(kL: 2, k1: 0.048, k2: 0.014)
+       public static let graphicArts = CIE94Values(kL: 1, k1: 0.045, k2: 0.015)
+        public static let textiles    = CIE94Values(kL: 2, k1: 0.048, k2: 0.014)
 
         let kL: Double
         let k1: Double
