@@ -141,6 +141,10 @@ extension SectionCollectionManager: UICollectionViewDelegateFlowLayout {
         return sections[section].itemCount == 0 ? .zero : sections[section].footerSize
     }
 
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        return sections[indexPath.section].willDisplayItem(at: indexPath.item)
+    }
+
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sections[section].itemCount == 0 ? .zero : sections[section].minimumLineSpacing
     }
@@ -153,5 +157,6 @@ extension SectionCollectionManager: UICollectionViewDelegateFlowLayout {
         return sections[section].itemCount == 0 ? .zero : sections[section].sectionInset
     }
 }
+
 #endif
 

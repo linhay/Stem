@@ -91,9 +91,12 @@ public extension Stem where Base: UIImage {
 
 public extension Stem where Base: UIImage {
 
-    var colors: [StemColor: Int] {
+    /// 获取全部像素的颜色
+    /// - Parameter points: 点位
+    /// - Returns: 颜色集合
+    func colorCountedSet() -> [StemColor: Int] {
         var result = [StemColor: Int]()
-        base.cgImage?.st.generator { (_, color) in
+        pixels().flatMap({ $0 }).forEach { color in
             if result[color] == nil {
                 result[color] = 1
             } else {
@@ -103,22 +106,19 @@ public extension Stem where Base: UIImage {
         return result
     }
 
-    var pixels: [[StemColor]] {
-        guard let cgImage = base.cgImage else {
-            return []
-        }
-        let size = cgImage.width * cgImage.height
-        var result = [[StemColor]]()
-        var queue  = [StemColor]()
-        result.reserveCapacity(size)
-        base.cgImage?.st.generator { (_, color)  in
-            queue.append(color)
-            if queue.count == cgImage.width {
-                result.append(queue)
-                queue.removeAll()
-            }
-        }
-        return result
+    /// 获取某几个点位像素的颜色
+    /// - Parameter points: 点位
+    /// - Returns: 颜色集合
+    func pixels(at points: [(x: Int, y: Int)]) -> [StemColor] {
+        return base.cgImage?.st.pixels(at: points) ?? []
     }
+    
+    /// 获取某全部点位像素的颜色
+    /// - Parameter points: 点位
+    /// - Returns: 颜色集合
+    func pixels() -> [[StemColor]] {
+        return base.cgImage?.st.pixels() ?? []
+    }
+    
 }
 #endif

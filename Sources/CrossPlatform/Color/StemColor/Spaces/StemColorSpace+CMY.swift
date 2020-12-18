@@ -42,53 +42,11 @@ public extension StemColor {
 
 }
 
-extension StemColor.CMYSpace: StemColorCMYKSpaceConversion {
-
-    public var convertToCMYK: (cyan: Double, magenta: Double, yellow: Double, key: Double) {
-        var (cyan, magenta, yellow) = unpack
-        let key = min(cyan, magenta, yellow)
-        if key == 1 {
-            cyan = 0
-            magenta = 0
-            yellow = 0
-        } else {
-            cyan    = (cyan - key)    / (1 - key)
-            magenta = (magenta - key) / (1 - key)
-            yellow  = (yellow - key)  / (1 - key)
-        }
-
-        return (cyan, magenta, yellow, key)
-    }
-
-    public init(cyan: Double, magenta: Double, yellow: Double, key: Double) {
-        let cyan    = cyan    * (1 - key) + key
-        let magenta = magenta * (1 - key) + key
-        let yellow  = yellow  * (1 - key) + key
-        self.init(cyan: cyan, magenta: magenta, yellow: yellow)
-    }
-
-}
-
 public extension StemColor.CMYSpace {
 
     func cyan(with value: Double)    -> Self { .init(cyan: value, magenta: magenta, yellow: yellow) }
     func magenta(with value: Double) -> Self { .init(cyan: cyan, magenta: value, yellow: yellow) }
     func yellow(with value: Double)  -> Self { .init(cyan: cyan, magenta: magenta, yellow: value) }
-
-}
-
-extension StemColor.CMYSpace: StemColorRGBSpaceConversion {
-
-    public var convertToRGB: (red: Double, green: Double, blue: Double) {
-        return (1 - cyan, 1 - magenta, 1 - yellow)
-    }
-
-    public init(red: Double, green: Double, blue: Double) {
-        let cyan    = 1 - red
-        let magenta = 1 - green
-        let yellow  = 1 - blue
-        self.init(cyan: cyan, magenta: magenta, yellow: yellow)
-    }
 
 }
 

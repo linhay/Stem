@@ -31,9 +31,9 @@ fileprivate struct STRGBAPixel {
     let a: UInt8
 }
 
-public extension Stem where Base: CGImage {
-    
-    func generator(callback: (_ point: CGPoint, _ color: StemColor) -> Void) {
+private extension Stem where Base: CGImage {
+
+    func pixelsPointer() -> UnsafeMutablePointer<STRGBAPixel>? {
         let width = Int(base.width)
         let height = Int(base.height)
         guard let context = CGContext(data: nil,
@@ -43,16 +43,50 @@ public extension Stem where Base: CGImage {
                                       bytesPerRow: width * 4,
                                       space: CGColorSpaceCreateDeviceRGB(),
                                       bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue) else {
-            return
+            return nil
         }
         context.draw(base, in: .init(origin: .zero, size: .init(width: width, height: height)))
-        let data = unsafeBitCast(context.data, to: UnsafeMutablePointer<STRGBAPixel>.self)
-        for y in 0 ..< height {
+        return unsafeBitCast(context.data, to: UnsafeMutablePointer<STRGBAPixel>.self)
+    }
+    
+}
+
+public extension Stem where Base: CGImage {
+    
+    /// 获取某几个点位像素的颜色
+    /// - Parameter points: 点位
+    /// - Returns: 颜色集合
+    func pixels(at points: [(x: Int, y: Int)]) -> [StemColor] {
+        guard let data = pixelsPointer() else { return [] }
+        let width = Int(base.width)
+        var row   = [StemColor]()
+        
+        for point in points {
+            let rgba = data[point.x + point.y * width]
+            row.append(.init(rgb: .init([rgba.r, rgba.g, rgba.b].map({ Double($0) / 255 })), alpha: Double(rgba.a) / 255))
+        }
+        
+        return row
+    }
+    
+    /// 获取某全部点位像素的颜色
+    /// - Parameter points: 点位
+    /// - Returns: 颜色集合
+    func pixels() -> [[StemColor]] {
+        guard let data = pixelsPointer() else { return [] }
+        
+        let width = Int(base.width)
+        var rows  = [[StemColor]]()
+        
+        for y in 0 ..< Int(base.height) {
+            var row = [StemColor]()
             for x in 0 ..< width {
                 let rgba = data[Int(x + y * width)]
-                callback(.init(x: x, y: y), .init(rgb: .init([rgba.r, rgba.g, rgba.b].map({ Double($0) / 255 })),
-                                                  alpha: Double(rgba.a) / 255))
+                row.append(.init(rgb: .init([rgba.r, rgba.g, rgba.b].map({ Double($0) / 255 })), alpha: Double(rgba.a) / 255))
             }
+            rows.append(row)
         }
+        
+        return rows
     }
 }

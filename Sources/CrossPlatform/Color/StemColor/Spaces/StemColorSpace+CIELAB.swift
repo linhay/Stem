@@ -26,14 +26,16 @@ public extension StemColor {
     
     struct CIELABSpace: StemColorSpace {
         
+        public let illuminants: CIEStandardIlluminants
         public let l: Double
         public let a: Double
         public let b: Double
         
-        public init(l: Double, a: Double, b: Double) {
+        public init(l: Double, a: Double, b: Double, illuminants: CIEStandardIlluminants = .D65) {
             self.l = l
             self.a = a
             self.b = b
+            self.illuminants = illuminants
         }
         
     }
@@ -42,10 +44,11 @@ public extension StemColor {
 
 public extension StemColor.CIELABSpace {
     
-    func l(with value: Double) -> Self { .init(l: value, a: a, b: b) }
-    func a(with value: Double) -> Self { .init(l: l, a: value, b: b) }
-    func b(with value: Double) -> Self { .init(l: l, a: a, b: value) }
-    
+    func l(with value: Double) -> Self { .init(l: value, a: a, b: b, illuminants: illuminants) }
+    func a(with value: Double) -> Self { .init(l: l, a: value, b: b, illuminants: illuminants) }
+    func b(with value: Double) -> Self { .init(l: l, a: a, b: value, illuminants: illuminants) }
+    func illuminants(with value: CIEStandardIlluminants) -> Self { .init(l: l, a: a, b: b, illuminants: value) }
+
 }
 
 public extension StemColor.CIELABSpace {
@@ -85,7 +88,7 @@ extension StemColor.CIELABSpace: StemColorSpacePack {
     public var list: [Double] { [l, a, b] }
     
     public init(_ list: [Double]) {
-        self.init(l: list[0], a: list[1], b: list[2])
+        self.init(l: list[0], a: list[1], b: list[2], illuminants: .D65)
     }
     
     public init() {

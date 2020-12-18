@@ -28,9 +28,10 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     public enum ContentMode {
         /// 左对齐
         case left
+        /// 居中对齐
+        case centerX
         /// header & footer 贴合 cell
         case headerAndFooterViewFitInset
-        
         case none
     }
     
@@ -48,11 +49,13 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
         guard let attributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as? [UICollectionViewLayoutAttributes],
-            let collectionView = collectionView else {
-                return nil
+              let collectionView = collectionView else {
+            return nil
         }
         
         switch contentMode {
+        case .centerX:
+            return modeCenterX(collectionView: collectionView, attributes: attributes)
         case .left:
             return modeLeft(collectionView: collectionView, attributes: attributes)
         case .none:
@@ -69,15 +72,15 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
 }
 
 // MARK: - Mode
-extension SectionCollectionFlowLayout {
+private extension SectionCollectionFlowLayout {
     
-    private func modeHeaderAndFooterViewFitInset(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+    func modeHeaderAndFooterViewFitInset(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         for item in attributes {
             guard item.representedElementCategory == .supplementaryView,
-                let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
-                let inset = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section)
-                else {
-                    continue
+                  let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+                  let inset = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section)
+            else {
+                continue
             }
             if item.representedElementKind == UICollectionView.elementKindSectionFooter {
                 item.frame.origin.y -= inset.bottom
@@ -88,21 +91,66 @@ extension SectionCollectionFlowLayout {
         return attributes
     }
     
-    private func modeLeft(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+    func modeCenterX(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+        
+        func appendLine(_ lineStore: [UICollectionViewLayoutAttributes],
+                        _ minimumInteritemSpacing: CGFloat,
+                        _ collectionView: UICollectionView) -> [UICollectionViewLayoutAttributes] {
+            guard let firstItem = lineStore.first else {
+                return lineStore
+            }
+            let allWidth = lineStore.reduce(0, { $0 + $1.frame.width }) + minimumInteritemSpacing * CGFloat(lineStore.count - 1)
+            let offset = (collectionView.bounds.width - allWidth) / 2
+            firstItem.frame.origin.x = offset
+            _ = lineStore.dropFirst().reduce(firstItem) { (result, item) -> UICollectionViewLayoutAttributes in
+                item.frame.origin.x = result.frame.maxX + minimumInteritemSpacing
+                return item
+            }
+            
+            return lineStore
+        }
+        
+        var lineStore = [UICollectionViewLayoutAttributes]()
+        var list = [UICollectionViewLayoutAttributes]()
+        
+        for item in attributes {
+            guard item.representedElementCategory == .cell,
+                  let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+                  /// self.minimumInteritemSpacing 获取时与 delegate 中数值不一致
+                  let minimumInteritemSpacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) else {
+                list.append(item)
+                continue
+            }
+            
+            if let lastItem = lineStore.last, lastItem.frame.minY == item.frame.minY {
+                lineStore.append(item)
+            } else if lineStore.isEmpty {
+                lineStore.append(item)
+            } else {
+                list.append(contentsOf: appendLine(lineStore, minimumInteritemSpacing, collectionView))
+                lineStore = [item]
+            }
+        }
+        
+        list.append(contentsOf: appendLine(lineStore, minimumInteritemSpacing, collectionView))
+        return list
+    }
+    
+    func modeLeft(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         var lineStore = [CGFloat: [UICollectionViewLayoutAttributes]]()
         var list = [UICollectionViewLayoutAttributes]()
         
         for item in attributes {
             guard item.representedElementCategory == .cell,
-                let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
-                /// self.minimumInteritemSpacing 获取时与 delegate 中数值不一致
-                let minimumInteritemSpacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) else {
-                    list.append(item)
-                    continue
+                  let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+                  /// self.minimumInteritemSpacing 获取时与 delegate 中数值不一致
+                  let minimumInteritemSpacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) else {
+                list.append(item)
+                continue
             }
-
+            
             let insets = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section) ?? .zero
-
+            
             if let lastItem = lineStore[item.frame.minY]?.last {
                 item.frame.origin.x = lastItem.frame.maxX + minimumInteritemSpacing
                 lineStore[item.frame.minY]?.append(item)

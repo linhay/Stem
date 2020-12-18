@@ -31,11 +31,12 @@ public extension StemColor {
                        alpha: alpha)
     }
     
+    func convert() -> CGColor {
+        return convert().cgColor
+    }
+    
     func convert() -> CIColor {
-        return .init(red: CGFloat(rgbSpace.red),
-                     green: CGFloat(rgbSpace.green),
-                     blue: CGFloat(rgbSpace.blue),
-                     alpha: CGFloat(alpha))
+        return CIColor(color: convert()) ?? .black
     }
     
     convenience init(_ color: STWrapperColor) {

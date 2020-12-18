@@ -28,6 +28,7 @@ public protocol SectionProtocol: class {
     var index: Int { get set }
     var itemCount: Int { get }
     func didSelectItem(at row: Int)
+    func willDisplayItem(at row: Int)
     func deselect(at row: Int, animated: Bool)
 
     func canMove(at: Int) -> Bool
@@ -43,6 +44,12 @@ public extension SectionProtocol {
     }
 
     var isLoaded: Bool { core != nil }
+
+}
+
+public extension SectionProtocol {
+
+    func willDisplayItem(at row: Int) {}
 
 }
 

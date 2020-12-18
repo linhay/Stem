@@ -22,45 +22,6 @@
 
 import Foundation
 
-public extension StemColorRGBSpaceConversion {
-
-    init(space: StemColor.RGBSpace) {
-        self.init(red: space.red, green: space.green, blue: space.blue)
-    }
-
-    var rgbSpace: StemColor.RGBSpace {
-        let (red, green, blue) = convertToRGB
-        return .init(red: red, green: green, blue: blue)
-    }
-
-}
-
-public extension StemColorCMYKSpaceConversion {
-
-    init(space: StemColor.CMYKSpace) {
-        self.init(cyan: space.cyan, magenta: space.magenta, yellow: space.yellow, key: space.key)
-    }
-
-    var cmykSpace: StemColor.CMYKSpace {
-        let (c, m, y, k) = convertToCMYK
-        return .init(cyan: c, magenta: m, yellow: y, key: k)
-    }
-
-}
-
-public extension StemColorCIELABSpaceConversion {
-
-    init(space: StemColor.CIELABSpace) {
-        self.init(l: space.l, a: space.a, b: space.b, illuminants: .D65)
-    }
-
-    var labSpace: StemColor.CIELABSpace {
-        let (l, a, b) = convertToLAB(illuminants: .D65)
-        return .init(l: l, a: a, b: b)
-    }
-
-}
-
 // http://www.easyrgb.com/en/math.php
 // https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4
 public class StemColor {
@@ -68,41 +29,52 @@ public class StemColor {
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
 
-    public var rgbSpace: RGBSpace
-    public var rybSpace: RYBSpace   { .init(space: rgbSpace) }
-    public var hslSpace: HSLSpace   { .init(space: rgbSpace) }
-    public var hsbSpace: HSBSpace   { .init(space: rgbSpace) }
-    public var cmySpace: CMYSpace   { .init(space: rgbSpace) }
-    public var cmykSpace: CMYKSpace { cmySpace.cmykSpace }
-    public var xyzSpace: CIEXYZSpace { .init(space: rgbSpace) }
-    public var labSpace: CIELABSpace { xyzSpace.labSpace }
+    public let rgbSpace: RGBSpace
+    public lazy var rybSpace: RYBSpace    = { Self.calculator.convert(rgbSpace) }()
+    public lazy var hslSpace: HSLSpace    = { Self.calculator.convert(rgbSpace) }()
+    public lazy var hsbSpace: HSBSpace    = { Self.calculator.convert(rgbSpace) }()
+    public lazy var cmySpace: CMYSpace    = { Self.calculator.convert(rgbSpace) }()
+    public lazy var cmykSpace: CMYKSpace  = { Self.calculator.convert(cmySpace) }()
+    public lazy var xyzSpace: CIEXYZSpace = { Self.calculator.convert(rgbSpace) }()
+    public lazy var labSpace: CIELABSpace = { Self.calculator.convert(xyzSpace) }()
+    
+    static let calculator = StemColor.SpaceCalculator()
 
     public convenience init(cmyk space: CMYKSpace, alpha: Double = 1) {
-        self.init(rgb: CMYSpace(space: space).rgbSpace, alpha: alpha)
+        let cmy: CMYSpace   = Self.calculator.convert(space)
+        let space: RGBSpace = Self.calculator.convert(cmy)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public convenience init(lab space: CIELABSpace, alpha: Double = 1) {
-        self.init(rgb: CIEXYZSpace(space: space).rgbSpace, alpha: alpha)
+        let xyz: CIEXYZSpace = Self.calculator.convert(space)
+        let space: RGBSpace  = Self.calculator.convert(xyz)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public convenience init(cmy space: CMYSpace, alpha: Double = 1) {
-        self.init(rgb: space.rgbSpace, alpha: alpha)
+        let space: RGBSpace  = Self.calculator.convert(space)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public convenience init(xyz space: CIEXYZSpace, alpha: Double = 1) {
-        self.init(rgb: space.rgbSpace, alpha: alpha)
+        let space: RGBSpace  = Self.calculator.convert(space)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public convenience init(hsl space: HSLSpace, alpha: Double = 1) {
-        self.init(rgb: space.rgbSpace, alpha: alpha)
+        let space: RGBSpace  = Self.calculator.convert(space)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public convenience init(ryb space: RYBSpace, alpha: Double = 1) {
-        self.init(rgb: space.rgbSpace, alpha: alpha)
+        let space: RGBSpace  = Self.calculator.convert(space)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public convenience init(hsb space: HSBSpace, alpha: Double = 1) {
-        self.init(rgb: space.rgbSpace, alpha: alpha)
+        let space: RGBSpace  = Self.calculator.convert(space)
+        self.init(rgb: space, alpha: alpha)
     }
 
     public init(rgb space: RGBSpace, alpha: Double = 1) {

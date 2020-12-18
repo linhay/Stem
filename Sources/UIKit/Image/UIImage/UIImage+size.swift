@@ -30,12 +30,12 @@ public extension Stem where Base: UIImage {
     var byte: Int {
         return base.jpegData(compressionQuality: 1)?.count ?? 0
     }
-
+    
     /// 图片尺寸: 1 KB | 1MB | 1TB
     var byteString: String {
         return ByteCountFormatter().string(fromByteCount: Int64(byte))
     }
-
+    
     /// 基于像素的尺寸
     var pixelSize: CGSize {
         return CGSize(width: base.size.width * base.scale, height: base.size.height * base.scale)
@@ -45,7 +45,7 @@ public extension Stem where Base: UIImage {
 
 // MARK: - scale(缩放)
 public extension Stem where Base: UIImage {
-
+    
     func scale(size: CGSize, opaque: Bool = false) -> UIImage? {
         if #available(iOS 10.0, *) {
             let renderer = UIGraphicsImageRenderer(size: size)
@@ -59,7 +59,7 @@ public extension Stem where Base: UIImage {
             return UIGraphicsGetImageFromCurrentImageContext()
         }
     }
-
+    
     /// 缩放至指定高度
     ///
     /// - Parameters:
@@ -70,7 +70,7 @@ public extension Stem where Base: UIImage {
         let newWidth = base.size.width / base.size.height * toHeight
         return scale(size: CGSize(width: newWidth, height: toHeight), opaque: opaque)
     }
-
+    
     /// 缩放至指定宽度
     ///
     /// - Parameters:
@@ -81,7 +81,20 @@ public extension Stem where Base: UIImage {
         let newHeight = base.size.height / base.size.width * toWidth
         return scale(size: CGSize(width: toWidth, height: newHeight), opaque: opaque)
     }
-
+    
+    /// 缩放至最长边
+    /// - Parameters:
+    ///   - side: 最长边
+    ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
+    /// - Returns: 新的图片
+    func scale(longestSide side: CGFloat, opaque: Bool = false) -> UIImage? {
+        if base.size.width >= base.size.height {
+            return scale(toWidth: base.size.width, opaque: opaque)
+        } else {
+            return scale(toHeight: base.size.height, opaque: opaque)
+        }
+    }
+    
 }
 
 // MARK: - compress(压缩)
