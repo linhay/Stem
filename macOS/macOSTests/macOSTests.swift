@@ -8,6 +8,7 @@
 
 import XCTest
 import Stem
+import Accessibility
 
 class macOSTests: XCTestCase {
 
@@ -55,6 +56,11 @@ class macOSTests: XCTestCase {
         let cmykSpace = color.cmykSpace
         let rybSpace  = color.rybSpace
 
+        if #available(OSX 11.0, *) {
+            print(AXNameFromColor(color.convert()))
+        } else {
+            // Fallback on earlier versions
+        }
         print("hex: ", hex)
         print("rgb: ", rgbSpace)
         print("rgb: ", rgbSpace.intUnpack)
