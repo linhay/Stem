@@ -21,12 +21,16 @@
 // SOFTWARE.
 
 #if canImport(UIKit)
+
 import UIKit
 
 public class SectionCore {
+
     var index: Int = 0
     var sectionView: UIView?
+    var reloadDataEvent: (() -> Void)?
 
     internal init() { }
 }
+
 #endif

@@ -20,14 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
 import UIKit
 
 public enum SectionCollectionViewKind: Equatable {
     case header
     case footer
     case custom(_ value: String)
-    
+
     public var rawValue: String {
         switch self {
         case .header: return UICollectionView.elementKindSectionHeader
@@ -36,4 +35,3 @@ public enum SectionCollectionViewKind: Equatable {
         }
     }
 }
-#endif

@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
 import UIKit
 
 public protocol SectionCollectionProtocol: SectionProtocol {
@@ -50,7 +49,7 @@ public extension SectionCollectionProtocol {
         }
         return core.sectionView as! UICollectionView
     }
-
+    
 }
 
 public extension SectionCollectionProtocol {
@@ -97,21 +96,15 @@ public extension SectionCollectionProtocol {
 public extension SectionCollectionProtocol {
 
     func reload() {
-        guard isLoaded else {
-            return
-        }
-        sectionView.reloadData()
+        core?.reloadDataEvent?()
     }
 
     func reload(at row: Int) {
         reload(at: [row])
     }
 
-    func reload(at rows: [Int]) {
-        guard isLoaded else {
-            return
-        }
-        sectionView.reloadData()
+    func reload(at rows: [Int]) { 
+        core?.reloadDataEvent?()
     }
 
 }
@@ -119,7 +112,7 @@ public extension SectionCollectionProtocol {
 public extension SectionCollectionProtocol {
 
     func insert(at row: Int, willUpdate: (() -> Void)? = nil) {
-        insert(at: [row], willUpdate: willUpdate)
+        insert(at: [row])
     }
 
     func insert(at rows: [Int], willUpdate: (() -> Void)? = nil) {
@@ -128,7 +121,7 @@ public extension SectionCollectionProtocol {
         }
         willUpdate?()
         if let max = rows.max(), sectionView.numberOfItems(inSection: index) <= max {
-            sectionView.reloadData()
+            core?.reloadDataEvent?()
         } else {
             sectionView.insertItems(at: indexPaths(from: rows))
         }
@@ -148,9 +141,11 @@ public extension SectionCollectionProtocol {
         }
         willUpdate?()
         if itemCount <= 0 {
-            sectionView.reloadData()
+            core?.reloadDataEvent?()
         } else {
-            sectionView.deleteItems(at: indexPaths(from: rows))
+            sectionView.performBatchUpdates({
+                sectionView.deleteItems(at: indexPaths(from: rows))
+            }, completion: nil)
         }
     }
 
@@ -167,4 +162,3 @@ public extension SectionCollectionProtocol {
     }
 
 }
-#endif

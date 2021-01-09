@@ -26,12 +26,17 @@ import UIKit
 public class SectionCollectionManager: SectionScrollManager {
 
     private let sectionManager: SectionManager<UICollectionView>
-    var sectionView: UICollectionView { sectionManager.sectionView }
+    private var isPicking = false
+
     public var sections: [SectionCollectionProtocol] { sectionManager.sections as! [SectionCollectionProtocol] }
+    public var sectionView: UICollectionView { sectionManager.sectionView }
 
     public init(sectionView: UICollectionView) {
         sectionManager = .init(sectionView: sectionView)
         super.init()
+        sectionManager.reloadDataEvent = { [weak self] in
+            self?.reload()
+        }
         sectionView.delegate = self
         sectionView.dataSource = self
     }
@@ -41,6 +46,10 @@ public class SectionCollectionManager: SectionScrollManager {
 public extension SectionCollectionManager {
 
     func operational(_ refresh: SectionManager<UICollectionView>.Refresh) {
+        guard isPicking == false else {
+            return
+        }
+        
         switch refresh {
         case .none:
             break
@@ -53,6 +62,14 @@ public extension SectionCollectionManager {
         case .move(from: let from, to: let to):
             sectionView.moveSection(from, toSection: to)
         }
+    }
+
+    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)?) {
+        isPicking = true
+        updates()
+        isPicking = false
+        reload()
+        completion?(true)
     }
 
     func reload() {
@@ -142,7 +159,7 @@ extension SectionCollectionManager: UICollectionViewDelegateFlowLayout {
     }
 
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        return sections[indexPath.section].willDisplayItem(at: indexPath.item)
+        sections[indexPath.section].willDisplayItem(at: indexPath.item)
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

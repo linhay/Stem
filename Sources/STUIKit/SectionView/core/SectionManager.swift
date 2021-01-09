@@ -28,6 +28,8 @@ public class SectionManager<SectionView: UIView> {
     public private(set) var sections: [SectionProtocol] = []
     public private(set) unowned var sectionView: SectionView
 
+    var reloadDataEvent: (() -> Void)?
+    
     public init(sectionView: SectionView) {
         self.sectionView = sectionView
     }
@@ -40,12 +42,15 @@ public class SectionManager<SectionView: UIView> {
         case move(from: Int, to: Int)
     }
 
+    func pick(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) { }
+
     func reload() -> Refresh {
         _ = calculator(sections: sections, in: sectionView)
         return .reload
     }
 
     func update(_ newSections: [SectionProtocol]) -> Refresh {
+        unlink(sections)
         sections = calculator(sections: newSections, in: sectionView)
         return .reload
     }
@@ -54,7 +59,6 @@ public class SectionManager<SectionView: UIView> {
         if sections.isEmpty || sections.count <= index {
             return .reload
         } else {
-            sections.remove(at: index)
             sections = calculator(sections: sections, in: sectionView)
             return .delete(IndexSet([index]))
         }
@@ -76,7 +80,7 @@ public class SectionManager<SectionView: UIView> {
         if sections.isEmpty || sections.count <= index {
             sections.append(section)
             sections = calculator(sections: sections, in: sectionView)
-            return isEmpty ? .reload : .insert(IndexSet([sections.count - 1]))
+            return isEmpty ? .reload : .insert(IndexSet([sections.count]))
         } else {
             sections.insert(section, at: index)
             sections = calculator(sections: sections, in: sectionView)
@@ -87,13 +91,14 @@ public class SectionManager<SectionView: UIView> {
 }
 
 private extension SectionManager {
-
-    func rebase(_ sections: [SectionProtocol]) {
-        sections.forEach { rebase($0) }
+    
+    func unlink(_ sections: [SectionProtocol]) {
+        sections.forEach { $0.core = nil }
     }
 
     func rebase(_ section: SectionProtocol) {
         section.core = SectionCore()
+        section.core?.reloadDataEvent = reloadDataEvent
     }
 
     func contains(section: SectionProtocol, in sections: [SectionProtocol]) -> Bool {

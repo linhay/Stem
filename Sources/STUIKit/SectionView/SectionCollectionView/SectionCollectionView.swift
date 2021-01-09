@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
 import UIKit
 
 open class SectionCollectionView: UICollectionView {
@@ -31,39 +30,38 @@ open class SectionCollectionView: UICollectionView {
         set { sectionFlowLayout?.scrollDirection = newValue ?? .vertical }
         get { return sectionFlowLayout?.scrollDirection }
     }
-    
+
     public var layoutMode: SectionCollectionFlowLayout.ContentMode {
         set { sectionFlowLayout?.contentMode = newValue }
         get { sectionFlowLayout?.contentMode ?? .none }
     }
-    
+
     public convenience init() {
         self.init(frame: .zero)
     }
-    
+
     public convenience init(frame: CGRect) {
         self.init(frame: frame, collectionViewLayout: SectionCollectionFlowLayout())
     }
-    
+
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         initialize()
     }
-    
+
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         collectionViewLayout = SectionCollectionFlowLayout()
         initialize()
     }
-    
+
     private func initialize() {
         if backgroundColor == .black {
             backgroundColor = .white
         }
-        
+
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
     }
-    
+
 }
-#endif
