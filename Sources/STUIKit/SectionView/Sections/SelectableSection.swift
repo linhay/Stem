@@ -23,21 +23,18 @@
 #if canImport(UIKit)
 import UIKit
 
-open class SelectableSection<Cell: UICollectionViewCell>: SingleTypeSection<Cell>,
-    SelectableCollectionProtocol
-    where Cell: ConfigurableView & STViewProtocol,
-    Cell.Model: SelectableProtocol {
-
+open class SelectableSection<Cell: UICollectionViewCell>: SingleTypeSection<Cell>, SelectableCollectionProtocol where Cell: ConfigurableView & STViewProtocol, Cell.Model: SelectableProtocol {
+    
     open var selectables: [Cell.Model] { models }
-
+    
     open override func didSelectItem(at row: Int) {
         select(at: row)
     }
-
+    
     open func didSelectElement(at index: Int, element: Cell.Model) {
         selectedEvent.call(element)
         selectedRowEvent.call(index)
     }
-
+    
 }
 #endif

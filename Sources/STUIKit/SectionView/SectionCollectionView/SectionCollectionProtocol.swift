@@ -143,9 +143,7 @@ public extension SectionCollectionProtocol {
         if itemCount <= 0 {
             core?.reloadDataEvent?()
         } else {
-            sectionView.performBatchUpdates({
-                sectionView.deleteItems(at: indexPaths(from: rows))
-            }, completion: nil)
+            sectionView.deleteItems(at: indexPaths(from: rows))
         }
     }
 
