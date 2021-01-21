@@ -39,9 +39,34 @@ public extension RunTime {
             self.classType = classType
         }
         
+        /**
+         创建 Exchange
+         
+         - Parameter selector: Selector
+         - Parameter kind: MethodKind
+         
+         - Example:
+         
+         ```
+         let maker = RunTime.ExchangeMaker(class: UIViewController.self)
+         [
+         [
+         maker.create(selector: #selector(UIViewController.stem_viewController_viewWillAppear(_:))),
+         maker.create(selector: #selector(UIViewController.viewWillAppear(_:))),
+         ],
+         [
+         maker.create(selector: #selector(UIViewController.stem_viewController_viewWillDisappear(_:))),
+         maker.create(selector: #selector(UIViewController.viewWillDisappear(_:))),
+         ]
+         ]
+         .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
+         ```
+         */
         func create(selector: Selector, kind: MethodKind = .instance) -> Exchange {
             return .init(selector: selector, class: classType, kind: kind)
+            
         }
+        
         
     }
     
@@ -76,10 +101,33 @@ public extension RunTime {
             case .class:
                 return class_getClassMethod(classType, selector)
             }
-}
+        }
         
     }
     
+    /**
+     函数添加/替换
+     
+     - Parameter swizzled: 用于替换类型
+     - Parameter original: 被替换类型
+     
+     - Example:
+     
+     ```
+     let maker = RunTime.ExchangeMaker(class: UIViewController.self)
+     [
+     [
+     maker.create(selector: #selector(UIViewController.stem_viewController_viewWillAppear(_:))),
+     maker.create(selector: #selector(UIViewController.viewWillAppear(_:))),
+     ],
+     [
+     maker.create(selector: #selector(UIViewController.stem_viewController_viewWillDisappear(_:))),
+     maker.create(selector: #selector(UIViewController.viewWillDisappear(_:))),
+     ]
+     ]
+     .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
+     ```
+     */
     static func exchange(new swizzled: Exchange, with original: Exchange) {
         guard let classType = original.type else {
             assertionFailure("Runtime: 无法查询到类 \(original.classType)")

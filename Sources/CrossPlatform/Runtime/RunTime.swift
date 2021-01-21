@@ -25,7 +25,7 @@ import Foundation
 public typealias Runtime = RunTime
 
 public class RunTime {
-
+    
     /// 获取已注册类列表
     ///
     /// - Returns: 已注册类列表
@@ -37,7 +37,7 @@ public class RunTime {
         let list = (0..<typeCount).compactMap { (index) -> AnyClass? in
             return types[index]
         }
-
+        
         types.deinitialize(count: typeCount)
         types.deallocate()
         return list
@@ -46,7 +46,7 @@ public class RunTime {
 }
 
 public extension RunTime {
-
+    
     /// 获取类型元类
     ///
     /// - Parameter classType: 类型
@@ -62,7 +62,7 @@ public extension RunTime {
     static func instanceSize(from classType: AnyClass) -> Int {
         return class_getInstanceSize(classType)
     }
-
+    
     /// 获取方法列表
     ///
     /// - Parameter classType: 所属类型
@@ -98,7 +98,7 @@ public extension RunTime {
 }
 
 private extension RunTime {
-
+    
     static func get_list<T, U>(close: ( _ outcount: inout UInt32) -> AutoreleasingUnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
         var outcount: UInt32 = 0
         var list = [U]()
@@ -108,7 +108,7 @@ private extension RunTime {
         }
         return list
     }
-
+    
     static func get_list<T, U>(close: ( _ outcount: inout UInt32) -> UnsafeMutablePointer<T>?, format: (T) -> U) -> [U] {
         var outcount: UInt32 = 0
         var list = [U]()
@@ -119,71 +119,5 @@ private extension RunTime {
         free(methods)
         return list
     }
-
-}
-
-#if DEBUG
-public extension RunTime {
-
-    struct Print { }
-
-    static let print = Print()
-
-}
-
-public extension RunTime.Print {
-
-    func log(title: String, list: [[String]]) {
-        var reList = [[String]](repeating: [String](repeating: "", count: list.count), count: list.first?.count ?? 0)
-        for x in 0..<list.count {
-            for y in 0..<list[x].count {
-                reList[y][x] = list[x][y]
-            }
-        }
-
-        let maxs = reList.map({ $0.map({ $0.count }) }).map({ $0.max()! })
-
-        let strs = list.map { (line) -> String in
-            return "|  " + line.enumerated().map({ (element) -> String in
-                return element.element + [String](repeating: " ", count: max(maxs[element.offset] - element.element.count, 0)).joined()
-            }).joined(separator: "|") + "  |"
-        }
-
-        let count = (strs.first?.count ?? 10) - 2
-        debugPrint("+\([String](repeating: "-", count: count).joined())+")
-        var title = [String](repeating: " ", count: (count - title.count) / 2).joined() + title
-        title = title + [String](repeating: " ", count: count - title.count).joined()
-        debugPrint("|\(title)|")
-        debugPrint("+\([String](repeating: "-", count: count).joined())+")
-
-        strs.forEach { (str) in
-            debugPrint(str)
-        }
-        debugPrint("+\([String](repeating: "-", count: count).joined())+")
-    }
-    
-    func methods(from classType: AnyClass) {
-        let list = RunTime.methods(from: classType).map({ [method_getName($0).description] })
-        log(title: "methods", list: list)
-    }
-
-    func properties(from classType: AnyClass) {
-        let list = RunTime.properties(from: classType).compactMap({ [String(cString: property_getName($0))] })
-        log(title: "properties", list: list)
-    }
-    
-    func protocols(from classType: AnyClass) {
-        let list = RunTime.protocols(from: classType).map({ [String(cString: protocol_getName($0))] })
-        log(title: "protocols", list: list)
-    }
-    
-    func ivars(from classType: AnyClass) {
-        let list = RunTime.ivars(from: classType).compactMap({ (item) -> [String]? in
-            guard let ivar = ivar_getName(item) else { return nil }
-            return [String(cString: ivar)]
-        })
-        log(title: "ivars", list: list)
-    }
     
 }
-#endif
