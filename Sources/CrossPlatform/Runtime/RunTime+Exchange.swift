@@ -70,32 +70,29 @@ public extension RunTime {
         }
         
         var method: Method? {
-            let method: Method?
             switch kind {
             case .instance:
-                method = class_getInstanceMethod(classType, selector)
+                return class_getInstanceMethod(classType, selector)
             case .class:
-                method = class_getClassMethod(classType, selector)
+                return class_getClassMethod(classType, selector)
             }
-            guard let result = method else {
-                assertionFailure("Runtime: 在类: \(classType) 中无法取得对应方法: \(selector.description)")
-                return nil
-            }
-            return result
-        }
+}
         
     }
     
     static func exchange(new swizzled: Exchange, with original: Exchange) {
+        guard let classType = original.type else {
+            assertionFailure("Runtime: 无法查询到类 \(original.classType)")
+            return
+        }
+        
         guard let method = swizzled.method else {
+            assertionFailure("Runtime: 在类: \(swizzled.classType) 中无法取得对应方法: \(swizzled.selector.description)")
             return
         }
         
         guard let newMethod = original.method else {
-            return
-        }
-        
-        guard let classType = original.type else {
+            assertionFailure("Runtime: 在类: \(original.classType) 中无法取得对应方法: \(original.selector.description)")
             return
         }
         
