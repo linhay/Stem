@@ -23,124 +23,160 @@
 #if canImport(UIKit)
 import UIKit
 
-protocol NavigationStyleThiefProtocol: UIViewController {
+protocol RecoverNavigationProtocol: UIViewController {
     
     /// 修复 UIScrollView 应为 navigationBar 的 isTranslucent 由 true 到 false 引起的位置偏移
     var recoverRecordScrollView: UIScrollView? { get }
     
 }
 
-extension NavigationStyleThiefProtocol {
-
-    var recoverManager: NavigationStyleThiefManager {
+extension RecoverNavigationProtocol {
+    
+    var recoverManager: RecoverNavigationManager {
         if let recoverManager = recoverNavigationManager {
             return recoverManager
         } else {
-            return NavigationStyleThiefManager.obseve(self)
+            return RecoverNavigationManager.obseve(self)
         }
     }
     
     var recoverRecordScrollView: UIScrollView? { nil }
-
+    
 }
 
 fileprivate extension UINavigationController {
     
+    private func willPopAction(_ viewControllers: [UIViewController]?) -> [UIViewController]? {
+        guard let manager = viewControllers?.first(where: { ($0 as? RecoverNavigationProtocol) != nil })?.recoverNavigationManager else {
+            return viewControllers
+        }
+        manager.store(for: .current)
+        manager.recover(for: .last)
+        return viewControllers
+    }
+    
+    @objc
+    func recover_setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
+        if let first = viewControllers.first, let last = viewControllers.last {
+            if first is RecoverNavigationProtocol {
+                RecoverNavigationManager.obseve(first)
+            }
+            _ = viewControllers.reduce(first) { (result, next) -> UIViewController in
+                if next is RecoverNavigationProtocol {
+                    RecoverNavigationManager.obseve(next)
+                }
+                self.setupStyle(result, next: next, isTopViewController: next === last, completion: {})
+                return next
+            }
+        }
+        
+        recover_setViewControllers(viewControllers, animated: animated)
+    }
+    
+    @objc
+    func recover_popToRootViewController(animated: Bool) -> [UIViewController]? {
+        return willPopAction(recover_popToRootViewController(animated: animated))
+    }
+    
+    @objc
+    func recover_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
+        return willPopAction(recover_popToViewController(viewController, animated: animated))
+    }
+    
     @objc
     func recover_popViewController(animated: Bool) -> UIViewController? {
-        let currentVC = recover_popViewController(animated: animated)
-        let nextVC    = topViewController
-
-        guard let manager = (currentVC as? NavigationStyleThiefProtocol)?.recoverNavigationManager else {
-            return nextVC
+        let popVC = recover_popViewController(animated: animated)
+        guard let resultVC = popVC else {
+            return popVC
         }
-
-        manager.store(for: .current)
-
-        if (nextVC is NavigationStyleThiefProtocol) == false {
-            manager.recover(for: .last)
-        }
-
-        return nextVC
+        return willPopAction([resultVC])?.first
     }
-
-    @objc
-    func recover_pushViewController(_ viewController: UIViewController, animated: Bool) {
-        if viewControllers.count == 1,
-           let topViewController = topViewController as? NavigationStyleThiefProtocol,
-           topViewController.recoverNavigationManager == nil {
-            NavigationStyleThiefManager.obseve(topViewController)
-        }
-
-        if viewController is NavigationStyleThiefProtocol {
-            NavigationStyleThiefManager.obseve(viewController)
-        }
-
-        let fromManager = (topViewController as? NavigationStyleThiefProtocol)?.recoverNavigationManager
-        let toManager   = (viewController as? NavigationStyleThiefProtocol)?.recoverNavigationManager
-
+    
+    func setupStyle(_ from: UIViewController?, next: UIViewController, isTopViewController: Bool, completion: () -> Void) {
+        let fromManager = (from as? RecoverNavigationProtocol)?.recoverNavigationManager
+        let toManager   = (next as? RecoverNavigationProtocol)?.recoverNavigationManager
         fromManager?.canChangeStyle = false
+        
         fromManager?.store(for: .current)
         if let from = fromManager, let to = toManager {
             to.store(style: from.style(for: .current), for: .last, with: self)
-            if let style = to.style(for: .current) {
-                to.recover(style: style, with: self)
-            } else {
-                to.recover(style: .normal, with: self)
+            if isTopViewController {
+                if let style = to.style(for: .current) {
+                    to.recover(style: style, with: self)
+                } else {
+                    to.recover(style: .normal, with: self)
+                }
             }
         } else if fromManager == nil, let to = toManager {
             to.store(style: to.style(for: self), for: .last, with: self)
-            if let style = to.style(for: .current) {
-                to.recover(style: style, with: self)
-            } else {
-                to.recover(style: .normal, with: self)
+            if isTopViewController {
+                if let style = to.style(for: .current) {
+                    to.recover(style: style, with: self)
+                } else {
+                    to.recover(style: .normal, with: self)
+                }
             }
         } else if let from = fromManager, toManager == nil {
-            viewController.isFromNavigationManager = true
+            next.isFromNavigationManager = true
             from.recover(style: .normal, with: self)
         }
-
-        recover_pushViewController(viewController, animated: animated)
+        
+        completion()
         fromManager?.canChangeStyle = true
     }
-
-}
-
-fileprivate extension UIViewController {
-
-    var isFromNavigationManager: Bool {
-        set {
-            objc_setAssociatedObject(self,
-                                     NavigationStyleThiefManager.AssociatedKey.isFromNavigationManager,
-                                     newValue,
-                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    
+    @objc
+    func recover_pushViewController(_ viewController: UIViewController, animated: Bool) {
+        if let topViewController = topViewController as? RecoverNavigationProtocol {
+            RecoverNavigationManager.obseve(topViewController)
         }
-        get {
-            objc_getAssociatedObject(self, NavigationStyleThiefManager.AssociatedKey.isFromNavigationManager) as? Bool ?? false
+        
+        if viewController is RecoverNavigationProtocol {
+            RecoverNavigationManager.obseve(viewController)
         }
-    }
-
-    var recoverNavigationManager: NavigationStyleThiefManager? {
-        set {
-            objc_setAssociatedObject(self,
-                                     NavigationStyleThiefManager.AssociatedKey.navigationManager,
-                                     newValue,
-                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            objc_getAssociatedObject(self, NavigationStyleThiefManager.AssociatedKey.navigationManager) as? NavigationStyleThiefManager
+        
+        setupStyle(topViewController, next: viewController, isTopViewController: true) { [weak self] in
+            self?.recover_pushViewController(viewController, animated: animated)
         }
     }
     
-    var recordScrollOffsetManager: NavigationStyleThiefRecordScrollOffsetManager? {
+}
+
+fileprivate extension UIViewController {
+    
+    var isFromNavigationManager: Bool {
         set {
             objc_setAssociatedObject(self,
-                                     NavigationStyleThiefManager.AssociatedKey.recordScrollManager,
+                                     RecoverNavigationManager.AssociatedKey.isFromNavigationManager,
                                      newValue,
                                      .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
         get {
-            objc_getAssociatedObject(self, NavigationStyleThiefManager.AssociatedKey.recordScrollManager) as? NavigationStyleThiefRecordScrollOffsetManager
+            objc_getAssociatedObject(self, RecoverNavigationManager.AssociatedKey.isFromNavigationManager) as? Bool ?? false
+        }
+    }
+    
+    var recoverNavigationManager: RecoverNavigationManager? {
+        set {
+            objc_setAssociatedObject(self,
+                                     RecoverNavigationManager.AssociatedKey.navigationManager,
+                                     newValue,
+                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            objc_getAssociatedObject(self, RecoverNavigationManager.AssociatedKey.navigationManager) as? RecoverNavigationManager
+        }
+    }
+    
+    var recordScrollOffsetManager: RecoverRecordScrollOffsetManager? {
+        set {
+            objc_setAssociatedObject(self,
+                                     RecoverNavigationManager.AssociatedKey.recordScrollManager,
+                                     newValue,
+                                     .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            objc_getAssociatedObject(self, RecoverNavigationManager.AssociatedKey.recordScrollManager) as? RecoverRecordScrollOffsetManager
         }
     }
     
@@ -148,19 +184,19 @@ fileprivate extension UIViewController {
     func recover_viewWillAppear(_ animated: Bool) {
         guard let manager = recoverNavigationManager else {
             if isFromNavigationManager {
-                NavigationStyleThiefManager.recover(style: .normal, with: navigationController)
+                RecoverNavigationManager.recover(style: .normal, with: navigationController)
             }
             recover_viewWillAppear(animated)
             return
         }
-
+        
         manager.recover(for: .current)
         recover_viewWillAppear(animated)
         
         if let manager = recordScrollOffsetManager {
             manager.willAppear()
-        } else if let vcProtocol = self as? NavigationStyleThiefProtocol, let scrollView = vcProtocol.recoverRecordScrollView {
-            let recordManager = NavigationStyleThiefRecordScrollOffsetManager(recoverManager: manager, scrollView: scrollView)
+        } else if let vcProtocol = self as? RecoverNavigationProtocol, let scrollView = vcProtocol.recoverRecordScrollView {
+            let recordManager = RecoverRecordScrollOffsetManager(recoverManager: manager, scrollView: scrollView)
             recordManager?.willAppear()
             recordScrollOffsetManager = recordManager
         }
@@ -179,15 +215,15 @@ fileprivate extension UIViewController {
     }
 }
 
-private class NavigationStyleThiefRecordScrollOffsetManager {
+private class RecoverRecordScrollOffsetManager {
     
     private var enableRecord: Bool = false
     private var offset: CGFloat
     private var token: NSKeyValueObservation?
     private weak var scrollView: UIScrollView?
-    var recoverManager: NavigationStyleThiefManager
-
-    init?(recoverManager: NavigationStyleThiefManager, scrollView: UIScrollView?) {
+    var recoverManager: RecoverNavigationManager
+    
+    init?(recoverManager: RecoverNavigationManager, scrollView: UIScrollView?) {
         guard let scrollView = scrollView else {
             return nil
         }
@@ -225,7 +261,7 @@ private class NavigationStyleThiefRecordScrollOffsetManager {
     
 }
 
-class NavigationStyleThiefManager {
+class RecoverNavigationManager {
     
     fileprivate enum AssociatedKey {
         static let navigationManager       = UnsafeRawPointer(bitPattern: "recover.key.navigationManager".hashValue)!
@@ -233,17 +269,18 @@ class NavigationStyleThiefManager {
         static let isFromNavigationManager = UnsafeRawPointer(bitPattern: "recover.key.isFromNavigationManager".hashValue)!
     }
     
+    private var titleLabel: UILabel!
     fileprivate(set) var canChangeStyle = true
     private weak var viewController: UIViewController?
     private weak var storedNavigationController: UINavigationController?
-
+    
     enum StoreType: Int {
         /// 上个界面
         case last
         /// 当前界面
         case current
     }
-
+    
     class Style {
         var isTranslucent: Bool = false
         var barStyle: UIBarStyle = .default
@@ -252,7 +289,7 @@ class NavigationStyleThiefManager {
         var shadowImage: UIImage?
         var backgroundImage: UIImage?
         var isHidden: Bool = false
-        var titleTextAttributes: [NSAttributedString.Key : Any]?
+        var titleTextAttributes: [NSAttributedString.Key: Any]?
         static var normal: Style {
             let style = Style()
             style.isTranslucent   = UINavigationBar.appearance().isTranslucent
@@ -265,57 +302,82 @@ class NavigationStyleThiefManager {
             return style
         }
     }
-
+    
     private var styles = [StoreType: Style]()
-
+    
     private var storeBlock: (() -> Void)?
-
+    
     private init(viewController: UIViewController) {
         self.viewController = viewController
     }
-
+    
 }
 
-extension NavigationStyleThiefManager {
-
+extension RecoverNavigationManager {
+    
     private static let swizzing: Void = {
-        RunTime.exchange(selector: #selector(UIViewController.viewWillAppear(_:)),
-                         by: #selector(UIViewController.recover_viewWillAppear(_:)),
-                         class: UIViewController.self)
-        RunTime.exchange(selector: #selector(UIViewController.viewLayoutMarginsDidChange),
-                         by: #selector(UIViewController.recover_viewLayoutMarginsDidChange),
-                         class: UIViewController.self)
-        RunTime.exchange(selector: #selector(UIViewController.viewWillDisappear(_:)),
-                         by: #selector(UIViewController.recover_viewWillDisappear(_:)),
-                         class: UIViewController.self)
-        RunTime.exchange(selector: #selector(UINavigationController.pushViewController(_:animated:)),
-                         by: #selector(UINavigationController.recover_pushViewController(_:animated:)),
-                         class: UINavigationController.self)
-        RunTime.exchange(selector: #selector(UINavigationController.popViewController(animated:)),
-                         by: #selector(UINavigationController.recover_popViewController(animated:)),
-                         class: UINavigationController.self)
+        let maker1 = RunTime.ExchangeMaker(class: UIViewController.self)
+        let maker2 = RunTime.ExchangeMaker(class: UINavigationController.self)
+        [
+            [
+                maker1.create(selector: #selector(UIViewController.recover_viewWillAppear(_:))),
+                maker1.create(selector: #selector(UIViewController.viewWillAppear(_:))),
+            ],
+            [
+                maker1.create(selector: #selector(UIViewController.recover_viewLayoutMarginsDidChange)),
+                maker1.create(selector: #selector(UIViewController.viewLayoutMarginsDidChange)),
+            ],
+            [
+                maker1.create(selector: #selector(UIViewController.recover_viewWillDisappear(_:))),
+                maker1.create(selector: #selector(UIViewController.viewWillDisappear(_:))),
+            ],
+            [
+                maker2.create(selector: #selector(UINavigationController.recover_setViewControllers(_:animated:))),
+                maker2.create(selector: #selector(UINavigationController.setViewControllers(_:animated:))),
+            ],
+            [
+                maker2.create(selector: #selector(UINavigationController.recover_pushViewController(_:animated:))),
+                maker2.create(selector: #selector(UINavigationController.pushViewController(_:animated:))),
+            ],
+            [
+                maker2.create(selector: #selector(UINavigationController.recover_popViewController(animated:))),
+                maker2.create(selector: #selector(UINavigationController.popViewController(animated:))),
+            ],
+            [
+                maker2.create(selector: #selector(UINavigationController.recover_popToViewController(_:animated:))),
+                maker2.create(selector: #selector(UINavigationController.popToViewController(_:animated:))),
+            ],
+            [
+                maker2.create(selector: #selector(UINavigationController.recover_popToRootViewController(animated:))),
+                maker2.create(selector: #selector(UINavigationController.popToRootViewController(animated:))),
+            ],
+        ]
+        .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
     }()
-
+    
     static func begin() {
         _ = swizzing
     }
-
+    
     @discardableResult
-    static func obseve(_ viewController: UIViewController) -> NavigationStyleThiefManager {
+    static func obseve(_ viewController: UIViewController) -> RecoverNavigationManager {
+        if let manager = viewController.recoverNavigationManager {
+            return manager
+        }
         _ = Self.swizzing
-        let manager = NavigationStyleThiefManager(viewController: viewController)
+        let manager = RecoverNavigationManager(viewController: viewController)
         viewController.recoverNavigationManager = manager
         return manager
     }
-
+    
 }
 
-extension NavigationStyleThiefManager {
-
+extension RecoverNavigationManager {
+    
     fileprivate func style(for type: StoreType) -> Style? {
         return self.styles[type]
     }
-
+    
     fileprivate func style(for navigationController: UINavigationController) -> Style {
         let navigationBar = navigationController.navigationBar
         let style = Style()
@@ -329,33 +391,33 @@ extension NavigationStyleThiefManager {
         style.titleTextAttributes = navigationBar.titleTextAttributes
         return style
     }
-
+    
     func store(style: Style?, for type: StoreType, with navigationController: UINavigationController) {
         storedNavigationController = navigationController
         self.styles[type] = style
     }
-
+    
     func store(for type: StoreType) {
         if type == .last, self.styles[.last] != nil {
             return
         }
-
+        
         guard let navigationController = viewController?.navigationController else {
             return
         }
-
+        
         store(style: style(for: navigationController), for: type, with: navigationController)
     }
-
+    
     func recover(style: Style, with navigationController: UINavigationController?) {
         Self.recover(style: style, with: navigationController)
     }
-
+    
     static func recover(style: Style, with navigationController: UINavigationController?) {
         guard let navigationController = navigationController else {
             return
         }
-
+        
         let navigationBar = navigationController.navigationBar
         navigationBar.isTranslucent = style.isTranslucent
         navigationBar.barStyle      = style.barStyle
@@ -366,19 +428,19 @@ extension NavigationStyleThiefManager {
         navigationController.setNavigationBarHidden(style.isHidden, animated: false)
         navigationBar.setBackgroundImage(style.backgroundImage, for: .default)
     }
-
+    
     func recover(for type: StoreType) {
         guard let navigationController = storedNavigationController else {
             return
         }
-
+        
         guard let style = style(for: type) else {
             return
         }
-
+        
         recover(style: style, with: navigationController)
     }
-
+    
 }
 
 #endif

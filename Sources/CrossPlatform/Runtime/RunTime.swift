@@ -22,64 +22,10 @@
 
 import Foundation
 
+public typealias Runtime = RunTime
+
 public class RunTime {
 
-    public enum MethodKind {
-        /// 类方法
-        case `class`
-        /// 对象方法
-        case instance
-    }
-
-    /// 交换方法
-    /// - Parameters:
-    ///   - selector: 被交换的方法
-    ///   - newSelector: 用于交换的方法
-    ///   - classType: 所属类型
-    ///   - kind: 方法类型 | [类方法 | 对象方法]
-    public static func exchange(selector: String, by newSelector: String, class classType: AnyClass, kind: MethodKind = .instance) {
-        exchange(selector: Selector(selector), by: Selector(newSelector), class: classType, kind: kind)
-    }
-
-    /// 交换方法
-    /// - Parameters:
-    ///   - selector: 被交换的方法
-    ///   - newSelector: 用于交换的方法
-    ///   - classType: 所属类型
-    ///   - kind: 方法类型 | [类方法 | 对象方法]
-    public static func exchange(selector: Selector, by newSelector: Selector, class classType: AnyClass, kind: MethodKind = .instance) {
-
-        let original: Method?
-        let swizzled: Method?
-
-        switch kind {
-        case .instance:
-            original = class_getInstanceMethod(classType, selector)
-            swizzled = class_getInstanceMethod(classType, newSelector)
-        case .class:
-            original = class_getClassMethod(classType, selector)
-            swizzled = class_getClassMethod(classType, newSelector)
-        }
-
-        guard let method = original else {
-            assertionFailure("Runtime: 在类: \(classType) 中无法取得对应方法: \(selector.description)")
-            return
-        }
-
-        guard let newMethod = swizzled else {
-            assertionFailure("Runtime: 在类: \(classType) 中无法取得对应方法: \(newSelector.description)")
-            return
-        }
-
-        let didAddMethod = class_addMethod(classType, selector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))
-
-        if didAddMethod {
-            class_replaceMethod(classType, newSelector, method_getImplementation(method), method_getTypeEncoding(method))
-        } else {
-            method_exchangeImplementations(method, newMethod)
-        }
-    }
-    
     /// 获取已注册类列表
     ///
     /// - Returns: 已注册类列表
@@ -218,7 +164,7 @@ public extension RunTime.Print {
     
     func methods(from classType: AnyClass) {
         let list = RunTime.methods(from: classType).map({ [method_getName($0).description] })
-        log(title: "classType", list: list)
+        log(title: "methods", list: list)
     }
 
     func properties(from classType: AnyClass) {
