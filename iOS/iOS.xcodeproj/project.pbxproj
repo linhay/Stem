@@ -84,7 +84,7 @@
 		CD3F167424D7F4A10090E84D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				CDEC2F71258238270001056A /* Section */,
+				CDEC2F71258238270001056A /* WaterfallFlow */,
 				CD3F167524D7F4A10090E84D /* AppDelegate.swift */,
 				CD3F167724D7F4A10090E84D /* SceneDelegate.swift */,
 				CD3F167924D7F4A10090E84D /* ViewController.swift */,
@@ -96,13 +96,13 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		CDEC2F71258238270001056A /* Section */ = {
+		CDEC2F71258238270001056A /* WaterfallFlow */ = {
 			isa = PBXGroup;
 			children = (
 				CDEC2F72258238610001056A /* WaterfallFlowViewController.swift */,
 				CDEC2F76258238A70001056A /* WaterfallFlowCell.swift */,
 			);
-			path = Section;
+			path = WaterfallFlow;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

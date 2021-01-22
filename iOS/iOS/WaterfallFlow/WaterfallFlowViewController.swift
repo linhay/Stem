@@ -13,13 +13,8 @@ class WaterfallFlowViewController: SectionCollectionViewController {
     
     let section = SingleTypeSection<WaterfallFlowCell>()
     
-    public convenience init() {
-        self.init(nibName: nil, bundle: nil)
-    }
-    
     open override func viewDidLoad() {
         super.viewDidLoad()
-        
         sectionView.setCollectionViewLayout(STWaterfallFlowLayout(), animated: true)
         
         let widthSet: [Int: CGFloat] = [

@@ -7,13 +7,36 @@
 //
 
 import UIKit
+import Stem
+
+extension UIImage {
+
+    @objc
+    func st_initialize(coder: NSCoder) -> Any? {
+//        UIImage(color: UIColor.red, size: .init(width: 40, height: 40)
+//        let image = UIImage(color: UIColor.red, size: .init(width: 40, height: 40))
+         
+//        return autoreleasepool(invoking: { image })
+        return st_initialize(coder: coder)
+    }
+
+}
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let placeholder = NSClassFromString("UIImageNibPlaceholder") else {
+            return
+        }
+    
+        Runtime.exchange(new: .init(selector: Selector("initWithCoder:"), class: placeholder),
+                         with: .init(selector: #selector(UIImage.st_initialize(coder:)), class: UIImage.self))
+        RunTime.print.properties(from: placeholder)
+        RunTime.print.ivars(from: placeholder)
+        RunTime.print.methods(from: placeholder)
+        RunTime.print.protocols(from: placeholder)
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
