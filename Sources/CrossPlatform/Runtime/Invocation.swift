@@ -26,9 +26,9 @@ public class Invocation {
     
     private let target: NSObject
     private let selector: Selector
-
+    
     var invocation: NSObject?
-
+    
     var numberOfArguments: Int = 0
     var returnLength: Int = 0
     var returnType: UnsafePointer<CChar>?
@@ -48,7 +48,7 @@ public class Invocation {
         returnedObjectValue()
     }()
     private(set) var isInvoked: Bool = false
-
+    
     public init(target: NSObject, selector: Selector) throws {
         self.target = target
         self.selector = selector
@@ -63,7 +63,7 @@ public class Invocation {
             let signature = (@convention(c)(NSObject, Selector, Selector) -> Any).self
             let method = unsafeBitCast(target.method(for: selector), to: signature)
             guard let result = method(target, selector, self.selector) as? NSObject else {
-                let error = InvocationError.unrecognizedSelector(type(of: target), self.selector)
+                let error = Error.unrecognizedSelector(type(of: target), self.selector)
                 throw error
             }
             methodSignature = result
@@ -93,7 +93,7 @@ public class Invocation {
             let signature = (@convention(c)(AnyObject, Selector, AnyObject) -> AnyObject).self
             let method = unsafeBitCast(NSInvocation.method(for: selector), to: signature)
             guard let result = method(NSInvocation, selector, methodSignature) as? NSObject else {
-                let error = InvocationError.unrecognizedSelector(type(of: target), self.selector)
+                let error = Error.unrecognizedSelector(type(of: target), self.selector)
                 throw error
             }
             invocation = result
@@ -123,23 +123,23 @@ public extension Invocation {
     
     func setArgument(_ argument: Any?, at index: NSInteger) {
         guard let invocation = invocation else { return }
-
+        
         /// `[invocation setArgument:&argument atIndex:i + 2]`
         let selector = NSSelectorFromString("setArgument:atIndex:")
         let signature = (@convention(c)(NSObject, Selector, UnsafeRawPointer, Int) -> Void).self
         let method = unsafeBitCast(invocation.method(for: selector), to: signature)
-
+        
         if let valueArgument = argument as? NSValue {
             /// Get the type byte size
             let typeSize = UnsafeMutablePointer<Int>.allocate(capacity: 1)
             defer { typeSize.deallocate() }
             NSGetSizeAndAlignment(valueArgument.objCType, typeSize, nil)
-
+            
             /// Get the actual value
             let buffer = UnsafeMutablePointer<Int8>.allocate(capacity: typeSize.pointee)
             defer { buffer.deallocate() }
             valueArgument.getValue(buffer)
-
+            
             method(invocation, selector, buffer, index)
         } else {
             withUnsafePointer(to: argument) { pointer in
@@ -147,11 +147,11 @@ public extension Invocation {
             }
         }
     }
-
+    
     func invoke() {
         guard let invocation = invocation, !isInvoked else { return }
         isInvoked = true
-
+        
         /// `[invocation invokeWithTarget: target]`
         do {
             let selector = NSSelectorFromString("invokeWithTarget:")
@@ -160,10 +160,10 @@ public extension Invocation {
             method(invocation, selector, target)
         }
     }
-
+    
     func getReturnValue<T>(result: inout T) {
         guard let invocation = invocation else { return }
-
+        
         /// `[invocation getReturnValue: returnValue]`
         do {
             let selector = NSSelectorFromString("getReturnValue:")
@@ -174,30 +174,30 @@ public extension Invocation {
             }
         }
     }
-
+    
     private func returnedObjectValue() -> AnyObject? {
         guard returnsObject, returnLength > 0 else {
             return nil
         }
-
+        
         var result: AnyObject?
-
+        
         getReturnValue(result: &result)
-
+        
         guard let object = result else {
             return nil
         }
-
+        
         /// Take the ownership of the initialized objects to ensure they're deallocated properly.
         if isRetainingMethod() {
             return Unmanaged.passRetained(object).takeRetainedValue()
         }
-
+        
         /// `NSInvocation.getReturnValue()` doesn't give us the ownership of the returned object, but the compiler
         /// tries to release this object anyway. So, we are retaining it to balance with the compiler's release.
         return Unmanaged.passRetained(object).takeUnretainedValue()
     }
-
+    
     private func isRetainingMethod() -> Bool {
         /// Refer to: https://bit.ly/308okXm
         let selector = NSStringFromSelector(self.selector)
@@ -208,25 +208,28 @@ public extension Invocation {
     }
 }
 
-
-public enum InvocationError: CustomNSError {
-    case unrecognizedSelector(_ classType: AnyClass, _ selector: Selector)
+public extension Invocation {
     
-    public static var errorDomain: String { String(describing: Invocation.self) }
-    
-    public var errorCode: Int {
-        switch self {
-        case .unrecognizedSelector:
-            return 404
+    enum Error: CustomNSError {
+        case unrecognizedSelector(_ classType: AnyClass, _ selector: Selector)
+        
+        public static var errorDomain: String { String(describing: Invocation.self) }
+        
+        public var errorCode: Int {
+            switch self {
+            case .unrecognizedSelector:
+                return 404
+            }
+        }
+        
+        public var errorUserInfo: [String: Any] {
+            var message: String
+            switch self {
+            case .unrecognizedSelector(let classType, let selector):
+                message = "'\(String(describing: classType))' doesn't recognize selector '\(selector)'"
+            }
+            return [NSLocalizedDescriptionKey: message]
         }
     }
     
-    public var errorUserInfo: [String: Any] {
-        var message: String
-        switch self {
-        case .unrecognizedSelector(let classType, let selector):
-            message = "'\(String(describing: classType))' doesn't recognize selector '\(selector)'"
-        }
-        return [NSLocalizedDescriptionKey: message]
-    }
 }
