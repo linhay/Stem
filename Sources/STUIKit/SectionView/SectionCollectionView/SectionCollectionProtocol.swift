@@ -25,12 +25,16 @@ import UIKit
 public protocol SectionCollectionProtocol: SectionProtocol {
     var minimumLineSpacing: CGFloat { get }
     var minimumInteritemSpacing: CGFloat { get }
+    
     var sectionInset: UIEdgeInsets { get  }
     var sectionView: UICollectionView { get }
+    
     var headerView: UICollectionReusableView? { get }
     var footerView: UICollectionReusableView? { get }
+    
     var headerSize: CGSize { get }
     var footerSize: CGSize { get }
+    
     func config(sectionView: UICollectionView)
     func itemSize(at row: Int) -> CGSize
     func item(at row: Int) -> UICollectionViewCell
@@ -103,8 +107,8 @@ public extension SectionCollectionProtocol {
         reload(at: [row])
     }
 
-    func reload(at rows: [Int]) { 
-        core?.reloadDataEvent?()
+    func reload(at rows: [Int]) {
+        sectionView.reloadItems(at: rows.map({ self.indexPath(from: $0) }))
     }
 
 }

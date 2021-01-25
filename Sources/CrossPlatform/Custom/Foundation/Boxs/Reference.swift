@@ -23,23 +23,28 @@
 import Foundation
 
 @dynamicMemberLookup
-class Reference<Value> {
-    fileprivate(set) var value: Value
-
-    init(_ value: Value) {
+open class Reference<Value> {
+    public fileprivate(set) var value: Value
+    
+    public init(_ value: Value) {
         self.value = value
     }
-
-    subscript<T>(dynamicMember keyPath: KeyPath<Value, T>) -> T {
+    
+    public init(value: Value) {
+        self.value = value
+    }
+    
+    public subscript<T>(dynamicMember keyPath: KeyPath<Value, T>) -> T {
         value[keyPath: keyPath]
     }
 }
 
-class MutableReference<Value>: Reference<Value> {
+open class MutableReference<Value>: Reference<Value> {
     
-    subscript<T>(dynamicMember keyPath: WritableKeyPath<Value, T>) -> T {
+    public subscript<T>(dynamicMember keyPath: WritableKeyPath<Value, T>) -> T {
         get { value[keyPath: keyPath] }
         set { value[keyPath: keyPath] = newValue }
     }
     
 }
+

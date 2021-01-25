@@ -23,31 +23,11 @@
 #if canImport(UIKit)
 import UIKit
 
-open class CacheableSingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeSection<Cell> where Cell.Model: Hashable {
-
-    var itemSizeCache = [Int: CGSize]()
-
-    open override func config(models: [Cell.Model]) {
-        var itemSizeCache = [Int: CGSize]()
-        for model in models {
-            itemSizeCache[model.hashValue] = self.itemSizeCache[model.hashValue]
-        }
-        self.itemSizeCache = itemSizeCache
-        
-        super.config(models: models)
+open class MultiSelectableSection<Cell: UICollectionViewCell & STViewProtocol & ConfigurableView>: SelectableSection<Cell> where Cell.Model: SelectableProtocol {
+    
+    public override init(_ models: [Cell.Model] = []) {
+        super.init(models, isUnique: false, needInvert: true)
     }
-
-    open override func itemSize(at row: Int) -> CGSize {
-        guard let hashValue = models.value(at: row)?.hashValue else {
-            return super.itemSize(at: row)
-        }
-        if let size = itemSizeCache[hashValue] {
-            return size
-        }
-        let size = super.itemSize(at: row)
-        itemSizeCache[hashValue] = size
-        return size
-    }
-
+    
 }
 #endif

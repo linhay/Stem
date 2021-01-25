@@ -23,18 +23,35 @@
 #if canImport(UIKit)
 import UIKit
 
-open class SelectableSection<Cell: UICollectionViewCell>: SingleTypeSection<Cell>, SelectableCollectionProtocol where Cell: ConfigurableView & STViewProtocol, Cell.Model: SelectableProtocol {
-    
+open class SelectableSection<Cell: UICollectionViewCell & STViewProtocol & ConfigurableView>: SingleTypeSection<Cell>, SelectableCollectionProtocol where Cell.Model: SelectableProtocol {
+
     open var selectables: [Cell.Model] { models }
-    
-    open override func didSelectItem(at row: Int) {
-        select(at: row)
+
+    /// 是否保证选中在当前序列中是否唯一 | default: true
+    private let isUnique: Bool
+    /// 是否需要支持反选操作 | default: false
+    private let needInvert: Bool
+
+    public init(_ models: [Cell.Model] = [], isUnique: Bool, needInvert: Bool) {
+        self.isUnique = isUnique
+        self.needInvert = needInvert
+        super.init(models)
     }
     
+    public override init(_ models: [Cell.Model] = []) {
+        self.isUnique = true
+        self.needInvert = false
+        super.init(models)
+    }
+    
+    open override func didSelectItem(at row: Int) {
+        select(at: row, isUnique: isUnique, needInvert: needInvert)
+    }
+
     open func didSelectElement(at index: Int, element: Cell.Model) {
         selectedEvent.call(element)
         selectedRowEvent.call(index)
     }
-    
+
 }
 #endif

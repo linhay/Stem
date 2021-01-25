@@ -26,11 +26,35 @@ import UIKit
 public protocol SectionProtocol: class {
     var core: SectionCore? { get set }
     var index: Int { get set }
-    var itemCount: Int { get }
+    
+    /// UICollectionViewDelegate & UITableViewDelegate
+    func shouldSelectItem(at row: Int) -> Bool
     func didSelectItem(at row: Int)
-    func willDisplayItem(at row: Int)
-    func deselect(at row: Int, animated: Bool)
+    
+    func shouldDeselectItem(at row: Int) -> Bool
+    func didDeselectItem(at row: Int)
+    
+    /// MultipleSelectionInteraction
+    func shouldBeginMultipleSelectionInteraction(at row: Int) -> Bool
+    func didBeginMultipleSelectionInteraction(at row: Int)
+    func didEndMultipleSelectionInteraction()
+    
+    /// Managing Cell Highlighting
+    func shouldHighlightItem(at row: Int) -> Bool
+    func didHighlightItem(at row: Int)
+    func didUnhighlightItem(at row: Int)
 
+    /// Tracking the Addition and Removal of Views
+    func willDisplayItem(at row: Int)
+    func didEndDisplaying(at row: Int)
+    
+    /// Editing Items
+    func canEditItem(at row: Int) -> Bool
+    
+    
+    var indexTitle: String? { get }
+    func deselect(at row: Int, animated: Bool)
+    var itemCount: Int { get }
     func canMove(at: Int) -> Bool
     func move(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     func pick(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?)
@@ -47,9 +71,32 @@ public extension SectionProtocol {
 
 }
 
+/// delegate
 public extension SectionProtocol {
 
+    /// UICollectionViewDelegate & UITableViewDelegate
+    func shouldSelectItem(at row: Int) -> Bool { true }
+    func didSelectItem(at row: Int) { }
+    
+    func shouldDeselectItem(at row: Int) -> Bool { true }
+    func didDeselectItem(at row: Int) {}
+    
+    /// MultipleSelectionInteraction
+    func shouldBeginMultipleSelectionInteraction(at row: Int) -> Bool { false }
+    func didBeginMultipleSelectionInteraction(at row: Int) {}
+    func didEndMultipleSelectionInteraction() {}
+    
+    /// Managing Cell Highlighting
+    func shouldHighlightItem(at row: Int) -> Bool { true }
+    func didHighlightItem(at row: Int) {}
+    func didUnhighlightItem(at row: Int) {}
+
+    /// Tracking the Addition and Removal of Views
     func willDisplayItem(at row: Int) {}
+    func didEndDisplaying(at row: Int) {}
+    
+    /// Editing Items
+    func canEditItem(at row: Int) -> Bool { true }
 
 }
 
@@ -70,7 +117,7 @@ public extension SectionProtocol {
 }
 
 public extension SectionProtocol {
-    func didSelectItem(at row: Int) { }
+    var indexTitle: String? { nil }
     func canMove(at: Int) -> Bool { false }
     func move(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) { }
 }

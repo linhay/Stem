@@ -23,83 +23,66 @@
 #if canImport(UIKit)
 import UIKit
 
-open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SectionCollectionProtocol, Hashable {
-    
-    public private(set) var models: [Cell.Model]
-    
+open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SectionCollectionProtocol {
+
+    open private(set) var models: [Cell.Model]
+
     public let selectedEvent = Delegate<Cell.Model, Void>()
     public let selectedRowEvent = Delegate<Int, Void>()
     public let willDisplayEvent = Delegate<Int, Void>()
     /// cell 样式配置
     public let configCellStyleEvent = Delegate<(row: Int, cell: Cell), Void>()
-    
+
     open var minimumLineSpacing: CGFloat = 0
     open var minimumInteritemSpacing: CGFloat = 0
     open var sectionInset: UIEdgeInsets = .zero
-    
+
     public let headerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
     public let headerSizeProvider = Delegate<UICollectionView, CGSize>()
-    
+
     public let footerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
     public let footerSizeProvider = Delegate<UICollectionView, CGSize>()
-    
-    public var core: SectionCore?
+
+    open var core: SectionCore?
     open var itemCount: Int { models.count }
-    
+
     public init(_ models: [Cell.Model] = []) {
         self.models = models
     }
-    
+
     open func config(models: [Cell.Model]) {
         self.models = models
         reload()
     }
-    
+
     open func itemSize(at row: Int) -> CGSize {
-        let width = sectionView.bounds.width - sectionInset.left - sectionInset.right
-        return Cell.preferredSize(limit: .init(width: width,
-                                               height: sectionView.bounds.height),
+        return Cell.preferredSize(limit: sectionView.bounds.size,
                                   model: models.value(at: row))
     }
-    
+
     open func didSelectItem(at row: Int) {
         selectedEvent.call(models[row])
         selectedRowEvent.call(row)
     }
-    
-    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
-    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
-    
-    open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
-    open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
-    
+
     open func config(sectionView: UICollectionView) {
         sectionView.st.register(Cell.self)
     }
-    
+
     open func item(at row: Int) -> UICollectionViewCell {
         let cell = dequeue(at: row) as Cell
         cell.config(models[row])
         configCellStyleEvent.call((row: row, cell: cell))
         return cell
     }
-    
+
     open func willDisplayItem(at row: Int) {
         willDisplayEvent.call(row)
     }
-    
-}
 
-public extension SingleTypeSection {
-    
-    static func == (lhs: SingleTypeSection<Cell>, rhs: SingleTypeSection<Cell>) -> Bool {
-        return lhs.hashValue == rhs.hashValue
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self))
-    }
-    
+    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
+    open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
+    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
+    open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
 }
-
 #endif

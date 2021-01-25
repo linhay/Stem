@@ -22,12 +22,13 @@
 
 import Foundation
 
-public final class WeakBox<T: AnyObject> {
-
-    public weak var value: T?
-
-    public init(_ value: T? = nil) {
-        self.value = value
+open class SelectableBox<Value>: Reference<Value>, SelectableProtocol {
+    
+    public var selectableModel: SelectableModel
+    
+    init(_ value: Value, selectable: SelectableModel = SelectableModel()) {
+        self.selectableModel = selectable
+        super.init(value)
     }
-
+    
 }

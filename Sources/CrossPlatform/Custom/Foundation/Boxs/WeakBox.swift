@@ -22,14 +22,16 @@
 
 import Foundation
 
-public final class ClassBox<T> {
+@dynamicMemberLookup
+public final class WeakBox<Value: AnyObject> {
 
-    public var value: T?
+    public weak var value: Value?
 
-    public init() {}
-    
-    public init(_ value: T) {
+    public init(_ value: Value? = nil) {
         self.value = value
     }
-
+    
+    public subscript<T>(dynamicMember keyPath: KeyPath<Value, T>) -> T? {
+        value?[keyPath: keyPath]
+    }
 }
