@@ -35,12 +35,19 @@ public extension StemColor {
         return convert().cgColor
     }
     
-    func convert() -> CIColor {
-        return CIColor(color: convert()) ?? .black
-    }
+}
+
+#if canImport(UIKit)
+import UIKit
+
+public extension StemColor {
     
     convenience init(_ color: STWrapperColor) {
         self.init(color.cgColor)
+    }
+    
+    func convert() -> CIColor {
+        return CIColor(color: convert())
     }
     
     convenience init(_ color: CGColor) {
@@ -56,8 +63,7 @@ public extension StemColor {
     
 }
 
-#if canImport(UIKit)
-import UIKit
+#if canImport(SwiftUI)
 import SwiftUI
 
 @available(iOSApplicationExtension 13.0, *)
@@ -77,4 +83,7 @@ public extension StemColor {
     }
     
 }
+
+#endif
+
 #endif

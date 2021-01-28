@@ -1,20 +1,43 @@
 // swift-tools-version:5.1
 import PackageDescription
 
+let StemCrossPlatform = "StemCrossPlatform"
+let StemCore = "StemCore"
+let Stem = "Stem"
+let Static = "Static"
+
 let package = Package(
     name: "Stem",
     platforms: [.iOS(.v11), .macOS(.v10_12), .tvOS(.v10), .watchOS(.v3)],
     products: [
-        .library(name: "Stem", targets: ["Stem"]),
+        .library(name: StemCrossPlatform, targets: [StemCrossPlatform]),
+        .library(name: StemCore, targets: [StemCore]),
+        .library(name: Stem, targets: [Stem]),
+        
+        .library(name: StemCrossPlatform + Static, type: .static, targets: [StemCrossPlatform]),
+        .library(name: StemCore + Static, type: .static, targets: [StemCore]),
+        .library(name: Stem + Static, type: .static, targets: [Stem]),
     ],
     targets: [
-        .target(name: "Stem",
+        .target(name: StemCore,
+                path: "Sources",
+                sources: ["Core"]),
+        .target(name: StemCrossPlatform,
+                dependencies: [
+                    .target(name: StemCore)
+                ],
+                path: "Sources",
+                sources: ["CrossPlatform",
+                          "ExportedImport/ImportCore.swift"]),
+        .target(name: Stem,
+                dependencies: [
+                    .target(name: StemCrossPlatform)
+                ],
                 path: "Sources",
                 sources: [
-                    "Core",
                     "STUIKit",
                     "UIKit",
-                    "CrossPlatform"
+                    "ExportedImport/ImportCrossPlatform.swift",
                 ]
         )
     ]

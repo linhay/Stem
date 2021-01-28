@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
@@ -36,7 +37,7 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
     var parseIndexPath: IndexPath?
     
     var cacheBounds = CGRect.zero
-
+    
     public override func prepare() {
         super.prepare()
         colStore.removeAll()
@@ -54,7 +55,7 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
         }
         return .init(width: collectionView.bounds.width, height: maxY)
     }
-
+    
     override public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return cacheBounds.size != newBounds.size
     }
@@ -127,7 +128,7 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
             colStore[index]    = [attributes]
             return attributes
         }
-                
+        
         if let index = widthStore.compactMap({ $0.value == size.width ? $0.key : nil })
             .sorted (by: { heightStore[$0] == heightStore[$1] ? $0 < $1 : heightStore[$0]! < heightStore[$1]! }).first,
            let lastItem = colStore[index]?.last {
@@ -136,13 +137,14 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
             heightStore[index] = attributes.frame.maxY
         } else {
             let index = colStore.keys.count
-
+            
             widthStore[index]  = attributes.frame.width
             heightStore[index] = attributes.frame.maxY
             colStore[index]    = [attributes]
         }
-
+        
         return attributes
     }
     
 }
+#endif

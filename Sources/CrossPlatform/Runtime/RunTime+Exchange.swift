@@ -62,7 +62,7 @@ public extension RunTime {
          .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
          ```
          */
-        func create(selector: Selector, kind: MethodKind = .instance) -> Exchange {
+        public func create(selector: Selector, kind: MethodKind = .instance) -> Exchange {
             return .init(selector: selector, class: classType, kind: kind)
             
         }
