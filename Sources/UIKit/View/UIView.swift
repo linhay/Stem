@@ -189,20 +189,20 @@ public extension Stem where Base: UIView {
     
 }
 
-extension UIView {
+fileprivate extension UIView {
     
-    fileprivate struct ActionKey {
+    struct ActionKey {
         static var tap = UnsafeRawPointer(bitPattern: "view.stem.tap".hashValue)!
         static var tapGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.tapGestureRecognizer".hashValue)!
         static var pan = UnsafeRawPointer(bitPattern: "view.stem.pan".hashValue)!
         static var panGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.panGestureRecognizer".hashValue)!
     }
     
-    @objc fileprivate func stem_view_tapGesture_event(ges: UITapGestureRecognizer) {
+    @objc func stem_view_tapGesture_event(ges: UITapGestureRecognizer) {
         self.st.tap?(ges)
     }
     
-    @objc fileprivate func stem_view_panGesture_event(ges: UIPanGestureRecognizer) {
+    @objc func stem_view_panGesture_event(ges: UIPanGestureRecognizer) {
         self.st.pan?(ges)
     }
 }
@@ -232,20 +232,17 @@ public extension Stem where Base: UIView {
         }
     }
     
-    func setTapGesture(_ ges: ((UITapGestureRecognizer) -> Void)?) {
+    func setTapGesture(_ value: Void?) {
+        self.tap = nil
+    }
+    
+    func setTapGesture(_ ges: @escaping ((UITapGestureRecognizer) -> Void)) {
         self.tap = ges
         base.isUserInteractionEnabled = true
     }
 
-    func setTapGesture(_ ges: (() -> Void)?) {
-        if let ges = ges {
-            self.tap = { _ in
-                ges()
-            }
-        } else {
-            self.tap = nil
-        }
-        base.isUserInteractionEnabled = true
+    func setTapGesture(_ ges: @escaping (() -> Void)) {
+        self.setTapGesture { _ in ges() }
     }
     
 }

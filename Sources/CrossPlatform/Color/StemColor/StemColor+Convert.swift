@@ -37,6 +37,29 @@ public extension StemColor {
     
 }
 
+
+#if canImport(CoreGraphics) && canImport(CoreImage)
+import CoreGraphics
+import CoreImage
+
+public extension StemColor {
+    
+    convenience init(_ color: CGColor) {
+        self.init(CIColor(cgColor: color))
+    }
+    
+    convenience init(_ color: CIColor) {
+        self.init(rgb: RGBSpace(red: Double(color.red),
+                                green: Double(color.green),
+                                blue: Double(color.blue)),
+                  alpha: Double(color.alpha))
+    }
+    
+}
+
+#endif
+
+
 #if canImport(UIKit)
 import UIKit
 
@@ -48,17 +71,6 @@ public extension StemColor {
     
     func convert() -> CIColor {
         return CIColor(color: convert())
-    }
-    
-    convenience init(_ color: CGColor) {
-        self.init(CIColor(cgColor: color))
-    }
-    
-    convenience init(_ color: CIColor) {
-        self.init(rgb: RGBSpace(red: Double(color.red),
-                                green: Double(color.green),
-                                blue: Double(color.blue)),
-                  alpha: Double(color.alpha))
     }
     
 }
@@ -85,5 +97,7 @@ public extension StemColor {
 }
 
 #endif
-
 #endif
+
+
+

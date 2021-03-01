@@ -22,11 +22,11 @@
 
 import Foundation
 
-open class SelectableBox<Value>: Reference<Value>, SelectableProtocol {
+open class SelectableBox<Value>: MutableReference<Value>, SelectableProtocol {
     
     public var selectableModel: SelectableModel
     
-    init(_ value: Value, selectable: SelectableModel = SelectableModel()) {
+    public init(_ value: Value, selectable: SelectableModel = SelectableModel()) {
         self.selectableModel = selectable
         super.init(value)
     }

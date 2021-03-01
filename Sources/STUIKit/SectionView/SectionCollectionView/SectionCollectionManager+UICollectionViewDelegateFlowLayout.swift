@@ -25,29 +25,44 @@ import UIKit
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension SectionCollectionManager: UICollectionViewDelegateFlowLayout {
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return sections[indexPath.section].itemSize(at: indexPath.item)
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return sections[section].itemCount == 0 ? .zero : sections[section].headerSize
+        let section = sections[section]
+        if section.hiddenHeaderWhenNoItem, section.itemCount == 0 {
+            return .zero
+        } else {
+            return section.headerSize
+        }
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return sections[section].itemCount == 0 ? .zero : sections[section].footerSize
+        let section = sections[section]
+        if section.hiddenFooterWhenNoItem, section.itemCount == 0 {
+            return .zero
+        } else {
+            return section.footerSize
+        }
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sections[section].itemCount == 0 ? .zero : sections[section].minimumLineSpacing
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return sections[section].itemCount == 0 ? .zero : sections[section].minimumInteritemSpacing
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sections[section].itemCount == 0 ? .zero : sections[section].sectionInset
+        let section = sections[section]
+        if section.hiddenFooterWhenNoItem, section.hiddenHeaderWhenNoItem, section.itemCount == 0 {
+            return .zero
+        } else {
+            return section.sectionInset
+        }
     }
 }
 #endif

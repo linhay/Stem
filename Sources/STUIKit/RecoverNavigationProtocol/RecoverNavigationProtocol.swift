@@ -57,7 +57,7 @@ fileprivate extension UINavigationController {
     
     @objc
     func recover_setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
-        if let first = viewControllers.first, let last = viewControllers.last {
+        if let first = viewControllers.first {
             if first is RecoverNavigationProtocol {
                 RecoverNavigationManager.obseve(first)
             }
@@ -65,7 +65,7 @@ fileprivate extension UINavigationController {
                 if next is RecoverNavigationProtocol {
                     RecoverNavigationManager.obseve(next)
                 }
-                self.setupStyle(result, next: next, isTopViewController: next === last, completion: {})
+                self.setupStyle(result, next: next, completion: {})
                 return next
             }
         }
@@ -92,32 +92,30 @@ fileprivate extension UINavigationController {
         return willPopAction([resultVC])?.first
     }
     
-    func setupStyle(_ from: UIViewController?, next: UIViewController, isTopViewController: Bool, completion: () -> Void) {
+    func setupStyle(_ from: UIViewController?, next: UIViewController, completion: () -> Void) {
         let fromManager = (from as? RecoverNavigationProtocol)?.recoverNavigationManager
         let toManager   = (next as? RecoverNavigationProtocol)?.recoverNavigationManager
         fromManager?.canChangeStyle = false
-        
-        fromManager?.store(for: .current)
-        if let from = fromManager, let to = toManager {
-            to.store(style: from.style(for: .current), for: .last, with: self)
-            if isTopViewController {
-                if let style = to.style(for: .current) {
-                    to.recover(style: style, with: self)
-                } else {
-                    to.recover(style: .normal, with: self)
+    
+        if let to = toManager {
+            if let from = fromManager {
+                if from.style(for: .current) == nil {
+                    from.store(for: .current)
                 }
+                to.store(style: from.style(for: .current), for: .last, with: self)
+            } else {
+                to.store(style: to.style(for: self), for: .last, with: self)
             }
-        } else if fromManager == nil, let to = toManager {
-            to.store(style: to.style(for: self), for: .last, with: self)
-            if isTopViewController {
-                if let style = to.style(for: .current) {
-                    to.recover(style: style, with: self)
-                } else {
-                    to.recover(style: .normal, with: self)
-                }
+            
+            if let style = to.style(for: .current) {
+                to.recover(style: style, with: self)
+            } else {
+                to.recover(style: .normal, with: self)
             }
-        } else if let from = fromManager, toManager == nil {
+
+        } else if let from = fromManager {
             next.isFromNavigationManager = true
+            from.store(for: .current)
             from.recover(style: .normal, with: self)
         }
         
@@ -135,7 +133,7 @@ fileprivate extension UINavigationController {
             RecoverNavigationManager.obseve(viewController)
         }
         
-        setupStyle(topViewController, next: viewController, isTopViewController: true) { [weak self] in
+        setupStyle(topViewController, next: viewController) { [weak self] in
             self?.recover_pushViewController(viewController, animated: animated)
         }
     }

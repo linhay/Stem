@@ -26,17 +26,17 @@ import UIKit
 public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
     
     /// 列缓存
-    var colStore    = [Int: [UICollectionViewLayoutAttributes]]()
+    private var colStore    = [Int: [UICollectionViewLayoutAttributes]]()
     /// 列宽度映射
-    var widthStore  = [Int: CGFloat]()
+    private var widthStore  = [Int: CGFloat]()
     /// 列高映射
-    var heightStore = [Int: CGFloat]()
+    private var heightStore = [Int: CGFloat]()
     /// cell缓存
-    var cache = [UICollectionViewLayoutAttributes]()
+    private var cache = [UICollectionViewLayoutAttributes]()
     /// 解析到的cell序列
-    var parseIndexPath: IndexPath?
+    private var parseIndexPath: IndexPath?
     
-    var cacheBounds = CGRect.zero
+    private var cacheBounds = CGRect.zero
     
     public override func prepare() {
         super.prepare()
@@ -65,7 +65,7 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
         return cache
     }
     
-    func parse(in rect: CGRect) {
+    private func parse(in rect: CGRect) {
         if let min = heightStore.values.min(), min > rect.maxY {
             return
         }
@@ -99,7 +99,7 @@ public class STWaterfallFlowLayout: UICollectionViewFlowLayout {
         }
     }
     
-    func parseCell(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes {
+    private func parseCell(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes {
         let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         parseIndexPath = indexPath
         

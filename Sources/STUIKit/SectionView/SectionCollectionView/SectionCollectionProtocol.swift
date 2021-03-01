@@ -36,6 +36,9 @@ public protocol SectionCollectionProtocol: SectionProtocol {
     var headerSize: CGSize { get }
     var footerSize: CGSize { get }
     
+    var hiddenHeaderWhenNoItem: Bool { get }
+    var hiddenFooterWhenNoItem: Bool { get }
+
     func config(sectionView: UICollectionView)
     func itemSize(at row: Int) -> CGSize
     func item(at row: Int) -> UICollectionViewCell
@@ -47,6 +50,9 @@ public extension SectionCollectionProtocol {
     var footerView: UICollectionReusableView? { nil }
     var headerSize: CGSize { .zero }
     var footerSize: CGSize { .zero }
+    var hiddenHeaderWhenNoItem: Bool { true }
+    var hiddenFooterWhenNoItem: Bool { true }
+    
     var sectionView: UICollectionView {
         guard let core = core else {
             assertionFailure("can't find sectionView, before `SectionCollectionProtocol` into `Manager`")

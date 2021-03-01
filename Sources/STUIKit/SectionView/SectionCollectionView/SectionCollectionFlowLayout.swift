@@ -25,17 +25,50 @@ import UIKit
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
-    public enum ContentMode {
+    /// 布局插件样式
+    public enum PluginMode {
         /// 左对齐
         case left
         /// 居中对齐
         case centerX
         /// header & footer 贴合 cell
-        case headerAndFooterViewFitInset
-        case none
+        case fixSupplementaryViewInset
+        
+        var priority: Int {
+            switch self {
+            case .left:
+                return 100
+            case .centerX:
+                return 100
+            case .fixSupplementaryViewInset:
+                return 1
+            }
+        }
+        
     }
     
-    public var contentMode = ContentMode.none
+    public var pluginModes: [PluginMode] = [] {
+        didSet {
+            var set = Set<Int>()
+            var newPluginModes = [PluginMode]()
+            
+            /// 优先级冲突去重
+            for item in pluginModes {
+                if set.contains(item.priority) {
+                    assertionFailure("mode冲突: \(pluginModes.filter({ $0.priority == item.priority }))")
+                } else {
+                    set.update(with: item.priority)
+                    newPluginModes.append(item)
+                }
+            }
+            
+            /// mode 重排
+            newPluginModes.sort(by: { $0.priority > $1.priority })
+            if newPluginModes != pluginModes {
+                pluginModes = newPluginModes
+            }
+        }
+    }
     
     private var oldBounds = CGRect.zero
     
@@ -47,22 +80,29 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     }
     
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        
-        guard let attributes = super.layoutAttributesForElements(in: rect)?.map({ $0.copy() }) as? [UICollectionViewLayoutAttributes],
-              let collectionView = collectionView else {
+        guard let collectionView = collectionView,
+              var attributes = super.layoutAttributesForElements(in: rect) else {
             return nil
         }
         
-        switch contentMode {
-        case .centerX:
-            return modeCenterX(collectionView: collectionView, attributes: attributes)
-        case .left:
-            return modeLeft(collectionView: collectionView, attributes: attributes)
-        case .none:
-            return super.layoutAttributesForElements(in: rect)
-        case .headerAndFooterViewFitInset:
-            return modeHeaderAndFooterViewFitInset(collectionView: collectionView, attributes: attributes)
+        if pluginModes.isEmpty {
+            return attributes
         }
+        
+        attributes = attributes.compactMap({ $0.copy() as? UICollectionViewLayoutAttributes })
+        
+        for mode in pluginModes {
+            switch mode {
+            case .centerX:
+                attributes = modeCenterX(collectionView, attributes: attributes) ?? []
+            case .left:
+                attributes = modeLeft(collectionView, attributes: attributes) ?? []
+            case .fixSupplementaryViewInset:
+                attributes = modeFixSupplementaryViewInset(collectionView, attributes: attributes) ?? []
+            }
+        }
+        
+        return attributes
     }
     
     override public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
@@ -74,7 +114,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
 // MARK: - Mode
 private extension SectionCollectionFlowLayout {
     
-    func modeHeaderAndFooterViewFitInset(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+    func modeFixSupplementaryViewInset(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         for item in attributes {
             guard item.representedElementCategory == .supplementaryView,
                   let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
@@ -91,7 +131,7 @@ private extension SectionCollectionFlowLayout {
         return attributes
     }
     
-    func modeCenterX(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+    func modeCenterX(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         
         func appendLine(_ lineStore: [UICollectionViewLayoutAttributes],
                         _ minimumInteritemSpacing: CGFloat,
@@ -136,28 +176,62 @@ private extension SectionCollectionFlowLayout {
         return list
     }
     
-    func modeLeft(collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
-        var lineStore = [CGFloat: [UICollectionViewLayoutAttributes]]()
+    func modeLeft(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+        
         var list = [UICollectionViewLayoutAttributes]()
+        var section = [UICollectionViewLayoutAttributes]()
         
         for item in attributes {
-            guard item.representedElementCategory == .cell,
-                  let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
-                  /// self.minimumInteritemSpacing 获取时与 delegate 中数值不一致
-                  let minimumInteritemSpacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) else {
+            guard item.representedElementCategory == .cell else {
                 list.append(item)
                 continue
             }
             
-            let insets = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section) ?? .zero
-            
-            if let lastItem = lineStore[item.frame.minY]?.last {
-                item.frame.origin.x = lastItem.frame.maxX + minimumInteritemSpacing
-                lineStore[item.frame.minY]?.append(item)
-            } else {
-                item.frame.origin.x = insets.left
-                lineStore[item.frame.minY] = [item]
+            switch item.representedElementCategory {
+            case .cell:
+                break
+            case .decorationView:
+                list.append(item)
+                continue
+            case .supplementaryView:
+                section.append(item)
+                list.append(item)
+                continue
             }
+            
+            var spacing = self.minimumInteritemSpacing
+            var insets = self.sectionInset
+            
+            if let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+                spacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? spacing
+                insets = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section) ?? insets
+            }
+            
+            switch scrollDirection {
+            case .horizontal:
+                if let lastItem = section.last {
+                    if lastItem.indexPath.section != item.indexPath.section {
+                        item.frame.origin.x = lastItem.frame.maxX + insets.left
+                    } else {
+                        item.frame.origin.x = lastItem.frame.maxX + spacing
+                    }
+                } else {
+                    item.frame.origin.x = insets.left
+                }
+            case .vertical:
+                if section.last?.indexPath.section != item.indexPath.section {
+                    section.removeAll()
+                }
+                
+                if let lastItem = section.last {
+                    item.frame.origin.x = lastItem.frame.maxX + spacing
+                } else {
+                    item.frame.origin.x = insets.left
+                }
+            }
+
+                        
+            section.append(item)
             list.append(item)
         }
         return list

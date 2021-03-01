@@ -25,6 +25,8 @@ import UIKit
 
 open class SectionCollectionView: UICollectionView {
 
+    public private(set) lazy var manager = SectionCollectionManager(sectionView: self)
+
     public var sectionFlowLayout: SectionCollectionFlowLayout? { collectionViewLayout as? SectionCollectionFlowLayout }
     /// 滚动方向
     public var scrollDirection: UICollectionView.ScrollDirection? {
@@ -32,9 +34,16 @@ open class SectionCollectionView: UICollectionView {
         get { return sectionFlowLayout?.scrollDirection }
     }
 
-    public var layoutMode: SectionCollectionFlowLayout.ContentMode {
-        set { sectionFlowLayout?.contentMode = newValue }
-        get { sectionFlowLayout?.contentMode ?? .none }
+    /// 布局插件
+    /// - Parameter pluginModes: 样式
+    public func set(pluginModes: [SectionCollectionFlowLayout.PluginMode]) {
+        sectionFlowLayout?.pluginModes = pluginModes
+    }
+    
+    /// 布局插件
+    /// - Parameter pluginModes: 样式
+    public func set(pluginModes: SectionCollectionFlowLayout.PluginMode...) {
+        self.set(pluginModes: pluginModes)
     }
 
     public convenience init() {
