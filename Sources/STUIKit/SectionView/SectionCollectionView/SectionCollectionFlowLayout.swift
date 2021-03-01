@@ -197,6 +197,9 @@ private extension SectionCollectionFlowLayout {
                 section.append(item)
                 list.append(item)
                 continue
+            @unknown default:
+                list.append(item)
+                continue
             }
             
             var spacing = self.minimumInteritemSpacing
@@ -228,9 +231,11 @@ private extension SectionCollectionFlowLayout {
                 } else {
                     item.frame.origin.x = insets.left
                 }
+            @unknown default:
+                break
             }
-
-                        
+            
+            
             section.append(item)
             list.append(item)
         }
