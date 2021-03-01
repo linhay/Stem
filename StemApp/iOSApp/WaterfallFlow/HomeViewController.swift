@@ -14,7 +14,6 @@ class HomeViewController: SectionCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        sectionView.backgroundColor = .cyan
     }
 
 }

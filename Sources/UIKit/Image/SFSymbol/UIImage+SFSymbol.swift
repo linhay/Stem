@@ -25,7 +25,7 @@ import UIKit
 
 @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension UIImage {
-
+    
     /// Retrieve a system symbol image of the given type.
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
@@ -34,7 +34,7 @@ public extension UIImage {
     convenience init(sfSymbol: SFSymbol) {
         self.init(systemName: sfSymbol.rawValue)!
     }
-
+    
     /// Retrieve a system symbol image of the given type and with the given configuration.
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
@@ -44,5 +44,15 @@ public extension UIImage {
     convenience init(sfSymbol: SFSymbol, with configuration: UIImage.SymbolConfiguration) {
         self.init(systemName: sfSymbol.rawValue, withConfiguration: configuration)!
     }
+}
+
+@available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+public extension SFSymbol {
+    
+    @available(macOS, unavailable)
+    func convert() -> UIImage {
+        return UIImage(sfSymbol: self)
+    }
+    
 }
 #endif
