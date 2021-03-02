@@ -205,6 +205,12 @@ public extension StemColor {
 }
 
 public extension StemColor {
+    
+    @discardableResult
+    func alpha(with value: Double) -> StemColor {
+        self.alpha = value
+        return self
+    }
 
     static var random: StemColor { .init(rgb: .random, alpha: 1) }
 
