@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
     spec.name        = "Stem"
-    spec.version     = "0.0.33"
+    spec.version     = "0.0.35"
     spec.summary     = "A Cocoa library."
 
     spec.description = <<-DESC
