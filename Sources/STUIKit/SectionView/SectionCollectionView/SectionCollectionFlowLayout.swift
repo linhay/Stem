@@ -166,9 +166,11 @@ private extension SectionCollectionFlowLayout {
                 continue
             }
             
-            if let lastItem = lineStore.last, lastItem.frame.minY == item.frame.minY {
+            if lineStore.isEmpty {
                 lineStore.append(item)
-            } else if lineStore.isEmpty {
+            } else if let lastItem = lineStore.last,
+                      lastItem.indexPath.section == item.indexPath.section,
+                      lastItem.frame.minY == item.frame.minY {
                 lineStore.append(item)
             } else {
                 list.append(contentsOf: appendLine(lineStore, collectionView))
@@ -238,7 +240,7 @@ private extension SectionCollectionFlowLayout {
             @unknown default:
                 break
             }
-
+            
             section.append(item)
             list.append(item)
         }
