@@ -13,7 +13,7 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        sectionView.set(pluginModes: .left)
+        sectionView.set(pluginModes: .left)
         
         let section = HashableSingleTypeSection<TestCell>()
         section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)

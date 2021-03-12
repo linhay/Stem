@@ -26,24 +26,26 @@ import UIKit
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
     /// 布局插件样式
-    public struct PluginMode: OptionSet, Comparable, Hashable {
+    public enum PluginMode: String, Comparable, Hashable {
         
-        public static func < (lhs: SectionCollectionFlowLayout.PluginMode, rhs: SectionCollectionFlowLayout.PluginMode) -> Bool {
+        public static func < (lhs: PluginMode, rhs: PluginMode) -> Bool {
             return lhs.rawValue < rhs.rawValue
         }
         
-        public let rawValue: Int
-        
-        public init(rawValue: Int) {
-            self.rawValue = rawValue
-        }
-        
         /// 左对齐
-        public static let left = PluginMode(rawValue: 100)
+        case left
         /// 居中对齐
-        public static let centerX = PluginMode(rawValue: 100)
+        case centerX
         /// header & footer 贴合 cell
-        public static let fixSupplementaryViewInset  = PluginMode(rawValue: 1)
+        case fixSupplementaryViewInset
+        
+        var priority: Int {
+            switch self {
+            case .left:    return 100
+            case .centerX: return 100
+            case .fixSupplementaryViewInset: return 1
+            }
+        }
     }
     
     public var pluginModes: [PluginMode] = [] {
