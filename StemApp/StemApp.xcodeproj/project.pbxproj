@@ -19,7 +19,7 @@
 		CDD3BF8A25ECF37F0033ECD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8825ECF37F0033ECD6 /* Main.storyboard */; };
 		CDD3BF9725ECF4300033ECD6 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDD3BF9625ECF4300033ECD6 /* Stem */; };
 		CDD3BF9925ECF43C0033ECD6 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDD3BF9825ECF43C0033ECD6 /* Stem */; };
-		CDD3BFB325ECF4DC0033ECD6 /* TestIndexPathCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFAF25ECF4DC0033ECD6 /* TestIndexPathCell.swift */; };
+		CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */; };
 		CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */; };
 		CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */; };
 		CDD3BFC125ECF5680033ECD6 /* macOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFC025ECF5680033ECD6 /* macOSAppTests.swift */; };
@@ -30,6 +30,9 @@
 		CDD3BFD725ECF5B50033ECD6 /* LabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFD025ECF5B50033ECD6 /* LabTests.swift */; };
 		CDD3BFD825ECF5B50033ECD6 /* XYZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFD125ECF5B50033ECD6 /* XYZTests.swift */; };
 		CDD3BFD925ECF5B50033ECD6 /* RGBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFD225ECF5B50033ECD6 /* RGBTests.swift */; };
+		CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE768D025FB06B4001045A4 /* HomeCell.swift */; };
+		CDE768DA25FB1636001045A4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDE768D925FB1636001045A4 /* SnapKit */; };
+		CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +62,7 @@
 		CDD3BF8B25ECF37F0033ECD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDD3BF8C25ECF37F0033ECD6 /* macOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSApp.entitlements; sourceTree = "<group>"; };
 		CDD3BF9225ECF3E60033ECD6 /* Sources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sources; path = ../Sources; sourceTree = "<group>"; };
-		CDD3BFAF25ECF4DC0033ECD6 /* TestIndexPathCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIndexPathCell.swift; sourceTree = "<group>"; };
+		CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCell.swift; sourceTree = "<group>"; };
 		CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterfallFlowViewController.swift; sourceTree = "<group>"; };
 		CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CDD3BFBE25ECF5680033ECD6 /* macOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,6 +75,8 @@
 		CDD3BFD025ECF5B50033ECD6 /* LabTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabTests.swift; sourceTree = "<group>"; };
 		CDD3BFD125ECF5B50033ECD6 /* XYZTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYZTests.swift; sourceTree = "<group>"; };
 		CDD3BFD225ECF5B50033ECD6 /* RGBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGBTests.swift; sourceTree = "<group>"; };
+		CDE768D025FB06B4001045A4 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTypeSectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDD3BF9725ECF4300033ECD6 /* Stem in Frameworks */,
+				CDE768DA25FB1636001045A4 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,7 +184,8 @@
 		CDD3BFAE25ECF4DC0033ECD6 /* TestCell */ = {
 			isa = PBXGroup;
 			children = (
-				CDD3BFAF25ECF4DC0033ECD6 /* TestIndexPathCell.swift */,
+				CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */,
+				CDE768D025FB06B4001045A4 /* HomeCell.swift */,
 			);
 			path = TestCell;
 			sourceTree = "<group>";
@@ -187,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */,
+				CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */,
 				CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */,
 			);
 			path = WaterfallFlow;
@@ -234,6 +242,7 @@
 			name = iOSApp;
 			packageProductDependencies = (
 				CDD3BF9625ECF4300033ECD6 /* Stem */,
+				CDE768D925FB1636001045A4 /* SnapKit */,
 			);
 			productName = iOSApp;
 			productReference = CDD3BF6425ECF3210033ECD6 /* iOSApp.app */;
@@ -307,6 +316,9 @@
 				Base,
 			);
 			mainGroup = CDD3BF3D25ECF25D0033ECD6;
+			packageReferences = (
+				CDE768D825FB1636001045A4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = CDD3BF4725ECF25D0033ECD6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -356,7 +368,9 @@
 				CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */,
 				CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */,
 				CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */,
-				CDD3BFB325ECF4DC0033ECD6 /* TestIndexPathCell.swift in Sources */,
+				CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */,
+				CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */,
+				CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */,
 				CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -540,6 +554,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"iOSApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOSApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -560,6 +575,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"iOSApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOSApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -700,6 +716,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		CDE768D825FB1636001045A4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		CDD3BF9625ECF4300033ECD6 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -708,6 +735,11 @@
 		CDD3BF9825ECF43C0033ECD6 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stem;
+		};
+		CDE768D925FB1636001045A4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDE768D825FB1636001045A4 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

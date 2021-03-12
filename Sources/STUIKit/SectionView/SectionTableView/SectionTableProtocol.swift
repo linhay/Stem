@@ -70,12 +70,12 @@ public extension SectionTableProtocol {
         return sectionView.cellForRow(at: indexPath(from: row))
     }
 
-    func pick(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
+    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)?) {
         if #available(iOS 11.0, *) {
             sectionView.performBatchUpdates(updates, completion: completion)
         } else {
             sectionView.beginUpdates()
-            updates?()
+            updates()
             sectionView.endUpdates()
             completion?(true)
         }

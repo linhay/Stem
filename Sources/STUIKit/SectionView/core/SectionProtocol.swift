@@ -51,13 +51,17 @@ public protocol SectionProtocol: class {
     /// Editing Items
     func canEditItem(at row: Int) -> Bool
     
-    
     var indexTitle: String? { get }
+    
     func deselect(at row: Int, animated: Bool)
+    
     var itemCount: Int { get }
+    
     func canMove(at: Int) -> Bool
+    
     func move(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
-    func pick(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?)
+    
+    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)?)
 }
 
 public extension SectionProtocol {

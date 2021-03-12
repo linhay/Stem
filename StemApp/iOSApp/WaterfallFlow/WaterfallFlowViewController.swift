@@ -11,7 +11,7 @@ import Stem
 
 class WaterfallFlowViewController: SectionCollectionViewController {
     
-    let section = SingleTypeSection<TestIndexPathCell>()
+    let section = SingleTypeSection<TestCell>()
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +30,10 @@ class WaterfallFlowViewController: SectionCollectionViewController {
         
         let maxWidth = view.frame.width - 10 * CGFloat(widthSet.count - 1) - section.sectionInset.left - section.sectionInset.right
         
-        let list = (0...20000).map { (index) -> TestIndexPathCell.Model in
-            return .init(indexPath: .init(row: index, section: 0),
-                         size: .init(width: maxWidth * widthSet[index % widthSet.count]!,
-                                     height: CGFloat.random(in: 50...100)))
+        let list = (0...20000).map { (index) -> TestCell.Model in
+            return .init(title: "\(section.index) - \(index)",
+                         width: maxWidth * widthSet[index % widthSet.count]!,
+                         height: CGFloat.random(in: 50...100))
         }
         
         section.config(models: list)

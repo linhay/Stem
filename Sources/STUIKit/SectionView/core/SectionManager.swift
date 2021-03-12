@@ -42,7 +42,7 @@ public class SectionManager<SectionView: UIView> {
         case move(from: Int, to: Int)
     }
 
-    func pick(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) { }
+    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)? = nil) {}
 
     func reload() -> Refresh {
         _ = calculator(sections: sections, in: sectionView)
@@ -55,7 +55,7 @@ public class SectionManager<SectionView: UIView> {
         return .reload
     }
 
-    func delete(at index: Int) -> Refresh {
+    func delete(at index: Int) -> Refresh where SectionView: UICollectionView {
         if sections.isEmpty || sections.count <= index {
             return .reload
         } else {
@@ -64,6 +64,15 @@ public class SectionManager<SectionView: UIView> {
         }
     }
 
+    func delete(at index: Int) -> Refresh {
+        if sections.isEmpty || sections.count <= index {
+            return .reload
+        } else {
+            sections = calculator(sections: sections, in: sectionView)
+            return .delete(IndexSet([index]))
+        }
+    }
+    
     func move(from: Int, to: Int) -> Refresh {
         guard from >= 0, to >= 0, sections.count > max(from, to) else {
             return .none

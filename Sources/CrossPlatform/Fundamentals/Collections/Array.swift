@@ -134,30 +134,6 @@ public extension Array {
 
 }
 
-// MARK: - shuffled & pass for unit test & document
-public extension Array {
-
-    /// Returns the elements of the sequence, shuffled.
-    ///
-    /// For example, you can shuffle the numbers between `0` and `9` by calling
-    /// the `shuffled()` method on that range:
-    ///
-    ///     let numbers = 0...9
-    ///     let shuffledNumbers = numbers.shuffled
-    ///     // shuffledNumbers == [1, 7, 6, 2, 8, 9, 4, 3, 5, 0]
-    ///
-    /// This method is equivalent to calling `shuffled(using:)`, passing in the
-    /// system's default random generator.
-    ///
-    /// - Returns: A shuffled array of this sequence's elements.
-    ///
-    /// - Complexity: O(*n*), where *n* is the length of the sequence.
-    var shuffled: [Element] {
-        return self.shuffled()
-    }
-
-}
-
 // MARK: - Value & pass for unit test & document
 public extension Array {
 
@@ -183,23 +159,6 @@ public extension Array {
         let rawIndex = index < 0 ? count + index : index
         guard rawIndex < count, rawIndex >= 0 else { return nil }
         return self[rawIndex]
-    }
-
-}
-
-// MARK: - Array about remove
-public extension Array where Element: Equatable {
-
-    mutating func removeFirst(with value: Element) {
-        if let index = firstIndex(of: value) { remove(at: index) }
-    }
-
-    mutating func removeLast(with value: Element) {
-        if let index = lastIndex(of: value) { remove(at: index) }
-    }
-
-    mutating func removeAll(with value: Element) {
-        self.removeAll(where: { $0 == value })
     }
 
 }

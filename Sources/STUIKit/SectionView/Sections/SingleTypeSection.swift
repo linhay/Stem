@@ -24,78 +24,88 @@
 import UIKit
 
 open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SectionCollectionProtocol {
-
-    open private(set) var models: [Cell.Model]
-
+    
+    open internal(set) var models: [Cell.Model]
+    
     public let selectedEvent = Delegate<Cell.Model, Void>()
     public let selectedRowEvent = Delegate<Int, Void>()
     public let willDisplayEvent = Delegate<Int, Void>()
     /// cell 样式配置
     public let configCellStyleEvent = Delegate<(row: Int, cell: Cell), Void>()
-
+    
     open var minimumLineSpacing: CGFloat = 0
     open var minimumInteritemSpacing: CGFloat = 0
     open var sectionInset: UIEdgeInsets = .zero
-
+    
     open var hiddenHeaderWhenNoItem: Bool = true
     open var hiddenFooterWhenNoItem: Bool = true
     
     public let headerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
     public let headerSizeProvider = Delegate<UICollectionView, CGSize>()
-
+    
     public let footerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
     public let footerSizeProvider = Delegate<UICollectionView, CGSize>()
-
+    
     open var core: SectionCore?
     open var itemCount: Int { models.count }
-
+    
     public init(_ models: [Cell.Model] = []) {
         self.models = models
     }
-
+    
     open func config(models: [Cell.Model]) {
         self.models = models
         reload()
     }
-
-    open func itemSize(at row: Int) -> CGSize {
-        var size = sectionView.bounds.size
-
-        if let flowLayout = sectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            switch flowLayout.scrollDirection {
-            case .horizontal:
-                size.width -= sectionInset.left + sectionInset.right
-            case .vertical:
-                size.height -= sectionInset.top + sectionInset.top
-            }
-        }
-        
-        return Cell.preferredSize(limit: size, model: models.value(at: row))
-    }
-
+    
     open func didSelectItem(at row: Int) {
         selectedEvent.call(models[row])
         selectedRowEvent.call(row)
     }
-
+    
     open func config(sectionView: UICollectionView) {
         sectionView.st.register(Cell.self)
     }
-
+    
+    open func itemSize(at row: Int) -> CGSize {
+        return Cell.preferredSize(limit: itemSafeSize(), model: models[row])
+    }
+    
     open func item(at row: Int) -> UICollectionViewCell {
         let cell = dequeue(at: row) as Cell
         cell.config(models[row])
         configCellStyleEvent.call((row: row, cell: cell))
         return cell
     }
-
+    
     open func willDisplayItem(at row: Int) {
         willDisplayEvent.call(row)
     }
-
+    
     open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
     open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
     open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
     open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
+}
+
+public extension SingleTypeSection {
+    
+    func itemSafeSize() -> CGSize {
+        if let flowLayout = sectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            switch flowLayout.scrollDirection {
+            case .horizontal:
+                return .init(width: .greatestFiniteMagnitude,
+                             height: sectionView.bounds.height - sectionInset.top - sectionInset.bottom)
+            case .vertical:
+                return .init(width: sectionView.bounds.width - sectionInset.left - sectionInset.right,
+                             height: .greatestFiniteMagnitude)
+            @unknown default:
+                return sectionView.bounds.size
+            }
+        } else {
+            return sectionView.bounds.size
+        }
+    }
+    
 }
 #endif

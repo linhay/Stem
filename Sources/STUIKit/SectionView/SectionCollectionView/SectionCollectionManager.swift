@@ -64,7 +64,7 @@ public extension SectionCollectionManager {
         }
     }
 
-    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)?) {
+    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)? = nil) {
         isPicking = true
         updates()
         isPicking = false

@@ -42,6 +42,8 @@ public protocol SectionCollectionProtocol: SectionProtocol {
     func config(sectionView: UICollectionView)
     func itemSize(at row: Int) -> CGSize
     func item(at row: Int) -> UICollectionViewCell
+    
+    func reload()
 }
 
 public extension SectionCollectionProtocol {
@@ -98,7 +100,7 @@ public extension SectionCollectionProtocol {
         return indexPath.row
     }
 
-    func pick(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
+    func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)? = nil) {
         sectionView.performBatchUpdates(updates, completion: completion)
     }
 
@@ -131,11 +133,7 @@ public extension SectionCollectionProtocol {
             return
         }
         willUpdate?()
-        if let max = rows.max(), sectionView.numberOfItems(inSection: index) <= max {
-            core?.reloadDataEvent?()
-        } else {
-            sectionView.insertItems(at: indexPaths(from: rows))
-        }
+        sectionView.insertItems(at: indexPaths(from: rows))
     }
 
 }
