@@ -100,8 +100,6 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 attributes = modeLeft(collectionView, attributes: attributes) ?? []
             case .fixSupplementaryViewInset:
                 attributes = modeFixSupplementaryViewInset(collectionView, attributes: attributes) ?? []
-            default:
-                break
             }
         }
         
