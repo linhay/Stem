@@ -26,44 +26,43 @@ import UIKit
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
     /// 布局插件样式
-    public enum PluginMode {
-        /// 左对齐
-        case left
-        /// 居中对齐
-        case centerX
-        /// header & footer 贴合 cell
-        case fixSupplementaryViewInset
+    public struct PluginMode: OptionSet, Comparable, Hashable {
         
-        var priority: Int {
-            switch self {
-            case .left:
-                return 100
-            case .centerX:
-                return 100
-            case .fixSupplementaryViewInset:
-                return 1
-            }
+        public static func < (lhs: SectionCollectionFlowLayout.PluginMode, rhs: SectionCollectionFlowLayout.PluginMode) -> Bool {
+            return lhs.rawValue < rhs.rawValue
         }
         
+        public let rawValue: Int
+        
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        
+        /// 左对齐
+        public static let left = PluginMode(rawValue: 100)
+        /// 居中对齐
+        public static let centerX = PluginMode(rawValue: 100)
+        /// header & footer 贴合 cell
+        public static let fixSupplementaryViewInset  = PluginMode(rawValue: 1)
     }
     
     public var pluginModes: [PluginMode] = [] {
         didSet {
-            var set = Set<Int>()
+            var set = Set<PluginMode>()
             var newPluginModes = [PluginMode]()
             
             /// 优先级冲突去重
             for item in pluginModes {
-                if set.contains(item.priority) {
-                    assertionFailure("mode冲突: \(pluginModes.filter({ $0.priority == item.priority }))")
+                if set.contains(item) {
+                    assertionFailure("mode冲突: \(pluginModes.filter({ $0 == item }))")
                 } else {
-                    set.update(with: item.priority)
+                    set.update(with: item)
                     newPluginModes.append(item)
                 }
             }
             
             /// mode 重排
-            newPluginModes.sort(by: { $0.priority > $1.priority })
+            newPluginModes.sort(by: { $0 > $1 })
             if newPluginModes != pluginModes {
                 pluginModes = newPluginModes
             }
@@ -99,6 +98,8 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 attributes = modeLeft(collectionView, attributes: attributes) ?? []
             case .fixSupplementaryViewInset:
                 attributes = modeFixSupplementaryViewInset(collectionView, attributes: attributes) ?? []
+            default:
+                break
             }
         }
         
