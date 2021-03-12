@@ -74,6 +74,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     private var oldBounds = CGRect.zero
     
     override public func prepare() {
+        super.prepare()
         guard let collectionView = collectionView else {
             return
         }
@@ -135,19 +136,24 @@ private extension SectionCollectionFlowLayout {
     func modeCenterX(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         
         func appendLine(_ lineStore: [UICollectionViewLayoutAttributes],
-                        _ minimumInteritemSpacing: CGFloat,
                         _ collectionView: UICollectionView) -> [UICollectionViewLayoutAttributes] {
             guard let firstItem = lineStore.first else {
                 return lineStore
             }
-            let allWidth = lineStore.reduce(0, { $0 + $1.frame.width }) + minimumInteritemSpacing * CGFloat(lineStore.count - 1)
+            
+            var spacing = self.minimumInteritemSpacing
+            
+            if let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
+                spacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: firstItem.indexPath.section) ?? spacing
+            }
+            
+            let allWidth = lineStore.reduce(0, { $0 + $1.frame.width }) + spacing * CGFloat(lineStore.count - 1)
             let offset = (collectionView.bounds.width - allWidth) / 2
             firstItem.frame.origin.x = offset
             _ = lineStore.dropFirst().reduce(firstItem) { (result, item) -> UICollectionViewLayoutAttributes in
-                item.frame.origin.x = result.frame.maxX + minimumInteritemSpacing
+                item.frame.origin.x = result.frame.maxX + spacing
                 return item
             }
-            
             return lineStore
         }
         
@@ -155,10 +161,7 @@ private extension SectionCollectionFlowLayout {
         var list = [UICollectionViewLayoutAttributes]()
         
         for item in attributes {
-            guard item.representedElementCategory == .cell,
-                  let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
-                  /// self.minimumInteritemSpacing 获取时与 delegate 中数值不一致
-                  let minimumInteritemSpacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) else {
+            guard item.representedElementCategory == .cell else {
                 list.append(item)
                 continue
             }
@@ -168,12 +171,12 @@ private extension SectionCollectionFlowLayout {
             } else if lineStore.isEmpty {
                 lineStore.append(item)
             } else {
-                list.append(contentsOf: appendLine(lineStore, minimumInteritemSpacing, collectionView))
+                list.append(contentsOf: appendLine(lineStore, collectionView))
                 lineStore = [item]
             }
         }
         
-        list.append(contentsOf: appendLine(lineStore, minimumInteritemSpacing, collectionView))
+        list.append(contentsOf: appendLine(lineStore, collectionView))
         return list
     }
     
@@ -236,7 +239,6 @@ private extension SectionCollectionFlowLayout {
                 break
             }
 
-                        
             section.append(item)
             list.append(item)
         }

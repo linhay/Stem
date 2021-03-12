@@ -13,7 +13,7 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sectionView.set(pluginModes: .left)
+        sectionView.set(pluginModes: .centerX)
         
         let section = HashableSingleTypeSection<TestCell>()
         section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)
@@ -21,7 +21,7 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
         section.minimumInteritemSpacing = 4
         section.useSizeCache(true)
         
-        var data = Array(0...20)
+        var data = Array(0...3)
 
         section.selectedEvent.delegate(on: self) { (self, model) in
             if data.count > 40 {
