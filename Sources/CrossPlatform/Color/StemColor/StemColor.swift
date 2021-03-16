@@ -156,11 +156,14 @@ public extension StemColor {
 }
 
 public extension StemColor {
+    
+    enum HexFormatter {
+        case auto
+        case digits6
+        case digits8
+    }
 
-    /// 获取hex字符
-    var hexString: String {
-        let rgb = self.rgbSpace
-
+    func hexString(_ formatter: HexFormatter = .auto) -> String {
         func map(_ value: Double) -> Int {
             if value.isNaN {
                 return 255
@@ -169,10 +172,13 @@ public extension StemColor {
             }
         }
 
-        if alpha == 1 {
-            return String(format: "#%02lX%02lX%02lX", map(rgb.red), map(rgb.green), map(rgb.blue))
-        } else {
-            return String(format: "#%02lX%02lX%02lX%02lX", map(alpha), map(rgb.red), map(rgb.green), map(rgb.blue))
+        switch formatter {
+        case .auto:
+            return hexString(alpha >= 1 ? .digits6 : .digits8)
+        case .digits6:
+            return String(format: "#%02lX%02lX%02lX", map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
+        case .digits8:
+            return String(format: "#%02lX%02lX%02lX%02lX", map(alpha), map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
         }
     }
 
