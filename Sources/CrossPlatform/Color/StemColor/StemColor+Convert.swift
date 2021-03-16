@@ -37,6 +37,23 @@ public extension StemColor {
     
 }
 
+#if canImport(AppKit)
+import AppKit
+
+public extension StemColor {
+    
+    convenience init(_ color: NSColor) {
+       let color = color.usingColorSpace(.deviceRGB) ?? color
+        self.init(rgb: .init(red: Double(color.redComponent),
+                             green: Double(color.greenComponent),
+                             blue: Double(color.blueComponent)),
+                  alpha: Double(color.alphaComponent))
+    }
+    
+}
+
+#endif
+
 
 #if canImport(CoreGraphics) && canImport(CoreImage)
 import CoreGraphics
