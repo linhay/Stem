@@ -25,18 +25,18 @@ import Foundation
 public extension StemColor {
 
     enum Mixer {
-        case cmykAverage([StemColor])
-        case kubelkaMunk([StemColor])
+        case cmykAverage([CMYKSpace])
+        case kubelkaMunk([RGBSpace])
     }
 
-    private static func cmykAverage(with colors: [StemColor]) -> StemColor? {
+    private static func cmykAverage(with colors: [CMYKSpace]) -> CMYKSpace? {
         if colors.isEmpty {
             return nil
         }
-        return .init(cmyk: CMYKSpace.average(colors.map(\.cmykSpace)))
+        return CMYKSpace.average(colors)
     }
 
-    private static func kubelkaMunk(with colors: [StemColor]) -> StemColor? {
+    private static func kubelkaMunk(with colors: [RGBSpace]) -> RGBSpace? {
 
         if colors.isEmpty {
             return nil
@@ -53,7 +53,7 @@ public extension StemColor {
         let concentration = 1.0 / Double(colors.count)
 
         let list = colors
-            .map(\.rgbSpace.list)
+            .map(\.list)
             .map { $0
                 .map({ max($0, 0.00001) * concentration })
 //                .map { absorbance($0) }
@@ -67,27 +67,25 @@ public extension StemColor {
             }
             .map { reflectance($0) }
 
-
-        let space = RGBSpace(list)
-        return .init(rgb: space)
+        return RGBSpace(list)
     }
-
-    func mix(use mixer: Mixer) -> StemColor {
-        switch mixer {
-        case .kubelkaMunk(let colors):
-            return Self.kubelkaMunk(with: [self] + colors) ?? self
-        case .cmykAverage(let colors):
-            return Self.cmykAverage(with: [self] + colors) ?? self
-        }
-    }
-
+    
     static func mix(use mixer: Mixer) -> StemColor? {
         switch mixer {
         case .kubelkaMunk(let colors):
-            return kubelkaMunk(with: colors)
+            if let value = kubelkaMunk(with: colors) {
+                return .init(rgb: value)
+            }
         case .cmykAverage(let colors):
-            return cmykAverage(with: colors)
+            if let value = cmykAverage(with: colors) {
+                return .init(cmyk: value)
+            }
         }
+        return nil
+    }
+    
+    func mix(use mixer: Mixer) -> StemColor {
+        StemColor.mix(use: mixer) ?? self
     }
 
 }
