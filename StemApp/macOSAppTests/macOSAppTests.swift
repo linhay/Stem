@@ -36,7 +36,7 @@ class macOSAppTests: XCTestCase {
         NSColor.st.displayMode = .rgb
         let color = StemColor(hex: "0x2748A3")
 
-        let hex       = color.hexString
+        let hex       = color.hexString()
         let rgbSpace  = color.rgbSpace
         let xyzSpace  = color.xyzSpace
         let labSpace  = color.labSpace
@@ -46,11 +46,6 @@ class macOSAppTests: XCTestCase {
         let cmykSpace = color.cmykSpace
         let rybSpace  = color.rybSpace
 
-        if #available(OSX 11.0, *) {
-            print(AXNameFromColor(color.convert()))
-        } else {
-            // Fallback on earlier versions
-        }
         print("hex: ", hex)
         print("rgb: ", rgbSpace)
         print("rgb: ", rgbSpace.intUnpack)
@@ -63,13 +58,13 @@ class macOSAppTests: XCTestCase {
         print("cmyk: ", cmykSpace)
 
 
-        assert(StemColor(xyz: xyzSpace).hexString == hex)
-        assert(StemColor(ryb: rybSpace).hexString == hex)
-        assert(StemColor(hsb: hsbSpace).hexString == hex)
-        assert(StemColor(cmy: cmySpace).hexString == hex)
-        assert(StemColor(cmyk: cmykSpace).hexString == hex)
-        assert(StemColor(hsl: hslSpace).hexString == hex, "\(StemColor(hsl: hslSpace).rgbSpace)")
-        assert(StemColor(lab: labSpace).hexString == hex)
+        assert(StemColor(xyz: xyzSpace).hexString() == hex)
+        assert(StemColor(ryb: rybSpace).hexString() == hex)
+        assert(StemColor(hsb: hsbSpace).hexString() == hex)
+        assert(StemColor(cmy: cmySpace).hexString() == hex)
+        assert(StemColor(cmyk: cmykSpace).hexString() == hex)
+        assert(StemColor(hsl: hslSpace).hexString() == hex, "\(StemColor(hsl: hslSpace).rgbSpace)")
+        assert(StemColor(lab: labSpace).hexString() == hex)
         assert(StemColor(lab: labSpace).rgbSpace.intUnpack == rgbSpace.intUnpack)
 
     }

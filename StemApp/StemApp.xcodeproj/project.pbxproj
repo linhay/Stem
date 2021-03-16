@@ -596,6 +596,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"macOSApp/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = macOSApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -619,6 +620,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"macOSApp/Preview Content\"";
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = macOSApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -639,6 +641,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
 				INFOPLIST_FILE = macOSAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -660,6 +663,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 3L8RM3MDLS;
 				INFOPLIST_FILE = macOSAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
