@@ -162,8 +162,17 @@ public extension StemColor {
         case digits6
         case digits8
     }
+    
+    enum HexPrefixFormatter: String {
+        /// "#"
+        case hashKey = "#"
+        /// "0x"
+        case bits = "0x"
+        /// ""
+        case none = ""
+    }
 
-    func hexString(_ formatter: HexFormatter = .auto) -> String {
+    func hexString(_ formatter: HexFormatter = .auto, prefix: HexPrefixFormatter = .hashKey) -> String {
         func map(_ value: Double) -> Int {
             if value.isNaN {
                 return 255
@@ -176,9 +185,9 @@ public extension StemColor {
         case .auto:
             return hexString(alpha >= 1 ? .digits6 : .digits8)
         case .digits6:
-            return String(format: "#%02lX%02lX%02lX", map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
+            return prefix.rawValue + String(format: "%02lX%02lX%02lX", map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
         case .digits8:
-            return String(format: "#%02lX%02lX%02lX%02lX", map(alpha), map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
+            return prefix.rawValue + String(format: "%02lX%02lX%02lX%02lX", map(alpha), map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
         }
     }
 
