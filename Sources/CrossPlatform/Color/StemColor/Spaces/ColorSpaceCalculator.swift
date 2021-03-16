@@ -24,6 +24,8 @@ import Foundation
 
 public extension StemColor {
 
+    static let spaceCalculator = SpaceCalculator()
+    
     struct SpaceCalculator { }
 
 }
