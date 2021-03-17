@@ -28,10 +28,11 @@ open class SectionCollectionView: UICollectionView {
     public private(set) lazy var manager = SectionCollectionManager(sectionView: self)
 
     public var sectionFlowLayout: SectionCollectionFlowLayout? { collectionViewLayout as? SectionCollectionFlowLayout }
+    var flowLayout: UICollectionViewFlowLayout? { collectionViewLayout as? UICollectionViewFlowLayout }
     /// 滚动方向
     public var scrollDirection: UICollectionView.ScrollDirection? {
-        set { sectionFlowLayout?.scrollDirection = newValue ?? .vertical }
-        get { return sectionFlowLayout?.scrollDirection }
+        set { flowLayout?.scrollDirection = newValue ?? .vertical }
+        get { return flowLayout?.scrollDirection }
     }
 
     /// 布局插件

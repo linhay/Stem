@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
+		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
 		CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */; };
 		CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */; };
@@ -17,7 +19,6 @@
 		CDD3BF8425ECF37F0033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8325ECF37F0033ECD6 /* Assets.xcassets */; };
 		CDD3BF8725ECF37F0033ECD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8625ECF37F0033ECD6 /* Preview Assets.xcassets */; };
 		CDD3BF8A25ECF37F0033ECD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8825ECF37F0033ECD6 /* Main.storyboard */; };
-		CDD3BF9725ECF4300033ECD6 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDD3BF9625ECF4300033ECD6 /* Stem */; };
 		CDD3BF9925ECF43C0033ECD6 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDD3BF9825ECF43C0033ECD6 /* Stem */; };
 		CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */; };
 		CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,8 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDD3BF9725ECF4300033ECD6 /* Stem in Frameworks */,
 				CDE768DA25FB1636001045A4 /* SnapKit in Frameworks */,
+				CD6314942602359E00670B84 /* Stem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +198,7 @@
 				CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */,
 				CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */,
 				CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */,
+				CD63148B260233F700670B84 /* CoverFlowViewController.swift */,
 			);
 			path = WaterfallFlow;
 			sourceTree = "<group>";
@@ -241,8 +244,8 @@
 			);
 			name = iOSApp;
 			packageProductDependencies = (
-				CDD3BF9625ECF4300033ECD6 /* Stem */,
 				CDE768D925FB1636001045A4 /* SnapKit */,
+				CD6314932602359E00670B84 /* Stem */,
 			);
 			productName = iOSApp;
 			productReference = CDD3BF6425ECF3210033ECD6 /* iOSApp.app */;
@@ -371,6 +374,7 @@
 				CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */,
 				CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */,
 				CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */,
+				CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */,
 				CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -732,7 +736,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CDD3BF9625ECF4300033ECD6 /* Stem */ = {
+		CD6314932602359E00670B84 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stem;
 		};

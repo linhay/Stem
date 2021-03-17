@@ -14,6 +14,9 @@ import Foundation
 class HomeViewController: SectionCollectionViewController {
     
     lazy var section = SingleTypeSection<HomeCell>([
+        .init(title: "STCoverFlowLayout", action: {
+            self.st.push(CoverFlowViewController())
+        }),
         .init(title: "STWaterfallFlowLayout", action: {
             self.st.push(WaterfallFlowViewController())
         }),
