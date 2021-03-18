@@ -14,15 +14,15 @@ class macOSAppTests: XCTestCase {
         do {
             let s1 = StemColor.RGBSpace([170.0 / 255, 127.0 / 255, 200.0 / 255])
             let s2 = StemColor.RGBSpace([57.0 / 255, 56.0 / 255, 232.0 / 255])
-//            let rgb = StemColor(rgb: s1).mix(with: .init(rgb: s2), use: .kubelkaMunk).rgbSpace
-//            print(rgb.intUnpack)
+            let rgb = StemColor(rgb: s1).mix(use: .kubelkaMunk([s2])).rgbSpace
+            print(rgb.intUnpack)
         }
 
         do {
             let s1 = StemColor.RGBSpace([0,0,0])
             let s2 = StemColor.RGBSpace([1,1,1])
-//            let rgb = StemColor(rgb: s1).mix(with: .init(rgb: s2), use: .kubelkaMunk).rgbSpace
-//            print(rgb.intUnpack)
+            let rgb = StemColor(rgb: s1).mix(use: .kubelkaMunk([s2])).rgbSpace
+            print(rgb.intUnpack)
         }
     }
 

@@ -31,11 +31,11 @@ public extension RunTime {
         case instance
     }
     
-    struct ExchangeMaker {
+    struct ExchangeMaker<T: NSObject> {
         /// 所属类型
-        let classType: AnyClass
+        public let classType: T.Type
         
-        public init(class classType: AnyClass) {
+        public init(class classType: T.Type) {
             self.classType = classType
         }
         
@@ -64,7 +64,6 @@ public extension RunTime {
          */
         public func create(selector: Selector, kind: MethodKind = .instance) -> Exchange {
             return .init(selector: selector, class: classType, kind: kind)
-            
         }
         
         
