@@ -46,6 +46,16 @@ extension RecoverNavigationProtocol {
 
 fileprivate extension UINavigationController {
     
+    @objc
+    var recover_childForStatusBarStyle: UIViewController? { topViewController }
+    
+    @objc
+    var recover_childForStatusBarHidden: UIViewController? { topViewController }
+    
+}
+
+fileprivate extension UINavigationController {
+    
     private func willPopAction(_ viewControllers: [UIViewController]?) -> [UIViewController]? {
         guard let manager = viewControllers?.first(where: { ($0 as? RecoverNavigationProtocol) != nil })?.recoverNavigationManager else {
             return viewControllers
@@ -96,7 +106,7 @@ fileprivate extension UINavigationController {
         let fromManager = (from as? RecoverNavigationProtocol)?.recoverNavigationManager
         let toManager   = (next as? RecoverNavigationProtocol)?.recoverNavigationManager
         fromManager?.canChangeStyle = false
-    
+        
         if let to = toManager {
             if let from = fromManager {
                 if from.style(for: .current) == nil {
@@ -112,7 +122,7 @@ fileprivate extension UINavigationController {
             } else {
                 to.recover(style: .normal, with: self)
             }
-
+            
         } else if let from = fromManager {
             next.isFromNavigationManager = true
             from.store(for: .current)
@@ -190,7 +200,7 @@ fileprivate extension UIViewController {
         
         manager.recover(for: .current)
         recover_viewWillAppear(animated)
-        
+        setNeedsStatusBarAppearanceUpdate()
         if let manager = recordScrollOffsetManager {
             manager.willAppear()
         } else if let vcProtocol = self as? RecoverNavigationProtocol, let scrollView = vcProtocol.recoverRecordScrollView {
@@ -315,42 +325,40 @@ extension RecoverNavigationManager {
     
     private static let swizzing: Void = {
         let maker1 = RunTime.ExchangeMaker(class: UIViewController.self)
+        [[#selector(UIViewController.recover_viewWillAppear(_:)),
+          #selector(UIViewController.viewWillAppear(_:))],
+         [#selector(UIViewController.recover_viewLayoutMarginsDidChange),
+          #selector(UIViewController.viewLayoutMarginsDidChange)],
+         [#selector(UIViewController.recover_viewWillDisappear(_:)),
+          #selector(UIViewController.viewWillDisappear(_:))]]
+            .forEach { selectors in
+                RunTime.exchange(new: maker1.create(selector: selectors.first!), with: maker1.create(selector: selectors.last!))
+            }
+        
         let maker2 = RunTime.ExchangeMaker(class: UINavigationController.self)
-        [
-            [
-                maker1.create(selector: #selector(UIViewController.recover_viewWillAppear(_:))),
-                maker1.create(selector: #selector(UIViewController.viewWillAppear(_:))),
-            ],
-            [
-                maker1.create(selector: #selector(UIViewController.recover_viewLayoutMarginsDidChange)),
-                maker1.create(selector: #selector(UIViewController.viewLayoutMarginsDidChange)),
-            ],
-            [
-                maker1.create(selector: #selector(UIViewController.recover_viewWillDisappear(_:))),
-                maker1.create(selector: #selector(UIViewController.viewWillDisappear(_:))),
-            ],
-            [
-                maker2.create(selector: #selector(UINavigationController.recover_setViewControllers(_:animated:))),
-                maker2.create(selector: #selector(UINavigationController.setViewControllers(_:animated:))),
-            ],
-            [
-                maker2.create(selector: #selector(UINavigationController.recover_pushViewController(_:animated:))),
-                maker2.create(selector: #selector(UINavigationController.pushViewController(_:animated:))),
-            ],
-            [
-                maker2.create(selector: #selector(UINavigationController.recover_popViewController(animated:))),
-                maker2.create(selector: #selector(UINavigationController.popViewController(animated:))),
-            ],
-            [
-                maker2.create(selector: #selector(UINavigationController.recover_popToViewController(_:animated:))),
-                maker2.create(selector: #selector(UINavigationController.popToViewController(_:animated:))),
-            ],
-            [
-                maker2.create(selector: #selector(UINavigationController.recover_popToRootViewController(animated:))),
-                maker2.create(selector: #selector(UINavigationController.popToRootViewController(animated:))),
-            ],
+        [[#selector(getter: UINavigationController.childForStatusBarHidden),
+          #selector(getter: UINavigationController.recover_childForStatusBarHidden)],
+         [#selector(getter: UINavigationController.childForStatusBarStyle),
+          #selector(getter: UINavigationController.recover_childForStatusBarStyle)],
+         [#selector(UINavigationController.recover_setViewControllers(_:animated:)),
+          #selector(UINavigationController.setViewControllers(_:animated:))],
+         [#selector(UINavigationController.recover_setViewControllers(_:animated:)),
+          #selector(UINavigationController.setViewControllers(_:animated:))],
+         [#selector(UINavigationController.recover_setViewControllers(_:animated:)),
+          #selector(UINavigationController.setViewControllers(_:animated:))],
+         [#selector(UINavigationController.recover_pushViewController(_:animated:)),
+          #selector(UINavigationController.pushViewController(_:animated:))],
+         [#selector(UINavigationController.recover_popViewController(animated:)),
+          #selector(UINavigationController.popViewController(animated:))],
+         [#selector(UINavigationController.recover_popToViewController(_:animated:)),
+          #selector(UINavigationController.popToViewController(_:animated:))],
+         [#selector(UINavigationController.recover_popToRootViewController(animated:)),
+          #selector(UINavigationController.popToRootViewController(animated:))]
         ]
-        .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
+        .forEach { selectors in
+            RunTime.exchange(new: maker2.create(selector: selectors.first!), with: maker1.create(selector: selectors.last!))
+        }
+        
     }()
     
     static func begin() {
