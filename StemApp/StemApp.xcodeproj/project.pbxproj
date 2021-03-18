@@ -48,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
+		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 		CDD3BF3D25ECF25D0033ECD6 = {
 			isa = PBXGroup;
 			children = (
+				CD8D6A7826038E4C006150C2 /* Stem.podspec */,
 				CDD3BF9225ECF3E60033ECD6 /* Sources */,
 				CDD3BF6525ECF3220033ECD6 /* iOSApp */,
 				CDD3BF7E25ECF37E0033ECD6 /* macOSApp */,
