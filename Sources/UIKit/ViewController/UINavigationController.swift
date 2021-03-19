@@ -95,14 +95,9 @@ fileprivate
 extension UINavigationController {
     
     static let navigationController_swizzing: Void = {
-        let maker = RunTime.ExchangeMaker(class: UIViewController.self)
-        [
-            [
-                maker.create(selector: #selector(UINavigationController.stem_navigationController_pushViewController(_:animated:))),
-                maker.create(selector: #selector(UINavigationController.pushViewController(_:animated:))),
-            ]
-        ]
-        .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
+        let maker = RunTime.ExchangeMaker(class: UINavigationController.self)
+        RunTime.exchange(new: maker.create(selector: #selector(UINavigationController.stem_navigationController_pushViewController(_:animated:))),
+                         with: maker.create(selector: #selector(UINavigationController.pushViewController(_:animated:))))
     }()
     
     @objc
