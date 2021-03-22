@@ -54,6 +54,14 @@ open class HashableSingleTypeSection<Cell: UICollectionViewCell & ConfigurableVi
         }
     }
     
+    open func config(auto models: [Cell.Model]) {
+        if #available(iOS 13, *) {
+            config(difference: models)
+        } else {
+            config(models: models)
+        }
+    }
+    
     @available(iOS 13, *)
     open func config(difference models: [Cell.Model]) {
         let difference = models.difference(from: self.models)

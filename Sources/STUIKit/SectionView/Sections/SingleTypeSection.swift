@@ -94,11 +94,11 @@ public extension SingleTypeSection {
         if let flowLayout = sectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             switch flowLayout.scrollDirection {
             case .horizontal:
-                return .init(width: .greatestFiniteMagnitude,
+                return .init(width: sectionView.bounds.width,
                              height: sectionView.bounds.height - sectionInset.top - sectionInset.bottom)
             case .vertical:
                 return .init(width: sectionView.bounds.width - sectionInset.left - sectionInset.right,
-                             height: .greatestFiniteMagnitude)
+                             height: sectionView.bounds.height)
             @unknown default:
                 return sectionView.bounds.size
             }
