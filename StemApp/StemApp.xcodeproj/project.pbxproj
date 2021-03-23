@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
 		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
+		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
+		CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70522609FF5D006150C2 /* DecorationView.swift */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
 		CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */; };
 		CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */; };
@@ -49,6 +51,8 @@
 /* Begin PBXFileReference section */
 		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
+		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
+		CD8D70522609FF5D006150C2 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +205,8 @@
 				CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */,
 				CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */,
 				CD63148B260233F700670B84 /* CoverFlowViewController.swift */,
+				CD8D70522609FF5D006150C2 /* DecorationView.swift */,
+				CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */,
 			);
 			path = WaterfallFlow;
 			sourceTree = "<group>";
@@ -370,9 +376,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */,
 				CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */,
 				CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */,
 				CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */,
+				CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */,
 				CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */,
 				CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */,
 				CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */,

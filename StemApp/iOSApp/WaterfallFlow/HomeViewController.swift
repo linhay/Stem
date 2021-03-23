@@ -20,6 +20,9 @@ class HomeViewController: SectionCollectionViewController {
         .init(title: "STWaterfallFlowLayout", action: {
             self.st.push(WaterfallFlowViewController())
         }),
+        .init(title: "DecorationView", action: {
+            self.st.push(DecorationViewSectionViewController())
+        }),
         .init(title: "SingleTypeSection", action: {
             self.st.push(SingleTypeSectionViewController())
         })

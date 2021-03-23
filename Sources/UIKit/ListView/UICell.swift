@@ -95,27 +95,23 @@ public extension Stem where Base: UITableView {
     }
 }
 
-public extension UICollectionView {
+/// SupplementaryView regist type
+///
+/// - header: header
+/// - footer: footer
+/// - custom: custom
+public enum SupplementaryViewKindType: Equatable {
+    case header
+    case footer
+    case custom(_ value: String)
     
-    /// SupplementaryView regist type
-    ///
-    /// - header: header
-    /// - footer: footer
-    /// - custom: custom
-    enum KindType: Equatable {
-        case header
-        case footer
-        case custom(_ value: String)
-        
-        public var rawValue: String {
-            switch self {
-            case .header: return UICollectionView.elementKindSectionHeader
-            case .footer: return UICollectionView.elementKindSectionFooter
-            case .custom(let value): return value
-            }
+    public var rawValue: String {
+        switch self {
+        case .header: return UICollectionView.elementKindSectionHeader
+        case .footer: return UICollectionView.elementKindSectionFooter
+        case .custom(let value): return value
         }
     }
-    
 }
 
 public extension Stem where Base: UICollectionView {
@@ -131,7 +127,7 @@ public extension Stem where Base: UICollectionView {
         }
     }
 
-    func register<T: UICollectionReusableView>(_ view: T.Type, for kind: UICollectionView.KindType) where T: STViewProtocol {
+    func register<T: UICollectionReusableView>(_ view: T.Type, for kind: SupplementaryViewKindType) where T: STViewProtocol {
         if let nib = T.nib {
             base.register(nib, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.id)
         } else {
@@ -147,9 +143,30 @@ public extension Stem where Base: UICollectionView {
         return base.dequeueReusableCell(withReuseIdentifier: T.id, for: indexPath) as! T
     }
     
-    func dequeue<T: UICollectionReusableView>(at indexPath: IndexPath, kind: UICollectionView.KindType) -> T where T: STViewProtocol {
+    func dequeue<T: UICollectionReusableView>(at indexPath: IndexPath, kind: SupplementaryViewKindType) -> T where T: STViewProtocol {
         return base.dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: T.id, for: indexPath) as! T
     }
     
 }
+
+public extension Stem where Base: UICollectionViewLayout {
+    
+    func register(_ view: (UICollectionReusableView & STViewProtocol).Type) {
+        if let nib = view.nib {
+            base.register(nib, forDecorationViewOfKind: view.id)
+        } else {
+            base.register(view.self, forDecorationViewOfKind: view.id)
+        }
+    }
+    
+     func layoutAttributesForSupplementaryView(ofKind kind: SupplementaryViewKindType, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        base.layoutAttributesForSupplementaryView(ofKind: kind.rawValue, at: indexPath)
+    }
+
+     func layoutAttributesForDecorationView(ofKind kind: (UICollectionReusableView & STViewProtocol).Type, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        base.layoutAttributesForDecorationView(ofKind: kind.id, at: indexPath)
+    }
+    
+}
+
 #endif

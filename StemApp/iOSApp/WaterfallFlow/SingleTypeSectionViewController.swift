@@ -39,7 +39,7 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
         }
         
         let models = data.map { TestCell.Model(title: "\($0)", width: 50, height: 50) }
-        section.config(models: models)
+        section.config(auto: models)
         manager.update(section)
     }
     

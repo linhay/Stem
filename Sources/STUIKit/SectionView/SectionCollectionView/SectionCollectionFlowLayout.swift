@@ -26,48 +26,43 @@ import UIKit
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
     /// 布局插件样式
-    public enum PluginMode: String, Comparable, Hashable {
-        
-        public static func < (lhs: PluginMode, rhs: PluginMode) -> Bool {
-            return lhs.rawValue < rhs.rawValue
-        }
-        
+    public enum PluginMode {
         /// 左对齐
         case left
         /// 居中对齐
         case centerX
         /// header & footer 贴合 cell
         case fixSupplementaryViewInset
-        
+        case sectionBackgroundView(view: (UICollectionReusableView & STViewProtocol).Type, section: Int)
+        case allSectionBackgroundView(view: (UICollectionReusableView & STViewProtocol).Type)
+
         var priority: Int {
             switch self {
             case .left:    return 100
             case .centerX: return 100
             case .fixSupplementaryViewInset: return 1
+            case .sectionBackgroundView: return 200
+            case .allSectionBackgroundView: return 200
             }
         }
     }
     
     public var pluginModes: [PluginMode] = [] {
         didSet {
-            var set = Set<PluginMode>()
+            var set = Set<Int>()
             var newPluginModes = [PluginMode]()
             
             /// 优先级冲突去重
             for item in pluginModes {
-                if set.contains(item) {
-                    assertionFailure("mode冲突: \(pluginModes.filter({ $0 == item }))")
-                } else {
-                    set.update(with: item)
+                if set.insert(item.priority).inserted {
                     newPluginModes.append(item)
+                } else {
+                    assertionFailure("mode冲突: \(pluginModes.filter({ $0.priority == item.priority }))")
                 }
             }
             
             /// mode 重排
-            newPluginModes.sort(by: { $0 > $1 })
-            if newPluginModes != pluginModes {
-                pluginModes = newPluginModes
-            }
+            pluginModes = newPluginModes.sorted(by: { $0.priority < $1.priority })
         }
     }
     
@@ -101,6 +96,29 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 attributes = modeLeft(collectionView, attributes: attributes) ?? []
             case .fixSupplementaryViewInset:
                 attributes = modeFixSupplementaryViewInset(collectionView, attributes: attributes) ?? []
+            case .sectionBackgroundView(let view, let section):
+                let sectionAttributes = attributes.filter{ $0.indexPath.section == section }
+                if let attribute = modeSectionBackgroundView(collectionView, view: view, attributes: sectionAttributes) {
+                    attributes.append(attribute)
+                }
+                
+            case .allSectionBackgroundView(view: let view):
+                let store = attributes.reduce([Int: [UICollectionViewLayoutAttributes]]()) { result, item -> [Int: [UICollectionViewLayoutAttributes]] in
+                    var result = result
+                    let section = item.indexPath.section
+                    if result[section] != nil {
+                        result[section]?.append(item)
+                    } else {
+                        result[section] = [item]
+                    }
+                    return result
+                }
+                
+                for sectionAttributes in store.values {
+                    if let attribute = modeSectionBackgroundView(collectionView, view: view, attributes: sectionAttributes) {
+                        attributes.append(attribute)
+                    }
+                }
             }
         }
         
@@ -115,6 +133,22 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
 
 // MARK: - Mode
 private extension SectionCollectionFlowLayout {
+    
+    func modeSectionBackgroundView(_ collectionView: UICollectionView,
+                                   view: (UICollectionReusableView & STViewProtocol).Type,
+                                   attributes: [UICollectionViewLayoutAttributes]) -> UICollectionViewLayoutAttributes? {
+        guard let first = attributes.first else {
+            return nil
+        }
+        
+        let rects = attributes.dropFirst().reduce(first.frame) { return $0.union($1.frame) }
+        
+        st.register(view)
+        let attribute = UICollectionViewLayoutAttributes(forDecorationViewOfKind: view.id, with: first.indexPath)
+        attribute.zIndex = -1
+        attribute.frame = rects
+        return attribute
+    }
     
     func modeFixSupplementaryViewInset(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         for item in attributes {
