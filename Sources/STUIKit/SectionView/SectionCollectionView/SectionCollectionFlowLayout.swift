@@ -67,12 +67,14 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     }
     
     private var oldBounds = CGRect.zero
+    private var decorationViewCache = [Int: UICollectionViewLayoutAttributes]()
     
     override public func prepare() {
         super.prepare()
         guard let collectionView = collectionView else {
             return
         }
+        decorationViewCache.removeAll()
         oldBounds = collectionView.bounds
     }
     
@@ -141,12 +143,23 @@ private extension SectionCollectionFlowLayout {
             return nil
         }
         
+        if let decorationView = decorationViewCache[first.indexPath.section] {
+            if first.indexPath.item == 0 {
+                return nil
+            }
+            
+            let rects = attributes.reduce(decorationView.frame) { return $0.union($1.frame) }
+            decorationView.frame = rects
+            return nil
+        }
+        
         let rects = attributes.dropFirst().reduce(first.frame) { return $0.union($1.frame) }
         
         st.register(view)
         let attribute = UICollectionViewLayoutAttributes(forDecorationViewOfKind: view.id, with: first.indexPath)
         attribute.zIndex = -1
         attribute.frame = rects
+        decorationViewCache[first.indexPath.section] = attribute
         return attribute
     }
     
