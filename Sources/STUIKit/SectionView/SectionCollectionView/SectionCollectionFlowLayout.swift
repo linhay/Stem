@@ -25,6 +25,8 @@ import UIKit
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
+    public typealias DecorationView = UICollectionReusableView & STViewProtocol
+    
     /// 布局插件样式
     public enum PluginMode {
         /// 左对齐
@@ -33,16 +35,16 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         case centerX
         /// header & footer 贴合 cell
         case fixSupplementaryViewInset
-        case sectionBackgroundView(view: (UICollectionReusableView & STViewProtocol).Type, section: Int)
-        case allSectionBackgroundView(view: (UICollectionReusableView & STViewProtocol).Type)
+        case sectionBackgroundView([(view: DecorationView.Type, section: Int)])
+        case allSectionBackgroundView(view: DecorationView.Type)
 
         var priority: Int {
             switch self {
             case .left:    return 100
             case .centerX: return 100
             case .fixSupplementaryViewInset: return 1
-            case .sectionBackgroundView: return 200
-            case .allSectionBackgroundView: return 200
+            case .sectionBackgroundView: return 20000
+            case .allSectionBackgroundView: return 20000
             }
         }
     }
@@ -98,12 +100,13 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 attributes = modeLeft(collectionView, attributes: attributes) ?? []
             case .fixSupplementaryViewInset:
                 attributes = modeFixSupplementaryViewInset(collectionView, attributes: attributes) ?? []
-            case .sectionBackgroundView(let view, let section):
-                let sectionAttributes = attributes.filter{ $0.indexPath.section == section }
-                if let attribute = modeSectionBackgroundView(collectionView, view: view, attributes: sectionAttributes) {
-                    attributes.append(attribute)
+            case .sectionBackgroundView(let list):
+                for (view, section) in list {
+                    let sectionAttributes = attributes.filter{ $0.indexPath.section == section }
+                    if let attribute = modeSectionBackgroundView(view: view, attributes: sectionAttributes) {
+                        attributes.append(attribute)
+                    }
                 }
-                
             case .allSectionBackgroundView(view: let view):
                 let store = attributes.reduce([Int: [UICollectionViewLayoutAttributes]]()) { result, item -> [Int: [UICollectionViewLayoutAttributes]] in
                     var result = result
@@ -117,7 +120,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 }
                 
                 for sectionAttributes in store.values {
-                    if let attribute = modeSectionBackgroundView(collectionView, view: view, attributes: sectionAttributes) {
+                    if let attribute = modeSectionBackgroundView(view: view, attributes: sectionAttributes) {
                         attributes.append(attribute)
                     }
                 }
@@ -136,8 +139,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
 // MARK: - Mode
 private extension SectionCollectionFlowLayout {
     
-    func modeSectionBackgroundView(_ collectionView: UICollectionView,
-                                   view: (UICollectionReusableView & STViewProtocol).Type,
+    func modeSectionBackgroundView(view: DecorationView.Type,
                                    attributes: [UICollectionViewLayoutAttributes]) -> UICollectionViewLayoutAttributes? {
         guard let first = attributes.first else {
             return nil

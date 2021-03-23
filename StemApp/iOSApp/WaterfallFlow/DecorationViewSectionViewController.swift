@@ -21,8 +21,8 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
             section.useSizeCache(true)
             
             section.headerViewProvider.delegate(on: self) { (self, section) -> UICollectionReusableView in
-                self.sectionView.st.register(DecorationView.self, for: .header)
-                return self.sectionView.st.dequeue(at: section.indexPath(from: 0), kind: .header) as DecorationView
+                section.register(DecorationView.self, for: .header)
+                return section.dequeue(at: 0, kind: .header) as DecorationView
             }
             
             section.headerSizeProvider.delegate(on: self) { (self, sectionView) -> CGSize in
@@ -30,8 +30,8 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
             }
             
             section.footerViewProvider.delegate(on: self) { (self, section) -> UICollectionReusableView in
-                self.sectionView.st.register(DecorationView.self, for: .footer)
-                return self.sectionView.st.dequeue(at: section.indexPath(from: 0), kind: .footer) as DecorationView
+                section.register(DecorationView.self, for: .footer)
+                return section.dequeue(at: 0, kind: .footer) as DecorationView
             }
             
             section.footerSizeProvider.delegate(on: self) { (self, sectionView) -> CGSize in
@@ -43,9 +43,15 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
             return section
         }
         
-        sectionView.set(pluginModes: [.allSectionBackgroundView(view: DecorationView.self),
-//                                      .sectionBackgroundView(view: DecorationView.self, section: 1),
-                                      .fixSupplementaryViewInset])
+        sectionView.set(pluginModes: [
+            //.allSectionBackgroundView(view: DecorationView.self),
+            .sectionBackgroundView([
+                (view: DecorationView.self, section: 1),
+                (view: DecorationView.self, section: 3),
+                (view: DecorationView.self, section: 5),
+            ]),
+            .fixSupplementaryViewInset
+        ])
         sectionView.sectionFlowLayout?.st.register(DecorationView.self)
         
         manager.update(sections)
