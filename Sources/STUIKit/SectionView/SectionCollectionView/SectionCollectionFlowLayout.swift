@@ -26,7 +26,8 @@ import UIKit
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
     public typealias DecorationView = UICollectionReusableView & STViewProtocol
-    
+    public typealias DecorationElement = [Int: DecorationView.Type]
+
     /// 布局插件样式
     public enum PluginMode {
         /// 左对齐
@@ -35,16 +36,16 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         case centerX
         /// header & footer 贴合 cell
         case fixSupplementaryViewInset
-        case sectionBackgroundView([(view: DecorationView.Type, section: Int)])
-        case allSectionBackgroundView(view: DecorationView.Type)
+        case sectionBackgroundView(DecorationElement)
+        case allSectionBackgroundView(type: DecorationView.Type)
 
         var priority: Int {
             switch self {
             case .left:    return 100
             case .centerX: return 100
             case .fixSupplementaryViewInset: return 1
-            case .sectionBackgroundView: return 20000
-            case .allSectionBackgroundView: return 20000
+            case .sectionBackgroundView: return 200
+            case .allSectionBackgroundView: return 200
             }
         }
     }
@@ -100,30 +101,10 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 attributes = modeLeft(collectionView, attributes: attributes) ?? []
             case .fixSupplementaryViewInset:
                 attributes = modeFixSupplementaryViewInset(collectionView, attributes: attributes) ?? []
-            case .sectionBackgroundView(let list):
-                for (view, section) in list {
-                    let sectionAttributes = attributes.filter{ $0.indexPath.section == section }
-                    if let attribute = modeSectionBackgroundView(view: view, attributes: sectionAttributes) {
-                        attributes.append(attribute)
-                    }
-                }
-            case .allSectionBackgroundView(view: let view):
-                let store = attributes.reduce([Int: [UICollectionViewLayoutAttributes]]()) { result, item -> [Int: [UICollectionViewLayoutAttributes]] in
-                    var result = result
-                    let section = item.indexPath.section
-                    if result[section] != nil {
-                        result[section]?.append(item)
-                    } else {
-                        result[section] = [item]
-                    }
-                    return result
-                }
-                
-                for sectionAttributes in store.values {
-                    if let attribute = modeSectionBackgroundView(view: view, attributes: sectionAttributes) {
-                        attributes.append(attribute)
-                    }
-                }
+            case .sectionBackgroundView(let elements):
+                attributes = modeSectionBackgroundView(collectionView, element: elements, attributes: attributes) ?? []
+            case .allSectionBackgroundView(type: let type):
+                attributes = modeSectionBackgroundView(collectionView, element: [-1: type], attributes: attributes) ?? []
             }
         }
         
@@ -139,46 +120,73 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
 // MARK: - Mode
 private extension SectionCollectionFlowLayout {
     
-    func modeSectionBackgroundView(view: DecorationView.Type,
-                                   attributes: [UICollectionViewLayoutAttributes]) -> UICollectionViewLayoutAttributes? {
-        guard let first = attributes.first else {
-            return nil
-        }
+    func modeSectionBackgroundView(_ collectionView: UICollectionView,
+                                   element: DecorationElement,
+                                   attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         
-        if let decorationView = decorationViewCache[first.indexPath.section] {
-            if first.indexPath.item == 0 {
+        func task(section: Int, type: DecorationView.Type) -> UICollectionViewLayoutAttributes? {
+            if decorationViewCache[section] != nil {
+                return nil
+            }
+        
+            st.register(type)
+            
+            let count = collectionView.numberOfItems(inSection: section)
+            let sectionIndexPath = IndexPath(item: 0, section: section)
+            
+            let header = st.layoutAttributesForSupplementaryView(ofKind: .header, at: sectionIndexPath)
+            let footer = st.layoutAttributesForSupplementaryView(ofKind: .footer, at: sectionIndexPath)
+            let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
+            let elements = ([header, footer] + cells).compactMap({ $0?.frame })
+            
+            guard let first = elements.first else {
                 return nil
             }
             
-            let rects = attributes.reduce(decorationView.frame) { return $0.union($1.frame) }
-            decorationView.frame = rects
-            return nil
+            let attribute = UICollectionViewLayoutAttributes(forDecorationViewOfKind: type.id, with: sectionIndexPath)
+            attribute.zIndex = -1
+            attribute.frame = elements.dropFirst().reduce(first) { return $0.union($1) }
+            
+            if pluginModes.contains(where: { $0.priority == PluginMode.fixSupplementaryViewInset.priority }) {
+                let inset = insetForSection(at: attribute.indexPath.section)
+                if header != nil {
+                    attribute.frame.origin.y += inset.top
+                }
+                if footer != nil {
+                    attribute.frame.size.height -= inset.top + inset.bottom
+                }
+            }
+            
+            decorationViewCache[section] = attribute
+            return attribute
+        }
+
+        var sectionSet = Set<Int>()
+        let sections = attributes
+            .map(\.indexPath.section)
+            .filter({ sectionSet.insert($0).inserted })
+        
+        if let type = element[-1] {
+           return attributes + sections.compactMap { task(section: $0, type: type) }
+        } else {
+            return attributes + sections
+                .filter({ element.keys.contains($0) })
+                .compactMap { task(section: $0, type: element[$0]!) }
         }
         
-        let rects = attributes.dropFirst().reduce(first.frame) { return $0.union($1.frame) }
-        
-        st.register(view)
-        let attribute = UICollectionViewLayoutAttributes(forDecorationViewOfKind: view.id, with: first.indexPath)
-        attribute.zIndex = -1
-        attribute.frame = rects
-        decorationViewCache[first.indexPath.section] = attribute
-        return attribute
     }
     
     func modeFixSupplementaryViewInset(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
-        for item in attributes {
-            guard item.representedElementCategory == .supplementaryView,
-                  let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
-                  let inset = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section)
-            else {
-                continue
+        attributes
+            .filter{ $0.representedElementCategory == .supplementaryView }
+            .forEach { attribute in
+                let inset = insetForSection(at: attribute.indexPath.section)
+                if attribute.representedElementKind == UICollectionView.elementKindSectionFooter {
+                    attribute.frame.origin.y -= inset.bottom
+                } else if attribute.representedElementKind == UICollectionView.elementKindSectionHeader {
+                    attribute.frame.origin.y += inset.top
+                }
             }
-            if item.representedElementKind == UICollectionView.elementKindSectionFooter {
-                item.frame.origin.y -= inset.bottom
-            } else if item.representedElementKind == UICollectionView.elementKindSectionHeader {
-                item.frame.origin.y += inset.top
-            }
-        }
         return attributes
     }
     
@@ -294,6 +302,19 @@ private extension SectionCollectionFlowLayout {
             list.append(item)
         }
         return list
+    }
+    
+}
+
+private extension SectionCollectionFlowLayout {
+
+    func insetForSection(at section: Int) -> UIEdgeInsets {
+        guard let collectionView = collectionView,
+              let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+              let inset = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: section) else {
+            return sectionInset
+        }
+        return inset
     }
     
 }
