@@ -22,7 +22,7 @@
 
 import Foundation
 
-extension FilePath {
+public extension FilePath {
 
     /// iOS 沙盒路径
     enum SanboxRootPath {
@@ -34,6 +34,7 @@ extension FilePath {
         var path: String? {
             try? url().path
         }
+        
         func url() throws -> URL {
             let manager = FileManager.default
             switch self {

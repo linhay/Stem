@@ -11,14 +11,6 @@ import Stem
 
 class TestFilePath: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     func testURL() {
         let str = "/Users/linhey/Desktop/linhey/../linhey/pod_template_stem/Sources/Custom/Foundation/Delegate.swift"
         let url = URL(fileURLWithPath: str)
@@ -28,15 +20,14 @@ class TestFilePath: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        let filePath = try FilePath(path: "./mmap5.json", type: .file)
+        print(filePath.path)
+        let result = try filePath.mmap(prot: [.write, .read],
+                                       type: .file,
+                                       shareType: .share,
+                                       size: 4 * 1024)
+        result.write(data: "1234567890".data(using: .utf8)!)
+        print(String(data: result.data(), encoding: .utf8)!)
     }
 
 }

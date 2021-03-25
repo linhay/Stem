@@ -38,7 +38,7 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
                 return .init(width: 120, height: 40)
             }
             
-            let models = (0...10).map { TestCell.Model(title: "\($0)", width: 50, height: 50) }
+            let models = (0...100).map { TestCell.Model(title: "\($0)", width: 50, height: 50) }
             section.config(models: models)
             return section
         }

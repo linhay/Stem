@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD358EA8260CC3ED0018CE1F /* iOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */; };
 		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
 		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
 		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
@@ -39,6 +40,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CD358EAA260CC3ED0018CE1F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDD3BF3E25ECF25D0033ECD6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDD3BF6325ECF3210033ECD6;
+			remoteInfo = iOSApp;
+		};
 		CDD3BFC325ECF5680033ECD6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CDD3BF3E25ECF25D0033ECD6 /* Project object */;
@@ -49,6 +57,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CD358EA5260CC3ED0018CE1F /* iOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppTests.swift; sourceTree = "<group>"; };
+		CD358EA9260CC3ED0018CE1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
 		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +98,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CD358EA2260CC3ED0018CE1F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDD3BF6125ECF3210033ECD6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -114,6 +132,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD358EA6260CC3ED0018CE1F /* iOSAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */,
+				CD358EA9260CC3ED0018CE1F /* Info.plist */,
+			);
+			path = iOSAppTests;
+			sourceTree = "<group>";
+		};
 		CDD3BF3D25ECF25D0033ECD6 = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +149,7 @@
 				CDD3BF6525ECF3220033ECD6 /* iOSApp */,
 				CDD3BF7E25ECF37E0033ECD6 /* macOSApp */,
 				CDD3BFBF25ECF5680033ECD6 /* macOSAppTests */,
+				CD358EA6260CC3ED0018CE1F /* iOSAppTests */,
 				CDD3BF4725ECF25D0033ECD6 /* Products */,
 				CDD3BF9525ECF4300033ECD6 /* Frameworks */,
 			);
@@ -133,6 +161,7 @@
 				CDD3BF6425ECF3210033ECD6 /* iOSApp.app */,
 				CDD3BF7D25ECF37E0033ECD6 /* macOSApp.app */,
 				CDD3BFBE25ECF5680033ECD6 /* macOSAppTests.xctest */,
+				CD358EA5260CC3ED0018CE1F /* iOSAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,6 +267,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CD358EA4260CC3ED0018CE1F /* iOSAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD358EAE260CC3ED0018CE1F /* Build configuration list for PBXNativeTarget "iOSAppTests" */;
+			buildPhases = (
+				CD358EA1260CC3ED0018CE1F /* Sources */,
+				CD358EA2260CC3ED0018CE1F /* Frameworks */,
+				CD358EA3260CC3ED0018CE1F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CD358EAB260CC3ED0018CE1F /* PBXTargetDependency */,
+			);
+			name = iOSAppTests;
+			productName = iOSAppTests;
+			productReference = CD358EA5260CC3ED0018CE1F /* iOSAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CDD3BF6325ECF3210033ECD6 /* iOSApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CDD3BF7525ECF3220033ECD6 /* Build configuration list for PBXNativeTarget "iOSApp" */;
@@ -306,6 +353,10 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					CD358EA4260CC3ED0018CE1F = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = CDD3BF6325ECF3210033ECD6;
+					};
 					CDD3BF6325ECF3210033ECD6 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -337,11 +388,19 @@
 				CDD3BF6325ECF3210033ECD6 /* iOSApp */,
 				CDD3BF7C25ECF37E0033ECD6 /* macOSApp */,
 				CDD3BFBD25ECF5680033ECD6 /* macOSAppTests */,
+				CD358EA4260CC3ED0018CE1F /* iOSAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CD358EA3260CC3ED0018CE1F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDD3BF6225ECF3210033ECD6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -372,6 +431,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CD358EA1260CC3ED0018CE1F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD358EA8260CC3ED0018CE1F /* iOSAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDD3BF6025ECF3210033ECD6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -416,6 +483,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CD358EAB260CC3ED0018CE1F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDD3BF6325ECF3210033ECD6 /* iOSApp */;
+			targetProxy = CD358EAA260CC3ED0018CE1F /* PBXContainerItemProxy */;
+		};
 		CDD3BFC425ECF5680033ECD6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CDD3BF7C25ECF37E0033ECD6 /* macOSApp */;
@@ -443,6 +515,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CD358EAC260CC3ED0018CE1F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q5CT3J7RAS;
+				INFOPLIST_FILE = iOSAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = linhey.stem.com.iOSAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSApp.app/iOSApp";
+			};
+			name = Debug;
+		};
+		CD358EAD260CC3ED0018CE1F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q5CT3J7RAS;
+				INFOPLIST_FILE = iOSAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = linhey.stem.com.iOSAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSApp.app/iOSApp";
+			};
+			name = Release;
+		};
 		CDD3BF5825ECF25E0033ECD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -696,6 +808,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CD358EAE260CC3ED0018CE1F /* Build configuration list for PBXNativeTarget "iOSAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD358EAC260CC3ED0018CE1F /* Debug */,
+				CD358EAD260CC3ED0018CE1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CDD3BF4125ECF25D0033ECD6 /* Build configuration list for PBXProject "StemApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

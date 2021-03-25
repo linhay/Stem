@@ -5,6 +5,7 @@
 //  Created by 林翰 on 2021/3/17.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public class STCoverFlowLayout: UICollectionViewFlowLayout {
@@ -72,3 +73,4 @@ public class STCoverFlowLayout: UICollectionViewFlowLayout {
                         - minimumLineSpacing, height: 0)
     }
 }
+#endif
