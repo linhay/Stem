@@ -394,24 +394,7 @@ public extension FilePath {
     
 }
 
-// MARK: - Error
-public extension FilePath {
-    
-    struct Error: LocalizedError {
-        
-        public let message: String
-        public let code: Int
-        public var errorDescription: String?
-        
-        @discardableResult
-        public init(message: String, code: Int = 0) {
-            self.message = message
-            self.errorDescription = message
-            self.code = code
-        }
-    }
-    
-}
+
 
 // MARK: - Type
 public extension FilePath {

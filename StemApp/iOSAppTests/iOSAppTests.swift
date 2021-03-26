@@ -20,15 +20,16 @@ class iOSAppTests: XCTestCase {
 
     func testExample() throws {
         let filePath = try FilePath(path: "./mmap5.json", inSanbox: .cache, type: .file)
+        
+        try? filePath.delete()
         try? filePath.create()
+        
+        let system = filePath.system
         print(filePath.path)
-        let result = try filePath.mmap(prot: [.write, .read],
-                                       type: .file,
-                                       shareType: .share,
-                                       size: 4 * 1024)
-        result.write(data: "1234567890".data(using: .utf8)!)
-        result.write(data: "abcdefg".data(using: .utf8)!, offset: 8)
-        print(String(data: result.data(), encoding: .utf8)!)
+        let result = try system.mmap(size: 1)
+        try result.write(data: "329392932".data(using: .utf8)!)
+        try result.write(data: "sfsdfsdfs".data(using: .utf8)!, offset: 8)
+        print(String(data: result.read(), encoding: .utf8)!)
     }
 
     func testPerformanceExample() throws {

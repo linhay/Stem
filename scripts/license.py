@@ -2,22 +2,21 @@ import os
 
 def BFS_Dir(path, dirCallback=None, fileCallback=None):
     queue = []
-    ret = []
     queue.append(path);
     while len(queue) > 0:
         tmp = queue.pop(0)
         if (os.path.isdir(tmp)):
-            ret.append(tmp)
             for item in os.listdir(tmp):
-                queue.append(os.path.join(tmp, item))
+                if not item.startswith('.'):
+                    queue.append(os.path.join(tmp, item))
             if dirCallback:
                 dirCallback(tmp)
         elif (os.path.isfile(tmp)):
-            ret.append(tmp)
             if fileCallback:
                 fileCallback(tmp)
 
 def dirCallback(path):
+    print('dir:' + path)
     return
 
 def license(path: str):
@@ -25,8 +24,10 @@ def license(path: str):
         return reader.readlines()
 
 def fileCallback(path: str, license: bytearray = license(path=os.getcwd() + '/license')):
-    if path.endswith('.DS_Store'):
+    if path.endswith('.DS_Store') or path.endswith('Package.swift'):
         return
+
+    print('file:' + path)
 
     with open(path, 'rb') as reader:
         lines = reader.readlines()

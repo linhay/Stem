@@ -292,6 +292,7 @@
 				CDD3BF6025ECF3210033ECD6 /* Sources */,
 				CDD3BF6125ECF3210033ECD6 /* Frameworks */,
 				CDD3BF6225ECF3210033ECD6 /* Resources */,
+				CD358F98260D922F0018CE1F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -313,6 +314,7 @@
 				CDD3BF7925ECF37E0033ECD6 /* Sources */,
 				CDD3BF7A25ECF37E0033ECD6 /* Frameworks */,
 				CDD3BF7B25ECF37E0033ECD6 /* Resources */,
+				CD358F9D260D928C0018CE1F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -429,6 +431,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CD358F98260D922F0018CE1F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd $PROJECT_DIR/../scripts\npython3 license.py\n";
+		};
+		CD358F9D260D928C0018CE1F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd $PROJECT_DIR/../scripts\npython3 license.py\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CD358EA1260CC3ED0018CE1F /* Sources */ = {
