@@ -183,7 +183,7 @@ public extension StemColor {
 
         switch formatter {
         case .auto:
-            return hexString(alpha >= 1 ? .digits6 : .digits8)
+            return hexString(alpha >= 1 ? .digits6 : .digits8, prefix: prefix)
         case .digits6:
             return prefix.rawValue + String(format: "%02lX%02lX%02lX", map(rgbSpace.red), map(rgbSpace.green), map(rgbSpace.blue))
         case .digits8:
