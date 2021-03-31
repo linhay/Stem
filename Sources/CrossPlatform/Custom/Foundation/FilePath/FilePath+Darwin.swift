@@ -66,7 +66,7 @@ public extension FilePath.System {
     
     /// 4k对齐
     private func alignmentPageSize(from size: Int) -> Int {
-        let pageSize = Int(PAGE_SIZE)
+        let pageSize = Int(vm_page_size)
         let count = size / pageSize + size % pageSize == 0 ? 0 : 1
         return pageSize * count
     }
