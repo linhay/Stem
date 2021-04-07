@@ -73,6 +73,9 @@ public extension SectionCollectionManager {
     }
 
     func reload() {
+        guard isPicking == false else {
+            return
+        }
         operational(sectionManager.reload())
     }
 
