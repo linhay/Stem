@@ -37,7 +37,7 @@ public extension StemColor {
     
 }
 
-#if canImport(AppKit)
+#if !targetEnvironment(macCatalyst) && canImport(AppKit)
 import AppKit
 
 public extension StemColor {

@@ -25,6 +25,7 @@
 import UIKit
 import AVFoundation
 
+@available(iOS 4.0, macCatalyst 14.0, *)
 public extension Stem where Base: UIDevice {
     
     /// 闪光灯 亮度等级 0 ~ 1
