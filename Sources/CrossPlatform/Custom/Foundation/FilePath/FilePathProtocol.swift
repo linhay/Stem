@@ -41,17 +41,21 @@ public struct FilePathAttributes {
     
 }
 
-protocol FilePathProtocol {
+public protocol FilePathProtocol {
     
     var url: URL { get }
+    
     init(url: URL)
     
 }
 
 extension FilePathProtocol {
+    var manager: FileManager { FileManager.default }
+}
+
+public extension FilePathProtocol {
     
     var attributes: FilePathAttributes { .init(path: url) }
-    var manager: FileManager { FileManager.default }
 
     /// 当前路径是否存在
     var isExist: Bool { manager.fileExists(atPath: url.path) }

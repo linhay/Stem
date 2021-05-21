@@ -25,9 +25,9 @@ import Foundation
 public extension FilePath {
     
     struct Folder: FilePathProtocol {
-        let url: URL
+        public let url: URL
         
-        init(url: URL) {
+        public init(url: URL) {
             self.url = url.standardized
         }
     }

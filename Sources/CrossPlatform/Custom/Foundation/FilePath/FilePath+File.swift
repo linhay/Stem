@@ -26,9 +26,9 @@ public extension FilePath {
     
     struct File: FilePathProtocol {
         
-        let url: URL
+        public let url: URL
         
-        init(url: URL) {
+        public init(url: URL) {
             self.url = url.standardized
         }
     }
