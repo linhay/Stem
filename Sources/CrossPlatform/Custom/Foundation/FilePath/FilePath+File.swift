@@ -23,38 +23,37 @@
 import Foundation
 
 public extension FilePath {
-
-    /// iOS 沙盒路径
-    enum SanboxRootPath {
-        case document
-        case library
-        case cache
-        case temporary
-
-        var path: String? {
-            try? url().path
-        }
+    
+    struct File: FilePathProtocol {
         
-        func url() throws -> URL {
-            let manager = FileManager.default
-            switch self {
-            case .document:
-                return try manager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            case .library:
-                return try manager.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            case .cache:
-                return try manager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            case .temporary:
-                return URL(fileURLWithPath: NSTemporaryDirectory())
-            }
+        let url: URL
+        
+        init(url: URL) {
+            self.url = url.standardized
         }
-
     }
+    
+}
 
-    init(folder path: String, inSanbox rootPath: SanboxRootPath) throws {
-        var rootURL = try rootPath.url()
-        rootURL.appendPathComponent(path)
-        self.init(type: .folder(.init(url: rootURL)))
+extension FilePath.File {
+    
+    /// 文件数据
+    /// - Throws: Data error
+    /// - Returns: data
+    func data(options: Data.ReadingOptions = []) throws -> Data {
+        return try Data(contentsOf: url, options: options)
     }
-
+    
+    /// 根据当前[FilePath]创建文件/文件夹
+    /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
+    @discardableResult
+    func create(with data: Data? = nil) throws -> FilePath.File {
+        if isExist {
+            throw FilePath.Error(message: "文件存在, 无法创建: \(url.path)")
+        }
+        try FilePath.Folder(url: url.deletingLastPathComponent()).create()
+        manager.createFile(atPath: url.path, contents: data, attributes: nil)
+        return self
+    }
+    
 }

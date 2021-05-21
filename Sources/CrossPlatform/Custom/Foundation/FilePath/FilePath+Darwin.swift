@@ -23,23 +23,18 @@
 import Foundation
 import Darwin
 
-public extension FilePath {
-    
-    var system: System { .init(filePath: self) }
+public extension FilePath.File {
         
     class System {
-        
-        let filePath: FilePath
-        
-        init(filePath: FilePath) {
+        let filePath: FilePath.File
+        init(filePath: FilePath.File) {
             self.filePath = filePath
         }
-        
     }
     
 }
 
-public extension FilePath.System {
+public extension FilePath.File.System {
 
     func open(flag1: OpenType, flag2: OpenFlag?, mode: OpenMode?) throws -> Int32 {
         var flag: Int32 = flag1.rawValue
@@ -48,7 +43,7 @@ public extension FilePath.System {
             flag |= flag2.rawValue
         }
         
-        let result = Darwin.open(filePath.path, flag, mode?.rawValue ?? 0)
+        let result = Darwin.open(filePath.url.path, flag, mode?.rawValue ?? 0)
         if result < 0 {
             throw FilePath.Error(posix: Darwin.errno)
         }
@@ -91,7 +86,7 @@ public extension FilePath.System {
               size: Int? = nil,
               offset: Int = 0) throws -> MMAP {
         
-        guard filePath.type == .file, filePath.isExist else {
+        guard filePath.isExist else {
             throw FilePath.Error(message: "Cannot open '\(filePath.url.absoluteURL)'")
         }
         
@@ -124,7 +119,7 @@ public extension FilePath.System {
     
 }
 
-public extension FilePath.System {
+public extension FilePath.File.System {
     
     struct OpenMode: OptionSet {
         /// S_IRWXU 00700 权限, 代表该文件所有者具有可读、可写及可执行的权限.
