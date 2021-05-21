@@ -22,7 +22,7 @@
 
 import Foundation
 
-public extension FilePath {
+public extension FilePath.Folder {
 
     /// iOS 沙盒路径
     enum SanboxRootPath {
@@ -51,10 +51,8 @@ public extension FilePath {
 
     }
 
-    init(folder path: String, inSanbox rootPath: SanboxRootPath) throws {
-        var rootURL = try rootPath.url()
-        rootURL.appendPathComponent(path)
-        self.init(type: .folder(.init(url: rootURL)))
+    init(sanbox rootPath: SanboxRootPath) throws {
+        self.init(url: try rootPath.url())
     }
 
 }
