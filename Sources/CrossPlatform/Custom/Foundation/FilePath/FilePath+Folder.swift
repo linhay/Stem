@@ -34,18 +34,17 @@ public extension FilePath {
         
 }
 
-extension FilePath.Folder {
+public extension FilePath.Folder {
 
     @discardableResult
     func merge(with folder: FilePath.Folder) -> FilePath.Folder {
-       
         return folder
     }
     
 }
 
 
-extension FilePath.Folder {
+public extension FilePath.Folder {
     
     /// 根据当前[FilePath]文件夹
     /// - Throws: FilePathError - 文件夹 存在, 无法创建

@@ -35,7 +35,7 @@ public extension FilePath {
     
 }
 
-extension FilePath.File {
+public extension FilePath.File {
     
     /// 文件数据
     /// - Throws: Data error
