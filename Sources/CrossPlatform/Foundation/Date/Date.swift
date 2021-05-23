@@ -31,8 +31,9 @@ extension StemValue where Base == Date {
         return formatter.string(from: base)
     }
     
-    func string(use closure: (DateFormatter) -> DateFormatter) -> String {
-        let formatter = closure(.init())
+    func string(use closure: (DateFormatter) -> Void) -> String {
+        let formatter = DateFormatter()
+        closure(formatter)
         return self.string(use: formatter)
     }
 
