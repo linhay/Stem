@@ -82,6 +82,15 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         willDisplayEvent.call(row)
     }
     
+    func delete(at row: Int) {
+        models.remove(at: row)
+        if itemCount <= 0 {
+            reload()
+        } else {
+            sectionView.deleteItems(at: [indexPath(from: row)])
+        }
+    }
+    
     open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
     open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
     open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }

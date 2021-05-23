@@ -128,15 +128,15 @@ public extension SectionCollectionProtocol {
 
 public extension SectionCollectionProtocol {
 
-    func delete(at row: Int, willUpdate: (() -> Void)? = nil) {
+    func delete(at row: Int, willUpdate: (() -> Void)) {
         delete(at: [row], willUpdate: willUpdate)
     }
 
-    func delete(at rows: [Int], willUpdate: (() -> Void)? = nil) {
+    func delete(at rows: [Int], willUpdate: (() -> Void)) {
         guard rows.isEmpty == false else {
             return
         }
-        willUpdate?()
+        willUpdate()
         if itemCount <= 0 {
             core?.reloadDataEvent?()
         } else {

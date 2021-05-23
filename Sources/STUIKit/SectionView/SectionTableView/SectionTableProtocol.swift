@@ -135,15 +135,15 @@ public extension SectionTableProtocol {
 
 public extension SectionTableProtocol {
 
-    func delete(at row: Int, with animation: UITableView.RowAnimation = .none, willUpdate: (() -> Void)? = nil) {
+    func delete(at row: Int, with animation: UITableView.RowAnimation = .none, willUpdate: (() -> Void)) {
         delete(at: [row], willUpdate: willUpdate)
     }
 
-    func delete(at rows: [Int], with animation: UITableView.RowAnimation = .none, willUpdate: (() -> Void)? = nil) {
+    func delete(at rows: [Int], with animation: UITableView.RowAnimation = .none, willUpdate: (() -> Void)) {
         guard rows.isEmpty == false else {
             return
         }
-        willUpdate?()
+        willUpdate()
         if itemCount <= 0 {
             sectionView.reloadData()
         } else {
