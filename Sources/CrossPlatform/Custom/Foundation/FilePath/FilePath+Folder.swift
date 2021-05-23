@@ -43,6 +43,20 @@ public extension FilePath.Folder {
     
 }
 
+public extension FilePath.Folder {
+    
+    func open(name: String) throws -> FilePath.File {
+        let file = FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
+        if file.isExist {
+            return file
+        } else {
+           try create(file: name)
+        }
+        return file
+    }
+
+}
+
 
 public extension FilePath.Folder {
     
