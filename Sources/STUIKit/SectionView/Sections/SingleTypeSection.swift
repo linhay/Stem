@@ -82,7 +82,11 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         willDisplayEvent.call(row)
     }
     
-    func delete(at row: Int) {
+    open func insert(at row: Int) {
+        sectionView.insertItems(at: [indexPath(from: row)])
+    }
+    
+    open func delete(at row: Int) {
         models.remove(at: row)
         if itemCount <= 0 {
             reload()

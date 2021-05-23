@@ -112,15 +112,15 @@ public extension SectionCollectionProtocol {
 
 public extension SectionCollectionProtocol {
 
-    func insert(at row: Int, willUpdate: (() -> Void)? = nil) {
-        insert(at: [row])
+    func insert(at row: Int, willUpdate: (() -> Void)) {
+        insert(at: [row], willUpdate: willUpdate)
     }
 
-    func insert(at rows: [Int], willUpdate: (() -> Void)? = nil) {
+    func insert(at rows: [Int], willUpdate: (() -> Void)) {
         guard rows.isEmpty == false else {
             return
         }
-        willUpdate?()
+        willUpdate()
         sectionView.insertItems(at: indexPaths(from: rows))
     }
 

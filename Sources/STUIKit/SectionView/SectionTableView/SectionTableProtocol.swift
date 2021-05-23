@@ -113,17 +113,17 @@ public extension SectionTableProtocol {
 
     func insert(at row: Int,
                 with animation: UITableView.RowAnimation = .none,
-                willUpdate: (() -> Void)? = nil) {
+                willUpdate: (() -> Void)) {
         insert(at: [row], with: animation, willUpdate: willUpdate)
     }
 
     func insert(at rows: [Int],
                 with animation: UITableView.RowAnimation = .none,
-                willUpdate: (() -> Void)? = nil) {
+                willUpdate: (() -> Void)) {
         guard rows.isEmpty == false else {
             return
         }
-        willUpdate?()
+        willUpdate()
         if let max = rows.max(), itemCount <= max {
             sectionView.reloadData()
         } else {
