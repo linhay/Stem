@@ -46,7 +46,7 @@ public struct LocationTransformer: Equatable, Codable {
         }
     
         #if canImport(CoreLocation)
-        public convenience init(_ value: CLLocationCoordinate2D) {
+        public init(_ value: CLLocationCoordinate2D) {
             self.init(latitude: value.latitude, longitude: value.longitude)
         }
         
@@ -58,6 +58,11 @@ public struct LocationTransformer: Equatable, Codable {
     
     public let type: LocationType
     public let coordinate: Coordinate2D
+    
+    public init(type: LocationType, coordinate: Coordinate2D) {
+        self.type = type
+        self.coordinate = coordinate
+    }
     
     public var longitude: Double { coordinate.longitude }
     public var latitude: Double { coordinate.latitude }
