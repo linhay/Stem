@@ -25,7 +25,14 @@ class HomeViewController: SectionCollectionViewController {
         }),
         .init(title: "SingleTypeSection", action: {
             self.st.push(SingleTypeSectionViewController())
-        })
+        }),
+        .init(title: "FigmaView", action: {
+            self.st.push(FigmaViewController())
+        }),
+        .init(title: "VPageController", action: {
+            self.st.push(VPageController())
+        }),
+        
     ])
     
     override func viewDidLoad() {

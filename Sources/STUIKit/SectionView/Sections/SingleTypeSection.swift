@@ -58,6 +58,11 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         reload()
     }
     
+    open func append(models: Cell.Model...) {
+        self.models.append(contentsOf: models)
+        reload()
+    }
+    
     open func didSelectItem(at row: Int) {
         selectedEvent.call(models[row])
         selectedRowEvent.call(row)
@@ -82,11 +87,26 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         willDisplayEvent.call(row)
     }
     
-    open func insert(at row: Int) {
+    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
+    open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
+    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
+    open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
+}
+
+/// 增删
+public extension SingleTypeSection {
+    
+    func swapAt(_ i: Int, _ j: Int) {
+        models.swapAt(i, j)
+        sectionView.reloadItems(at: [indexPath(from: i), indexPath(from: j)])
+    }
+    
+    func insert(_ model: Cell.Model, at row: Int) {
+        models.insert(model, at: row)
         sectionView.insertItems(at: [indexPath(from: row)])
     }
     
-    open func delete(at row: Int) {
+    func delete(at row: Int) {
         models.remove(at: row)
         if itemCount <= 0 {
             reload()
@@ -95,10 +115,6 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         }
     }
     
-    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
-    open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
-    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
-    open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
 }
 
 public extension SingleTypeSection {

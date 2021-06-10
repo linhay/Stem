@@ -20,23 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
+#if canImport(UIKit) && canImport(ImageIO)
 import UIKit
+import ImageIO
 
 public extension UIImage {
     
-    convenience init?(named: String, in bundle: Bundle) {
-        let manager = FileManager.default
-        guard let res = manager.enumerator(atPath: bundle.bundlePath)?
-            .allObjects
-            .compactMap({ (item) -> String? in
-                return item as? String
-            }).first(where: { (item) -> Bool in
-                return item.components(separatedBy: "/").last?.components(separatedBy: ".").first == .some(named)
-            }),
-            let bundle = Bundle(path: bundle.bundlePath + res)
-            else { return nil }
-        self.init(named: named, in: bundle, compatibleWith: nil)
+    /// https://swiftsenpai.com/development/reduce-uiimage-memory-footprint/
+    /// 使用 ImageIO 进行下采样
+    convenience init?(imageAt imageURL: URL, size: CGSize, scale: CGFloat = UIScreen.main.scale) {
+
+        // Create an CGImageSource that represent an image
+        let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let imageSource = CGImageSourceCreateWithURL(imageURL as CFURL, imageSourceOptions) else {
+            return nil
+        }
+        
+        // Calculate the desired dimension
+        let maxDimensionInPixels = max(size.width, size.height) * scale
+        
+        // Perform downsamplingsize
+        let downsampleOptions = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceShouldCacheImmediately: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels
+        ] as CFDictionary
+        
+        guard let downsampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) else {
+            return nil
+        }
+        
+        // Return the downsampled image as UIImage
+        self.init(cgImage: downsampledImage)
     }
     
 }

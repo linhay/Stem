@@ -64,6 +64,9 @@ public struct LocationTransformer: Equatable, Codable {
         self.coordinate = coordinate
     }
     
+    #if canImport(CoreLocation)
+    public func convert() -> CLLocationCoordinate2D { coordinate.convert() }
+    #endif
     public var longitude: Double { coordinate.longitude }
     public var latitude: Double { coordinate.latitude }
     

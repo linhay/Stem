@@ -72,8 +72,8 @@ open class HashableSingleTypeSection<Cell: UICollectionViewCell & ConfigurableVi
                 case let .remove(offset, model, _):
                     self.itemSizeCache.removeValue(forKey: model.hashValue)
                     self.delete(at: offset)
-                case let .insert(offset, _, _):
-                    self.insert(at: offset)
+                case let .insert(offset, element, _):
+                    self.insert(element, at: offset)
                 }
             }
         }

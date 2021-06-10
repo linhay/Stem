@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CD358EA8260CC3ED0018CE1F /* iOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */; };
+		CD358FAD260DE9660018CE1F /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD358FAC260DE9660018CE1F /* EmptyViewController.swift */; };
+		CD4FA46E261A064000222057 /* VPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4FA46D261A064000222057 /* VPageController.swift */; };
 		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
 		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
 		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
@@ -60,6 +62,8 @@
 		CD358EA5260CC3ED0018CE1F /* iOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppTests.swift; sourceTree = "<group>"; };
 		CD358EA9260CC3ED0018CE1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD358FAC260DE9660018CE1F /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
+		CD4FA46D261A064000222057 /* VPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPageController.swift; sourceTree = "<group>"; };
 		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
 		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 				CD63148B260233F700670B84 /* CoverFlowViewController.swift */,
 				CD8D70522609FF5D006150C2 /* DecorationView.swift */,
 				CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */,
+				CD358FAC260DE9660018CE1F /* EmptyViewController.swift */,
+				CD4FA46D261A064000222057 /* VPageController.swift */,
 			);
 			path = WaterfallFlow;
 			sourceTree = "<group>";
@@ -486,8 +492,10 @@
 				CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */,
 				CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */,
 				CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */,
+				CD358FAD260DE9660018CE1F /* EmptyViewController.swift in Sources */,
 				CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */,
 				CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */,
+				CD4FA46E261A064000222057 /* VPageController.swift in Sources */,
 				CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */,
 				CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */,
 				CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */,

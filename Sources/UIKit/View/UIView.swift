@@ -199,7 +199,7 @@ fileprivate extension UIView {
     }
     
     @objc func stem_view_tapGesture_event(ges: UITapGestureRecognizer) {
-        self.st.tap?(ges)
+        self.st.tapAction?(ges)
     }
     
     @objc func stem_view_panGesture_event(ges: UIPanGestureRecognizer) {
@@ -215,7 +215,7 @@ public extension Stem where Base: UIView {
         set { self.setAssociated(value: newValue, for: UIView.ActionKey.tapGestureRecognizer) }
     }
     
-    fileprivate var tap: ((UITapGestureRecognizer) -> Void)? {
+    fileprivate var tapAction: ((UITapGestureRecognizer) -> Void)? {
         get { return self.getAssociated(for: UIView.ActionKey.tap) }
         set {
             if newValue != nil, tapGestureRecognizer == nil {
@@ -232,17 +232,17 @@ public extension Stem where Base: UIView {
         }
     }
     
-    func setTapGesture(_ value: Void?) {
-        self.tap = nil
+    func onTapGesture(_ value: Void?) {
+        self.tapAction = nil
     }
     
-    func setTapGesture(_ ges: @escaping ((UITapGestureRecognizer) -> Void)) {
-        self.tap = ges
+    func onTapGesture(_ ges: @escaping ((UITapGestureRecognizer) -> Void)) {
+        self.tapAction = ges
         base.isUserInteractionEnabled = true
     }
 
-    func setTapGesture(_ ges: @escaping (() -> Void)) {
-        self.setTapGesture { _ in ges() }
+    func onTapGesture(_ ges: @escaping (() -> Void)) {
+        self.onTapGesture { _ in ges() }
     }
     
 }
@@ -272,10 +272,18 @@ public extension Stem where Base: UIView {
         }
     }
     
-    func setPanGesture(_ ges: ((UIPanGestureRecognizer) -> Void)?) {
+    func onPanGesture(_ value: Void?) {
+        self.tapAction = nil
+    }
+    
+    func onPanGesture(_ ges: @escaping ((UIPanGestureRecognizer) -> Void)) {
         self.pan = ges
         base.isUserInteractionEnabled = true
     }
-    
+
+    func onPanGesture(_ ges: @escaping (() -> Void)) {
+        self.onTapGesture { _ in ges() }
+    }
+
 }
 #endif

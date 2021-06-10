@@ -58,6 +58,11 @@ open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol w
         reload()
     }
     
+    open func append(models: Cell.Model...) {
+        self.models.append(contentsOf: models)
+        reload()
+    }
+    
     open func didSelectItem(at row: Int) {
         selectedEvent.call(models[row])
         selectedRowEvent.call(row)
@@ -83,6 +88,30 @@ open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol w
     
     open func willDisplayItem(at row: Int) {
         willDisplayEvent.call(row)
+    }
+    
+}
+
+/// 增删
+public extension SingleTypeTableSection {
+    
+    func swapAt(_ i: Int, _ j: Int, animation: UITableView.RowAnimation = .automatic) {
+        models.swapAt(i, j)
+        sectionView.reloadRows(at: [indexPath(from: i), indexPath(from: j)], with: animation)
+    }
+    
+    func insert(_ model: Cell.Model, at row: Int, animation: UITableView.RowAnimation = .automatic) {
+        models.insert(model, at: row)
+        sectionView.insertRows(at: [indexPath(from: row)], with: animation)
+    }
+    
+    func delete(at row: Int, animation: UITableView.RowAnimation = .automatic) {
+        models.remove(at: row)
+        if itemCount <= 0 {
+            reload(with: animation)
+        } else {
+            sectionView.deleteRows(at: [indexPath(from: row)], with: animation)
+        }
     }
     
 }
