@@ -32,37 +32,43 @@ public extension FilePath {
             
             public let publisher = PassthroughSubject<Void, Never>()
             
-            let queue = DispatchQueue(label: "stem.folder.watcher.queue", target: .main)
-            let observer: DispatchSourceFileSystemObject
+            private let queue = DispatchQueue(label: "stem.folder.watcher.queue", target: .main)
+            private var observer: DispatchSourceFileSystemObject?
+            private let path: String
             
             init(folder: Folder) {
-                let descriptor = Darwin.open(folder.url.path, O_EVTONLY)
-                observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
-                                                                     eventMask: .write,
-                                                                     queue: queue)
-                observer.setEventHandler { [weak self] in
-                    self?.publisher.send(())
-                }
-                
-                observer.setCancelHandler {
-                    Darwin.close(descriptor)
-                }
+                path = folder.url.path
             }
             
             @discardableResult
             public func begin() -> Self {
-                observer.resume()
+                observer?.cancel()
+                
+                let descriptor = Darwin.open(path, O_EVTONLY)
+                observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
+                                                                     eventMask: .write,
+                                                                     queue: queue)
+                observer?.setEventHandler { [weak self] in
+                    self?.publisher.send(())
+                }
+                
+                observer?.setCancelHandler {
+                    Darwin.close(descriptor)
+                }
                 return self
             }
             
             @discardableResult
             public func stop() -> Self {
+                guard let observer = observer, observer.isCancelled == false else {
+                    return self
+                }
                 observer.cancel()
                 return self
             }
             
             deinit {
-                observer.cancel()
+                observer?.cancel()
             }
             
         }
@@ -165,33 +171,33 @@ extension Array where Element == FilePath.Folder.SearchPredicate {
             case .skipsHiddenFiles:
                 systemPredicates.insert(.skipsHiddenFiles)
             case .includesDirectoriesPostOrder:
-                #if os(iOS)
+#if os(iOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #elseif os(tvOS)
+#elseif os(tvOS)
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #elseif os(OSX)
+#elseif os(OSX)
                 if #available(OSX 10.15, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #endif
+#endif
             case .producesRelativePathURLs:
-                #if os(iOS)
+#if os(iOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #elseif os(tvOS)
+#elseif os(tvOS)
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #elseif os(OSX)
+#elseif os(OSX)
                 if #available(OSX 10.15, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #endif
+#endif
             case .custom(let v):
                 customPredicates.append(v)
             }
