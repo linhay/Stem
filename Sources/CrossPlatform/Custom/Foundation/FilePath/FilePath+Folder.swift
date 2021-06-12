@@ -21,24 +21,67 @@
 // SOFTWARE.
 
 import Foundation
+import Combine
 
 public extension FilePath {
     
     struct Folder: FilePathProtocol {
+        
+        @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+        public final class Watcher {
+            
+            let queue = DispatchQueue.global()
+            let publisher = PassthroughSubject<Void, Never>()
+            
+            let observer: DispatchSourceFileSystemObject
+            
+            init(folder: Folder) {
+                let descriptor = Darwin.open(folder.url.path, O_EVTONLY)
+                observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
+                                                                     eventMask: .write,
+                                                                     queue: queue)
+                observer.setEventHandler { [weak self] in
+                    self?.publisher.send(())
+                }
+                
+                observer.setCancelHandler {
+                    Darwin.close(descriptor)
+                }
+            }
+            
+            @discardableResult
+            public func begin() -> Self {
+                observer.resume()
+                return self
+            }
+            
+            @discardableResult
+            public func stop() -> Self {
+                observer.cancel()
+                return self
+            }
+            
+        }
+        
         public let url: URL
         
         public init(url: URL) {
             self.url = url.standardized
         }
     }
-        
+    
 }
 
 public extension FilePath.Folder {
-
+    
     @discardableResult
     func merge(with folder: FilePath.Folder) -> FilePath.Folder {
         return folder
+    }
+    
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    func watcher() -> Watcher {
+        return .init(folder: self)
     }
     
 }
@@ -50,11 +93,11 @@ public extension FilePath.Folder {
         if file.isExist {
             return file
         } else {
-           try create(file: name)
+            try create(file: name)
         }
         return file
     }
-
+    
 }
 
 
