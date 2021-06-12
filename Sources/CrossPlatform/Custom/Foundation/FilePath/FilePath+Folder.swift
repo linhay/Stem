@@ -30,9 +30,9 @@ public extension FilePath {
         @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
         public final class Watcher {
             
-            let queue = DispatchQueue.global()
             public let publisher = PassthroughSubject<Void, Never>()
             
+            let queue = DispatchQueue(label: "stem.folder.watcher.queue", target: .main)
             let observer: DispatchSourceFileSystemObject
             
             init(folder: Folder) {
@@ -59,6 +59,10 @@ public extension FilePath {
             public func stop() -> Self {
                 observer.cancel()
                 return self
+            }
+            
+            deinit {
+                observer.cancel()
             }
             
         }
