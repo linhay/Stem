@@ -31,7 +31,7 @@ public extension FilePath {
         public final class Watcher {
             
             let queue = DispatchQueue.global()
-            let publisher = PassthroughSubject<Void, Never>()
+            public let publisher = PassthroughSubject<Void, Never>()
             
             let observer: DispatchSourceFileSystemObject
             
