@@ -58,9 +58,13 @@ open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol w
         reload()
     }
     
-    open func append(models: Cell.Model...) {
+    open func append(models: [Cell.Model]) {
         self.models.append(contentsOf: models)
         reload()
+    }
+    
+    public func append(models: Cell.Model...) {
+        append(models: models)
     }
     
     open func didSelectItem(at row: Int) {
