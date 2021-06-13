@@ -30,47 +30,65 @@ public extension FilePath {
         @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
         public final class Watcher {
             
-            public let publisher = PassthroughSubject<Void, Never>()
+            enum State: Int, Equatable {
+                case cancel
+                case activate
+                case suspend
+            }
             
-            private let queue = DispatchQueue(label: "stem.folder.watcher.queue", target: .main)
+            public private(set) lazy var publisher = subject.eraseToAnyPublisher()
+            
+            private let subject = PassthroughSubject<Void, Never>()
+            private let queue = DispatchQueue(label: "stem.folder.watcher.queue")
             private var observer: DispatchSourceFileSystemObject?
-            private let path: String
+            private var state = State.cancel
+            private let folder: Folder
             
             init(folder: Folder) {
-                path = folder.url.path
+                self.folder = folder
             }
             
             @discardableResult
-            public func begin() -> Self {
+            public func cancel() -> Watcher {
+                guard state != .cancel else { return self }
                 observer?.cancel()
-                
-                let descriptor = Darwin.open(path, O_EVTONLY)
-                observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
-                                                                     eventMask: .write,
-                                                                     queue: queue)
-                observer?.setEventHandler { [weak self] in
-                    self?.publisher.send(())
-                }
-                
-                observer?.setCancelHandler {
-                    Darwin.close(descriptor)
-                }
+                state = .cancel
                 return self
             }
             
             @discardableResult
-            public func stop() -> Self {
-                guard let observer = observer, observer.isCancelled == false else {
+            public func activate() -> Watcher {
+                switch state {
+                case .cancel:
+                    let descriptor = Darwin.open(folder.url.path, O_EVTONLY)
+                    let observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
+                                                                             eventMask: .write,
+                                                                             queue: queue)
+                    observer.setEventHandler { [weak self] in
+                        self?.subject.send(())
+                    }
+                    
+                    observer.setCancelHandler {
+                        Darwin.close(descriptor)
+                    }
+                    self.observer = observer
+                case .activate:
                     return self
+                case .suspend:
+                    break
                 }
-                observer.cancel()
+                state = .activate
+                observer?.activate()
                 return self
             }
             
-            deinit {
-                observer?.cancel()
+            @discardableResult
+            public func suspend() -> Watcher {
+                guard state == .activate else { return self }
+                state = .suspend
+                observer?.suspend()
+                return self
             }
-            
         }
         
         public let url: URL

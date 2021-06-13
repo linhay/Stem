@@ -26,6 +26,8 @@ public extension FilePath.Folder {
 
     /// iOS 沙盒路径
     enum SanboxRootPath {
+        case root
+        case home
         case document
         case library
         case cache
@@ -38,6 +40,10 @@ public extension FilePath.Folder {
         func url() throws -> URL {
             let manager = FileManager.default
             switch self {
+            case .root:
+                return URL(string: NSOpenStepRootDirectory())!
+            case .home:
+                return URL(string: NSHomeDirectory())!
             case .document:
                 return try manager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             case .library:

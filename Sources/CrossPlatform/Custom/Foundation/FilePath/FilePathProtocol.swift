@@ -22,25 +22,6 @@
 
 import Foundation
 
-// MARK: - Type
-public struct FilePathAttributes {
-    
-    private let url: URL
-    private var attributesOfItem: [FileAttributeKey: Any] { (try? FileManager.default.attributesOfItem(atPath: url.path)) ?? [:] }
-    
-    /// 文件名
-    public var name: String { return url.lastPathComponent }
-    /// 创建时间
-    public var creationDate: Date? { attributesOfItem[.creationDate] as? Date }
-    /// 创建时间
-    public var size: Int? { attributesOfItem[.size] as? Int }
-    
-    init(path: URL) {
-        self.url = path
-    }
-    
-}
-
 public protocol FilePathProtocol {
     
     var url: URL { get }
@@ -56,7 +37,7 @@ extension FilePathProtocol {
 public extension FilePathProtocol {
     
     var attributes: FilePathAttributes { .init(path: url) }
-
+    
     /// 当前路径是否存在
     var isExist: Bool { manager.fileExists(atPath: url.path) }
     
