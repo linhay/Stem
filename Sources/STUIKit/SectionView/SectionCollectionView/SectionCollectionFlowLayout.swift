@@ -22,12 +22,13 @@
 
 #if canImport(UIKit)
 import UIKit
+import DUI
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
-    public typealias DecorationView = UICollectionReusableView & STViewProtocol
+    public typealias DecorationView = UICollectionReusableView & LoadViewProtocol
     public typealias DecorationElement = [Int: DecorationView.Type]
-
+    
     /// 布局插件样式
     public enum PluginMode {
         /// 左对齐
@@ -38,7 +39,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         case fixSupplementaryViewInset
         case sectionBackgroundView(DecorationElement)
         case allSectionBackgroundView(type: DecorationView.Type)
-
+        
         var priority: Int {
             switch self {
             case .left:    return 100
@@ -128,17 +129,20 @@ private extension SectionCollectionFlowLayout {
             if decorationViewCache[section] != nil {
                 return nil
             }
-        
-            st.register(type)
+            
+            if let nib = type.nib {
+                register(nib, forDecorationViewOfKind: type.id)
+            } else {
+                register(type.self, forDecorationViewOfKind: type.id)
+            }
             
             let count = collectionView.numberOfItems(inSection: section)
             let sectionIndexPath = IndexPath(item: 0, section: section)
             
-            let header = st.layoutAttributesForSupplementaryView(ofKind: .header, at: sectionIndexPath)
-            let footer = st.layoutAttributesForSupplementaryView(ofKind: .footer, at: sectionIndexPath)
+            let header = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.header.rawValue, at: sectionIndexPath)
+            let footer = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.footer.rawValue, at: sectionIndexPath)
             let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
             let elements = ([header, footer] + cells).compactMap({ $0?.frame })
-            
             guard let first = elements.first else {
                 return nil
             }
@@ -160,14 +164,14 @@ private extension SectionCollectionFlowLayout {
             decorationViewCache[section] = attribute
             return attribute
         }
-
+        
         var sectionSet = Set<Int>()
         let sections = attributes
             .map(\.indexPath.section)
             .filter({ sectionSet.insert($0).inserted })
         
         if let type = element[-1] {
-           return attributes + sections.compactMap { task(section: $0, type: type) }
+            return attributes + sections.compactMap { task(section: $0, type: type) }
         } else {
             return attributes + sections
                 .filter({ element.keys.contains($0) })
@@ -265,13 +269,23 @@ private extension SectionCollectionFlowLayout {
                 continue
             }
             
-            var spacing = self.minimumInteritemSpacing
-            var insets = self.sectionInset
+            let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout
+            let insets = delegate?.collectionView?(collectionView,
+                                                   layout: self,
+                                                   insetForSectionAt: item.indexPath.section) ?? sectionInset
             
-            if let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-                spacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? spacing
-                insets = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section) ?? insets
+            let spacing: CGFloat
+            switch scrollDirection {
+            case .horizontal:
+                spacing = delegate?.collectionView?(collectionView,
+                                                    layout: self,
+                                                    minimumLineSpacingForSectionAt: item.indexPath.section) ?? minimumLineSpacing
+            case .vertical:
+                spacing = delegate?.collectionView?(collectionView,
+                                                    layout: self,
+                                                    minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? minimumInteritemSpacing
             }
+            
             
             switch scrollDirection {
             case .horizontal:
@@ -307,7 +321,7 @@ private extension SectionCollectionFlowLayout {
 }
 
 private extension SectionCollectionFlowLayout {
-
+    
     func insetForSection(at section: Int) -> UIEdgeInsets {
         guard let collectionView = collectionView,
               let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
