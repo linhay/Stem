@@ -265,13 +265,23 @@ private extension SectionCollectionFlowLayout {
                 continue
             }
             
-            var spacing = self.minimumInteritemSpacing
-            var insets = self.sectionInset
+            let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout
+            let insets = delegate?.collectionView?(collectionView,
+                                                   layout: self,
+                                                   insetForSectionAt: item.indexPath.section) ?? sectionInset
             
-            if let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-                spacing = delegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? spacing
-                insets = delegate.collectionView?(collectionView, layout: self, insetForSectionAt: item.indexPath.section) ?? insets
+            let spacing: CGFloat
+            switch scrollDirection {
+            case .horizontal:
+                spacing = delegate?.collectionView?(collectionView,
+                                                    layout: self,
+                                                    minimumLineSpacingForSectionAt: item.indexPath.section) ?? minimumLineSpacing
+            case .vertical:
+                spacing = delegate?.collectionView?(collectionView,
+                                                    layout: self,
+                                                    minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? minimumInteritemSpacing
             }
+            
             
             switch scrollDirection {
             case .horizontal:

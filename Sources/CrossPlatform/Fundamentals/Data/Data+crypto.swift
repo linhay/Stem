@@ -25,15 +25,25 @@ import Foundation
 #if canImport(CommonCrypto)
 import CommonCrypto
 
-extension StemValue where Base == Data {
+public extension StemValue where Base == Data {
 
-    var md5: String {
-        let hash = base.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> [UInt8] in
+    func md5<T>(_: T.Type = T.self) -> T? {
+        let uint8s = base.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> [UInt8] in
             var hash = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
             CC_MD5(bytes.baseAddress, CC_LONG(base.count), &hash)
             return hash
         }
-        return hash.map { String(format: "%02x", $0) }.joined()
+        
+        switch T.self {
+        case _ as [Int].Type:
+            return uint8s.map({ Int($0) }) as? T
+        case _ as [UInt8].Type:
+            return uint8s as? T
+        case _ as String.Type:
+            return uint8s.map { String(format: "%02x", $0) }.joined() as? T
+        default:
+            return nil
+        }
     }
   
 }

@@ -28,41 +28,25 @@ extension CGRect: StemValueCompatible { }
 
 public extension StemValue where Base == CGRect {
 
-    static let max = CGRect.infinite
-
-}
-
-public extension StemValue where Base == CGRect {
-
-    /// 中心点
-    var center: CGPoint {
-        return CGPoint(x: base.minX + base.width * 0.5, y: base.minY + base.height * 0.5)
-    }
-
     /// 判断一个 CGRect 是否合法（例如不带无穷大的值、不带非法数字）
     var isValidated: Bool {
         guard !base.isNull, !base.isInfinite else { return false }
         return true
     }
-
-    func changed(height: CGFloat) -> CGRect {
-        return CGRect(x: base.minX, y: base.minY, width: base.width, height: height)
+    
+    /// 获取合并后的最小矩形
+    /// - Parameter list: 矩形列表
+    /// - Returns: 合并后的最小矩形
+    static func union(_ list: [CGRect]) -> CGRect {
+        guard var value = list.first else {
+            return .zero
+        }
+        
+        for item in list.dropFirst() {
+            value = value.union(item)
+        }
+        return value
     }
-
-    func changed(width: CGFloat) -> CGRect {
-        return CGRect(x: base.minX, y: base.minY, width: width, height: base.height)
-    }
-
-    func changed(x: CGFloat) -> CGRect {
-        return CGRect(x: x, y: base.minY, width: base.width, height: base.height)
-    }
-
-    func changed(y: CGFloat) -> CGRect {
-        return CGRect(x: base.minX, y: base.minY, width: base.width, height: base.height)
-    }
-
-    func changed(center: CGPoint) -> CGRect {
-        return CGRect(x: center.x - base.width * 0.5, y: center.y - base.height * 0.5, width: base.width, height: base.height)
-    }
+    
 }
 #endif
