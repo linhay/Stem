@@ -22,7 +22,6 @@
 
 #if canImport(UIKit)
 import UIKit
-import StemUIKit
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
