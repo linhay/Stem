@@ -32,54 +32,13 @@ extension Dictionary {
   ///   - rhs: 右侧字典
   /// - Returns: 返回新的字典
   static func+(lhs: Dictionary, rhs: Dictionary) -> Dictionary {
-    var temp = Dictionary()
-    lhs.forEach { temp.updateValue($0.value, forKey: $0.key) }
-    rhs.forEach { temp.updateValue($0.value, forKey: $0.key) }
-    return temp
-  }
-  
-}
-
-// MARK: - Dictionary subscript函数
-public extension Dictionary {
-  
-  /// 根据下标集合获取元素集合
-  ///
-  /// - Parameter keys: 下标集合
-   subscript(_ keys: [Key]) -> [Value] {
-    return keys.compactMap {  self[$0] }
-  }
-  
-  /// 根据下标集合获取元素集合
-  ///
-  /// - Parameter keys: 下标集合
-   subscript(_ keys: Key...) -> [Value] {
-    return keys.compactMap {  self[$0] }
-  }
-  
-}
-
-// MARK: - Dictionary 属性
-public extension Dictionary {
-  /// 从字典中随机取值
-  ///
-  /// - Returns: 值
-   var random: (key: Key, value: Value)? {
-    guard let key = keys.randomElement(), let value = self[key] else { return nil }
-    return (key: key, value: value)
+      return lhs.merging(rhs, uniquingKeysWith: { $1 })
   }
   
 }
 
 // MARK: - 函数
 public extension Dictionary {
-  /// 检查是否有值
-  ///
-  /// - Parameter key: key名
-  /// - Returns: 是否
-   func has(key: Key) -> Bool {
-    return index(forKey: key) != nil
-  }
   
   /// 格式化为Json
   ///
@@ -95,52 +54,4 @@ public extension Dictionary {
     }
   }
   
-}
-
-// MARK: - map
-public extension Dictionary {
-
-    func map<NewKey: Hashable, NewValue>(_ block: (Element) throws -> (NewKey, NewValue)) rethrows -> [NewKey: NewValue] {
-        var mapped = [NewKey: NewValue]()
-        for (k, v) in self {
-            let (nk, nv) = try block((k, v))
-            mapped[nk] = nv
-        }
-        return mapped
-    }
-
-}
-
-// MARK: - value
-public extension Dictionary {
-
-    func value<T>(for key: Key) -> T? {
-        return self[key] as? T
-    }
-
-    func value<T>(for key: Key, default value: T) -> T {
-        return self[key] as? T ?? value
-    }
-
-    func value<T: RawRepresentable>(for key: Key, default value: T) -> T {
-        guard let rawValue =  self[key] as? T.RawValue else { return value }
-        return T.init(rawValue: rawValue) ?? value
-    }
-
-    func safeValue<T: StringProtocol>(for key: Key) -> T {
-        return self.value(for: key, default: "")
-    }
-
-    func safeValue(for key: Key) -> Bool {
-        return self.value(for: key, default: false)
-    }
-
-    func safeValue<T: SignedInteger>(for key: Key) -> T {
-        return self.value(for: key, default: 0)
-    }
-
-    func safeValue(for key: Key) -> Double {
-        return self.value(for: key, default: 0.0)
-    }
-
 }

@@ -184,3 +184,23 @@ public extension Array {
     }
 
 }
+
+public extension Array {
+    
+    func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
+        var result = [Key: Value]()
+        for item in self {
+            result[item[keyPath: key]] = item[keyPath: value]
+        }
+        return result
+    }
+    
+    func dictionary<Key: Hashable>(key: KeyPath<Element, Key>) -> [Key: Element] {
+        var result = [Key: Element]()
+        for item in self {
+            result[item[keyPath: key]] = item
+        }
+        return result
+    }
+    
+}
