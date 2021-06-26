@@ -26,7 +26,7 @@ public protocol FilePathProtocol {
     
     var url: URL { get }
     
-    init(url: URL)
+    init(url: URL) throws
     
 }
 
@@ -55,7 +55,7 @@ public extension FilePathProtocol {
     func move(into folder: FilePath.Folder) throws -> Self {
         let fileURL = folder.url.appendingPathComponent(attributes.name)
         try manager.moveItem(at: url, to: fileURL)
-        return .init(url: fileURL)
+        return try .init(url: fileURL)
     }
     
     /// 替换至目标路径

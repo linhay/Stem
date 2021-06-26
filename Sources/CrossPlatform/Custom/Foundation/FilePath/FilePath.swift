@@ -22,41 +22,33 @@
 
 import Foundation
 
-public struct FilePath {
+public struct FilePath: FilePathProtocol {
     
-    public enum ItemType {
-        case file(FilePath.File)
-        case folder(FilePath.Folder)
+    public enum ItemType: Int, Equatable, Codable {
+        case file
+        case folder
+        
+        public var isFile: Bool { self == .file }
+        public var isFolder: Bool { self == .folder }
     }
     
-    var manager: FileManager { FileManager.default }
-    static var manager: FileManager { FileManager.default }
-
-    public let type: ItemType
+    private var manager: FileManager { FileManager.default }
+    private static var manager: FileManager { FileManager.default }
     
-    /// 生成 FilePath
-    /// - Parameters:
-    ///   - url: 文件路径
-    ///   - type: 指定文件类型
-    /// - Throws: FilePathError - 目标路径不是文件路径 | 目标路径不存在
-    public init(type: ItemType) {
+    public let type: ItemType
+    public var url: URL
+    
+    public init(url: URL, type: ItemType) {
+        self.url = url.standardized
         self.type = type
     }
     
     public init(url: URL) throws {
-        if try FilePath.isFolder(url) {
-            self.type = .folder(.init(url: url))
-        } else {
-            self.type = .file(.init(url: url))
-        }
+        self.init(url: url, type: try FilePath.isFolder(url) ? .folder : .file)
     }
     
     public init(path: String) throws {
-        if try FilePath.isFolder(path) {
-            self.type = .folder(.init(url: .init(fileURLWithPath: path, isDirectory: true)))
-        } else {
-            self.type = .file(.init(url: .init(fileURLWithPath: path, isDirectory: false)))
-        }
+        try self.init(url: .init(fileURLWithPath: path))
     }
 }
 

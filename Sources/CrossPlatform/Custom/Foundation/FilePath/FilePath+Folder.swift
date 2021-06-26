@@ -169,16 +169,16 @@ public extension FilePath.Folder {
         case includesDirectoriesPostOrder
         @available(iOS 13.0, *) @available(OSX 10.15, *) @available(tvOS 13.0, *)
         case producesRelativePathURLs
-        case custom((FilePath.ItemType) throws -> Bool)
+        case custom((FilePath) throws -> Bool)
     }
     
 }
 
 extension Array where Element == FilePath.Folder.SearchPredicate {
     
-    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath.ItemType) throws -> Bool]) {
+    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath) throws -> Bool]) {
         var systemPredicates: FileManager.DirectoryEnumerationOptions = []
-        var customPredicates = [(FilePath.ItemType) throws -> Bool]()
+        var customPredicates = [(FilePath) throws -> Bool]()
         
         self.forEach { item in
             switch item {
@@ -232,7 +232,7 @@ public extension FilePath.Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath.ItemType] {
+    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
         try allSubFilePaths(predicates: predicates)
     }
     
@@ -240,41 +240,24 @@ public extension FilePath.Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath.ItemType] {
+    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         let (systemPredicates, customPredicates) = predicates.split()
-        
-        let resourceValues: [URLResourceKey] = [.isDirectoryKey]
-        guard let enumerator = manager.enumerator(at: url,
-                                                  includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
-                                                  options: systemPredicates,
-                                                  errorHandler: nil) else {
-            return []
-        }
-        
-        var list = [FilePath.ItemType]()
-        for case let fileURL as URL in enumerator {
-            guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues)),
-                  let isDirectory = resourceValues.isDirectory
-            else {
-                continue
-            }
-            
-            let type: FilePath.ItemType = isDirectory ? .folder(.init(url: fileURL)) : .file(.init(url: fileURL))
-            if try customPredicates.contains(where: { try $0(type) == false }) {
-                continue
-            }
-            
-            list.append(type)
-        }
-        
-        return list
+        return try manager.enumerator(at: url,
+                                  includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
+                                  options: systemPredicates,
+                                  errorHandler: nil)?
+            .compactMap { $0 as? URL }
+            .compactMap { try FilePath(url: $0) }
+            .filter { file in
+                return try customPredicates.contains(where: { try $0(file) == false })
+            } ?? []
     }
     
     /// 获取当前文件夹中文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths(predicates: SearchPredicate...) throws -> [FilePath.ItemType] {
+    func subFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
         try subFilePaths(predicates: predicates)
     }
     
@@ -282,7 +265,7 @@ public extension FilePath.Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath.ItemType] {
+    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         let (systemPredicates, customPredicates) = predicates.split()
         
         return try manager
@@ -290,7 +273,7 @@ public extension FilePath.Folder {
                                  includingPropertiesForKeys: nil,
                                  options: systemPredicates)
             .compactMap({ url in
-                return try FilePath(url: url).type
+                return try FilePath(url: url)
             })
             .filter({ item -> Bool in
                 try customPredicates.contains(where: { try $0(item) == false }) == false
