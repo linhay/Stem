@@ -61,6 +61,7 @@ public extension FilePathProtocol {
     /// 复制至目标文件夹
     /// - Parameter path: 目标文件夹
     /// - Throws: FileManagerError -
+    @discardableResult
     func copy(into folder: FilePath.Folder) throws -> Self {
         let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
         try manager.copyItem(at: url, to: desURL)
@@ -72,7 +73,8 @@ public extension FilePathProtocol {
     /// - Throws: FileManagerError
     @discardableResult
     func replace(_ path: Self) throws -> Self {
-        try manager.moveItem(at: url, to: path.url)
+        try? path.delete()
+        try manager.copyItem(at: url, to: path.url)
         return path
     }
     
