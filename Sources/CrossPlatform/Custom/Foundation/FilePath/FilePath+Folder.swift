@@ -96,6 +96,11 @@ public extension FilePath {
         public init(url: URL) {
             self.url = url.standardized
         }
+        
+        public init(path: String) throws {
+            self.init(url: .init(fileURLWithPath: path))
+        }
+
     }
     
 }
