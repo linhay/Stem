@@ -58,6 +58,15 @@ public extension FilePathProtocol {
         return try .init(url: fileURL)
     }
     
+    /// 复制至目标文件夹
+    /// - Parameter path: 目标文件夹
+    /// - Throws: FileManagerError -
+    func copy(into folder: FilePath.Folder) throws -> Self {
+        let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
+        try manager.copyItem(at: url, to: desURL)
+        return try .init(url: desURL)
+    }
+    
     /// 替换至目标路径
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
