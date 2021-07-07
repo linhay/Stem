@@ -20,14 +20,14 @@ class TestFilePath: XCTestCase {
     }
 
     func testExample() throws {
-        let filePath = try FilePath(path: "./mmap5.json", type: .file)
-        print(filePath.path)
-        let result = try filePath.mmap(prot: [.write, .read],
-                                       type: .file,
-                                       shareType: .share,
-                                       size: 4 * 1024)
-        result.write(data: "1234567890".data(using: .utf8)!)
-        print(String(data: result.data(), encoding: .utf8)!)
+//        let fileurl = try FilePath(url: "./mmap5.json", type: .file)
+//        print(filePath.path)
+//        let result = try filePath.mmap(prot: [.write, .read],
+//                                       type: .file,
+//                                       shareType: .share,
+//                                       size: 4 * 1024)
+//        result.write(data: "1234567890".data(using: .utf8)!)
+//        print(String(data: result.data(), encoding: .utf8)!)
     }
 
 }

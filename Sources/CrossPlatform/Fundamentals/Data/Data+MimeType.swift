@@ -57,20 +57,23 @@ public extension Data {
         
         init(data: Data) {
             
-            if data.st.bytes.isEmpty {
+            if data.isEmpty {
                 self = .unknown
+                return
             }
             
             func matches(bytes: [UInt8], range: CountableClosedRange<Int>? = nil) -> Bool {
-                if let range = range {
-                    guard range.upperBound <= bytes.count else {
-                        return false
-                    }
-                    return Array(data.st.bytes[range]) == bytes
-                } else {
-                    return Array(data.st.bytes[0...(bytes.count - 1)]) == bytes
+                guard let range = range else {
+                    return Array(data.prefix(bytes.count)) == bytes
                 }
+                
+                guard range.upperBound <= bytes.count else {
+                    return false
+                }
+                
+                return Array(data.st.bytes[range]) == bytes
             }
+            
             if matches(bytes: [0x23, 0x21, 0x41, 0x4D, 0x52, 0x0A]) {
                 self = .amr
             } else if matches(bytes: [0x49, 0x44, 0x33]) || matches(bytes: [0xFF, 0xFB]) {

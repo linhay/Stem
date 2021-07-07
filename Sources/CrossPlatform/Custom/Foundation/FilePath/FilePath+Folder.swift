@@ -242,15 +242,31 @@ public extension FilePath.Folder {
     /// - Returns: [FilePath]
     func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         let (systemPredicates, customPredicates) = predicates.split()
-        return try manager.enumerator(at: url,
-                                  includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
-                                  options: systemPredicates,
-                                  errorHandler: nil)?
-            .compactMap { $0 as? URL }
-            .compactMap { try FilePath(url: $0) }
-            .filter { file in
-                return try customPredicates.contains(where: { try $0(file) == false })
-            } ?? []
+        
+        let resourceValues: [URLResourceKey] = [.isDirectoryKey]
+        guard let enumerator = manager.enumerator(at: url,
+                                                  includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
+                                                  options: systemPredicates,
+                                                  errorHandler: nil) else {
+            return []
+        }
+        
+        var list = [FilePath]()
+        for case let fileURL as URL in enumerator {
+            guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues)),
+                  let isDirectory = resourceValues.isDirectory
+            else {
+                continue
+            }
+            
+            let item = FilePath(url: fileURL, type: isDirectory ? .folder : .file)
+            if try customPredicates.contains(where: { try $0(item) == false }) {
+                continue
+            }
+            
+            list.append(item)
+        }
+        return list
     }
     
     /// 获取当前文件夹中文件/文件夹

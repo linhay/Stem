@@ -128,9 +128,17 @@ public extension SingleTypeSection {
             switch flowLayout.scrollDirection {
             case .horizontal:
                 return .init(width: sectionView.bounds.width,
-                             height: sectionView.bounds.height - sectionInset.top - sectionInset.bottom)
+                             height: sectionView.bounds.height
+                                - sectionView.contentInset.top
+                                - sectionView.contentInset.bottom
+                                - sectionInset.top
+                                - sectionInset.bottom)
             case .vertical:
-                return .init(width: sectionView.bounds.width - sectionInset.left - sectionInset.right,
+                return .init(width: sectionView.bounds.width
+                                - sectionView.contentInset.left
+                                - sectionView.contentInset.right
+                                - sectionInset.left
+                                - sectionInset.right,
                              height: sectionView.bounds.height)
             @unknown default:
                 return sectionView.bounds.size

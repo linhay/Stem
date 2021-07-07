@@ -152,10 +152,10 @@ private extension SectionCollectionFlowLayout {
             
             if pluginModes.contains(where: { $0.priority == PluginMode.fixSupplementaryViewInset.priority }) {
                 let inset = insetForSection(at: attribute.indexPath.section)
-                if header != nil {
+                if let header = header, header.frame.size != .zero {
                     attribute.frame.origin.y += inset.top
                 }
-                if footer != nil {
+                if let footer = footer, footer.frame.size != .zero {
                     attribute.frame.size.height -= inset.top + inset.bottom
                 }
             }

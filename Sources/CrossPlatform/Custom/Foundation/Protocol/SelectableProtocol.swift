@@ -53,7 +53,7 @@ public final class SelectableModel {
 
 }
 
-public protocol SelectableProtocol: class {
+public protocol SelectableProtocol: AnyObject {
 
     var selectableModel: SelectableModel { get }
 

@@ -126,12 +126,8 @@ public extension Stem where Base: UIViewController {
                 return rawVC
             }
         }
-        guard let rootViewController = UIApplication.shared.windows.filter({ (item) -> Bool in
-            /// =.=,如果没手动设置的话...
-            return item.windowLevel == UIWindow.Level.normal && item.isKeyWindow
-        }).first?.rootViewController else {
-            assert(false)
-            return UIViewController()
+        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
+            return nil
         }
         return find(rawVC: rootViewController)
     }
