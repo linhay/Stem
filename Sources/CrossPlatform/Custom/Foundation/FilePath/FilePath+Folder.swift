@@ -100,7 +100,7 @@ public extension FilePath {
         public init(path: String) throws {
             self.init(url: .init(fileURLWithPath: path))
         }
-
+        
     }
     
 }
@@ -120,6 +120,10 @@ public extension FilePath.Folder {
 }
 
 public extension FilePath.Folder {
+    
+    func file(name: String) -> FilePath.File {
+        FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
+    }
     
     func open(name: String) throws -> FilePath.File {
         let file = FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
@@ -194,33 +198,33 @@ extension Array where Element == FilePath.Folder.SearchPredicate {
             case .skipsHiddenFiles:
                 systemPredicates.insert(.skipsHiddenFiles)
             case .includesDirectoriesPostOrder:
-#if os(iOS)
+                #if os(iOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-#elseif os(tvOS)
+                #elseif os(tvOS)
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-#elseif os(OSX)
+                #elseif os(OSX)
                 if #available(OSX 10.15, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-#endif
+                #endif
             case .producesRelativePathURLs:
-#if os(iOS)
+                #if os(iOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-#elseif os(tvOS)
+                #elseif os(tvOS)
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-#elseif os(OSX)
+                #elseif os(OSX)
                 if #available(OSX 10.15, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-#endif
+                #endif
             case .custom(let v):
                 customPredicates.append(v)
             }
