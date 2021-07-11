@@ -83,9 +83,9 @@ public extension SectionTableManager {
 
 }
 
-// MARK: - UICollectionViewDelegate && UICollectionViewDataSource
-extension SectionTableManager: UITableViewDelegate, UITableViewDataSource {
-
+// MARK: - UITableViewDataSource
+extension SectionTableManager: UITableViewDataSource {
+    
     public func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -96,6 +96,31 @@ extension SectionTableManager: UITableViewDelegate, UITableViewDataSource {
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return sections[indexPath.section].item(at: indexPath.item)
+    }
+    
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return sections[indexPath.section].canEditItem(at: indexPath.item)
+    }
+    
+    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return sections[indexPath.section].canMove(at: indexPath.item)
+    }
+    
+    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        if sourceIndexPath.section == destinationIndexPath.section {
+            sections[sourceIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
+        } else {
+            sections[sourceIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
+            sections[destinationIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
+        }
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension SectionTableManager: UITableViewDelegate {
+
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        sections[indexPath.section].didSelectItem(at: indexPath.item)
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -117,22 +142,13 @@ extension SectionTableManager: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return sections[section].footerHeight
     }
-
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        sections[indexPath.section].didSelectItem(at: indexPath.item)
+    
+    public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return UISwipeActionsConfiguration(actions: sections[indexPath.section].leadingSwipeActions(at: indexPath.item))
     }
-
-    public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        if sourceIndexPath.section == destinationIndexPath.section {
-            sections[sourceIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
-        } else {
-            sections[sourceIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
-            sections[destinationIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
-        }
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].canMove(at: indexPath.item)
+    
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return UISwipeActionsConfiguration(actions: sections[indexPath.section].trailingSwipeActions(at: indexPath.item))
     }
 }
 #endif

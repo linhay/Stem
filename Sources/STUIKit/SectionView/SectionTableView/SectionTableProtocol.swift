@@ -32,6 +32,8 @@ public protocol SectionTableProtocol: SectionProtocol {
     var footerView: UITableViewHeaderFooterView? { get }
     func config(sectionView: UITableView)
     func item(at row: Int) -> UITableViewCell
+    func leadingSwipeActions(at row: Int) -> [UIContextualAction]
+    func trailingSwipeActions(at row: Int) -> [UIContextualAction]
 }
 
 public extension SectionTableProtocol {
@@ -46,6 +48,9 @@ public extension SectionTableProtocol {
         }
         return core.sectionView as! UITableView
     }
+    
+    func leadingSwipeActions(at row: Int) -> [UIContextualAction] { return [] }
+    func trailingSwipeActions(at row: Int) -> [UIContextualAction] { return [] }
 }
 
 public extension SectionTableProtocol {

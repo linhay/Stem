@@ -22,7 +22,7 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
             
             section.headerViewProvider.delegate(on: self) { (self, section) -> UICollectionReusableView in
                 section.register(DecorationView.self, for: .header)
-                return section.dequeue(at: 0, kind: .header) as DecorationView
+                return section.dequeue(kind: .header) as DecorationView
             }
             
             section.headerSizeProvider.delegate(on: self) { (self, sectionView) -> CGSize in
@@ -31,7 +31,7 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
             
             section.footerViewProvider.delegate(on: self) { (self, section) -> UICollectionReusableView in
                 section.register(DecorationView.self, for: .footer)
-                return section.dequeue(at: 0, kind: .footer) as DecorationView
+                return section.dequeue(kind: .footer) as DecorationView
             }
             
             section.footerSizeProvider.delegate(on: self) { (self, sectionView) -> CGSize in

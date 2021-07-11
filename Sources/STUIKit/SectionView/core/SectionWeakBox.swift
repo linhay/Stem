@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
 import Foundation
 
 final class SectionWeakBox<T: AnyObject> {
@@ -32,4 +31,3 @@ final class SectionWeakBox<T: AnyObject> {
     }
 
 }
-#endif
