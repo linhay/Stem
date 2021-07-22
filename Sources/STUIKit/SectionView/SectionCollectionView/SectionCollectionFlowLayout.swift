@@ -141,7 +141,7 @@ private extension SectionCollectionFlowLayout {
             let header = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: sectionIndexPath)
             let footer = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: sectionIndexPath)
             let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
-            let elements = ([header, footer] + cells).compactMap({ $0?.frame })
+            let elements = ([header, footer] + cells).compactMap(\.?.frame).filter({ $0.size.width > 0 && $0.size.height > 0 })
             guard let first = elements.first else {
                 return nil
             }
