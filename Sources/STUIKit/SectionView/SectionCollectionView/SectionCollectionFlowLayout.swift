@@ -273,18 +273,9 @@ private extension SectionCollectionFlowLayout {
                                                    layout: self,
                                                    insetForSectionAt: item.indexPath.section) ?? sectionInset
             
-            let spacing: CGFloat
-            switch scrollDirection {
-            case .horizontal:
-                spacing = delegate?.collectionView?(collectionView,
-                                                    layout: self,
-                                                    minimumLineSpacingForSectionAt: item.indexPath.section) ?? minimumLineSpacing
-            case .vertical:
-                spacing = delegate?.collectionView?(collectionView,
-                                                    layout: self,
-                                                    minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? minimumInteritemSpacing
-            }
-            
+            let minimumInteritemSpacing = delegate?.collectionView?(collectionView,
+                                                 layout: self,
+                                                 minimumInteritemSpacingForSectionAt: item.indexPath.section) ?? minimumInteritemSpacing
             
             switch scrollDirection {
             case .horizontal:
@@ -292,7 +283,7 @@ private extension SectionCollectionFlowLayout {
                     if lastItem.indexPath.section != item.indexPath.section {
                         item.frame.origin.x = lastItem.frame.maxX + insets.left
                     } else {
-                        item.frame.origin.x = lastItem.frame.maxX + spacing
+                        item.frame.origin.x = lastItem.frame.maxX + minimumInteritemSpacing
                     }
                 } else {
                     item.frame.origin.x = insets.left
@@ -303,7 +294,7 @@ private extension SectionCollectionFlowLayout {
                 }
                 
                 if let lastItem = section.last, lastItem.frame.maxY == item.frame.maxY {
-                    item.frame.origin.x = lastItem.frame.maxX + spacing
+                    item.frame.origin.x = lastItem.frame.maxX + minimumInteritemSpacing
                 } else {
                     item.frame.origin.x = insets.left
                 }
