@@ -43,6 +43,10 @@ public protocol SectionCollectionProtocol: SectionProtocol {
     func itemSize(at row: Int) -> CGSize
     func item(at row: Int) -> UICollectionViewCell
     
+    /// contextMenu
+    @available(iOS 13.0, *)
+    func contextMenuConfiguration(at row: Int, point: CGPoint) -> UIContextMenuConfiguration?
+    
     func reload()
 }
 
@@ -69,6 +73,13 @@ public extension SectionCollectionProtocol {
     var minimumLineSpacing: CGFloat { 0 }
     var minimumInteritemSpacing: CGFloat { 0 }
     var sectionInset: UIEdgeInsets { .zero }
+}
+
+public extension SectionCollectionProtocol {
+    
+    @available(iOS 13.0, *)
+    func contextMenuConfiguration(at row: Int, point: CGPoint) -> UIContextMenuConfiguration? { nil }
+    
 }
 
 public extension SectionCollectionProtocol {

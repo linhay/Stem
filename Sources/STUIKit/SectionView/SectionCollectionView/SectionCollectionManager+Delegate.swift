@@ -136,9 +136,11 @@ extension SectionCollectionManager: UICollectionViewDelegate {
         sections.forEach({ $0.didEndMultipleSelectionInteraction() })
     }
 
-//    @available(iOS 13.0, *)
-//    public func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
-//
+    @available(iOS 13.0, *)
+    public func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return sections[indexPath.section].contextMenuConfiguration(at: indexPath.item, point: point)
+    }
+
 //    @available(iOS 13.0, *)
 //    public func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
 //
