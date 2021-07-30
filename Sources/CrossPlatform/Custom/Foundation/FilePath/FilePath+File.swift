@@ -42,11 +42,23 @@ public extension FilePath {
 
 public extension FilePath.File {
     
+    func read(_ options: Data.ReadingOptions = [], encoding: String.Encoding = .utf8) throws -> String {
+        String(data: try data(options: options), encoding: encoding) ?? ""
+    }
+    
+    func write(_ data: Data) throws {
+        try data.write(to: url)
+    }
+    
+}
+
+public extension FilePath.File {
+    
     /// 文件数据
     /// - Throws: Data error
     /// - Returns: data
     func data(options: Data.ReadingOptions = []) throws -> Data {
-        return try Data(contentsOf: url, options: options)
+        try Data(contentsOf: url, options: options)
     }
     
     /// 根据当前[FilePath]创建文件/文件夹

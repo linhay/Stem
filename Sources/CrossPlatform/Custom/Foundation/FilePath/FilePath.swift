@@ -52,6 +52,18 @@ public struct FilePath: FilePathProtocol {
     }
 }
 
+public extension FilePath {
+    
+    func asFile() -> FilePath.File? {
+        type == .file ? .init(url: url) : nil
+    }
+    
+    func asFolder() -> FilePath.Folder? {
+        type == .folder ? .init(url: url) : nil
+    }
+    
+}
+
 private extension FilePath {
     
     /// 文件/文件夹类型
