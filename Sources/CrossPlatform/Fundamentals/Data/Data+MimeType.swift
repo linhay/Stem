@@ -67,7 +67,8 @@ public extension Data {
                     return Array(data.prefix(bytes.count)) == bytes
                 }
                 
-                guard range.count <= bytes.count else {
+                guard data.count > range.upperBound,
+                      range.count <= bytes.count else {
                     return false
                 }
                 
