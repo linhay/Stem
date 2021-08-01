@@ -56,7 +56,7 @@ open class STAudioRecorder: AVAudioRecorder {
             case _32 = 32
         }
         
-        /// bit深度: 8、16、24 或 32
+        /// 比特率: 8、16、24 或 32
         case bitDepth(BitDepth)
         /// 音频格式是大端 ( true) 还是小端 ( false)
         case isBigEndian(Bool)
@@ -87,9 +87,13 @@ open class STAudioRecorder: AVAudioRecorder {
         /// 表示线性PCM音频格式的比特深度: 8、16、24或32
         case linearPCM([LinearPCMSettings])
         case audioQuality(AVAudioQuality)
+        /// 比特采样率
+        case bitRate(Int)
         
         public var item: [String: Any] {
             switch self {
+            case .bitRate(let value):
+                return [AVEncoderBitRateKey: value]
             case .audioQuality(let value):
                 return [AVEncoderAudioQualityKey: value.rawValue]
             case .linearPCM(let settings):
