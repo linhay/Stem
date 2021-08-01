@@ -20,16 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Foundation
+
 #if canImport(UIKit)
 import UIKit
 
-@available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension UIImage {
-    
     /// Retrieve a system symbol image of the given type.
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
-    convenience init(sfSymbol: SFSymbol) {
+    convenience init(sfSymbol: SFSymbol2) {
         self.init(systemName: sfSymbol.rawValue)!
     }
     
@@ -37,13 +38,13 @@ public extension UIImage {
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
     /// - Parameter configuration: The `UIImage.Configuration` applied to this system image.
-    convenience init(sfSymbol: SFSymbol, with configuration: UIImage.SymbolConfiguration) {
+    convenience init(sfSymbol: SFSymbol2, with configuration: UIImage.SymbolConfiguration) {
         self.init(systemName: sfSymbol.rawValue, withConfiguration: configuration)!
     }
 }
 
-@available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public extension SFSymbol {
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+public extension SFSymbol2 {
     
     @available(macOS, unavailable)
     func convert() -> UIImage {
