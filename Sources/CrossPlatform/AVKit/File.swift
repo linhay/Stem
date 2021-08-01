@@ -33,11 +33,11 @@ open class STAudioRecorder: AVAudioRecorder {
             self.rawValue = rawValue
         }
         
-        public let all: [Format] = [.linearPCM,
-                                    .appleIMA4,
-                                    .mpeg4AAC,
-                                    .uLaw, .aLaw,
-                                    .appleLossless]
+        public static let all: [Format] = [.linearPCM,
+                                           .appleIMA4,
+                                           .mpeg4AAC,
+                                           .uLaw, .aLaw,
+                                           .appleLossless]
         
         public static let linearPCM = Format(.linearPCM)
         public static let appleIMA4 = Format(.appleIMA4)
@@ -63,7 +63,7 @@ open class STAudioRecorder: AVAudioRecorder {
         /// 音频格式是浮点 ( true) 还是定点 ( false)
         case isFloatKey(Bool)
         case isNonInterleaved(Bool)
-
+        
         public var item: [String: Any] {
             switch self {
             case .bitDepth(let value):
