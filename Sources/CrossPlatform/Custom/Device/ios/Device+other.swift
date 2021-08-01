@@ -23,40 +23,39 @@
 import Foundation
 
 public extension Device {
-  
-  /// 是否支持 Taptic Engine 功能
-    var isSupportTaptic: Bool {
-    guard let version = Device.versionCode.split(separator: ",").first?.filter({ !("a"..."z").contains($0) }), let num = Int(version) else { return false }
-    return num > 8
-  }
-  
-  /// 是否越狱
-    var isJailbroken: Bool {
-    if Device.type == .simulator { return false }
-    let paths = ["/Applications/Cydia.app",
-                 "/private/var/lib/apt/",
-                 "/private/var/lib/cydia",
-                 "/private/var/stash"]
     
-    if paths.first(where: { return FileManager.default.fileExists(atPath: $0) }) != nil { return true }
-    
-    if let bash = fopen("/bin/bash", "r") {
-      fclose(bash)
-      return true
-    }
-    
-    if let uuid = CFUUIDCreate(nil),
-      let string = CFUUIDCreateString(nil, uuid) {
-      let path = "/private/" + (string as String)
-      do {
-        try "test".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
-        try FileManager.default.removeItem(atPath: path)
+    static let isSimulator = {
+        #if targetEnvironment(simulator)
         return true
-      } catch {
+        #else
+        return false
+        #endif
+    }()
+    
+    /// 是否越狱
+    static let isJailbroken = { () -> Bool in 
+        if isSimulator { return false }
+        let paths = ["/Applications/Cydia.app", "/private/var/lib/apt/", "/private/var/lib/cydia", "/private/var/stash"]
         
-      }
-    }
-    return false
-  }
-  
+        if paths.first(where: { return FileManager.default.fileExists(atPath: $0) }) != nil { return true }
+        
+        if let bash = fopen("/bin/bash", "r") {
+            fclose(bash)
+            return true
+        }
+        
+        if let uuid = CFUUIDCreate(nil),
+           let string = CFUUIDCreateString(nil, uuid) {
+            let path = "/private/" + (string as String)
+            do {
+                try "test".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
+                try FileManager.default.removeItem(atPath: path)
+                return true
+            } catch {
+                
+            }
+        }
+        return false
+    }()
+    
 }
