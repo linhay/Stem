@@ -73,9 +73,6 @@ public extension SectionCollectionManager {
     }
 
     func reload() {
-        guard isPicking == false else {
-            return
-        }
         operational(sectionManager.reload())
     }
 
@@ -84,13 +81,15 @@ public extension SectionCollectionManager {
     }
 
     func update(_ sections: [SectionCollectionProtocol]) {
-        operational(sectionManager.update(sections))
+        let update = sectionManager.update(sections)
         sections.forEach({ $0.config(sectionView: sectionView) })
+        operational(update)
     }
 
     func insert(section: SectionCollectionProtocol, at index: Int) {
-        operational(sectionManager.insert(section: section, at: index))
+        let insert = sectionManager.insert(section: section, at: index)
         section.config(sectionView: sectionView)
+        operational(insert)
     }
 
     func delete(at index: Int) {

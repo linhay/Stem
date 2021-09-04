@@ -64,13 +64,15 @@ public extension SectionTableManager {
     }
 
     func update(_ sections: [SectionTableProtocol], with animation: UITableView.RowAnimation = .none) {
-        operational(sectionManager.update(sections), with: animation)
+        let update = sectionManager.update(sections)
         sections.forEach({ $0.config(sectionView: sectionView) })
+        operational(update, with: animation)
     }
 
     func insert(section: SectionTableProtocol, at index: Int, with animation: UITableView.RowAnimation = .none) {
-        operational(sectionManager.insert(section: section, at: index), with: animation)
+        let insert = sectionManager.insert(section: section, at: index)
         section.config(sectionView: sectionView)
+        operational(insert, with: animation)
     }
 
     func delete(at index: Int, with animation: UITableView.RowAnimation = .none) {
@@ -78,7 +80,7 @@ public extension SectionTableManager {
     }
 
     func move(from: Int, to: Int, with animation: UITableView.RowAnimation = .none) {
-        operational(.move(from: from, to: to), with: animation)
+        operational(sectionManager.move(from: from, to: to), with: animation)
     }
 
 }
