@@ -24,7 +24,7 @@ import Foundation
 
 // MARK: - slice & pass for unit test & document
 public extension Array {
-
+    
     /// Returns an index that is the specified distance from the given index.
     ///
     /// The following example slices an array from different interval ranges
@@ -42,7 +42,7 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-     func slice(_ range: CountableClosedRange<Int>) -> [Element] {
+    func slice(_ range: CountableClosedRange<Int>) -> [Element] {
         if isEmpty { return self }
         var range: (start: Int, end: Int) = (range.lowerBound, range.upperBound)
         if range.start < 0 { range.start = 0 }
@@ -53,7 +53,7 @@ public extension Array {
         let end = index(startIndex, offsetBy: range.end)
         return Array(self[start...end])
     }
-
+    
     /// Returns an index that is the specified distance from the given index.
     ///
     /// The following example slices an array from different interval ranges
@@ -71,11 +71,11 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-     func slice(_ range: CountableRange<Int>) -> [Element] {
+    func slice(_ range: CountableRange<Int>) -> [Element] {
         let ran: CountableClosedRange<Int> = range.lowerBound...(range.upperBound - 1)
         return self.slice(ran)
     }
-
+    
     /// Returns an index that is the specified distance from the given index.
     ///
     /// The following example slices an array from different interval ranges
@@ -89,12 +89,12 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-     func slice(_ range: CountablePartialRangeFrom<Int>) -> [Element] {
+    func slice(_ range: CountablePartialRangeFrom<Int>) -> [Element] {
         guard (self.count - 1) >= range.lowerBound else { return [] }
         let ran: CountableClosedRange<Int> = range.lowerBound...(self.count - 1)
         return self.slice(ran)
     }
-
+    
     /// Returns an index that is the specified distance from the given index.
     ///
     /// The following example slices an array from different interval ranges
@@ -108,12 +108,12 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-     func slice(_ range: PartialRangeUpTo<Int>) -> [Element] {
+    func slice(_ range: PartialRangeUpTo<Int>) -> [Element] {
         guard range.upperBound - 1 > 0 else { return [] }
         let ran: CountableClosedRange<Int> = 0...(range.upperBound - 1)
         return self.slice(ran)
     }
-
+    
     /// Returns an index that is the specified distance from the given index.
     ///
     /// The following example slices an array from different interval ranges
@@ -127,16 +127,16 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-     func slice(_ range: PartialRangeThrough<Int>) -> [Element] {
+    func slice(_ range: PartialRangeThrough<Int>) -> [Element] {
         let ran: CountableClosedRange<Int> = 0...range.upperBound
         return self.slice(ran)
     }
-
+    
 }
 
 // MARK: - Value & pass for unit test & document
 public extension Array {
-
+    
     /// Accesses the element at the specified position.
     ///
     /// The following example uses indexed subscripting to get an array's element
@@ -160,29 +160,56 @@ public extension Array {
         guard rawIndex < count, rawIndex >= 0 else { return nil }
         return self[rawIndex]
     }
+    
+}
 
+public extension Array {
+    
+    /// Creates a new array containing the specified number of a single, repeated
+    /// value.
+    ///
+    /// Here's an example of creating an array initialized with five strings
+    /// containing the letter *Z*.
+    ///
+    ///     let fiveZs = Array(repeating: "Z", count: 5)
+    ///     print(fiveZs)
+    ///     // Prints "["Z", "Z", "Z", "Z", "Z"]"
+    ///
+    /// - Parameters:
+    ///   - repeatedValue: The element to repeat.
+    ///   - count: The number of times to repeat the value passed in the
+    ///     `repeating` parameter. `count` must be zero or greater.
+    @inlinable init(repeating block: (_ index: Int) -> Element, count: Int) {
+        self = (0..<count).map({ block($0) })
+    }
+    
+    /// Creates a new array containing the specified number of a single, repeated
+    /// value.
+    ///
+    /// Here's an example of creating an array initialized with five strings
+    /// containing the letter *Z*.
+    ///
+    ///     let fiveZs = Array(repeating: "Z", count: 5)
+    ///     print(fiveZs)
+    ///     // Prints "["Z", "Z", "Z", "Z", "Z"]"
+    ///
+    /// - Parameters:
+    ///   - repeatedValue: The element to repeat.
+    ///   - count: The number of times to repeat the value passed in the
+    ///     `repeating` parameter. `count` must be zero or greater.
+    @inlinable init(repeating block: () -> Element, count: Int) {
+        self = (0..<count).map({ _ in block() })
+    }
+    
 }
 
 // MARK: - Array about other
 public extension Array {
-
+    
     func decompose() -> (head: Iterator.Element, tail: SubSequence)? {
         return (count > 0) ? (self[0], self[1..<count]): nil
     }
-
-    func formatJSON(prettify: Bool = false) -> String {
-        guard JSONSerialization.isValidJSONObject(self) else {
-            return "[]"
-        }
-        let options = prettify ? JSONSerialization.WritingOptions.prettyPrinted: JSONSerialization.WritingOptions()
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: self, options: options)
-            return String(data: jsonData, encoding: .utf8) ?? "[]"
-        } catch {
-            return "[]"
-        }
-    }
-
+    
 }
 
 public extension Array {
