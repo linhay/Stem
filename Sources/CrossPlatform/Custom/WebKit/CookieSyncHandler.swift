@@ -20,42 +20,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(WebKit)
 import Foundation
+import WebKit
 
-public extension Device {
+@available(iOS 11.0, macOS 10.13, *)
+class CookieSyncHandler {
     
-    static let isSimulator = {
-        #if targetEnvironment(simulator)
-        return true
-        #else
-        return false
-        #endif
-    }()
+    static let shared: CookieSyncHandler = CookieSyncHandler()
     
-    /// 是否越狱
-    static let isJailbroken = { () -> Bool in 
-        if isSimulator { return false }
-        let paths = ["/Applications/Cydia.app", "/private/var/lib/apt/", "/private/var/lib/cydia", "/private/var/stash"]
-        
-        if paths.first(where: { return FileManager.default.fileExists(atPath: $0) }) != nil { return true }
-        
-        if let bash = fopen("/bin/bash", "r") {
-            fclose(bash)
-            return true
+    private var isListening: Bool = false
+    
+    func listen() {
+        guard isListening == false else {
+            return
         }
-        
-        if let uuid = CFUUIDCreate(nil),
-           let string = CFUUIDCreateString(nil, uuid) {
-            let path = "/private/" + (string as String)
-            do {
-                try "test".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
-                try FileManager.default.removeItem(atPath: path)
-                return true
-            } catch {
-                
+        NotificationCenter.default.addObserver(self, selector: #selector(task), name: .NSHTTPCookieManagerCookiesChanged, object: nil)
+    }
+    
+    @objc
+    private func task() {
+        syncCookies {}
+    }
+    
+    func syncCookies(completion: @escaping () -> Void) {
+        DispatchQueue(label: "CookieSyncHandler.sync").async {
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            HTTPCookieStorage.shared.cookies?.forEach({ cookie in
+                DispatchQueue.main.async {
+                    WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie, completionHandler: {
+                        semaphore.signal()
+                    })
+                }
+                semaphore.wait()
+            })
+            
+            DispatchQueue.main.async {
+                completion()
             }
         }
-        return false
-    }()
+    }
     
 }
+#endif

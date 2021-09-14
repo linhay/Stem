@@ -24,12 +24,17 @@ import Foundation
 import Darwin
 
 public extension FilePath.File {
+    
+    var system: System { System(filePath: self) }
         
     class System {
+        
         let filePath: FilePath.File
+        
         init(filePath: FilePath.File) {
             self.filePath = filePath
         }
+        
     }
     
 }

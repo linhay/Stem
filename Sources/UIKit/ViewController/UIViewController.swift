@@ -45,20 +45,16 @@ public extension Stem where Base: UIViewController {
     ///   - vc: 指定控制器
     ///   - isRemove: 前进后是否移除当前控制器
     ///   - animated: 是否显示动画
-    func push(_ vc: UIViewController?, isRemove: Bool = false, animated: Bool = true) {
-        guard let vc = vc else { return }
+    func push(_ controller: UIViewController?, animated: Bool = true) {
+        guard let controller = controller else { return }
         switch base {
-        case let nav as UINavigationController:
-            nav.pushViewController(vc, animated: animated)
+        case let item as UINavigationController:
+            item.pushViewController(controller, animated: animated)
+        case let item as UITabBarController:
+            item.selectedViewController?.st.push(controller, animated: animated)
         default:
-            base.navigationController?.pushViewController(vc, animated: animated)
-            if isRemove {
-                guard let vcs = base.navigationController?.viewControllers else { return }
-                guard let flags = vcs.firstIndex(of: base.self) else { return }
-                base.navigationController?.viewControllers.remove(at: flags)
-            }
+            base.navigationController?.pushViewController(controller, animated: animated)
         }
-        return
     }
     
     /// 后退一层控制器

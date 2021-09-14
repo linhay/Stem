@@ -64,7 +64,6 @@ public extension Stem where Base: UIImage {
         color.setFill()
         let bounds = CGRect(x: 0, y: 0, width: base.size.width, height: base.size.height)
         UIRectFill(bounds)
-        base.draw(in: bounds, blendMode: .overlay, alpha: 1)
         base.draw(in: bounds, blendMode: .destinationIn, alpha: 1)
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }

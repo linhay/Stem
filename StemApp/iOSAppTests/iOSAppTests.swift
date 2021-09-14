@@ -7,21 +7,20 @@
 
 import XCTest
 import Stem
+import AVKit
 
 class iOSAppTests: XCTestCase {
 
     func testMMAP() throws {
-        let filePath = try FilePath(path: "./mmap5.json", inSanbox: .cache, type: .file)
-        
+        let filePath = try FilePath.Folder(sanbox: .cache).file(name: "mmap5.json")
         try? filePath.delete()
         try? filePath.create()
         
         let system = filePath.system
-        print(filePath.path)
         let result = try system.mmap(size: 1)
         try result.write(data: "1234567".data(using: .utf8)!)
         try result.append(data: "abcdefg".data(using: .utf8)!)
         print(String(data: result.read(), encoding: .utf8)!)
     }
-
+    
 }
