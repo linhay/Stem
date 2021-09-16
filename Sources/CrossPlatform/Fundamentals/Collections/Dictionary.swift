@@ -24,34 +24,45 @@ import Foundation
 
 // MARK: - Dictionary 重载操作符
 extension Dictionary {
-  
-  /// 两个字典相加
-  ///
-  /// - Parameters:
-  ///   - lhs: 左侧字典
-  ///   - rhs: 右侧字典
-  /// - Returns: 返回新的字典
-  static func+(lhs: Dictionary, rhs: Dictionary) -> Dictionary {
-      return lhs.merging(rhs, uniquingKeysWith: { $1 })
-  }
-  
+    
+    @inlinable public func mapKeys<T: Hashable>(_ transform: (Key) throws -> T) rethrows -> [T: Value] {
+        var dict = [T: Value]()
+        
+        for (key, value) in self {
+            let newKeys = try transform(key)
+            dict.updateValue(value, forKey: newKeys)
+        }
+        
+        return dict
+    }
+    
+    @inlinable public func compactMapKeys<T: Hashable>(_ transform: (Key) throws -> T?) rethrows -> [T: Value] {
+        var dict = [T: Value]()
+        for (key, value) in self {
+            if let newKeys = try transform(key) {
+                dict.updateValue(value, forKey: newKeys)
+            }
+        }
+        return dict
+    }
+    
 }
 
 // MARK: - 函数
 public extension Dictionary {
-  
-  /// 格式化为Json
-  ///
-  /// - Returns: Json字符串
-   func formatJSON(prettify: Bool = false) -> String {
-    guard JSONSerialization.isValidJSONObject(self) else { return "{}" }
-    let options = prettify ? JSONSerialization.WritingOptions.prettyPrinted: JSONSerialization.WritingOptions()
-    do {
-      let jsonData = try JSONSerialization.data(withJSONObject: self, options: options)
-      return String(data: jsonData, encoding: .utf8) ?? "{}"
-    } catch {
-      return "{}"
+    
+    /// 格式化为Json
+    ///
+    /// - Returns: Json字符串
+    func formatJSON(prettify: Bool = false) -> String {
+        guard JSONSerialization.isValidJSONObject(self) else { return "{}" }
+        let options = prettify ? JSONSerialization.WritingOptions.prettyPrinted: JSONSerialization.WritingOptions()
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: self, options: options)
+            return String(data: jsonData, encoding: .utf8) ?? "{}"
+        } catch {
+            return "{}"
+        }
     }
-  }
-  
+    
 }

@@ -223,11 +223,7 @@ public extension Array {
     }
     
     func dictionary<Key: Hashable>(key: KeyPath<Element, Key>) -> [Key: Element] {
-        var result = [Key: Element]()
-        for item in self {
-            result[item[keyPath: key]] = item
-        }
-        return result
+        return dictionary(key: key, value: \.self)
     }
     
 }

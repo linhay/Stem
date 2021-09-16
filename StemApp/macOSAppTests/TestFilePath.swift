@@ -30,4 +30,19 @@ class TestFilePath: XCTestCase {
 //        print(String(data: result.data(), encoding: .utf8)!)
     }
 
+    func testCheckAndroidAARFilename() throws {
+        let folder = try FilePath.Folder(path: "/Users/linhey/Desktop/dxyer-assets-2/Icons")
+        try folder
+            .allSubFilePaths()
+            .map(\.attributes.name)
+            .sorted()
+            .filter({ str in
+                str.contains(where: { $0.isUppercase })
+                    || str.contains(" ")
+            })
+            .forEach({ str in
+                print(str)
+            })
+    }
+    
 }
