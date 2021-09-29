@@ -12,6 +12,7 @@
 		CD4FA46E261A064000222057 /* VPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4FA46D261A064000222057 /* VPageController.swift */; };
 		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
 		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
+		CD88026F2704187F0021AD5B /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD88026D2704158C0021AD5B /* iconfont.ttf */; };
 		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
 		CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70522609FF5D006150C2 /* DecorationView.swift */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
@@ -65,6 +66,7 @@
 		CD358FAC260DE9660018CE1F /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
 		CD4FA46D261A064000222057 /* VPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPageController.swift; sourceTree = "<group>"; };
 		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
+		CD88026D2704158C0021AD5B /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
 		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
 		CD8D70522609FF5D006150C2 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */,
 				CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */,
 				CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */,
+				CD88026D2704158C0021AD5B /* iconfont.ttf */,
 				CDD3BF7125ECF3220033ECD6 /* LaunchScreen.storyboard */,
 				CDD3BF7425ECF3220033ECD6 /* Info.plist */,
 				CDD3BF6E25ECF3220033ECD6 /* Preview Content */,
@@ -413,6 +416,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD88026F2704187F0021AD5B /* iconfont.ttf in Resources */,
 				CDD3BF7325ECF3220033ECD6 /* LaunchScreen.storyboard in Resources */,
 				CDD3BF7025ECF3220033ECD6 /* Preview Assets.xcassets in Resources */,
 				CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */,

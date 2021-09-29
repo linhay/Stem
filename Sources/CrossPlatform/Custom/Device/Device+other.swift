@@ -37,6 +37,20 @@ public extension Device {
         #endif
     }()
     
+    /// ptrace 用于拒绝调试 可以比较有效的保护 app
+    static func refusalDebug() {
+        #if !DEBUG
+        typealias ptrace = @convention(c) (_ request: Int, _ pid: Int, _ addr: Int, _ data: Int) -> AnyObject
+        let open = dlopen("/usr/lib/system/libsystem_kernel.dylib", RTLD_NOW)
+        guard unsafeBitCast(open, to: Int.self) > 0x1024,
+              let result = dlsym(open, "ptrace") else {
+            return
+        }
+        unsafeBitCast(result, to: ptrace.self)(0x1F, 0, 0, 0)
+        #endif
+    }
+    
+    
     /// 是否越狱
     static let isJailbroken = { () -> Bool in 
         if isSimulator { return false }

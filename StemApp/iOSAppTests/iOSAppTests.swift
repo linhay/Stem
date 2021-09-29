@@ -23,4 +23,27 @@ class iOSAppTests: XCTestCase {
         print(String(data: result.read(), encoding: .utf8)!)
     }
     
+    func testUINavigationBarAppearance() {
+        RunTime.print.properties(from: UINavigationBarAppearance.self)
+        RunTime.print.methods(from: UINavigationBarAppearance.self)
+        RunTime.print.ivars(from: UINavigationBarAppearance.self)
+        RunTime.print.protocols(from: UINavigationBarAppearance.self)
+    }
+    
+    func testIconFont() throws {
+        guard let data = NSDataAsset(name: "iconfont", bundle: .main)?.data else {
+            return
+        }
+        try StemFont.register(data: data)
+        print(StemFont.availableFontFamilies)
+    }
+    
+    func testIconFontURL() throws {
+        guard let url = Bundle.main.url(forResource: "iconfont", withExtension: "ttf") else {
+            return
+        }
+        try StemFont.register(from: url)
+        print(StemFont.availableFontFamilies)
+    }
+    
 }
