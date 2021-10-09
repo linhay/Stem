@@ -22,8 +22,8 @@
 
 import Foundation
 
-extension NSMutableAttributedString {
-
+public extension NSMutableAttributedString {
+    
     static func+=(lhs: inout NSMutableAttributedString, rhs: NSAttributedString?) {
         guard let rhs = rhs else {
             return
@@ -33,13 +33,18 @@ extension NSMutableAttributedString {
     
 }
 
-extension Stem where Base: NSMutableAttributedString {
-
-    func set(_ value: Any?, for key: NSAttributedString.Key, range: Range<Int>? = nil) -> Base {
+public extension Stem where Base: NSMutableAttributedString {
+    
+    private func textRange(from range: Range<Int>? = nil) -> NSRange {
         var textRange = NSRange(location: 0, length: base.length)
         if let range = range {
             textRange = NSRange(location: range.lowerBound, length: range.upperBound - range.lowerBound)
         }
+        return textRange
+    }
+    
+    func set(_ value: Any?, for key: NSAttributedString.Key, range: Range<Int>? = nil) -> Base {
+        let textRange = textRange(from: range)
         guard let value = value else {
             base.removeAttribute(key, range: textRange)
             return base
@@ -47,5 +52,5 @@ extension Stem where Base: NSMutableAttributedString {
         base.addAttribute(key, value: value, range: textRange)
         return base
     }
-
+    
 }

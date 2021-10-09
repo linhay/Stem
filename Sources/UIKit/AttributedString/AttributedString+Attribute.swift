@@ -280,7 +280,7 @@ public extension NSAttributedString {
                     .tabStops(value.tabStops),
                     .defaultTabInterval(value.defaultTabInterval),
                     .allowsDefaultTighteningForTruncation(value.allowsDefaultTighteningForTruncation)]
-
+            
         }
 
     }

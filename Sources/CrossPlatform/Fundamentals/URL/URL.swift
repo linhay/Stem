@@ -24,7 +24,13 @@ import Foundation
 
 extension URL: StemValueCompatible { }
 
-extension StemValue where Base == URL {
+public extension StemValue where Base == URL {
+
+    static let blank = URL(string: "about:blank")!
+    
+}
+
+public extension StemValue where Base == URL {
 
     /// 获取url参数集合
     var querys: [String: String] {
