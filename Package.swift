@@ -1,44 +1,30 @@
-// swift-tools-version:5.1
-import PackageDescription
+// swift-tools-version:5.5
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
-let StemCrossPlatform = "StemCrossPlatform"
-let StemCore = "StemCore"
-let Stem = "Stem"
-let Static = "Static"
+import PackageDescription
 
 let package = Package(
     name: "Stem",
     platforms: [.iOS(.v11), .macOS(.v10_12), .tvOS(.v10), .watchOS(.v3)],
     products: [
-        .library(name: StemCrossPlatform, targets: [StemCrossPlatform]),
-        .library(name: StemCore, targets: [StemCore]),
-        .library(name: Stem, targets: [Stem]),
-        
-        .library(name: StemCrossPlatform + Static, type: .static, targets: [StemCrossPlatform]),
-        .library(name: StemCore + Static, type: .static, targets: [StemCore]),
-        .library(name: Stem + Static, type: .static, targets: [Stem]),
+        // Products define the executables and libraries a package produces, and make them visible to other packages.
+        .library(
+            name: "Stem",
+            targets: ["Stem"]),
+    ],
+    dependencies: [
+        // Dependencies declare other packages that this package depends on.
+        // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
-        .target(name: StemCore,
-                path: "Sources",
-                sources: ["Core"]),
-        .target(name: StemCrossPlatform,
-                dependencies: [
-                    .target(name: StemCore)
-                ],
-                path: "Sources",
-                sources: ["CrossPlatform",
-                          "ExportedImport/ImportCore.swift"]),
-        .target(name: Stem,
-                dependencies: [
-                    .target(name: StemCrossPlatform)
-                ],
-                path: "Sources",
-                sources: [
-                    "STUIKit",
-                    "UIKit",
-                    "ExportedImport/ImportCrossPlatform.swift",
-                ]
-        )
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        .target(
+            name: "Stem",
+            dependencies: [],
+            path: "Sources"),
+        .testTarget(
+            name: "StemTests",
+            dependencies: ["Stem"]),
     ]
 )
