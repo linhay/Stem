@@ -135,7 +135,7 @@ public extension SelectableCollectionProtocol {
 
 }
 
-public extension SelectableCollectionProtocol where Element: SelectableProtocol & Equatable {
+public extension SelectableCollectionProtocol where Element: Equatable {
 
     /// 选中指定元素
     /// - Parameters:
