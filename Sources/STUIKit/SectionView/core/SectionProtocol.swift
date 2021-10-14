@@ -43,10 +43,6 @@ public protocol SectionProtocol: class {
     func shouldHighlightItem(at row: Int) -> Bool
     func didHighlightItem(at row: Int)
     func didUnhighlightItem(at row: Int)
-
-    /// Tracking the Addition and Removal of Views
-    func willDisplayItem(at row: Int)
-    func didEndDisplaying(at row: Int)
     
     /// Editing Items
     func canEditItem(at row: Int) -> Bool

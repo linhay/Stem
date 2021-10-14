@@ -25,8 +25,30 @@ import UIKit
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
-    public typealias DecorationView = UICollectionReusableView & STViewProtocol
-    public typealias DecorationElement = [Int: DecorationView.Type]
+    public typealias DecorationView = UICollectionReusableView & LoadViewProtocol
+    public typealias DecorationElement = [DecorationElementKey: DecorationView.Type]
+    
+    public class DecorationElementKey: Hashable {
+
+        public static let all = DecorationElementKey(get: { -1 })
+        
+        public static func == (lhs: SectionCollectionFlowLayout.DecorationElementKey, rhs: SectionCollectionFlowLayout.DecorationElementKey) -> Bool {
+            return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(ObjectIdentifier(self))
+        }
+        
+        let callback: () -> Int?
+        
+        public init(get callback: @escaping () -> Int?) {
+            self.callback = callback
+        }
+        
+        var index: Int { callback() ?? -404 }
+        
+    }
     
     /// 布局插件样式
     public enum PluginMode {
@@ -38,6 +60,16 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         case fixSupplementaryViewInset
         case sectionBackgroundView(DecorationElement)
         case allSectionBackgroundView(type: DecorationView.Type)
+        
+        var id: Int {
+            switch self {
+            case .left:    return 1
+            case .centerX: return 2
+            case .fixSupplementaryViewInset: return 3
+            case .sectionBackgroundView: return 4
+            case .allSectionBackgroundView: return 5
+            }
+        }
         
         var priority: Int {
             switch self {
@@ -67,6 +99,12 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             /// mode 重排
             pluginModes = newPluginModes.sorted(by: { $0.priority < $1.priority })
         }
+    }
+    
+    public func update(mode: PluginMode) {
+        var modes = pluginModes.filter({ $0.id != mode.id })
+        modes.append(mode)
+        self.pluginModes = modes
     }
     
     private var oldBounds = CGRect.zero
@@ -104,7 +142,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             case .sectionBackgroundView(let elements):
                 attributes = modeSectionBackgroundView(collectionView, element: elements, attributes: attributes) ?? []
             case .allSectionBackgroundView(type: let type):
-                attributes = modeSectionBackgroundView(collectionView, element: [-1: type], attributes: attributes) ?? []
+                attributes = modeSectionBackgroundView(collectionView, element: [DecorationElementKey.all: type], attributes: attributes) ?? []
             }
         }
         
@@ -138,8 +176,8 @@ private extension SectionCollectionFlowLayout {
             let count = collectionView.numberOfItems(inSection: section)
             let sectionIndexPath = IndexPath(item: 0, section: section)
             
-            let header = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: sectionIndexPath)
-            let footer = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: sectionIndexPath)
+            let header = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.header.rawValue, at: sectionIndexPath)
+            let footer = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.footer.rawValue, at: sectionIndexPath)
             let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
             let elements = ([header, footer] + cells).compactMap(\.?.frame).filter({ $0.size.width > 0 && $0.size.height > 0 })
             guard let first = elements.first else {
@@ -169,12 +207,18 @@ private extension SectionCollectionFlowLayout {
             .map(\.indexPath.section)
             .filter({ sectionSet.insert($0).inserted })
         
-        if let type = element[-1] {
+        if let type = element[DecorationElementKey.all] {
             return attributes + sections.compactMap { task(section: $0, type: type) }
         } else {
+            let indexs = element.keys.map(\.index)
             return attributes + sections
-                .filter({ element.keys.contains($0) })
-                .compactMap { task(section: $0, type: element[$0]!) }
+                .filter({ indexs.contains($0) })
+                .compactMap { index in
+                    guard let view = element.first(where: { $0.key.index == index })?.value else {
+                        return nil
+                    }
+                    return task(section: index, type: view)
+                }
         }
         
     }

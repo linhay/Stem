@@ -30,6 +30,11 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
     public let selectedEvent = Delegate<Cell.Model, Void>()
     public let selectedRowEvent = Delegate<Int, Void>()
     public let willDisplayEvent = Delegate<Int, Void>()
+    
+    public typealias SupplementaryViewEventItem = (view: UICollectionReusableView, elementKind: String, row: Int)
+    public let willDisplaySupplementaryViewEvent = Delegate<SupplementaryViewEventItem, Void>()
+    public let didEndDisplayingSupplementaryViewEvent = Delegate<SupplementaryViewEventItem, Void>()
+    
     /// cell 样式配置
     public let configCellStyleEvent = Delegate<(row: Int, cell: Cell), Void>()
     
@@ -87,14 +92,22 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         return cell
     }
     
-    open func willDisplayItem(at row: Int) {
-        willDisplayEvent.call(row)
-    }
-    
     open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
     open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
     open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
     open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
+    
+    open func willDisplayItem(at row: Int) {
+        willDisplayEvent.call(row)
+    }
+    
+    open func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
+        willDisplaySupplementaryViewEvent.call((view: view, elementKind: elementKind, row: row))
+    }
+    
+    open func didEndDisplayingSupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
+        didEndDisplayingSupplementaryViewEvent.call((view: view, elementKind: elementKind, row: row))
+    }
 }
 
 /// 增删

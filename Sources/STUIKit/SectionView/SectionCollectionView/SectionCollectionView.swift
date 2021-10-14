@@ -34,7 +34,34 @@ open class SectionCollectionView: UICollectionView {
         set { flowLayout?.scrollDirection = newValue ?? .vertical }
         get { return flowLayout?.scrollDirection }
     }
+    
+    /// 设置 SupplementaryView 填充 单个 section 区域
+    /// - Parameters:
+    ///   - backgroundView: SupplementaryView
+    ///   - section: section
+    public func set(backgroundView: SectionCollectionFlowLayout.DecorationView.Type,
+                    for section: SectionCollectionProtocol) {
+        guard var pluginModes = sectionFlowLayout?.pluginModes else {
+            return
+        }
+        
+        var item = pluginModes
+            .compactMap { mode -> SectionCollectionFlowLayout.DecorationElement? in
+                switch mode {
+                case .sectionBackgroundView(let element):
+                    return element
+                default:
+                    return nil
+                }
+            }
+            .reduce(SectionCollectionFlowLayout.DecorationElement()) { result, item in
+                result.merging(item, uniquingKeysWith: { $1 })
+            }
 
+        item[.init(get: { section.isLoaded ? section.index : nil })] = backgroundView
+        sectionFlowLayout?.update(mode: .sectionBackgroundView(item))
+    }
+    
     /// 布局插件
     /// - Parameter pluginModes: 样式
     public func set(pluginModes: [SectionCollectionFlowLayout.PluginMode]) {

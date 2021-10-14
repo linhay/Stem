@@ -66,16 +66,20 @@ extension SectionCollectionManager: UICollectionViewDelegate {
         return sections[indexPath.section].willDisplayItem(at: indexPath.item)
     }
 
-//    @available(iOS 8.0, *)
-//    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
+    @available(iOS 8.0, *)
+    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        sections[indexPath.section].willDisplaySupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
+    }
 //
 //    @available(iOS 6.0, *)
 //    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        return sections[indexPath.section].didEndDisplaying(at: indexPath.item)
 //    }
 
-//    @available(iOS 6.0, *)
-//    public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
+    @available(iOS 6.0, *)
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+        sections[indexPath.section].didEndDisplayingSupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
+    }
 //
 //    @available(iOS, introduced: 6.0, deprecated: 13.0)
 //    public func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool
@@ -136,11 +140,9 @@ extension SectionCollectionManager: UICollectionViewDelegate {
         sections.forEach({ $0.didEndMultipleSelectionInteraction() })
     }
 
-    @available(iOS 13.0, *)
-    public func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return sections[indexPath.section].contextMenuConfiguration(at: indexPath.item, point: point)
-    }
-
+//    @available(iOS 13.0, *)
+//    public func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration?
+//
 //    @available(iOS 13.0, *)
 //    public func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview?
 //

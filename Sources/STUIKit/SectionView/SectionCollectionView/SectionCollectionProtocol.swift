@@ -43,11 +43,23 @@ public protocol SectionCollectionProtocol: SectionProtocol {
     func itemSize(at row: Int) -> CGSize
     func item(at row: Int) -> UICollectionViewCell
     
+    /// SupplementaryView
+    func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int)
+    func didEndDisplayingSupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int)
+
     /// contextMenu
     @available(iOS 13.0, *)
     func contextMenuConfiguration(at row: Int, point: CGPoint) -> UIContextMenuConfiguration?
     
     func reload()
+}
+
+public extension SectionCollectionProtocol {
+    
+    func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {}
+    
+    func didEndDisplayingSupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {}
+    
 }
 
 public extension SectionCollectionProtocol {
