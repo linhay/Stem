@@ -30,8 +30,8 @@ public extension UIImage {
     /// Retrieve a system symbol image of the given type.
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
-    convenience init(sfSymbol: SFSymbol2) {
-        self.init(systemName: sfSymbol.rawValue)!
+    convenience init(_ symbol: SFSymbol2) {
+        self.init(systemName: symbol.rawValue)!
     }
     
     /// Retrieve a system symbol image of the given type and with the given configuration.
@@ -46,9 +46,8 @@ public extension UIImage {
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension SFSymbol2 {
     
-    @available(macOS, unavailable)
     func convert() -> UIImage {
-        return UIImage(sfSymbol: self)
+        return UIImage(self)
     }
     
 }

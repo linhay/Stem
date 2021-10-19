@@ -28,18 +28,32 @@ public extension SwiftUI.Image {
     /// Creates a instance of `Image` with a system symbol image of the given type.
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
-    @available(macOS, unavailable)
-    init(systemSymbol: SFSymbol) {
-        self.init(systemName: systemSymbol.rawValue)
+    init(_ symbol: SFSymbol) {
+        self.init(systemName: symbol.rawValue)
+    }
+    
+    /// Creates a instance of `Image` with a system symbol image of the given type.
+    ///
+    /// - Parameter systemSymbol: The `SFSymbol` describing this image.
+    init(_ symbol: SFSymbol2) {
+        self.init(systemName: symbol.rawValue)
     }
 }
 
 @available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
 public extension SFSymbol {
     
-    @available(macOS, unavailable)
     func convert() -> Image {
-        return SwiftUI.Image(systemSymbol: self)
+        return SwiftUI.Image(self)
+    }
+    
+}
+
+@available(iOS 13.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
+public extension SFSymbol2 {
+    
+    func convert() -> Image {
+        return SwiftUI.Image(self)
     }
     
 }
