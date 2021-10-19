@@ -125,6 +125,10 @@ public extension FilePath.Folder {
         FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
     }
     
+    func folder(name: String) -> FilePath.Folder {
+        FilePath.Folder(url: url.appendingPathComponent(name, isDirectory: true))
+    }
+    
     func open(name: String) throws -> FilePath.File {
         let file = FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
         if file.isExist {
