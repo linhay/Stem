@@ -25,60 +25,67 @@ import UIKit
 
 // MARK: - UICollectionViewDelegate && UICollectionViewDataSource
 extension SectionCollectionManager: UICollectionViewDelegate {
+    
+    private func section(from indexPath: IndexPath) -> SectionCollectionProtocol? {
+        guard sections.count > indexPath.section else {
+            return nil
+        }
+        return sections[indexPath.section]
+    }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].shouldHighlightItem(at: indexPath.item)
+        return section(from: indexPath)?.shouldHighlightItem(at: indexPath.item) ?? true
     }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        return sections[indexPath.section].didHighlightItem(at: indexPath.item)
+        section(from: indexPath)?.didHighlightItem(at: indexPath.item)
     }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        return sections[indexPath.section].didUnhighlightItem(at: indexPath.item)
+        section(from: indexPath)?.didUnhighlightItem(at: indexPath.item)
     }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].shouldSelectItem(at: indexPath.item)
+        return section(from: indexPath)?.shouldSelectItem(at: indexPath.item) ?? true
     }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].shouldDeselectItem(at: indexPath.item)
+        return section(from: indexPath)?.shouldDeselectItem(at: indexPath.item) ?? true
     }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        return sections[indexPath.section].didSelectItem(at: indexPath.item)
+        section(from: indexPath)?.didSelectItem(at: indexPath.item)
     }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        return sections[indexPath.section].didDeselectItem(at: indexPath.item)
+        section(from: indexPath)?.didDeselectItem(at: indexPath.item)
     }
     
     @available(iOS 8.0, *)
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        return sections[indexPath.section].willDisplayItem(at: indexPath.item)
+        section(from: indexPath)?.willDisplayItem(at: indexPath.item)
     }
 
     @available(iOS 8.0, *)
     public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        sections[indexPath.section].willDisplaySupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
+        section(from: indexPath)?.willDisplaySupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
     }
 //
 //    @available(iOS 6.0, *)
 //    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        return sections[indexPath.section].didEndDisplaying(at: indexPath.item)
+//        return section(from: indexPath)?.didEndDisplaying(at: indexPath.item)
 //    }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-        sections[indexPath.section].didEndDisplayingSupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
+        section(from: indexPath)?.didEndDisplayingSupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
     }
 //
 //    @available(iOS, introduced: 6.0, deprecated: 13.0)
@@ -118,7 +125,7 @@ extension SectionCollectionManager: UICollectionViewDelegate {
 //
     @available(iOS 14.0, *)
     public func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].canEditItem(at: indexPath.item)
+        return section(from: indexPath)?.canEditItem(at: indexPath.item) ?? true
     }
 
     //    @available(iOS 11.0, *)
@@ -127,12 +134,12 @@ extension SectionCollectionManager: UICollectionViewDelegate {
     
     @available(iOS 13.0, *)
     public func collectionView(_ collectionView: UICollectionView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
-            return sections[indexPath.section].shouldBeginMultipleSelectionInteraction(at: indexPath.item)
+            section(from: indexPath)?.shouldBeginMultipleSelectionInteraction(at: indexPath.item) ?? false
     }
 
     @available(iOS 13.0, *)
     public func collectionView(_ collectionView: UICollectionView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
-        return sections[indexPath.section].didBeginMultipleSelectionInteraction(at: indexPath.item)
+        section(from: indexPath)?.didBeginMultipleSelectionInteraction(at: indexPath.item)
     }
 
     @available(iOS 13.0, *)
