@@ -15,6 +15,7 @@
 		CD88026F2704187F0021AD5B /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD88026D2704158C0021AD5B /* iconfont.ttf */; };
 		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
 		CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70522609FF5D006150C2 /* DecorationView.swift */; };
+		CDC17B98272A7896001166F3 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDC17B97272A7896001166F3 /* Stem */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
 		CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */; };
 		CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */; };
@@ -25,7 +26,6 @@
 		CDD3BF8425ECF37F0033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8325ECF37F0033ECD6 /* Assets.xcassets */; };
 		CDD3BF8725ECF37F0033ECD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8625ECF37F0033ECD6 /* Preview Assets.xcassets */; };
 		CDD3BF8A25ECF37F0033ECD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8825ECF37F0033ECD6 /* Main.storyboard */; };
-		CDD3BF9925ECF43C0033ECD6 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDD3BF9825ECF43C0033ECD6 /* Stem */; };
 		CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */; };
 		CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */; };
 		CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */; };
@@ -70,6 +70,7 @@
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
 		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
 		CD8D70522609FF5D006150C2 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
+		CDC17B96272A7865001166F3 /* Stem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Stem; path = ..; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,7 +86,6 @@
 		CDD3BF8925ECF37F0033ECD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CDD3BF8B25ECF37F0033ECD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDD3BF8C25ECF37F0033ECD6 /* macOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSApp.entitlements; sourceTree = "<group>"; };
-		CDD3BF9225ECF3E60033ECD6 /* Sources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sources; path = ../Sources; sourceTree = "<group>"; };
 		CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCell.swift; sourceTree = "<group>"; };
 		CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterfallFlowViewController.swift; sourceTree = "<group>"; };
 		CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDD3BF9925ECF43C0033ECD6 /* Stem in Frameworks */,
+				CDC17B98272A7896001166F3 /* Stem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,11 +147,19 @@
 			path = iOSAppTests;
 			sourceTree = "<group>";
 		};
+		CDC17B95272A7865001166F3 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				CDC17B96272A7865001166F3 /* Stem */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		CDD3BF3D25ECF25D0033ECD6 = {
 			isa = PBXGroup;
 			children = (
+				CDC17B95272A7865001166F3 /* Packages */,
 				CD8D6A7826038E4C006150C2 /* Stem.podspec */,
-				CDD3BF9225ECF3E60033ECD6 /* Sources */,
 				CDD3BF6525ECF3220033ECD6 /* iOSApp */,
 				CDD3BF7E25ECF37E0033ECD6 /* macOSApp */,
 				CDD3BFBF25ECF5680033ECD6 /* macOSAppTests */,
@@ -331,7 +339,7 @@
 			);
 			name = macOSApp;
 			packageProductDependencies = (
-				CDD3BF9825ECF43C0033ECD6 /* Stem */,
+				CDC17B97272A7896001166F3 /* Stem */,
 			);
 			productName = macOSApp;
 			productReference = CDD3BF7D25ECF37E0033ECD6 /* macOSApp.app */;
@@ -926,7 +934,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Stem;
 		};
-		CDD3BF9825ECF43C0033ECD6 /* Stem */ = {
+		CDC17B97272A7896001166F3 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stem;
 		};
