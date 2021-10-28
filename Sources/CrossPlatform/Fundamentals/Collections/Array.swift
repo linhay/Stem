@@ -214,6 +214,16 @@ public extension Array {
 
 public extension Array {
     
+    func dictionary<Key: Hashable, Value>(key: (Element) throws -> Key?, value: (Element) throws -> Value?) rethrows -> [Key: Value] {
+        var result = [Key: Value]()
+        for item in self {
+            if let key = try key(item) {
+                result[key] = try value(item)
+            }
+        }
+        return result
+    }
+    
     func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
         var result = [Key: Value]()
         for item in self {
