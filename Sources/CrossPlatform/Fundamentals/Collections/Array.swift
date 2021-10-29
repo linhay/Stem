@@ -214,6 +214,22 @@ public extension Array {
 
 public extension Array {
     
+    func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
+        return dictionary(key: { $0[keyPath: key] }, value: { $0[keyPath: value] })
+    }
+    
+    func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: (Element) throws -> Value?) rethrows -> [Key: Value] {
+        return try dictionary(key: { $0[keyPath: key] }, value: value)
+    }
+    
+    func dictionary<Key: Hashable, Value>(key: (Element) throws -> Key?, value: KeyPath<Element, Value>) rethrows -> [Key: Value] {
+        return try dictionary(key: key, value: { $0[keyPath: value] })
+    }
+    
+    func dictionary<Key: Hashable>(key: KeyPath<Element, Key>) -> [Key: Element] {
+        return dictionary(key: key, value: \.self)
+    }
+    
     func dictionary<Key: Hashable, Value>(key: (Element) throws -> Key?, value: (Element) throws -> Value?) rethrows -> [Key: Value] {
         var result = [Key: Value]()
         for item in self {
@@ -223,17 +239,5 @@ public extension Array {
         }
         return result
     }
-    
-    func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
-        var result = [Key: Value]()
-        for item in self {
-            result[item[keyPath: key]] = item[keyPath: value]
-        }
-        return result
-    }
-    
-    func dictionary<Key: Hashable>(key: KeyPath<Element, Key>) -> [Key: Element] {
-        return dictionary(key: key, value: \.self)
-    }
-    
+
 }
