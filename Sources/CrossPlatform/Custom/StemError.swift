@@ -22,10 +22,22 @@
 
 import Foundation
 
-public struct StemError: Error {
+public struct StemError: LocalizedError, CustomStringConvertible, CustomDebugStringConvertible {
     
-    let code: Int
-    let message: String
+    public let code: Int
+    public let message: String
+    
+    public var description: String {
+        return message
+    }
+    
+    public var debugDescription: String {
+        return message
+    }
+    
+    public var errorDescription: String? {
+        return message
+    }
     
     public init(code: Int = -1, message: String = "") {
         self.code = code
