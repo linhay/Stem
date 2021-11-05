@@ -22,20 +22,34 @@
 
 #if canImport(UIKit)
 import UIKit
-
-public protocol STViewProtocol: AnyObject {
-    static var id: String { get }
-    static var nib: UINib? { get }
-}
-
-public extension STViewProtocol {
-
-    static var id: String {
-        return String(describing: Self.self)
-    }
-    static var nib: UINib? {
-        return nil
-    }
-
-}
+#elseif canImport(AppKit)
+import AppKit
 #endif
+
+public extension STWrapperColor {
+    
+    @available(iOS 13.0, macOS 10.15, *)
+    convenience init(light: @escaping @autoclosure () -> STWrapperColor,
+                     dark:  @escaping @autoclosure () -> STWrapperColor) {
+#if canImport(AppKit)
+        self.init(name: nil) { appearance in
+            if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                return dark()
+            } else {
+                return light()
+            }
+        }
+#endif
+        
+#if canImport(UIKit)
+            self.init { traitCollection in
+                if traitCollection.userInterfaceStyle == .dark {
+                    return dark()
+                } else {
+                    return light()
+                }
+            }
+#endif
+    }
+    
+}

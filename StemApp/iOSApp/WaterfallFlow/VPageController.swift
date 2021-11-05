@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import StemSTKit
+import Stem
 
 protocol Vchildren {
     
@@ -24,7 +24,11 @@ class VPageController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        mainScrollView.backgroundColor = StemColor.random.convert()
+        if #available(iOS 13.0, *) {
+            mainScrollView.backgroundColor = UIColor.init(light: .red, dark: .blue)
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
 }

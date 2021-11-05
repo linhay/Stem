@@ -91,29 +91,6 @@ public extension StemColor {
     }
     
 }
-
-#if canImport(SwiftUI)
-import SwiftUI
-
-@available(iOSApplicationExtension 13.0, *)
-@available(iOS 14.0, OSX 11.0, tvOS 13.0, watchOS 6.0, *)
-public extension StemColor {
-    
-    convenience init(_ color: SwiftUI.Color) {
-        self.init(UIColor(color))
-    }
-    
-    func convert() -> SwiftUI.Color {
-        return Color(.displayP3,
-                     red: rgbSpace.red,
-                     green: rgbSpace.green,
-                     blue: rgbSpace.blue,
-                     opacity: alpha)
-    }
-    
-}
-
-#endif
 #endif
 
 

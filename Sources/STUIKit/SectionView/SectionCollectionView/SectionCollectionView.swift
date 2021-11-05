@@ -41,7 +41,7 @@ open class SectionCollectionView: UICollectionView {
     ///   - section: section
     public func set(backgroundView: SectionCollectionFlowLayout.DecorationView.Type,
                     for section: SectionCollectionProtocol) {
-        guard var pluginModes = sectionFlowLayout?.pluginModes else {
+        guard let pluginModes = sectionFlowLayout?.pluginModes else {
             return
         }
         

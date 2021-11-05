@@ -46,9 +46,9 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
         sectionView.set(pluginModes: [
             //.allSectionBackgroundView(view: DecorationView.self),
             .sectionBackgroundView([
-                1: DecorationView.self,
-                3: DecorationView.self,
-                5: DecorationView.self,
+                .init(get: { 1 }): DecorationView.self,
+                .init(get: { 3 }): DecorationView.self,
+                .init(get: { 5 }): DecorationView.self,
             ]),
             .fixSupplementaryViewInset
         ])

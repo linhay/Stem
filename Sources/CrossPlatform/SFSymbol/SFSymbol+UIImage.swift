@@ -23,6 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
+@available(iOS 13.0, *)
 public extension UIImage {
     
     /// Retrieve a system symbol image of the given type.
@@ -41,6 +42,7 @@ public extension UIImage {
     }
 }
 
+@available(iOS 13.0, *)
 public extension SFSymbol {
     
     func convert() -> UIImage {

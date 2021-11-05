@@ -65,7 +65,6 @@ open class HashableSingleTypeSection<Cell: UICollectionViewCell & ConfigurableVi
     @available(iOS 13, *)
     open func config(difference models: [Cell.Model]) {
         let difference = models.difference(from: self.models)
-        self.models = models
         pick {
             for change in difference {
                 switch change {

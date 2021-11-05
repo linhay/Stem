@@ -22,20 +22,8 @@
 
 #if canImport(UIKit)
 import UIKit
-
-public protocol STViewProtocol: AnyObject {
-    static var id: String { get }
-    static var nib: UINib? { get }
-}
-
-public extension STViewProtocol {
-
-    static var id: String {
-        return String(describing: Self.self)
-    }
-    static var nib: UINib? {
-        return nil
-    }
-
-}
+public typealias STWrapperColor = UIColor
+#elseif canImport(AppKit)
+import AppKit
+public typealias STWrapperColor = NSColor
 #endif

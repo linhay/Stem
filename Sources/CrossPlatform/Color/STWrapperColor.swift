@@ -22,10 +22,8 @@
 
 #if canImport(UIKit)
 import UIKit
-public typealias STWrapperColor = UIColor
 #elseif canImport(AppKit)
 import AppKit
-public typealias STWrapperColor = NSColor
 #endif
 
 // MARK: - static Api

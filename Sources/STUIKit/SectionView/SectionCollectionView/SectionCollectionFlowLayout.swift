@@ -25,7 +25,7 @@ import UIKit
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
-    public typealias DecorationView = UICollectionReusableView & LoadViewProtocol
+    public typealias DecorationView = UICollectionReusableView & STViewProtocol
     public typealias DecorationElement = [DecorationElementKey: DecorationView.Type]
     
     public class DecorationElementKey: Hashable {
@@ -176,8 +176,8 @@ private extension SectionCollectionFlowLayout {
             let count = collectionView.numberOfItems(inSection: section)
             let sectionIndexPath = IndexPath(item: 0, section: section)
             
-            let header = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.header.rawValue, at: sectionIndexPath)
-            let footer = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.footer.rawValue, at: sectionIndexPath)
+            let header = self.layoutAttributesForSupplementaryView(ofKind: SupplementaryViewKindType.header.rawValue, at: sectionIndexPath)
+            let footer = self.layoutAttributesForSupplementaryView(ofKind: SupplementaryViewKindType.footer.rawValue, at: sectionIndexPath)
             let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
             let elements = ([header, footer] + cells).compactMap(\.?.frame).filter({ $0.size.width > 0 && $0.size.height > 0 })
             guard let first = elements.first else {

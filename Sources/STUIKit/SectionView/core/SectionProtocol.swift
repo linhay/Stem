@@ -23,7 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
-public protocol SectionProtocol: class {
+public protocol SectionProtocol: AnyObject {
     var core: SectionCore? { get set }
     var index: Int { get set }
     
