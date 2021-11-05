@@ -42,13 +42,13 @@ public extension STWrapperColor {
 #endif
         
 #if canImport(UIKit)
-            self.init { traitCollection in
-                if traitCollection.userInterfaceStyle == .dark {
-                    return dark()
-                } else {
-                    return light()
-                }
+        self.init { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return dark()
+            } else {
+                return light()
             }
+        }
 #endif
     }
     
