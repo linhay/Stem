@@ -1,14 +1,7 @@
-//
-//  SFSymbols.swift
-//  macOSAppTests
-//
-//  Created by linhey on 2021/10/28.
-//
-
-import XCTest
+import Foundation
 import Stem
 
-class SFSymbolsTest: XCTestCase {
+class SFSymbolsExport {
     
     struct Availability {
         let iOS: String
@@ -38,7 +31,7 @@ class SFSymbolsTest: XCTestCase {
         let multicolor_availability: Availability?
     }
     
-    func testExample() throws {
+    static func run() throws {
         let layerset_availability  = try layerset_availability(filename: "layerset_availability.plist")
         let name_availability      = try availability(filename: "name_availability.plist")
         
@@ -46,7 +39,7 @@ class SFSymbolsTest: XCTestCase {
         let name_aliases_strings   = try aliases_strings(filename: "name_aliases_strings.txt")
         
         var categories = [String: [String]]()
-        if let url = Bundle(for: SFSymbolsTest.self).url(forResource: "symbol_categories", withExtension: "plist"),
+        if let url = Bundle.module.url(forResource: "symbol_categories", withExtension: "plist"),
            let dict = NSDictionary(contentsOfFile: url.path) as? [String: [String]] {
             categories = dict
         }
@@ -77,27 +70,27 @@ class SFSymbolsTest: XCTestCase {
 }
 
 
-private extension SFSymbolsTest {
+private extension SFSymbolsExport {
     
     /// 驼峰
-     func camelCased(_ strs: [String]) -> String {
+    static func camelCased(_ strs: [String]) -> String {
         return strs
             .enumerated()
             .map { $0.offset > 0 ? $0.element.capitalized : $0.element.lowercased() }
             .joined()
     }
     
-    func varName(name: String) -> String {
+    static func varName(name: String) -> String {
         let camelCased = camelCased(name.split(separator: ".").map(\.description))
         if camelCased.first!.isNumber {
             return "_" + camelCased
         } else {
-          return camelCased
+            return camelCased
         }
     }
     
-    func aliases_strings(filename: String) throws -> [String: String] {
-        guard let url = Bundle(for: SFSymbolsTest.self).url(forResource: filename, withExtension: nil) else {
+    static func aliases_strings(filename: String) throws -> [String: String] {
+        guard let url = Bundle.module.url(forResource: filename, withExtension: nil) else {
             return [:]
         }
         
@@ -117,8 +110,8 @@ private extension SFSymbolsTest {
             }
     }
     
-    func availability(filename: String) throws -> [String: Availability] {
-        guard let url = Bundle(for: SFSymbolsTest.self).url(forResource: filename, withExtension: nil),
+    static func availability(filename: String) throws -> [String: Availability] {
+        guard let url = Bundle.module.url(forResource: filename, withExtension: nil),
               let dict = NSDictionary(contentsOfFile: url.path) as? [String: Any],
               let symbolsMap = dict["symbols"] as? [String: String],
               let year_to_release = dict["year_to_release"] as? [String: [String: String]] else {
@@ -132,8 +125,8 @@ private extension SFSymbolsTest {
         }
     }
     
-    func layerset_availability(filename: String) throws -> [String: [String: Availability]] {
-        guard let url = Bundle(for: SFSymbolsTest.self).url(forResource: filename, withExtension: nil),
+    static func layerset_availability(filename: String) throws -> [String: [String: Availability]] {
+        guard let url = Bundle.module.url(forResource: filename, withExtension: nil),
               let dict = NSDictionary(contentsOfFile: url.path) as? [String: Any],
               let symbolsMap = dict["symbols"] as? [String: [String: String]],
               let year_to_release = dict["year_to_release"] as? [String: [String: String]] else {
