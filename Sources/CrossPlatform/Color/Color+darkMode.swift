@@ -26,6 +26,7 @@ import UIKit
 import AppKit
 #endif
 
+#if !targetEnvironment(macCatalyst)
 public extension STWrapperColor {
     
     @available(iOS 13.0, macOS 10.15, *)
@@ -53,3 +54,4 @@ public extension STWrapperColor {
     }
     
 }
+#endif

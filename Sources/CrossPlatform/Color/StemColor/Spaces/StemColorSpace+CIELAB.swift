@@ -54,7 +54,7 @@ public extension StemColor.CIELABSpace {
 public extension StemColor.CIELABSpace {
     
     /// 数值压缩至 0-1 区间之间
-    func compressionValues() -> [Double] {
+    var compressionValues: [Double] {
         return zip(list, ranges).map { (value, range) -> Double in
             return value / (range.upperBound - range.lowerBound)
         }

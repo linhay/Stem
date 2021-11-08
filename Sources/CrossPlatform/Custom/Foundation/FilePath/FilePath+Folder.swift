@@ -178,9 +178,9 @@ public extension FilePath.Folder {
         case skipsSubdirectoryDescendants
         case skipsPackageDescendants
         case skipsHiddenFiles
-        @available(iOS 13.0, *) @available(OSX 10.15, *) @available(tvOS 13.0, *)
+        @available(iOS 13.0, *) @available(macOS 10.15, *) @available(tvOS 13.0, *)
         case includesDirectoriesPostOrder
-        @available(iOS 13.0, *) @available(OSX 10.15, *) @available(tvOS 13.0, *)
+        @available(iOS 13.0, *) @available(macOS 10.15, *) @available(tvOS 13.0, *)
         case producesRelativePathURLs
         case custom((FilePath) throws -> Bool)
     }
@@ -210,8 +210,8 @@ extension Array where Element == FilePath.Folder.SearchPredicate {
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #elseif os(OSX)
-                if #available(OSX 10.15, *) {
+                #elseif os(macOS)
+                if #available(macOS 10.15, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
                 #endif
@@ -224,8 +224,8 @@ extension Array where Element == FilePath.Folder.SearchPredicate {
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #elseif os(OSX)
-                if #available(OSX 10.15, *) {
+                #elseif os(macOS)
+                if #available(macOS 10.15, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
                 #endif

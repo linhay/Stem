@@ -115,6 +115,7 @@ public extension StemFont {
     
 }
 
+@available(macCatalyst, unavailable)
 public extension StemFont {
 
     static func isAvailable(familyName: String) -> Bool {

@@ -37,9 +37,10 @@ public extension StemColor {
     
 }
 
-#if !targetEnvironment(macCatalyst) && canImport(AppKit)
+#if canImport(AppKit)
 import AppKit
 
+@available(macCatalyst, unavailable)
 public extension StemColor {
     
     convenience init(_ color: NSColor) {

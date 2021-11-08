@@ -28,6 +28,7 @@ public extension NSImage {
     /// Retrieve a system symbol image of the given type.
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
+    @available(macCatalyst, unavailable)
     @available(macOS 11.0, *)
     convenience init(_ symbol: SFSymbol) {
         self.init(systemSymbolName: symbol.rawValue, accessibilityDescription: nil)!
@@ -37,6 +38,7 @@ public extension NSImage {
 
 public extension SFSymbol {
     
+    @available(macCatalyst, unavailable)
     @available(macOS 11.0, *)
     func convert() -> NSImage {
         return NSImage(self)

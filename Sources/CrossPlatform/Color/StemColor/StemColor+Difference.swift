@@ -23,7 +23,7 @@
 import Foundation
 
 public extension StemColor {
-
+    
     enum Difference {
         case cie76(StemColor)
         case cie94(StemColor, CIE94Values)
@@ -32,9 +32,9 @@ public extension StemColor {
     
     struct CIE94Values {
         
-       public static let graphicArts = CIE94Values(kL: 1, k1: 0.045, k2: 0.015)
+        public static let graphicArts = CIE94Values(kL: 1, k1: 0.045, k2: 0.015)
         public static let textiles    = CIE94Values(kL: 2, k1: 0.048, k2: 0.014)
-
+        
         let kL: Double
         let k1: Double
         let k2: Double
@@ -57,8 +57,8 @@ public extension StemColor {
     
     static func differenceCIE76(_ lhs: CIELABSpace, _ rhs: CIELABSpace) -> Double {
         return sqrt(pow(lhs.l - rhs.l, 2)
-                  + pow(lhs.a - rhs.a, 2)
-                  + pow(lhs.b - rhs.b, 2))
+                    + pow(lhs.a - rhs.a, 2)
+                    + pow(lhs.b - rhs.b, 2))
     }
     
     static func differenceCIE94(_ lhs: CIELABSpace, _ rhs: CIELABSpace, values: CIE94Values) -> Double {
@@ -176,10 +176,10 @@ public extension StemColor {
         let a_hp = a_hp_f(C1,C2,h1p,h2p)
         
         let T = 1
-            - 0.17 * cos(radians(a_hp - 30))
-            + 0.24 * cos(radians(2 * a_hp))
-            + 0.32 * cos(radians(3 * a_hp + 6))
-            - 0.20 * cos(radians(4 * a_hp - 63))
+        - 0.17 * cos(radians(a_hp - 30))
+        + 0.24 * cos(radians(2 * a_hp))
+        + 0.32 * cos(radians(3 * a_hp + 6))
+        - 0.20 * cos(radians(4 * a_hp - 63))
         
         let d_ro = 30 * exp(-(pow((a_hp-275) / 25, 2)))
         let RC = sqrt(pow(a_Cp, 7.0) / (pow(a_Cp, 7.0) + pow(25.0, 7.0)))
@@ -191,10 +191,10 @@ public extension StemColor {
         let RT = -2 * RC * sin(radians(2 * d_ro))
         
         return sqrt(pow(dLp / (SL * kL), 2)
-                        + pow(dCp / (SC * kC), 2)
-                        + pow(dHp / (SH * kH), 2)
-                        + RT * (dCp / (SC * kC))
-                        * (dHp / (SH * kH)))
+                    + pow(dCp / (SC * kC), 2)
+                    + pow(dHp / (SH * kH), 2)
+                    + RT * (dCp / (SC * kC))
+                    * (dHp / (SH * kH)))
     }
     
 }

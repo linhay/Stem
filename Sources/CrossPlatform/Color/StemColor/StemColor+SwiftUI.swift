@@ -24,9 +24,10 @@
 import SwiftUI
 
 @available(iOSApplicationExtension 13.0, *)
-@available(iOS 14.0, OSX 11.0, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 13.0, watchOS 6.0, *)
 public extension StemColor {
-    
+        
+    #if !targetEnvironment(macCatalyst)
     convenience init(_ color: SwiftUI.Color) {
         #if canImport(AppKit)
         self.init(NSColor(color))
@@ -35,6 +36,7 @@ public extension StemColor {
         self.init(UIColor(color))
         #endif
     }
+    #endif
     
     func convert() -> SwiftUI.Color {
         return Color(.displayP3,
