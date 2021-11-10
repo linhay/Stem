@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Stem
+import Stem
 
 class LabTests: XCTestCase {
 
