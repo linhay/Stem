@@ -40,7 +40,7 @@ public extension Array where Element == StemColor {
         }
         let vectors = datas.map { data in
             Vector(data) { lhs, rhs in
-                StemColor.differenceCIEDE2000(.init(lhs.data), .init(rhs.data))
+                StemColor.difference(.ciede2000(.init(lhs.data), .init(rhs.data)))
             }
         }
         

@@ -24,15 +24,10 @@ import Foundation
 
 public extension StemColor {
     
-    enum Difference {
-        case cie76(StemColor)
-        case cie94(StemColor, CIE94Values)
-        case ciede2000(StemColor)
-    }
-    
     struct CIE94Values {
-        
+        /// 图形艺术
         public static let graphicArts = CIE94Values(kL: 1, k1: 0.045, k2: 0.015)
+        /// 纹理、纺织品
         public static let textiles    = CIE94Values(kL: 2, k1: 0.048, k2: 0.014)
         
         let kL: Double
@@ -40,20 +35,74 @@ public extension StemColor {
         let k2: Double
     }
     
-    func difference(_ type: Difference) -> Double {
-        switch type {
-        case .cie94(let color, let values):
+}
+
+public extension StemColor {
+    
+    /// https://en.wikipedia.org/wiki/Color_difference
+    enum DifferenceFormula {
+        case euclidean
+        /**
+         [CIE76] 算法速度快，在大多数情况下产生可接受的结果。
+         
+         1976年的这个色彩差异公式是首个用较为均匀的Lab空间计算色彩差异值的公式。
+         Lab比RGB等空间在感官上均匀一点，所以得到的结果会更好。
+         不过后来人们发现Lab色彩空间，尤其是在饱和度较高的区域里，并没有设计时预想的那么“感官上均匀”，所以几次更新了ΔE公式
+         CIE76公式会高估较为饱和的颜色之间的差异。
+         */
+        case cie76
+        /**
+         [CIE94] 算法是对`CIE76`的改进，特别是在饱和区域。它比`CIE76`略微慢一些。
+         在汽车喷漆行业里，人们测量了一堆人眼容差情况的数据。随着这些“应用特定”的数据的发布，人们将1976年的定义进行了进一步的发展，以更好地应对感知非均匀特性。该公式仍然采用的是Lab色彩空间。
+         */
+        case cie94(CIE94Values)
+        /// [CIEDE2000] 算法是比较颜色的最精确算法。
+        /// 它比其他方式要慢得多。
+        case ciede2000
+    }
+    
+    func difference(_ color: StemColor, using formula: DifferenceFormula = .cie94(.graphicArts)) -> Double {
+        switch formula {
+        case .euclidean:
+            return Self.differenceEuclidean(rgbSpace, color.rgbSpace)
+        case .cie94(let values):
             return Self.differenceCIE94(labSpace, color.labSpace, values: values)
-        case .ciede2000(let color):
+        case .ciede2000:
             return Self.differenceCIEDE2000(labSpace, color.labSpace)
-        case .cie76(let color):
+        case .cie76:
             return Self.differenceCIE76(labSpace, color.labSpace)
+        }
+    }
+    
+    enum DifferenceColorSpaceFormula {
+        case euclidean(RGBSpace, RGBSpace)
+        case cie76(CIELABSpace, CIELABSpace)
+        case cie94(CIELABSpace, CIELABSpace, CIE94Values)
+        case ciede2000(CIELABSpace, CIELABSpace)
+    }
+    
+    static func difference(_ formula: DifferenceColorSpaceFormula) -> Double {
+        switch formula {
+        case .euclidean(let lhs, let rhs):
+            return differenceEuclidean(lhs, rhs)
+        case .cie76(let lhs, let rhs):
+            return differenceCIE76(lhs, rhs)
+        case .cie94(let lhs, let rhs, let values):
+            return differenceCIE94(lhs, rhs, values: values)
+        case .ciede2000(let lhs, let rhs):
+            return differenceCIEDE2000(lhs, rhs)
         }
     }
     
 }
 
-public extension StemColor {
+private extension StemColor {
+
+    static func differenceEuclidean(_ lhs: RGBSpace, _ rhs: RGBSpace) -> Double {
+        return sqrt(pow(lhs.red - rhs.red, 2)
+                    + pow(lhs.green - rhs.green, 2)
+                    + pow(lhs.blue - rhs.blue, 2))
+    }
     
     static func differenceCIE76(_ lhs: CIELABSpace, _ rhs: CIELABSpace) -> Double {
         return sqrt(pow(lhs.l - rhs.l, 2)
