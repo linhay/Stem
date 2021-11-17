@@ -42,11 +42,11 @@ public extension SectionTableProtocol {
     var headerView: UITableViewHeaderFooterView? { nil }
     var footerView: UITableViewHeaderFooterView? { nil }
     var sectionView: UITableView {
-        guard let core = core else {
+        guard let view = core?.sectionView as? UITableView else {
             assertionFailure("can't find sectionView, before `SectionCollectionProtocol` into `Manager`")
             return UITableView()
         }
-        return core.sectionView as! UITableView
+        return view
     }
     
     func leadingSwipeActions(at row: Int) -> [UIContextualAction] { return [] }

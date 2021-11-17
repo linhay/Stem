@@ -32,9 +32,6 @@
 		CDD3BFD425ECF5B50033ECD6 /* TestSelectedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCC25ECF5B50033ECD6 /* TestSelectedProtocol.swift */; };
 		CDD3BFD525ECF5B50033ECD6 /* TestFilePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCD25ECF5B50033ECD6 /* TestFilePath.swift */; };
 		CDD3BFD625ECF5B50033ECD6 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCE25ECF5B50033ECD6 /* Double.swift */; };
-		CDD3BFD725ECF5B50033ECD6 /* LabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFD025ECF5B50033ECD6 /* LabTests.swift */; };
-		CDD3BFD825ECF5B50033ECD6 /* XYZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFD125ECF5B50033ECD6 /* XYZTests.swift */; };
-		CDD3BFD925ECF5B50033ECD6 /* RGBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFD225ECF5B50033ECD6 /* RGBTests.swift */; };
 		CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE768D025FB06B4001045A4 /* HomeCell.swift */; };
 		CDE768DA25FB1636001045A4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDE768D925FB1636001045A4 /* SnapKit */; };
 		CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */; };
@@ -93,9 +90,6 @@
 		CDD3BFCC25ECF5B50033ECD6 /* TestSelectedProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSelectedProtocol.swift; sourceTree = "<group>"; };
 		CDD3BFCD25ECF5B50033ECD6 /* TestFilePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFilePath.swift; sourceTree = "<group>"; };
 		CDD3BFCE25ECF5B50033ECD6 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
-		CDD3BFD025ECF5B50033ECD6 /* LabTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabTests.swift; sourceTree = "<group>"; };
-		CDD3BFD125ECF5B50033ECD6 /* XYZTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XYZTests.swift; sourceTree = "<group>"; };
-		CDD3BFD225ECF5B50033ECD6 /* RGBTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGBTests.swift; sourceTree = "<group>"; };
 		CDE768D025FB06B4001045A4 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTypeSectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -256,7 +250,6 @@
 		CDD3BFBF25ECF5680033ECD6 /* macOSAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				CDD3BFCF25ECF5B50033ECD6 /* colors */,
 				CDD3BFCE25ECF5B50033ECD6 /* Double.swift */,
 				CDD3BFCD25ECF5B50033ECD6 /* TestFilePath.swift */,
 				CDD3BFCB25ECF5B50033ECD6 /* TestInvocation.swift */,
@@ -265,16 +258,6 @@
 				CDD3BFC225ECF5680033ECD6 /* Info.plist */,
 			);
 			path = macOSAppTests;
-			sourceTree = "<group>";
-		};
-		CDD3BFCF25ECF5B50033ECD6 /* colors */ = {
-			isa = PBXGroup;
-			children = (
-				CDD3BFD025ECF5B50033ECD6 /* LabTests.swift */,
-				CDD3BFD125ECF5B50033ECD6 /* XYZTests.swift */,
-				CDD3BFD225ECF5B50033ECD6 /* RGBTests.swift */,
-			);
-			path = colors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -523,13 +506,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDD3BFC125ECF5680033ECD6 /* macOSAppTests.swift in Sources */,
-				CDD3BFD825ECF5B50033ECD6 /* XYZTests.swift in Sources */,
 				CDD3BFD425ECF5B50033ECD6 /* TestSelectedProtocol.swift in Sources */,
 				CDD3BFD525ECF5B50033ECD6 /* TestFilePath.swift in Sources */,
-				CDD3BFD725ECF5B50033ECD6 /* LabTests.swift in Sources */,
 				CDD3BFD625ECF5B50033ECD6 /* Double.swift in Sources */,
 				CDD3BFD325ECF5B50033ECD6 /* TestInvocation.swift in Sources */,
-				CDD3BFD925ECF5B50033ECD6 /* RGBTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

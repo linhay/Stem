@@ -72,11 +72,11 @@ public extension SectionCollectionProtocol {
     var hiddenFooterWhenNoItem: Bool { true }
     
     var sectionView: UICollectionView {
-        guard let core = core else {
+        guard let view = core?.sectionView as? UICollectionView else {
             assertionFailure("can't find sectionView, before `SectionCollectionProtocol` into `Manager`")
             return UICollectionView()
         }
-        return core.sectionView as! UICollectionView
+        return view
     }
     
 }

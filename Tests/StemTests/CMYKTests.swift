@@ -12,7 +12,7 @@ import Stem
 class CMYKTests: XCTestCase {
 
     func testGreen() {
-        let color = UIColor.green
+        let color = STWrapperColor.green
         let space = StemColor(color).cmykSpace
         
         XCTAssertEqual(space.cyan, 1.0)
@@ -22,7 +22,7 @@ class CMYKTests: XCTestCase {
     }
     
     func testBlue() {
-        let color = UIColor.blue
+        let color = STWrapperColor.blue
         let space = StemColor(color).cmykSpace
 
         XCTAssertEqual(space.cyan, 1.0)
@@ -32,7 +32,7 @@ class CMYKTests: XCTestCase {
     }
     
     func testWhite() {
-        let color = UIColor.white
+        let color = STWrapperColor.white
         let space = StemColor(color).cmykSpace
 
         XCTAssertEqual(space.cyan, 0.0)

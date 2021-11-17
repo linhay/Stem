@@ -49,17 +49,17 @@ class HexTests: XCTestCase {
     // hex
     
     func testHexBlack() {
-        let color = StemColor(UIColor.black)
+        let color = StemColor(STWrapperColor.black)
         XCTAssertEqual(color.hexString(), blackHex)
     }
     
     func testHexWhite() {
-        let color = StemColor(UIColor.white)
+        let color = StemColor(STWrapperColor.white)
         XCTAssertEqual(color.hexString(), whiteHex)
     }
     
     func testHexRed() {
-        let color = StemColor(UIColor.red)
+        let color = StemColor(STWrapperColor.red)
         XCTAssertEqual(color.hexString(), redHex)
     }
     

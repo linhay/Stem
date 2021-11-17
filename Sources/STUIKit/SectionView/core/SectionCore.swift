@@ -27,7 +27,7 @@ import UIKit
 public class SectionCore {
 
     var index: Int = 0
-    var sectionView: UIView?
+    weak var sectionView: UIView?
     var reloadDataEvent: (() -> Void)?
 
     internal init() { }

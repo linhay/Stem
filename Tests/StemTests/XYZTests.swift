@@ -4,7 +4,7 @@ import Stem
 class XYZTests: XCTestCase {
 
     func testGreen() {
-        let color = StemColor(UIColor.green).xyzSpace
+        let color = StemColor(STWrapperColor.green).xyzSpace
         XCTAssertEqual(color.x.st.roundedDecimal(scale: 4), 0.3576, accuracy: 0.0001)
         XCTAssertEqual(color.y.st.roundedDecimal(scale: 4), 0.7152, accuracy: 0.0001)
         XCTAssertEqual(color.z.st.roundedDecimal(scale: 4), 0.1192, accuracy: 0.0001)
@@ -12,7 +12,6 @@ class XYZTests: XCTestCase {
     
     func testWhite() {
         let color = StemColor(rgb: .init(red: 1, green: 1, blue: 1)).xyzSpace
-        
         XCTAssertEqual(color.x.st.roundedDecimal(scale: 4), 0.9505, accuracy: 0.0001)
         XCTAssertEqual(color.y.st.roundedDecimal(scale: 4), 1.0000, accuracy: 0.0001)
         XCTAssertEqual(color.z.st.roundedDecimal(scale: 4), 1.0890, accuracy: 0.0001)

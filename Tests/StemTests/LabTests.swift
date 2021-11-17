@@ -12,8 +12,7 @@ import Stem
 class LabTests: XCTestCase {
 
     func testGreen() {
-        let color = UIColor.green
-        let space = StemColor(color).labSpace
+        let space = StemColor(.init(red: 0, green: 1, blue: 0)).labSpace
         
         XCTAssertEqual(space.l, 87.74, accuracy: 0.01)
         XCTAssertEqual(space.a, -86.18, accuracy: 0.01)
