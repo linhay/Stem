@@ -35,7 +35,7 @@ public class StemColor {
     public lazy var hsbSpace: HSBSpace    = { Self.calculator.convert(rgbSpace) }()
     public lazy var cmySpace: CMYSpace    = { Self.calculator.convert(rgbSpace) }()
     public lazy var cmykSpace: CMYKSpace  = { Self.calculator.convert(cmySpace) }()
-    public lazy var xyzSpace: CIEXYZSpace = { Self.calculator.convert(rgbSpace) }()
+    public lazy var xyzSpace: CIEXYZSpace = { Self.calculator.convert(rgbSpace, illuminants: .D65) }()
     public lazy var labSpace: CIELABSpace = { Self.calculator.convert(xyzSpace) }()
     
     static let calculator = StemColor.SpaceCalculator()

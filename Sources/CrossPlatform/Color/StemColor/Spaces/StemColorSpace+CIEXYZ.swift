@@ -27,9 +27,9 @@ public extension StemColor {
     struct CIEXYZSpace: StemColorSpace {
 
         public var ranges: [ClosedRange<Double>] {
-            [0...illuminants.rawValue[0],
-             0...illuminants.rawValue[1],
-             0...illuminants.rawValue[2]]
+            [0...illuminants.x,
+             0...illuminants.y,
+             0...illuminants.z]
         }
 
         public let illuminants: CIEStandardIlluminants

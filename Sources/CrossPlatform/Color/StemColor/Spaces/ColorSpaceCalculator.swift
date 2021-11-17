@@ -343,7 +343,7 @@ public extension StemColor.SpaceCalculator {
         return .init(red: red, green: green, blue: blue)
     }
     
-    func convert(_ space: StemColor.RGBSpace) -> StemColor.CIEXYZSpace {
+    func convert(_ space: StemColor.RGBSpace, illuminants: CIEStandardIlluminants) -> StemColor.CIEXYZSpace {
         func map(_ value: Double) -> Double {
             if value > 0.04045 {
                 return pow((value + 0.055) / 1.055, 2.4)
@@ -360,26 +360,28 @@ public extension StemColor.SpaceCalculator {
         let y = (r * 21.26729 + g * 71.51522 + b * 07.21750) / 100
         let z = (r * 01.93339 + g * 11.91920 + b * 95.03041) / 100
         
-        return .init(x: x, y: y, z: z, illuminants: .D65)
+        return .init(x: x, y: y, z: z, illuminants: illuminants)
     }
     
 }
 
 // MARK: - CIELAB <=> CIEXYZ
 public extension StemColor.SpaceCalculator {
-    
+
+    /// https://en.wikipedia.org/wiki/CIELAB_color_space
     func convert(_ space: StemColor.CIEXYZSpace) -> StemColor.CIELABSpace {
         func map(_ value: Double) -> Double {
-            if (value > pow(6.0 / 29.0, 3.0)) {
+            let delta = 6.0 / 29.0
+            if (value > pow(delta, 3.0)) {
                 return pow(value, 1.0 / 3.0)
             } else {
-                return ((1.0 / 3.0) * pow(29.0 / 6.0, 2.0) * value) + (4.0 / 29.0)
+                return ((value / 3.0 * pow(delta, 2.0))) + (4.0 / 29.0)
             }
         }
         
-        let fx = map(space.x * 100 / (space.illuminants.rawValue[0] * 100))
-        let fy = map(space.y * 100 / (space.illuminants.rawValue[1] * 100))
-        let fz = map(space.z * 100 / (space.illuminants.rawValue[2] * 100))
+        let fx = map(space.x * 100 / (space.illuminants.x * 100))
+        let fy = map(space.y * 100 / (space.illuminants.y * 100))
+        let fz = map(space.z * 100 / (space.illuminants.z * 100))
         
         let l = (116.0 * fy) - 16.0
         let a = 500 * (fx - fy)
@@ -389,19 +391,21 @@ public extension StemColor.SpaceCalculator {
     }
     
     func convert(_ space: StemColor.CIELABSpace) -> StemColor.CIEXYZSpace {
+        
         func map(_ value: Double) -> Double {
-            if (value > (6.0 / 29.0)) {
+            let delta = 6.0 / 29.0
+            if (value > delta) {
                 return pow(value, 3.0)
             } else {
-                return 3.0 * pow(6.0 / 29.0, 2.0) * (value - (4.0 / 29.0))
+                return 3.0 * pow(delta, 2.0) * (value - (4.0 / 29.0))
             }
         }
         
         let y = (space.l + 16.0) / 116
         
-        return .init(x: space.illuminants.rawValue[0] * map(y + space.a / 500.0),
-                     y: space.illuminants.rawValue[1] * map(y),
-                     z: space.illuminants.rawValue[2] * map(y - space.b / 200.0),
+        return .init(x: space.illuminants.x * map(y + space.a / 500.0),
+                     y: space.illuminants.y * map(y),
+                     z: space.illuminants.z * map(y - space.b / 200.0),
                      illuminants: space.illuminants)
     }
     
@@ -410,8 +414,8 @@ public extension StemColor.SpaceCalculator {
 // MARK: - RGB <=> CIELAB
 public extension StemColor.SpaceCalculator {
     
-    func convert(_ space: StemColor.RGBSpace) -> StemColor.CIELABSpace {
-        let temp: StemColor.CIEXYZSpace = convert(space)
+    func convert(_ space: StemColor.RGBSpace, illuminants: CIEStandardIlluminants) -> StemColor.CIELABSpace {
+        let temp: StemColor.CIEXYZSpace = convert(space, illuminants: illuminants)
         return convert(temp)
     }
     

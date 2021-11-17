@@ -14,7 +14,7 @@ class XYZTests: XCTestCase {
         let color = StemColor(rgb: .init(red: 1, green: 1, blue: 1)).xyzSpace
         XCTAssertEqual(color.x.st.roundedDecimal(scale: 4), 0.9505, accuracy: 0.0001)
         XCTAssertEqual(color.y.st.roundedDecimal(scale: 4), 1.0000, accuracy: 0.0001)
-        XCTAssertEqual(color.z.st.roundedDecimal(scale: 4), 1.0890, accuracy: 0.0001)
+        XCTAssertEqual(color.z.st.roundedDecimal(scale: 4), 1.0888, accuracy: 0.0001)
     }
     
     func testArbitrary() {
