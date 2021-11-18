@@ -33,6 +33,7 @@ public class StemColor {
     public lazy var rybSpace: RYBSpace    = { Self.calculator.convert(rgbSpace) }()
     public lazy var hslSpace: HSLSpace    = { Self.calculator.convert(rgbSpace) }()
     public lazy var hsbSpace: HSBSpace    = { Self.calculator.convert(rgbSpace) }()
+    public lazy var hsvSpace: HSBSpace    = { self.hsbSpace }()
     public lazy var cmySpace: CMYSpace    = { Self.calculator.convert(rgbSpace) }()
     public lazy var cmykSpace: CMYKSpace  = { Self.calculator.convert(cmySpace) }()
     public lazy var xyzSpace: CIEXYZSpace = { Self.calculator.convert(rgbSpace, illuminants: .D65) }()

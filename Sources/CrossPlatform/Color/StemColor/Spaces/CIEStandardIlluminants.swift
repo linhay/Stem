@@ -50,7 +50,7 @@ public struct CIEStandardIlluminants: StemColorSpace {
     public static let D50ICC = CIEStandardIlluminants([0.9642029, 1.0, 0.8249054])
     /// D55 (ASTM E308-01)
     public static let D55 = CIEStandardIlluminants([0.95682, 1.0, 0.92149])
-    /// D65 (ASTM E308-01)
+    /// D65/2° (ASTM E308-01)
     public static let D65 = CIEStandardIlluminants([0.9504700, 1.0, 1.0888300])
     /// D75 (ASTM E308-01)
     public static let D75 = CIEStandardIlluminants([0.94972, 1.0, 1.22638])
