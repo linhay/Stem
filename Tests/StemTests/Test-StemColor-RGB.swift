@@ -1,7 +1,7 @@
 import XCTest
 import Stem
 
-class HexTests: XCTestCase {
+class StemColorRGBTests: XCTestCase {
     
     private let blackHex = "#000000"
     private let whiteHex = "#FFFFFF"

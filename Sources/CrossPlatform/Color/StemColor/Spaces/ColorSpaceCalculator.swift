@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import Foundation
+import simd
 
 public extension StemColor {
 
@@ -326,8 +327,6 @@ public extension StemColor.SpaceCalculator {
 public extension StemColor.SpaceCalculator {
     
     func convert(_ space: StemColor.CIEXYZSpace) -> StemColor.RGBSpace {
-        let (x, y, z) = space.unpack
-        
         func map(_ value: Double) -> Double {
             if value > 0.0031308 {
                 return 1.055 * pow(value, 1/2.4) - 0.055
@@ -336,14 +335,18 @@ public extension StemColor.SpaceCalculator {
             }
         }
         
-        let red   = map(x *  3.2404542 + y * -1.5371385 + z * -0.4985314)
-        let green = map(x * -0.9692660 + y *  1.8760108 + z *  0.0415560)
-        let blue  = map(x *  0.0556434 + y * -0.2040259 + z *  1.0572252)
+        let matrix = simd_double3x3([
+            SIMD3( 3.2404542, -0.9692660,  0.0556434),
+            SIMD3(-1.5371385,  1.8760108, -0.2040259),
+            SIMD3(-0.4985314,  0.0415560,  1.0572252)
+        ])
         
-        return .init(red: red, green: green, blue: blue)
+        let vector = matrix * space.simd
+        return .init(red: map(vector.x), green: map(vector.y), blue: map(vector.z))
     }
     
     func convert(_ space: StemColor.RGBSpace, illuminants: CIEStandardIlluminants) -> StemColor.CIEXYZSpace {
+        
         func map(_ value: Double) -> Double {
             if value > 0.04045 {
                 return pow((value + 0.055) / 1.055, 2.4)
@@ -352,15 +355,14 @@ public extension StemColor.SpaceCalculator {
             }
         }
         
-        let r = map(space.red)
-        let g = map(space.green)
-        let b = map(space.blue)
-        
-        let x = (r * 41.24564 + g * 35.75761 + b * 18.04375) / 100
-        let y = (r * 21.26729 + g * 71.51522 + b * 07.21750) / 100
-        let z = (r * 01.93339 + g * 11.91920 + b * 95.03041) / 100
-        
-        return .init(x: x, y: y, z: z, illuminants: illuminants)
+        let matrix = simd_double3x3([
+            SIMD3(0.4124564, 0.2126729, 0.0193339),
+            SIMD3(0.3575761, 0.7151522, 0.1191920),
+            SIMD3(0.1804375, 0.0721750, 0.9503041)
+        ])
+               
+        let vector = matrix * SIMD3(map(space.red), map(space.green), map(space.blue))
+        return .init(simd: vector, illuminants: illuminants)
     }
     
 }

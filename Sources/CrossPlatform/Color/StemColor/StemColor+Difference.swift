@@ -149,6 +149,7 @@ private extension StemColor {
      by Gaurav Sharma, Wencheng Wu, Edul N. Dalal in Color Research and Application, vol. 30. No. 1, pp. 21-30, February 2005.
      http://www2.ece.rochester.edu/~gsharma/ciede2000/
      */
+    /// http://www.brucelindbloom.com/index.html?Eqn_DeltaE_CIE2000.html
     static func differenceCIEDE2000(_ lhs: CIELABSpace, _ rhs: CIELABSpace) -> Double {
         
         func degrees(_ n: Double) -> Double { return n*(180 / Double.pi) }
@@ -230,20 +231,18 @@ private extension StemColor {
         + 0.32 * cos(radians(3 * a_hp + 6))
         - 0.20 * cos(radians(4 * a_hp - 63))
         
-        let d_ro = 30 * exp(-(pow((a_hp-275) / 25, 2)))
-        let RC = sqrt(pow(a_Cp, 7.0) / (pow(a_Cp, 7.0) + pow(25.0, 7.0)))
-        
         let SL = 1 + (0.015 * pow(a_L - 50, 2)) / sqrt(20 + pow(a_L - 50, 2.0))
         let SC = 1 + 0.045 * a_Cp
         let SH = 1 + 0.015 * a_Cp * T
         
-        let RT = -2 * RC * sin(radians(2 * d_ro))
+        let Δθ = 30 * exp(-(pow((a_hp-275) / 25, 2)))
+        let RC = 2 * sqrt(pow(a_Cp, 7.0) / (pow(a_Cp, 7.0) + pow(25.0, 7.0)))
+        let RT = -RC * sin(radians(2 * Δθ))
         
         return sqrt(pow(dLp / (SL * kL), 2)
-                    + pow(dCp / (SC * kC), 2)
-                    + pow(dHp / (SH * kH), 2)
-                    + RT * (dCp / (SC * kC))
-                    * (dHp / (SH * kH)))
+                  + pow(dCp / (SC * kC), 2)
+                  + pow(dHp / (SH * kH), 2)
+                  + RT * (dCp / (SC * kC)) * (dHp / (SH * kH)))
     }
     
 }

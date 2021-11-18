@@ -25,6 +25,7 @@ import Foundation
 public extension StemColor {
     
     struct RGBSpace: StemColorSpace {
+        
         public private(set) var ranges: [ClosedRange<Double>] = [0...1, 0...1, 0...1]
         // value: 0 - 1.0
         public let red: Double
@@ -34,6 +35,7 @@ public extension StemColor {
         public let blue: Double
         
         public init(red: Double, green: Double, blue: Double) {
+            
             func map(_ value: Double) -> Double {
                 var value = value
                 if value > 0.9999 { value = 1 }
@@ -45,6 +47,17 @@ public extension StemColor {
             self.green = map(green)
             self.blue  = map(blue)
         }
+    }
+    
+}
+
+/// SIMD3
+public extension StemColor.RGBSpace {
+    
+    var simd: SIMD3<Double> { .init(red, green, blue) }
+    
+    init(simd: SIMD3<Double>) {
+        self.init(red: simd.x, green: simd.y, blue: simd.z)
     }
     
 }

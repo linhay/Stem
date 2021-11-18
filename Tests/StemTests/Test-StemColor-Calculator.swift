@@ -8,7 +8,7 @@
 import XCTest
 import Stem
 
-class CMYKTests: XCTestCase {
+class StemColorCalculatorTests: XCTestCase {
 
     func testRed() {
         let color = StemColor.red
@@ -68,6 +68,17 @@ class CMYKTests: XCTestCase {
         assertEqual(color.cmykSpace.list, [0.42524, 0.64019, 0.00000, 0.16078])
         assertEqual(color.labSpace.list,  [44.763, 49.471, -63.785])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [22.957, 14.373, 65.171])
+    }
+    
+    func testPurple_2() {
+        let color = StemColor.purple
+        let calcualtor = StemColor.spaceCalculator
+        
+        assertEqual((calcualtor.convert(color.xyzSpace) as StemColor.RGBSpace).list, color.rgbSpace.list)
+        assertEqual((calcualtor.convert(color.rgbSpace, illuminants: .D65) as StemColor.CIEXYZSpace).list, color.xyzSpace.list)
+
+        assertEqual((calcualtor.convert(color.xyzSpace) as StemColor.CIELABSpace).list, color.labSpace.list)
+        assertEqual((calcualtor.convert(color.labSpace) as StemColor.CIEXYZSpace).list, color.xyzSpace.list)
     }
     
     func testHex() {

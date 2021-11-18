@@ -42,6 +42,17 @@ public extension StemColor {
 
 }
 
+/// SIMD3
+public extension StemColor.CMYSpace {
+    
+    var simd: SIMD3<Double> { .init(cyan, magenta, yellow) }
+    
+    init(simd: SIMD3<Double>) {
+        self.init(cyan: simd.x, magenta: simd.y, yellow: simd.z)
+    }
+    
+}
+
 public extension StemColor.CMYSpace {
 
     func cyan(with value: Double)    -> Self { .init(cyan: value, magenta: magenta, yellow: yellow) }

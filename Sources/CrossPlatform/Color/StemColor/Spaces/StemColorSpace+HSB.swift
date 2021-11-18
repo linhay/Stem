@@ -49,6 +49,17 @@ public extension StemColor {
 
 }
 
+/// SIMD3
+public extension StemColor.HSBSpace {
+    
+    var simd: SIMD3<Double> { .init(hue, saturation, brightness) }
+    
+    init(simd: SIMD3<Double>) {
+        self.init(hue: simd.x, saturation: simd.y, brightness: simd.z)
+    }
+    
+}
+
 public extension StemColor.HSBSpace {
 
     func lighter(amount: Double = 0.25) -> Self {
