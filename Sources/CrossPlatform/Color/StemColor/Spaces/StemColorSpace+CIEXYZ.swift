@@ -37,7 +37,7 @@ public extension StemColor {
         public let y: Double
         public let z: Double
 
-        public init(x: Double, y: Double, z: Double, illuminants: CIEStandardIlluminants) {
+        public init(x: Double, y: Double, z: Double, illuminants: CIEStandardIlluminants = .D65) {
             self.illuminants = illuminants
             self.x = x
             self.y = y

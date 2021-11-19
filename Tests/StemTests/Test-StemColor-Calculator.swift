@@ -79,6 +79,9 @@ class StemColorCalculatorTests: XCTestCase {
 
         assertEqual((calcualtor.convert(color.xyzSpace) as StemColor.CIELABSpace).list, color.labSpace.list)
         assertEqual((calcualtor.convert(color.labSpace) as StemColor.CIEXYZSpace).list, color.xyzSpace.list)
+        
+        assertEqual((calcualtor.convert(color.rgbSpace) as StemColor.RYBSpace).list, color.rybSpace.list)
+        assertEqual((calcualtor.convert(color.rybSpace) as StemColor.RGBSpace).list, color.rgbSpace.list)
     }
     
     func testHex() {

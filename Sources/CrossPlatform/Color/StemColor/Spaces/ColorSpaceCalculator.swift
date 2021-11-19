@@ -109,75 +109,53 @@ public extension StemColor.SpaceCalculator {
 public extension StemColor.SpaceCalculator {
     
     func convert(_ space: StemColor.RYBSpace) -> StemColor.RGBSpace {
-        var (r, y, b) = space.unpack
+        var ryb = space.simd
+        let w = ryb.min()
         
-        let w = min(r, y, b)
-        r -= w
-        y -= w
-        b -= w
+        ryb -= w
+        let my = ryb.max()
         
-        let my = max(r, y, b)
-        var g = min(y, b)
-        y -= g
-        b -= g
+        var rgb = SIMD3(ryb.x, min(ryb.y, ryb.z), ryb.z)
+        let matrix = SIMD3(0, ryb.y, ryb.y)
         
-        if b != 0, g != 0 {
-            b *= 2
-            g *= 2
+        rgb -= matrix
+        if rgb.z != 0, rgb.y != 0 {
+            rgb *= SIMD3(1, 2, 2)
         }
-        
-        r += y
-        g += y
-        
-        let mg = max(r, g, b)
+        rgb += matrix
+
+        let mg = rgb.max()
         if mg != 0 {
-            let n = my / mg
-            r *= n
-            g *= n
-            b *= n
+            rgb *= my / mg
         }
         
-        r += w
-        g += w
-        b += w
-        
-        return .init(red: r, green: g, blue: b)
+        rgb += w
+        return .init(simd: rgb)
     }
     
     func convert(_ space: StemColor.RGBSpace) -> StemColor.RYBSpace {
-        var (r, g, b) = space.unpack
-        let w = min(r, g, b)
-        r -= w
-        g -= w
-        b -= w
+        var rgb = space.simd
+        let w = rgb.min()
+        rgb -= w
+        let mg = rgb.max()
         
-        let mg = max(r, g, b)
-        
-        var y = min(r, g)
-        r -= y
-        g -= y
-        
-        if b != 0, g != 0 {
-            b /= 2.0
-            g /= 2.0
+        var ryb = SIMD3(rgb.x, min(rgb.x, rgb.y), rgb.z)
+        rgb -= SIMD3(ryb.y, ryb.y, 0)
+
+        if rgb.z != 0, rgb.y != 0 {
+            rgb /= SIMD3(1, 2, 2)
         }
         
-        y += g
-        b += g
+        ryb += SIMD3(0, rgb.y, rgb.y)
         
-        let my = max(r, y, b)
+        let my = ryb.max()
+        
         if my != 0 {
-            let n = mg / my
-            r *= n
-            y *= n
-            b *= n
+            ryb *= mg / my
         }
         
-        r += w
-        y += w
-        b += w
-        
-        return .init(red: r, yellow: y, blue: b)
+        ryb += w
+        return .init(simd: ryb)
     }
     
 }
@@ -199,27 +177,19 @@ public extension StemColor.SpaceCalculator {
 public extension StemColor.SpaceCalculator {
     
     func convert(_ space: StemColor.CMYSpace) -> StemColor.CMYKSpace {
-        var (cyan, magenta, yellow) = space.unpack
-        let key = min(cyan, magenta, yellow)
-        if key == 1 {
-            cyan = 0
-            magenta = 0
-            yellow = 0
-        } else {
-            cyan    = (cyan - key)    / (1 - key)
-            magenta = (magenta - key) / (1 - key)
-            yellow  = (yellow - key)  / (1 - key)
+        guard let key = space.list.min(), key != 1 else {
+            return .init(cyan: 0, magenta: 0, yellow: 0, key: 1)
         }
         
-        return .init(cyan: cyan, magenta: magenta, yellow: yellow, key: key)
+        let vector = (space.simd - key) / (1 - key)
+        return .init(cyan: vector.x, magenta: vector.y, yellow: vector.z, key: key)
     }
     
     func convert(_ space: StemColor.CMYKSpace) -> StemColor.CMYSpace {
-        var (cyan, magenta, yellow, key) = space.unpack
-        cyan    = cyan    * (1 - key) + key
-        magenta = magenta * (1 - key) + key
-        yellow  = yellow  * (1 - key) + key
-        return .init(cyan: cyan, magenta: magenta, yellow: yellow)
+        var vector = SIMD3(space.cyan, space.magenta, space.yellow)
+        vector *= 1 - space.key
+        vector += space.key
+        return .init(simd: vector)
     }
     
 }
@@ -303,16 +273,17 @@ public extension StemColor.SpaceCalculator {
         if delMax != 0 {
             saturation = delMax / Max
             
-            let delRed   = (((Max - red)   / 6) + delMax / 2) / delMax
-            let delGreen = (((Max - green) / 6) + delMax / 2) / delMax
-            let delBlue  = (((Max - blue)  / 6) + delMax / 2) / delMax
+            var vector = SIMD3(Max, Max, Max) - space.simd
+            vector /= 6
+            vector += delMax / 2
+            vector /= delMax
             
             if red == Max {
-                hue = delBlue - delGreen
+                hue = vector.z - vector.y
             } else if green == Max {
-                hue = (1 / 3) + delRed - delBlue
+                hue = (1 / 3) + vector.x - vector.z
             } else if blue == Max {
-                hue = (2 / 3) + delGreen - delRed
+                hue = (2 / 3) + vector.y - vector.x
             } else {
                 hue = 0
             }
@@ -372,6 +343,7 @@ public extension StemColor.SpaceCalculator {
 
     /// https://en.wikipedia.org/wiki/CIELAB_color_space
     func convert(_ space: StemColor.CIEXYZSpace) -> StemColor.CIELABSpace {
+        
         func map(_ value: Double) -> Double {
             let delta = 6.0 / 29.0
             if (value > pow(delta, 3.0)) {
@@ -380,16 +352,14 @@ public extension StemColor.SpaceCalculator {
                 return ((value / 3.0 * pow(delta, 2.0))) + (4.0 / 29.0)
             }
         }
+
+        var vector = space.simd / space.illuminants.simd
+        vector = .init(map(vector.x), map(vector.y), map(vector.z))
+        vector = .init(-16 + (116.0 * vector.y),
+                       500 * (vector.x - vector.y),
+                       200 * (vector.y - vector.z))
         
-        let fx = map(space.x * 100 / (space.illuminants.x * 100))
-        let fy = map(space.y * 100 / (space.illuminants.y * 100))
-        let fz = map(space.z * 100 / (space.illuminants.z * 100))
-        
-        let l = (116.0 * fy) - 16.0
-        let a = 500 * (fx - fy)
-        let b = 200 * (fy - fz)
-        
-        return .init(l: l, a: a, b: b, illuminants: space.illuminants)
+        return .init(simd: vector, illuminants: space.illuminants)
     }
     
     func convert(_ space: StemColor.CIELABSpace) -> StemColor.CIEXYZSpace {
