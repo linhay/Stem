@@ -24,48 +24,33 @@ import Foundation
 
 public extension Array where Element == StemColor {
     
-    struct Result {
-        public let color: StemColor
-        public let rate: Double
+    struct KmeansResult {
+        public let center: Element
+        public let size: Int
     }
     
     /// k-均值算法
     /// - Parameters:
     ///   - count: 中心点数量
-    ///   - convergeDistance: 收敛距离
+    ///   - formula: 颜色差异公式
     /// - Returns: 聚类颜色与比例
-    func kmeansClusterAnalysis(count: Int, convergeDistance: Double = 1) -> [Result] {
-        let datas = self.map(\.labSpace.compressionValues).map { item in
-            item.map({ $0.st.roundedDecimal(scale: 4) })
-        }
-        let vectors = datas.map { data in
-            Vector(data) { lhs, rhs in
-                StemColor.difference(.ciede2000(.init(lhs.data), .init(rhs.data)))
+    func kmeansClusterAnalysis(count: Int, difference formula: StemColor.DifferenceFormula) -> [KmeansResult] {
+        let kmeas = KMeans(self.map(\.labSpace.simd))
+        return kmeas.train(k: count) { lhs, rhs in
+            switch formula {
+            case .cie76:
+               return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
+            case .cie94(let value):
+                return StemColor.difference(.cie94(.init(lhs), .init(rhs), value))
+            case .ciede2000:
+                return StemColor.difference(.ciede2000(.init(lhs), .init(rhs)))
+            case .euclidean:
+                /// 不划算
+                return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
             }
-        }
-        
-        let kmeans = KMeans<Int>(labels: (0...count-1).map({ $0 }))
-        kmeans.trainCenters(vectors, convergeDistance: convergeDistance)
-        
-        var counts = [Int: Int]()
-        for label in kmeans.fit(vectors) {
-            if counts[label] == nil {
-                counts[label] = 1
-            } else {
-                counts[label] = counts[label]! + 1
-            }
-        }
-        
-        var models = [Result]()
-        for (label, centroid) in zip(kmeans.labels, kmeans.centroids) {
-            let space = StemColor.CIELABSpace(StemColor.CIELABSpace.resetValues(centroid.data))
-            print(space.list)
-            let color = StemColor(lab: space)
-            let rate  = Double(counts[label] ?? 0) / Double(vectors.count)
-            models.append(.init(color: color, rate: rate))
-        }
-        
-        return models.sorted(by: { $0.rate > $1.rate })
+        }.map { result in
+            KmeansResult(center: StemColor(lab: .init(result.center)), size: result.size)
+        }.sorted(by: { $0.size > $1.size })
     }
     
 }

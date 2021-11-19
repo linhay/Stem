@@ -47,7 +47,7 @@ public extension StemColor.CIELABSpace {
     
     var simd: SIMD3<Double> { .init(l, a, b) }
     
-    init(simd: SIMD3<Double>, illuminants: CIEStandardIlluminants = .D65) {
+    init(_ simd: SIMD3<Double>, illuminants: CIEStandardIlluminants = .D65) {
         self.init(l: simd.x, a: simd.y, b: simd.z, illuminants: illuminants)
     }
     

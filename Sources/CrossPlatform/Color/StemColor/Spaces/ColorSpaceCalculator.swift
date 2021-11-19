@@ -130,7 +130,7 @@ public extension StemColor.SpaceCalculator {
         }
         
         rgb += w
-        return .init(simd: rgb)
+        return .init(rgb)
     }
     
     func convert(_ space: StemColor.RGBSpace) -> StemColor.RYBSpace {
@@ -155,7 +155,7 @@ public extension StemColor.SpaceCalculator {
         }
         
         ryb += w
-        return .init(simd: ryb)
+        return .init(ryb)
     }
     
 }
@@ -189,7 +189,7 @@ public extension StemColor.SpaceCalculator {
         var vector = SIMD3(space.cyan, space.magenta, space.yellow)
         vector *= 1 - space.key
         vector += space.key
-        return .init(simd: vector)
+        return .init(vector)
     }
     
 }
@@ -333,7 +333,7 @@ public extension StemColor.SpaceCalculator {
         ])
                
         let vector = matrix * SIMD3(map(space.red), map(space.green), map(space.blue))
-        return .init(simd: vector, illuminants: illuminants)
+        return .init(vector, illuminants: illuminants)
     }
     
 }
@@ -359,7 +359,7 @@ public extension StemColor.SpaceCalculator {
                        500 * (vector.x - vector.y),
                        200 * (vector.y - vector.z))
         
-        return .init(simd: vector, illuminants: space.illuminants)
+        return .init(vector, illuminants: space.illuminants)
     }
     
     func convert(_ space: StemColor.CIELABSpace) -> StemColor.CIEXYZSpace {

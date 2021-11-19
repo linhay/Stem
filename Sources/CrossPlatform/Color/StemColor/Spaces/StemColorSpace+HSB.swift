@@ -54,7 +54,7 @@ public extension StemColor.HSBSpace {
     
     var simd: SIMD3<Double> { .init(hue, saturation, brightness) }
     
-    init(simd: SIMD3<Double>) {
+    init(_ simd: SIMD3<Double>) {
         self.init(hue: simd.x, saturation: simd.y, brightness: simd.z)
     }
     

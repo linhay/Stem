@@ -56,8 +56,38 @@ public extension StemColor.RGBSpace {
     
     var simd: SIMD3<Double> { .init(red, green, blue) }
     
-    init(simd: SIMD3<Double>) {
+    init(_ simd: SIMD3<Double>) {
         self.init(red: simd.x, green: simd.y, blue: simd.z)
+    }
+    
+}
+
+public extension StemColor.RGBSpace {
+
+    var linear: StemColor.RGBSpace {
+        
+        func f(_ value: Double) -> Double {
+            if (value <= 0.04045) {
+                return value / 12.92
+            } else {
+                return pow((value + 0.055) / 1.055, 2.4)
+            }
+        }
+        
+        return StemColor.RGBSpace.init(list.map(f))
+    }
+    
+    init(linear: StemColor.RGBSpace) {
+        
+        func f(_ linear: Double) -> Double {
+            if (linear <= 0.0031308) {
+                return linear * 12.92
+            } else {
+                return 1.055 * pow(linear, 1.0 / 2.4) - 0.055
+            }
+        }
+        
+        self.init(linear.list.map(f))
     }
     
 }

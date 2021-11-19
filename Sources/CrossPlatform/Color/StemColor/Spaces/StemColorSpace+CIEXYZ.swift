@@ -52,7 +52,7 @@ public extension StemColor.CIEXYZSpace {
     
     var simd: SIMD3<Double> { .init(x, y, z) }
     
-    init(simd: SIMD3<Double>, illuminants: CIEStandardIlluminants = .D65) {
+    init(_ simd: SIMD3<Double>, illuminants: CIEStandardIlluminants = .D65) {
         self.init(x: simd.x, y: simd.y, z: simd.z, illuminants: illuminants)
     }
     

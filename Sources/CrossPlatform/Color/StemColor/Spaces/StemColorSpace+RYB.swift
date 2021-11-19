@@ -45,7 +45,7 @@ public extension StemColor.RYBSpace {
     
     var simd: SIMD3<Double> { .init(red, yellow, blue) }
     
-    init(simd: SIMD3<Double>) {
+    init(_ simd: SIMD3<Double>) {
         self.init(red: simd.x, yellow: simd.y, blue: simd.z)
     }
     

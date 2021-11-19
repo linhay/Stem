@@ -51,7 +51,7 @@ public extension StemColor.CMYKSpace {
     
     var simd: SIMD4<Double> { .init(cyan, magenta, yellow, key) }
     
-    init(simd: SIMD4<Double>) {
+    init(_ simd: SIMD4<Double>) {
         self.init(cyan: simd.x, magenta: simd.y, yellow: simd.z, key: simd.w)
     }
     
