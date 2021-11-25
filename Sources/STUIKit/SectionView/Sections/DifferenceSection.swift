@@ -23,53 +23,87 @@
 #if canImport(UIKit)
 import UIKit
 
-open class HashableSingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeSection<Cell> where Cell.Model: Hashable {
+public final class SectionSizeCache {
+
+    public var kv: [Int: CGSize]
     
-    /// size 是否缓存
-    private var useSizeCache: Bool = false
+    public init(kv: [Int: CGSize] = [:]) {
+        self.kv = kv
+    }
+    
+    public subscript(_ key: AnyHashable) -> CGSize? {
+        set {
+            kv[key.hashValue] = newValue
+        }
+        get {
+            kv[key.hashValue]
+        }
+    }
+    
+}
+
+open class DifferenceSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeSection<Cell> where Cell.Model: Hashable {
+    
+    /// 是否是共享 size 缓存
+    public let isShareSizeCache: Bool
     /// size 缓存
-    private var itemSizeCache: [Int: CGSize] = [:]
+    public let sizeCache: SectionSizeCache
+    
+    private var viewSize = CGSize.zero
+    
+    /// init
+    /// - Parameters:
+    ///   - models: 数据
+    ///   - shareSizeCache: 与其他 section 共享缓存
+    public init(_ models: [Cell.Model] = [], shareSizeCache: SectionSizeCache? = nil) {
+        self.isShareSizeCache = shareSizeCache != nil
+        self.sizeCache = shareSizeCache ?? .init()
+        super.init(models)
+    }
     
     open override func itemSize(at row: Int) -> CGSize {
-        let size  = itemSafeSize()
+        
+        let size = itemSafeSize()
         let model = models[row]
-        guard useSizeCache else {
-            return Cell.preferredSize(limit: size, model: model)
+        
+        if viewSize != size {
+            sizeCache.kv.removeAll()
         }
         
-        if let itemSize = itemSizeCache[model.hashValue] {
+        if let itemSize = sizeCache[model] {
             return itemSize
         } else {
             let itemSize = Cell.preferredSize(limit: size, model: model)
-            itemSizeCache[model.hashValue] = itemSize
+            sizeCache[model] = itemSize
             return itemSize
         }
     }
     
-    /// 使用 size 缓存
-    open func useSizeCache(_ value: Bool) {
-        useSizeCache = value
-        if value == false {
-            itemSizeCache = [:]
-        }
-    }
-    
-    open func config(auto models: [Cell.Model]) {
-        if #available(iOS 13, *) {
+    open override func config(models: [Cell.Model]) {
+        let models = validate(models)
+        if models.isEmpty {
+            super.config(models: models)
+        } else if #available(iOS 13, *) {
             config(difference: models)
         } else {
-            config(models: models)
+            super.config(models: models)
         }
     }
     
+}
+
+private extension DifferenceSection {
+    
     @available(iOS 13, *)
-    open func config(difference models: [Cell.Model]) {
+    func config(difference models: [Cell.Model]) {
         let difference = models.difference(from: self.models)
         pick {
             for change in difference {
                 switch change {
                 case let .remove(offset, model, _):
-                    self.itemSizeCache.removeValue(forKey: model.hashValue)
+                    if isShareSizeCache == false {
+                        self.sizeCache[model] = nil
+                    }
                     self.delete(at: offset)
                 case let .insert(offset, element, _):
                     self.insert(element, at: offset)
@@ -79,5 +113,4 @@ open class HashableSingleTypeSection<Cell: UICollectionViewCell & ConfigurableVi
     }
     
 }
-
 #endif

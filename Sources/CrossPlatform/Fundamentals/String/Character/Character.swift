@@ -35,4 +35,8 @@ public extension StemValue where Base == Character {
     var string: String {
         return String(base)
     }
+    
+    var isObjectReplacement: Bool {
+        base.unicodeScalars.first?.value == 0xFFFC
+    }
 }

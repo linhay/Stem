@@ -26,10 +26,14 @@ import UIKit
 public protocol ConfigurableView: UIView {
     associatedtype Model
     func config(_ model: Model)
+    /// 数据是否可用
+    static func validate(_ model: Model) -> Bool
     static func preferredSize(limit size: CGSize, model: Model?) -> CGSize
 }
 
 public extension ConfigurableView {
+
+    static func validate(_ model: Model) -> Bool { true }
 
     static func preferredSize(model: Model?) -> CGSize {
         Self.preferredSize(limit: .zero, model: model)

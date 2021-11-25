@@ -59,17 +59,13 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
     }
     
     open func config(models: [Cell.Model]) {
-        self.models = models
+        self.models = validate(models)
         reload()
     }
     
-    open func append(models: [Cell.Model]) {
-        self.models.append(contentsOf: models)
-        reload()
-    }
-    
-    public func append(models: Cell.Model...) {
-        append(models: models)
+    /// 过滤无效数据
+    open func validate(_ models: [Cell.Model]) -> [Cell.Model] {
+        models.filter(Cell.validate)
     }
     
     open func didSelectItem(at row: Int) {

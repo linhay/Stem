@@ -68,13 +68,13 @@ public class Gcd {
 
     /// 耗时(秒)
     /// - Parameter block: 需要测试执行的代码
-    public class func duration(unit: Double = 1e-9, _ closure: (@escaping () -> Double) -> Void) {
+    public class func duration(unit: Double = 1e-9, _ closure: (@escaping () throws -> Double) throws -> Void) rethrows {
         // 获取转换因子
         var info = mach_timebase_info_data_t()
         mach_timebase_info(&info)
         // 获取开始时间
         let t0 = mach_absolute_time()
-        closure({
+        try closure({
             // 获取结束时间
             let t1 = mach_absolute_time()
             return TimeInterval(Int(t1 - t0) * Int(info.numer) / Int(info.denom)) * unit

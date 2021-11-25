@@ -27,7 +27,7 @@ public class SectionTableManager: SectionScrollManager {
 
     let sectionManager: SectionManager<UITableView>
     var sectionView: UITableView { sectionManager.sectionView }
-    public var sections: [SectionTableProtocol] { sectionManager.sections as! [SectionTableProtocol] }
+    public var sections: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionProtocol]>.Elements, SectionTableProtocol?>>, SectionTableProtocol> { sectionManager.sections.lazy.compactMap({ $0 as? SectionTableProtocol }) }
 
     public init(sectionView: UITableView) {
         sectionManager = .init(sectionView: sectionView)

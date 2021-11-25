@@ -28,7 +28,7 @@ public class SectionCollectionManager: SectionScrollManager {
     private let sectionManager: SectionManager<UICollectionView>
     private var isPicking = false
 
-    public var sections: [SectionCollectionProtocol] { sectionManager.sections as! [SectionCollectionProtocol] }
+    public var sections: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionProtocol]>.Elements, SectionCollectionProtocol?>>, SectionCollectionProtocol> { sectionManager.sections.lazy.compactMap({ $0 as? SectionCollectionProtocol }) }
     public var sectionView: UICollectionView { sectionManager.sectionView }
 
     public init(sectionView: UICollectionView) {
