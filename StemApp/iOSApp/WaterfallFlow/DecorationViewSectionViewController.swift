@@ -13,12 +13,11 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sections = (0...5).map { _ -> HashableSingleTypeSection<TestCell> in
-            let section = HashableSingleTypeSection<TestCell>()
+        let sections = (0...5).map { _ -> DifferenceSection<TestCell> in
+            let section = DifferenceSection<TestCell>()
             section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)
             section.minimumLineSpacing = 4
             section.minimumInteritemSpacing = 4
-            section.useSizeCache(true)
             
             section.headerViewProvider.delegate(on: self) { (self, section) -> UICollectionReusableView in
                 section.register(DecorationView.self, for: .header)

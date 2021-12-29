@@ -71,6 +71,16 @@ public extension Stem where Base: UIApplication {
     var info: UIApplication.Info { return UIApplication.Info() }
     var path: UIApplication.Path { return UIApplication.Path() }
     
+    var statusBarFrame: CGRect {
+        if #available(iOS 13.0, *) {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let statusBarFrame = windowScene.statusBarManager?.statusBarFrame {
+                return statusBarFrame
+            }
+        }
+        return UIApplication.shared.statusBarFrame
+    }
+    
 }
 
 // MARK: - open

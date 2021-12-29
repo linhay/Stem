@@ -83,7 +83,7 @@ open class DifferenceSection<Cell: UICollectionViewCell & ConfigurableView & STV
         let models = validate(models)
         if models.isEmpty {
             super.config(models: models)
-        } else if #available(iOS 13, *) {
+        } else if #available(iOS 13, *), isLoaded {
             config(difference: models)
         } else {
             super.config(models: models)

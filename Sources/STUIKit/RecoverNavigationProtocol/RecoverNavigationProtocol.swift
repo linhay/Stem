@@ -262,7 +262,7 @@ private class RecoverRecordScrollOffsetManager {
     
     func layoutMarginsDidChange(view: UIView) {
         let safeTopInset = view.safeAreaInsets.top
-        let bestSafeTopInset = UIApplication.shared.statusBarFrame.height + 44
+        let bestSafeTopInset = UIApplication.shared.st.statusBarFrame.height + 44
         let different = bestSafeTopInset - safeTopInset + offset
         scrollView?.setContentOffset(.init(x: 0, y: different), animated: false)
     }

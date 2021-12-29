@@ -36,7 +36,7 @@ class HomeViewController: SectionCollectionViewController {
         section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)
         section.minimumLineSpacing = 16
         section.minimumInteritemSpacing = 16
-        
+        sectionView.backgroundColor = .white
         manager.update(section)
     }
     
