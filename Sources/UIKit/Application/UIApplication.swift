@@ -78,7 +78,7 @@ public extension Stem where Base: UIApplication {
                 return statusBarFrame
             }
         }
-        return UIApplication.shared.statusBarFrame
+        return UIApplication.shared.st.statusBarFrame
     }
     
 }
