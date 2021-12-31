@@ -52,6 +52,15 @@ open class SectionTableViewController: UIViewController {
         layout(anchor1: sectionView.rightAnchor, anchor2: safeArea.rightAnchor)
         layout(anchor1: sectionView.leftAnchor, anchor2: safeArea.leftAnchor)
     }
+    
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate { [weak self] context in
+            self?.sectionView.reloadData()
+        } completion: { [weak self] context in
+            self?.sectionView.reloadData()
+        }
+    }
 
     private func layout(anchor1: NSLayoutYAxisAnchor, anchor2: NSLayoutYAxisAnchor) {
         let constraint = anchor1.constraint(equalTo: anchor2)

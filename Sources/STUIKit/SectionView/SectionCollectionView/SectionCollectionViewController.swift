@@ -46,6 +46,16 @@ open class SectionCollectionViewController: UIViewController {
         layout(anchor1: sectionView.leftAnchor, anchor2: safeArea.leftAnchor)
     }
     
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        UIView.animate(withDuration: coordinator.transitionDuration) {
+            self.view.bounds.size.width = size.width
+            self.sectionView.collectionViewLayout.invalidateLayout()
+        }
+        
+    }
+    
     private func layout(anchor1: NSLayoutYAxisAnchor, anchor2: NSLayoutYAxisAnchor) {
         let constraint = anchor1.constraint(equalTo: anchor2)
         constraint.priority = .defaultLow
