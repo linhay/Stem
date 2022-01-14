@@ -20,7 +20,7 @@ class TestCell: UICollectionViewCell, STViewProtocol, ConfigurableView {
     
     static func preferredSize(limit size: CGSize, model: Model?) -> CGSize {
         guard let model = model else { return .zero }
-        return .init(width: model.width, height: model.height)
+        return .init(width: size.width, height: model.height)
     }
     
     let label: UILabel = {

@@ -212,6 +212,16 @@ public extension Array {
     
 }
 
+extension Array where Element:Hashable {
+    
+    var unique: [Element] {
+        var uniq = Set<Element>()
+        uniq.reserveCapacity(count)
+        return filter { uniq.insert($0).inserted }
+    }
+    
+}
+
 public extension Array {
     
     func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {

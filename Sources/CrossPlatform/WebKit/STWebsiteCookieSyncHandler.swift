@@ -26,16 +26,16 @@ import WebKit
 import Combine
 
 @available(iOS 13.0, macOS 10.15, *)
-open class STWebsiteCookSyncHandler {
+open class STWebsiteCookieSyncHandler {
     
-    public static let shared: STWebsiteCookSyncHandler = STWebsiteCookSyncHandler()
+    public static let shared = STWebsiteCookieSyncHandler()
     private let publisher = PassthroughSubject<Void, Never>()
     private var cancellable: AnyCancellable?
     
 }
 
 @available(iOS 13.0, macOS 10.15, *)
-public extension STWebsiteCookSyncHandler {
+public extension STWebsiteCookieSyncHandler {
     
     func listen() {
         stop()
@@ -63,7 +63,7 @@ public extension STWebsiteCookSyncHandler {
 }
 
 @available(iOS 13.0, macOS 10.15, *)
-private extension STWebsiteCookSyncHandler {
+private extension STWebsiteCookieSyncHandler {
     
     @objc
     func task(notification: Notification) {
@@ -73,7 +73,7 @@ private extension STWebsiteCookSyncHandler {
 }
 
 @available(iOS 13.0, macOS 10.15, *)
-private extension STWebsiteCookSyncHandler {
+private extension STWebsiteCookieSyncHandler {
     
     func cookie(name: String, value: String?, domain: String) -> HTTPCookie? {
         var properties: [HTTPCookiePropertyKey: Any] = [:]

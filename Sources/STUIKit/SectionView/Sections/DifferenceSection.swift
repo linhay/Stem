@@ -63,7 +63,7 @@ open class DifferenceSection<Cell: UICollectionViewCell & ConfigurableView & STV
     
     open override func itemSize(at row: Int) -> CGSize {
         
-        let size = itemSafeSize()
+        let size = safeSize.size(self)
         let model = models[row]
         
         if viewSize != size {

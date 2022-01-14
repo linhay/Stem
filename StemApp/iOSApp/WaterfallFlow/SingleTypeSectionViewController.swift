@@ -19,7 +19,9 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
         section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)
         section.minimumLineSpacing = 4
         section.minimumInteritemSpacing = 4
-        
+        section.apply(safeSize: SectionSafeSize({ section in
+            return .init(width: 600, height: 400)
+        }))
         var data = Array(0...3)
 
         section.selectedEvent.delegate(on: self) { (self, model) in
