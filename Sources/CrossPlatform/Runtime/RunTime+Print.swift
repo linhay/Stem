@@ -80,7 +80,7 @@ public extension RunTime.Print {
     func ivars(from classType: AnyClass) {
         let list = RunTime.ivars(from: classType).compactMap({ (item) -> [String]? in
             guard let ivar = ivar_getName(item) else { return nil }
-            return [String(cString: ivar)]
+            return [String(cString: ivar), RunTime.ObjectType(char: ivar_getTypeEncoding(item)).description]
         })
         log(title: "ivars", list: list)
     }
