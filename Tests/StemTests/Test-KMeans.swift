@@ -9,12 +9,9 @@ import Foundation
 import XCTest
 import Stem
 
-
 class KMeansTests: XCTestCase {
     
-    
     func test2() {
-        StemColor.RGBSpace.init([])
         let rgb = StemColor.RGBSpace(SIMD3<Double>(0.48235294, 0.14509805, 0.93333334))
         let linear = rgb.linear
         let xyz: StemColor.CIEXYZSpace = StemColor.spaceCalculator.convert(linear, illuminants: .D65)

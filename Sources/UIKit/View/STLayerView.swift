@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 @dynamicMemberLookup
@@ -41,3 +42,4 @@ class STLayerView<Layer: CALayer>: UIView {
     }
     
 }
+#endif
