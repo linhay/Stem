@@ -73,11 +73,11 @@ public struct FilePath: FilePathProtocol {
 
 public extension FilePath {
     
-    func asFile() -> FilePath.File? {
+    var asFile: FilePath.File? {
         type == .file ? .init(url: url) : nil
     }
     
-    func asFolder() -> FilePath.Folder? {
+    var asFolder: FilePath.Folder? {
         type == .folder ? .init(url: url) : nil
     }
     
