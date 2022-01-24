@@ -31,14 +31,25 @@ public enum FilePathItemType: Int, Equatable, Codable {
     public var isFolder: Bool { self == .folder }
 }
 
-public enum FilePathReferenceType {
+public enum FilePathReferenceType: Identifiable {
+    
     case file(FilePath.File)
     case folder(FilePath.Folder)
+    
+    public var id: URL {
+        switch self {
+        case .file(let result):
+            return result.id
+        case .folder(let result):
+            return result.id
+        }
+    }
+    
 }
 
 public struct FilePath: FilePathProtocol, Identifiable {
     
-    public var id: URL { url }
+    public var id: URL { referenceType.id }
     
     @available(iOS, introduced: 2.0, deprecated: 8.0, message: "No longer supported; please adopt FilePathItemType.")
     public typealias ItemType = FilePathItemType
