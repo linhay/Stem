@@ -22,20 +22,39 @@
 
 import Foundation
 
+public enum FilePathItemType: Int, Equatable, Codable {
+    
+    case file
+    case folder
+    
+    public var isFile: Bool { self == .file }
+    public var isFolder: Bool { self == .folder }
+}
+
+public enum FilePathReferenceType {
+    case file(FilePath.File)
+    case folder(FilePath.Folder)
+}
+
 public struct FilePath: FilePathProtocol {
     
-    public enum ItemType: Int, Equatable, Codable {
-        case file
-        case folder
-        
-        public var isFile: Bool { self == .file }
-        public var isFolder: Bool { self == .folder }
-    }
+    @available(iOS, introduced: 2.0, deprecated: 8.0, message: "No longer supported; please adopt FilePathItemType.")
+    public typealias ItemType = FilePathItemType
     
     private var manager: FileManager { FileManager.default }
     private static var manager: FileManager { FileManager.default }
     
     public let type: ItemType
+    
+    public var referenceType: FilePathReferenceType {
+        switch type {
+        case .file:
+            return .file(.init(url: url))
+        case .folder:
+            return .folder(.init(url: url))
+        }
+    }
+    
     public var url: URL
     
     public init(url: URL, type: ItemType) {

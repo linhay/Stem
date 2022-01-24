@@ -56,8 +56,10 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         case left
         /// 居中对齐
         case centerX
-        /// header & footer 贴合 cell
+        /// fix: header & footer 贴合 cell
         case fixSupplementaryViewInset
+        /// fix: header & footer size与设定值不符
+        case fixSupplementaryViewSize
         case sectionBackgroundView(DecorationElement)
         case allSectionBackgroundView(type: DecorationView.Type)
         
@@ -65,9 +67,10 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             switch self {
             case .left:    return 1
             case .centerX: return 2
-            case .fixSupplementaryViewInset: return 3
-            case .sectionBackgroundView: return 4
-            case .allSectionBackgroundView: return 5
+            case .fixSupplementaryViewSize: return 3
+            case .fixSupplementaryViewInset: return 4
+            case .sectionBackgroundView: return 5
+            case .allSectionBackgroundView: return 6
             }
         }
         
@@ -75,7 +78,8 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             switch self {
             case .left:    return 100
             case .centerX: return 100
-            case .fixSupplementaryViewInset: return 1
+            case .fixSupplementaryViewSize: return 1
+            case .fixSupplementaryViewInset: return 2
             case .sectionBackgroundView: return 200
             case .allSectionBackgroundView: return 200
             }
@@ -133,6 +137,8 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         
         for mode in pluginModes {
             switch mode {
+            case .fixSupplementaryViewSize:
+                attributes = modeFixSupplementaryViewSize(collectionView, attributes: attributes) ?? []
             case .centerX:
                 attributes = modeCenterX(collectionView, attributes: attributes) ?? []
             case .left:
@@ -176,8 +182,8 @@ private extension SectionCollectionFlowLayout {
             let count = collectionView.numberOfItems(inSection: section)
             let sectionIndexPath = IndexPath(item: 0, section: section)
             
-            let header = self.layoutAttributesForSupplementaryView(ofKind: SupplementaryViewKindType.header.rawValue, at: sectionIndexPath)
-            let footer = self.layoutAttributesForSupplementaryView(ofKind: SupplementaryViewKindType.footer.rawValue, at: sectionIndexPath)
+            let header = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.header.rawValue, at: sectionIndexPath)
+            let footer = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.footer.rawValue, at: sectionIndexPath)
             let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
             let elements = ([header, footer] + cells).compactMap(\.?.frame).filter({ $0.size.width > 0 && $0.size.height > 0 })
             guard let first = elements.first else {
@@ -223,18 +229,34 @@ private extension SectionCollectionFlowLayout {
         
     }
     
+    func modeFixSupplementaryViewSize(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
+        let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout
+        return attributes
+            .filter{ $0.representedElementCategory == .supplementaryView }
+            .map { attribute in
+                let inset = insetForSection(at: attribute.indexPath.section)
+                if attribute.representedElementKind == UICollectionView.elementKindSectionFooter {
+                    attribute.size = self.footerSizeForSection(at: attribute.indexPath.section)
+                } else if attribute.representedElementKind == UICollectionView.elementKindSectionHeader {
+                    attribute.size = self.headerSizeForSection(at: attribute.indexPath.section)
+                }
+                return attribute
+            }
+    }
+    
     func modeFixSupplementaryViewInset(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         attributes
             .filter{ $0.representedElementCategory == .supplementaryView }
-            .forEach { attribute in
+            .map { attribute in
                 let inset = insetForSection(at: attribute.indexPath.section)
                 if attribute.representedElementKind == UICollectionView.elementKindSectionFooter {
                     attribute.frame.origin.y -= inset.bottom
                 } else if attribute.representedElementKind == UICollectionView.elementKindSectionHeader {
                     attribute.frame.origin.y += inset.top
                 }
+                
+                return attribute
             }
-        return attributes
     }
     
     func modeCenterX(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
@@ -355,6 +377,24 @@ private extension SectionCollectionFlowLayout {
 }
 
 private extension SectionCollectionFlowLayout {
+    
+    func headerSizeForSection(at section: Int) -> CGSize {
+        guard let collectionView = collectionView,
+              let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+              let size = delegate.collectionView?(collectionView, layout: self, referenceSizeForHeaderInSection: section) else {
+                  return .zero
+        }
+        return size
+    }
+    
+    func footerSizeForSection(at section: Int) -> CGSize {
+        guard let collectionView = collectionView,
+              let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout,
+              let size = delegate.collectionView?(collectionView, layout: self, referenceSizeForFooterInSection: section) else {
+                  return .zero
+        }
+        return size
+    }
     
     func insetForSection(at section: Int) -> UIEdgeInsets {
         guard let collectionView = collectionView,

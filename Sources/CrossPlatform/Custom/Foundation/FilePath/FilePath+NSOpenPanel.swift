@@ -9,18 +9,28 @@
 import Foundation
 import AppKit
 
-public extension FilePath {
+public extension FilePathProtocol {
     
-    static func selectBySystem(base: URL? = nil,
-                               canChooseFiles: Bool = true,
-                               canChooseDirectories: Bool = true,
+    func showInFinder() {
+        guard let referenceType = try? FilePath(url: url).referenceType else {
+            return
+        }
+        switch referenceType {
+        case .file(let value):
+            NSWorkspace.shared.activateFileViewerSelecting([value.url])
+        case .folder(let value):
+            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: value.url.path)
+        }
+    }
+    
+    static func selectInFinder(_ folder: URL,
+                               support: [FilePathItemType] = [.file, .folder],
                                allowsMultipleSelection: Bool = true) -> [FilePath] {
-        
         let panel = NSOpenPanel()
-        panel.canChooseFiles = canChooseFiles
-        panel.canChooseDirectories = canChooseDirectories
+        panel.canChooseFiles = support.contains(.file)
+        panel.canChooseDirectories = support.contains(.folder)
         panel.allowsMultipleSelection = allowsMultipleSelection
-        panel.directoryURL = base
+        panel.directoryURL = folder
         
         if panel.runModal() == .OK {
             return panel.urls.compactMap({ try? .init(url: $0) })
@@ -33,22 +43,11 @@ public extension FilePath {
 
 public extension FilePath.Folder {
     
-    static func selectBySystem(base: URL? = nil, allowsMultipleSelection: Bool = false) -> [FilePath.Folder] {
-        return FilePath.selectBySystem(base: base,
-                                       canChooseFiles: false,
-                                       canChooseDirectories: true,
-                                       allowsMultipleSelection: allowsMultipleSelection).compactMap({ $0.asFolder() })
-    }
-    
-}
-
-public extension FilePath.File {
-    
-    static func selectBySystem(base: URL? = nil, allowsMultipleSelection: Bool = false) -> [FilePath.File] {
-        return FilePath.selectBySystem(base: base,
-                                       canChooseFiles: true,
-                                       canChooseDirectories: false,
-                                       allowsMultipleSelection: allowsMultipleSelection).compactMap({ $0.asFile() })
+    func selectInFinder(support: [FilePathItemType] = [.file, .folder],
+                        allowsMultipleSelection: Bool = true) -> [FilePath] {
+        return Self.selectInFinder(url,
+                                   support: support,
+                                   allowsMultipleSelection: allowsMultipleSelection)
     }
     
 }
