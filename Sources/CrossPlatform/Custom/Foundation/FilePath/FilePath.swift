@@ -36,7 +36,9 @@ public enum FilePathReferenceType {
     case folder(FilePath.Folder)
 }
 
-public struct FilePath: FilePathProtocol {
+public struct FilePath: FilePathProtocol, Identifiable {
+    
+    public var id: URL { url }
     
     @available(iOS, introduced: 2.0, deprecated: 8.0, message: "No longer supported; please adopt FilePathItemType.")
     public typealias ItemType = FilePathItemType

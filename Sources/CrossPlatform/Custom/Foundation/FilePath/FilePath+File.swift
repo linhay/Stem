@@ -24,8 +24,10 @@ import Foundation
 
 public extension FilePath {
     
-    struct File: FilePathProtocol {
+    struct File: FilePathProtocol, Identifiable {
         
+        public var id: URL { url }
+
         public let url: URL
         
         public init(url: URL) {
