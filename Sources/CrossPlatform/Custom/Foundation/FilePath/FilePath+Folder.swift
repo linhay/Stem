@@ -100,7 +100,7 @@ public extension FilePath {
         }
         
         public init(path: String) throws {
-            self.init(url: .init(fileURLWithPath: path))
+            try self.init(url: Self.standardizedPath(path))
         }
         
     }

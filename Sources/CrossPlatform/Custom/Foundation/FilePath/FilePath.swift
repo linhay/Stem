@@ -80,7 +80,7 @@ public struct FilePath: FilePathProtocol, Identifiable {
     }
     
     public init(path: String) throws {
-        try self.init(url: .init(fileURLWithPath: path))
+        try self.init(url: Self.standardizedPath(path))
     }
 }
 

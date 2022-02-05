@@ -24,6 +24,8 @@ import Foundation
 
 public extension FilePath.Folder {
 
+    static let home = try! FilePath.Folder(sanbox: .home)
+    
     /// iOS 沙盒路径
     enum SanboxRootPath {
         case root

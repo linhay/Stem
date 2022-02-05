@@ -34,6 +34,42 @@ extension FilePathProtocol {
     var manager: FileManager { FileManager.default }
 }
 
+
+extension FilePathProtocol {
+    
+   public static func standardizedPath(_ path: String) throws -> URL {
+        if path == "~" {
+            return try FilePath.Folder.SanboxRootPath.home.url()
+        } else if path.hasPrefix("~/") {
+            var components = path.split(separator: "/").map({ $0.description })
+            components = Array(components.dropFirst())
+            let home = FilePath.Folder.SanboxRootPath.home.path?.split(separator: "/").map({ $0.description }) ?? []
+            components.insert(contentsOf: home, at: 0)
+            return URL(fileURLWithPath: Self.standardizedPath(components))
+        } else {
+            return URL(fileURLWithPath: path)
+        }
+    }
+    
+    private static func standardizedPath<S>(_ components: [S]) -> String where S: StringProtocol {
+        var result = [S]()
+        
+        for component in components {
+            switch component {
+            case "..":
+                result = result.dropLast()
+            case ".":
+                break
+            default:
+                result.append(component)
+            }
+        }
+        
+        return "/" + result.joined(separator: "/")
+    }
+    
+}
+
 public extension FilePathProtocol {
     
     var attributes: FilePathAttributes { .init(path: url) }
