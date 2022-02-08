@@ -29,13 +29,13 @@ public extension Device {
         return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
     
-    static let isSimulator = {
+    static var isSimulator: Bool {
         #if targetEnvironment(simulator)
         return true
         #else
         return false
         #endif
-    }()
+    }
     
     /// ptrace 用于拒绝调试 可以比较有效的保护 app
     static func refusalDebug() {

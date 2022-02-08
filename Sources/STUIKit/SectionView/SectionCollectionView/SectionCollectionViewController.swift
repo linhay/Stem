@@ -48,12 +48,18 @@ open class SectionCollectionViewController: UIViewController {
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
-        UIView.animate(withDuration: coordinator.transitionDuration) {
+        coordinator.animate { [weak self] _ in
+            guard let self = self else { return }
             self.view.bounds.size.width = size.width
             self.sectionView.collectionViewLayout.invalidateLayout()
+        } completion: { [weak self] _ in
+            guard let self = self else { return }
+            self.view.bounds.size.width = size.width
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.sectionView.collectionViewLayout.invalidateLayout()
+            }
         }
-        
     }
     
     private func layout(anchor1: NSLayoutYAxisAnchor, anchor2: NSLayoutYAxisAnchor) {
