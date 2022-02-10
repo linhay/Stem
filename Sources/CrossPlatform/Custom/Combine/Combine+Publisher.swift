@@ -20,19 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(Combine)
 import Foundation
+import Combine
 
-public extension Bundle {
-    
-    var isSandbox: Bool {
-        #if targetEnvironment(simulator)
-        return true
-        #endif
-        
-        guard let receiptName = self.appStoreReceiptURL?.lastPathComponent else {
-            return false
+extension Publisher {
+
+    public func sink<T: AnyObject>(on target: T, receiveCompletion: @escaping ((T, Subscribers.Completion<Self.Failure>) -> Void), receiveValue: @escaping ((T, Self.Output) -> Void)) -> AnyCancellable {
+        return self.sink { [weak target] error in
+            guard let target = target else { return }
+            receiveCompletion(target, error)
+        } receiveValue: { [weak target] value in
+            guard let target = target else { return }
+            receiveValue(target, value)
         }
-        return receiptName == "sandboxReceipt"
     }
-    
 }
+
+extension Publisher where Self.Failure == Never {
+
+    public func sink<T: AnyObject>(on target: T, receiveValue: @escaping ((T, Self.Output) -> Void)) -> AnyCancellable {
+        return self.sink { [weak target] value in
+            guard let target = target else { return }
+            receiveValue(target, value)
+        }
+    }
+}
+#endif

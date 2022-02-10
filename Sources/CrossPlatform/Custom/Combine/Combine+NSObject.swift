@@ -20,19 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(Combine)
 import Foundation
+import Combine
 
-public extension Bundle {
-    
-    var isSandbox: Bool {
-        #if targetEnvironment(simulator)
-        return true
-        #endif
+private var cancellableKey: Void?
+
+public extension Stem where Base: NSObject {
         
-        guard let receiptName = self.appStoreReceiptURL?.lastPathComponent else {
-            return false
+    @available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
+    var cancellable: Set<AnyCancellable> {
+        set {
+            objc_setAssociatedObject(self, &cancellableKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
-        return receiptName == "sandboxReceipt"
+        get {
+            if let value = objc_getAssociatedObject(self, &cancellableKey) as? Set<AnyCancellable> {
+                return value
+            }
+            
+            let value = Set<AnyCancellable>()
+            self.cancellable = value
+            return value
+        }
     }
     
 }
+#endif
