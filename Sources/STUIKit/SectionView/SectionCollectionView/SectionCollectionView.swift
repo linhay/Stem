@@ -39,8 +39,7 @@ open class SectionCollectionView: UICollectionView {
     /// - Parameters:
     ///   - backgroundView: SupplementaryView
     ///   - section: section
-    public func set(backgroundView: SectionCollectionFlowLayout.DecorationView.Type,
-                    for section: SectionCollectionProtocol) {
+    public func set(backgroundView: SectionCollectionFlowLayout.DecorationView.Type, for section: SectionCollectionProtocol) {
         guard let pluginModes = sectionFlowLayout?.pluginModes else {
             return
         }

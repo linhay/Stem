@@ -26,27 +26,17 @@ import UIKit
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
     public typealias DecorationView = UICollectionReusableView & STViewProtocol
-    public typealias DecorationElement = [DecorationElementKey: DecorationView.Type]
+    public typealias DecorationElement = [BindingKey<Int>: DecorationView.Type]
     
-    public class DecorationElementKey: Hashable {
+    public class BindingKey<Value> {
+        
+        private let closure: () -> Value?
+        
+        public var wrappedValue: Value? { closure() }
 
-        public static let all = DecorationElementKey(get: { -1 })
-        
-        public static func == (lhs: SectionCollectionFlowLayout.DecorationElementKey, rhs: SectionCollectionFlowLayout.DecorationElementKey) -> Bool {
-            return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+        public init(get closure: @escaping () -> Value?) {
+            self.closure = closure
         }
-        
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(ObjectIdentifier(self))
-        }
-        
-        let callback: () -> Int?
-        
-        public init(get callback: @escaping () -> Int?) {
-            self.callback = callback
-        }
-        
-        var index: Int { callback() ?? -404 }
         
     }
     
@@ -60,6 +50,8 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         case fixSupplementaryViewInset
         /// fix: header & footer size与设定值不符
         case fixSupplementaryViewSize
+        /// 置顶section header view
+        case sectionHeadersPinToVisibleBounds([BindingKey<Int>])
         case sectionBackgroundView(DecorationElement)
         case allSectionBackgroundView(type: DecorationView.Type)
         
@@ -71,6 +63,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             case .fixSupplementaryViewInset: return 4
             case .sectionBackgroundView: return 5
             case .allSectionBackgroundView: return 6
+            case .sectionHeadersPinToVisibleBounds: return 7
             }
         }
         
@@ -82,6 +75,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             case .fixSupplementaryViewInset: return 2
             case .sectionBackgroundView: return 200
             case .allSectionBackgroundView: return 200
+            case .sectionHeadersPinToVisibleBounds: return 300
             }
         }
     }
@@ -99,7 +93,6 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                     assertionFailure("mode冲突: \(pluginModes.filter({ $0.priority == item.priority }))")
                 }
             }
-            
             /// mode 重排
             pluginModes = newPluginModes.sorted(by: { $0.priority < $1.priority })
         }
@@ -111,16 +104,70 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         self.pluginModes = modes
     }
     
-    private var oldBounds = CGRect.zero
-    private var decorationViewCache = [Int: UICollectionViewLayoutAttributes]()
-    
+    private lazy var oldBounds = CGRect.zero
+    private lazy var decorationViewCache = [Int: UICollectionViewLayoutAttributes]()
+    private lazy var sectionRects = [Int: CGRect]()
+
     override public func prepare() {
         super.prepare()
         guard let collectionView = collectionView else {
             return
         }
+        sectionRects.removeAll()
         decorationViewCache.removeAll()
         oldBounds = collectionView.bounds
+    }
+    
+    open override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
+        let context = super.invalidationContext(forBoundsChange: newBounds)
+        if sectionHeadersPinToVisibleBounds {
+            assertionFailure("sectionHeadersPinToVisibleBounds == true 与 pluginMode.sectionHeadersPinToVisibleBounds 冲突")
+        } else {
+            for pluginMode in pluginModes {
+                switch pluginMode {
+                case .sectionHeadersPinToVisibleBounds(let elements):
+                    context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader,
+                                                            at: elements
+                                                                .compactMap(\.wrappedValue)
+                                                                .map({ IndexPath(row: 0, section: $0) }))
+                default:
+                    break
+                }
+            }
+        }
+        return context
+    }
+    
+    open override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let attributes = super.layoutAttributesForSupplementaryView(ofKind: elementKind, at: indexPath) else {
+            return nil
+        }
+        guard let collectionView = collectionView else {
+            return nil
+        }
+        
+        for pluginMode in pluginModes {
+            switch pluginMode {
+            case .sectionHeadersPinToVisibleBounds(let elements):
+                guard attributes.representedElementKind == UICollectionView.elementKindSectionHeader,
+                      elements.compactMap(\.wrappedValue).contains(attributes.indexPath.section),
+                      let rect = sectionRects[indexPath.section] else {
+                    break
+                }
+                attributes.zIndex += attributes.indexPath.section
+                if collectionView.contentOffset.y >= rect.minY, collectionView.contentOffset.y <= rect.maxY {
+                    if collectionView.contentOffset.y + attributes.frame.height >= rect.maxY {
+                        attributes.frame.origin.y = rect.maxY - attributes.frame.height
+                        print("\(rect) \(attributes.frame) - \(collectionView.contentOffset.y)")
+                    } else {
+                        attributes.frame.origin.y = collectionView.contentOffset.y
+                    }
+                }
+            default:
+                break
+            }
+        }
+        return attributes
     }
     
     override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -134,9 +181,31 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
         }
         
         attributes = attributes.compactMap({ $0.copy() as? UICollectionViewLayoutAttributes })
-        
         for mode in pluginModes {
             switch mode {
+            case .sectionHeadersPinToVisibleBounds:
+                attributes
+                    .filter({ attribute in
+                        switch attribute.representedElementCategory {
+                        case .supplementaryView:
+                            return true
+                        case .cell:
+                            return true
+                        case .decorationView:
+                            return false
+                        @unknown default:
+                            return false
+                        }
+                    })
+                    .forEach { attribute in
+                    if let rect = sectionRects[attribute.indexPath.section] {
+                        sectionRects[attribute.indexPath.section] = rect.union(attribute.frame)
+                    } else {
+                        sectionRects[attribute.indexPath.section] = attribute.frame
+                    }
+                    print("\(attribute.indexPath) \(attribute.frame) - \(sectionRects[attribute.indexPath.section]!)")
+                }
+                break
             case .fixSupplementaryViewSize:
                 attributes = modeFixSupplementaryViewSize(collectionView, attributes: attributes) ?? []
             case .centerX:
@@ -148,7 +217,7 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             case .sectionBackgroundView(let elements):
                 attributes = modeSectionBackgroundView(collectionView, element: elements, attributes: attributes) ?? []
             case .allSectionBackgroundView(type: let type):
-                attributes = modeSectionBackgroundView(collectionView, element: [DecorationElementKey.all: type], attributes: attributes) ?? []
+                attributes = modeSectionBackgroundView(collectionView, element: [BindingKey.all: type], attributes: attributes) ?? []
             }
         }
         
@@ -156,7 +225,10 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     }
     
     override public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        return oldBounds.size != newBounds.size || sectionHeadersPinToVisibleBounds || sectionFootersPinToVisibleBounds
+        return oldBounds.size != newBounds.size
+        || sectionHeadersPinToVisibleBounds
+        || sectionFootersPinToVisibleBounds
+        || pluginModes.contains(where: { $0.priority == PluginMode.sectionHeadersPinToVisibleBounds([]).priority })
     }
     
 }
@@ -182,8 +254,8 @@ private extension SectionCollectionFlowLayout {
             let count = collectionView.numberOfItems(inSection: section)
             let sectionIndexPath = IndexPath(item: 0, section: section)
             
-            let header = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.header.rawValue, at: sectionIndexPath)
-            let footer = self.layoutAttributesForSupplementaryView(ofKind: SectionCollectionViewKind.footer.rawValue, at: sectionIndexPath)
+            let header = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: sectionIndexPath)
+            let footer = self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, at: sectionIndexPath)
             let cells  = (0..<count).map({ self.layoutAttributesForItem(at: IndexPath(row: $0, section: section)) })
             let elements = ([header, footer] + cells).compactMap(\.?.frame).filter({ $0.size.width > 0 && $0.size.height > 0 })
             guard let first = elements.first else {
@@ -213,14 +285,14 @@ private extension SectionCollectionFlowLayout {
             .map(\.indexPath.section)
             .filter({ sectionSet.insert($0).inserted })
         
-        if let type = element[DecorationElementKey.all] {
+        if let type = element[BindingKey.all] {
             return attributes + sections.compactMap { task(section: $0, type: type) }
         } else {
-            let indexs = element.keys.map(\.index)
+            let indexs = element.keys.compactMap(\.wrappedValue)
             return attributes + sections
                 .filter({ indexs.contains($0) })
                 .compactMap { index in
-                    guard let view = element.first(where: { $0.key.index == index })?.value else {
+                    guard let view = element.first(where: { $0.key.wrappedValue == index })?.value else {
                         return nil
                     }
                     return task(section: index, type: view)
@@ -230,11 +302,9 @@ private extension SectionCollectionFlowLayout {
     }
     
     func modeFixSupplementaryViewSize(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
-        let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout
         return attributes
             .filter{ $0.representedElementCategory == .supplementaryView }
             .map { attribute in
-                let inset = insetForSection(at: attribute.indexPath.section)
                 if attribute.representedElementKind == UICollectionView.elementKindSectionFooter {
                     attribute.size = self.footerSizeForSection(at: attribute.indexPath.section)
                 } else if attribute.representedElementKind == UICollectionView.elementKindSectionHeader {
@@ -406,4 +476,35 @@ private extension SectionCollectionFlowLayout {
     }
     
 }
+
+public extension SectionCollectionFlowLayout.BindingKey {
+    
+    static func constant(_ value: Value) -> SectionCollectionFlowLayout.BindingKey<Value> {
+        .init(get: { value })
+    }
+    
+}
+
+extension SectionCollectionFlowLayout.BindingKey where Value == Int {
+
+    static let all = SectionCollectionFlowLayout.BindingKey.constant(-1)
+    
+}
+
+extension SectionCollectionFlowLayout.BindingKey: Equatable where Value: Equatable {
+    
+    public static func == (lhs: SectionCollectionFlowLayout.BindingKey<Value>, rhs: SectionCollectionFlowLayout.BindingKey<Value>) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+    
+}
+
+extension SectionCollectionFlowLayout.BindingKey: Hashable where Value: Hashable {
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.closure())
+    }
+    
+}
+
 #endif
