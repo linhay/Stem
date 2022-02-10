@@ -303,31 +303,30 @@ private extension SectionCollectionFlowLayout {
     }
     
     func modeFixSupplementaryViewSize(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
-        return attributes
-            .filter{ $0.representedElementCategory == .supplementaryView }
-            .map { attribute in
+        attributes
+            .filter { $0.representedElementCategory == .supplementaryView }
+            .forEach { attribute in
                 if attribute.representedElementKind == UICollectionView.elementKindSectionFooter {
                     attribute.size = self.footerSizeForSection(at: attribute.indexPath.section)
                 } else if attribute.representedElementKind == UICollectionView.elementKindSectionHeader {
                     attribute.size = self.headerSizeForSection(at: attribute.indexPath.section)
                 }
-                return attribute
             }
+        return attributes
     }
     
     func modeFixSupplementaryViewInset(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
         attributes
-            .filter{ $0.representedElementCategory == .supplementaryView }
-            .map { attribute in
+            .filter { $0.representedElementCategory == .supplementaryView }
+            .forEach { attribute in
                 let inset = insetForSection(at: attribute.indexPath.section)
                 if attribute.representedElementKind == UICollectionView.elementKindSectionFooter {
                     attribute.frame.origin.y -= inset.bottom
                 } else if attribute.representedElementKind == UICollectionView.elementKindSectionHeader {
                     attribute.frame.origin.y += inset.top
                 }
-                
-                return attribute
             }
+        return attributes
     }
     
     func modeCenterX(_ collectionView: UICollectionView, attributes: [UICollectionViewLayoutAttributes]) -> [UICollectionViewLayoutAttributes]? {
