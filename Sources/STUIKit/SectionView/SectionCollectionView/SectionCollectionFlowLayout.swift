@@ -126,10 +126,13 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
             for pluginMode in pluginModes {
                 switch pluginMode {
                 case .sectionHeadersPinToVisibleBounds(let elements):
-                    context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader,
-                                                            at: elements
-                                                                .compactMap(\.wrappedValue)
-                                                                .map({ IndexPath(row: 0, section: $0) }))
+                    let indexPaths = elements
+                        .compactMap(\.wrappedValue)
+                        .filter { index in
+                            return sectionRects[index]?.intersects(newBounds) ?? true
+                        }
+                        .map({ IndexPath(row: 0, section: $0) })
+                    context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader, at: indexPaths)
                 default:
                     break
                 }
@@ -158,7 +161,6 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                 if collectionView.contentOffset.y >= rect.minY, collectionView.contentOffset.y <= rect.maxY {
                     if collectionView.contentOffset.y + attributes.frame.height >= rect.maxY {
                         attributes.frame.origin.y = rect.maxY - attributes.frame.height
-                        print("\(rect) \(attributes.frame) - \(collectionView.contentOffset.y)")
                     } else {
                         attributes.frame.origin.y = collectionView.contentOffset.y
                     }
@@ -203,7 +205,6 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
                     } else {
                         sectionRects[attribute.indexPath.section] = attribute.frame
                     }
-                    print("\(attribute.indexPath) \(attribute.frame) - \(sectionRects[attribute.indexPath.section]!)")
                 }
                 break
             case .fixSupplementaryViewSize:

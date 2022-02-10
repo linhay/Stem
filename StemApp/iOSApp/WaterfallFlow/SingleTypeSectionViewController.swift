@@ -52,7 +52,8 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
         
         sectionView.set(pluginModes: .sectionHeadersPinToVisibleBounds([
             .init(get: { sections[2].index }),
-            .init(get: { sections[4].index })
+            .init(get: { sections[4].index }),
+            .init(get: { sections[5].index }),
         ]))
         manager.update(sections)
     }

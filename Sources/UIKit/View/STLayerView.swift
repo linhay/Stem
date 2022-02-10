@@ -24,13 +24,13 @@
 import UIKit
 
 @dynamicMemberLookup
-class STLayerView<Layer: CALayer>: UIView {
+open class STLayerView<Layer: CALayer>: UIView {
 
-    public override class var layerClass: AnyClass {
+    open override class var layerClass: AnyClass {
         return Layer.self
     }
     
-    public subscript<T>(dynamicMember keyPath: WritableKeyPath<Layer, T>) -> T {
+    open subscript<T>(dynamicMember keyPath: WritableKeyPath<Layer, T>) -> T {
         get {
             let layer = layer as! Layer
             return layer[keyPath: keyPath]
