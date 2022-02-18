@@ -24,22 +24,99 @@
 import UIKit
 
 open class SectionCollectionView: UICollectionView {
-
+    
     public private(set) lazy var manager = SectionCollectionManager(sectionView: self)
-
-    public var sectionFlowLayout: SectionCollectionFlowLayout? { collectionViewLayout as? SectionCollectionFlowLayout }
-    var flowLayout: UICollectionViewFlowLayout? { collectionViewLayout as? UICollectionViewFlowLayout }
-    /// 滚动方向
-    public var scrollDirection: UICollectionView.ScrollDirection? {
-        set { flowLayout?.scrollDirection = newValue ?? .vertical }
-        get { return flowLayout?.scrollDirection }
+        
+    public convenience init() {
+        self.init(frame: .zero, layout: .flow)
     }
+    
+    public convenience init(frame: CGRect = .zero, layout: Layout) {
+        switch layout {
+        case .flow:
+            self.init(frame: frame, collectionViewLayout: SectionCollectionFlowLayout())
+        case .compositional:
+            self.init(frame: frame, collectionViewLayout: UICollectionViewLayout())
+            self.set(layout: layout)
+        case .custom(let layout):
+            self.init(frame: frame, collectionViewLayout: layout)
+        }
+    }
+    
+    public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(frame: frame, collectionViewLayout: layout)
+        initialize()
+    }
+    
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        collectionViewLayout = SectionCollectionFlowLayout()
+        initialize()
+    }
+    
+}
+
+public extension SectionCollectionView {
+    
+    var sectionFlowLayout: SectionCollectionFlowLayout? { collectionViewLayout as? SectionCollectionFlowLayout }
+    
+    /// 滚动方向
+    var scrollDirection: UICollectionView.ScrollDirection {
+        set {
+            switch collectionViewLayout {
+            case let layout as UICollectionViewFlowLayout:
+                layout.scrollDirection = newValue
+            case let layout as UICollectionViewCompositionalLayout:
+                layout.configuration.scrollDirection = newValue
+            default:
+                assertionFailure("未识别的 collectionViewLayout 类型")
+            }
+        }
+        get {
+            switch collectionViewLayout {
+            case let layout as UICollectionViewFlowLayout:
+                return layout.scrollDirection
+            case let layout as UICollectionViewCompositionalLayout:
+                return layout.configuration.scrollDirection
+            default:
+                assertionFailure("未识别的 collectionViewLayout 类型")
+                return .vertical
+            }
+        }
+    }
+
+}
+
+// MARK: - Layout
+public extension SectionCollectionView {
+    
+    enum Layout {
+        case flow
+        case compositional(UICollectionViewCompositionalLayoutConfiguration = UICollectionViewCompositionalLayoutConfiguration())
+        case custom(UICollectionViewFlowLayout)
+    }
+    
+    func set(layout: Layout) {
+        switch layout {
+        case .flow:
+            manager.set(layout: .custom(SectionCollectionFlowLayout()))
+        case .compositional(let configuration):
+            manager.set(layout: .compositional(configuration))
+        case .custom(let layout):
+            manager.set(layout: .custom(layout))
+        }
+    }
+    
+}
+
+// MARK: - PluginModes
+public extension SectionCollectionView {
     
     /// 设置 SupplementaryView 填充 单个 section 区域
     /// - Parameters:
     ///   - backgroundView: SupplementaryView
     ///   - section: section
-    public func set(backgroundView: SectionCollectionFlowLayout.DecorationView.Type, for section: SectionCollectionProtocol) {
+    func set(backgroundView: SectionCollectionFlowLayout.DecorationView.Type, for section: SectionCollectionProtocol) {
         guard let pluginModes = sectionFlowLayout?.pluginModes else {
             return
         }
@@ -56,50 +133,37 @@ open class SectionCollectionView: UICollectionView {
             .reduce(SectionCollectionFlowLayout.DecorationElement()) { result, item in
                 result.merging(item, uniquingKeysWith: { $1 })
             }
-
+        
         item[.init(get: { section.isLoaded ? section.index : nil })] = backgroundView
         sectionFlowLayout?.update(mode: .sectionBackgroundView(item))
     }
     
     /// 布局插件
     /// - Parameter pluginModes: 样式
-    public func set(pluginModes: [SectionCollectionFlowLayout.PluginMode]) {
+    func set(pluginModes: [SectionCollectionFlowLayout.PluginMode]) {
         sectionFlowLayout?.pluginModes = pluginModes
     }
     
     /// 布局插件
     /// - Parameter pluginModes: 样式
-    public func set(pluginModes: SectionCollectionFlowLayout.PluginMode...) {
+    func set(pluginModes: SectionCollectionFlowLayout.PluginMode...) {
         self.set(pluginModes: pluginModes)
     }
+    
+}
 
-    public convenience init() {
-        self.init(frame: .zero)
-    }
 
-    public convenience init(frame: CGRect) {
-        self.init(frame: frame, collectionViewLayout: SectionCollectionFlowLayout())
-    }
-
-    public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(frame: frame, collectionViewLayout: layout)
-        initialize()
-    }
-
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        collectionViewLayout = SectionCollectionFlowLayout()
-        initialize()
-    }
-
-    private func initialize() {
+private extension SectionCollectionView {
+    
+    func initialize() {
         if backgroundColor == .black {
             backgroundColor = .white
         }
-
+        
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
     }
-
+    
 }
+
 #endif

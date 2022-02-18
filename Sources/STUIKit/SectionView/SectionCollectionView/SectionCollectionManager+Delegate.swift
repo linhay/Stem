@@ -26,7 +26,7 @@ import UIKit
 // MARK: - UICollectionViewDelegate && UICollectionViewDataSource
 extension SectionCollectionManager: UICollectionViewDelegate {
     
-    private func section(from indexPath: IndexPath) -> SectionCollectionProtocol? {
+    private func section(from indexPath: IndexPath) -> SectionCollectionDriveProtocol? {
         guard sections.count > indexPath.section else {
             return nil
         }

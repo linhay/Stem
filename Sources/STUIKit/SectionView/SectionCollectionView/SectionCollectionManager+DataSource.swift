@@ -39,11 +39,17 @@ extension SectionCollectionManager: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         var view: UICollectionReusableView?
-        switch kind {
-        case UICollectionView.elementKindSectionHeader: view = sections[indexPath.section].headerView
-        case UICollectionView.elementKindSectionFooter: view = sections[indexPath.section].footerView
-        default: break
+        
+        if let section = sections[indexPath.section] as? SectionCollectionFlowLayoutProtocol {
+            switch kind {
+            case UICollectionView.elementKindSectionHeader: view = section.headerView
+            case UICollectionView.elementKindSectionFooter: view = section.footerView
+            default: break
+            }
+        } else if let section = sections[indexPath.section] as? SectionCollectionCompositionalLayoutProtocol {
+            view = section.supplementaryView(kind: kind, at: indexPath)
         }
+
         return view ?? UICollectionReusableView()
     }
     

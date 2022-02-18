@@ -23,7 +23,42 @@
 #if canImport(UIKit)
 import UIKit
 
-public typealias SectionCollectionProtocol = SectionCollectionDriveProtocol & SectionCollectionFlowLayoutProtocol
-public typealias SectionCompositionalProtocol = SectionCollectionDriveProtocol & SectionCollectionCompositionalLayoutProtocol
+public protocol SectionCollectionFlowLayoutProtocol {
+    
+    var itemCount: Int { get }
+
+    var minimumLineSpacing: CGFloat { get }
+    var minimumInteritemSpacing: CGFloat { get }
+    
+    var headerView: UICollectionReusableView? { get }
+    var footerView: UICollectionReusableView? { get }
+    
+    var headerSize: CGSize { get }
+    var footerSize: CGSize { get }
+    
+    var sectionInset: UIEdgeInsets { get }
+    
+    var hiddenHeaderWhenNoItem: Bool { get }
+    var hiddenFooterWhenNoItem: Bool { get }
+    
+    func itemSize(at row: Int) -> CGSize
+}
+
+extension SectionCollectionFlowLayoutProtocol {
+    
+    public var headerView: UICollectionReusableView? { nil }
+    public var footerView: UICollectionReusableView? { nil }
+    
+    var headerSize: CGSize { .zero }
+    var footerSize: CGSize { .zero }
+    
+    var minimumLineSpacing: CGFloat { 0 }
+    var minimumInteritemSpacing: CGFloat { 0 }
+    
+    var sectionInset: UIEdgeInsets { .zero }
+    
+    var hiddenHeaderWhenNoItem: Bool { true }
+    var hiddenFooterWhenNoItem: Bool { true }
+}
 
 #endif

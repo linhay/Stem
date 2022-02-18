@@ -20,35 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-public final class SelectableModel {
+import Combine
 
-    fileprivate let selectedEvent  = Delegate<Bool, Void>()
-    fileprivate let canSelectEvent = Delegate<Bool, Void>()
-    fileprivate let changedEvent   = Delegate<(Bool, Bool), Void>()
+public class SelectableModel {
 
-    var isSelected: Bool = false {
-        didSet {
-            guard isSelected != oldValue else {
-                return
-            }
-            selectedEvent.call(isSelected)
-            changedEvent.call((isSelected, canSelect))
-        }
+    let selectedSubject: Publishers.RemoveDuplicates<CurrentValueSubject<Bool, Never>>
+    let canSelectSubject: Publishers.RemoveDuplicates<CurrentValueSubject<Bool, Never>>
+    let changedSubject = PassthroughSubject<(isSelected: Bool, canSelect: Bool), Never>()
+    
+    public var isSelected: Bool {
+        set { selectedSubject.upstream.send(newValue) }
+        get { selectedSubject.upstream.value }
+    }
+    
+    public var canSelect: Bool {
+        set { canSelectSubject.upstream.send(newValue) }
+        get { canSelectSubject.upstream.value }
     }
 
-    var canSelect: Bool = true {
-        didSet {
-            guard canSelect != oldValue else {
-                return
-            }
-            canSelectEvent.call(canSelect)
-            changedEvent.call((isSelected, canSelect))
-        }
-    }
-
+    private var cancellables = Set<AnyCancellable>()
+    
     public init(isSelected: Bool = false, canSelect: Bool = true) {
-        self.isSelected = isSelected
-        self.canSelect = canSelect
+        self.selectedSubject  = CurrentValueSubject<Bool, Never>(isSelected).removeDuplicates()
+        self.canSelectSubject = CurrentValueSubject<Bool, Never>(canSelect).removeDuplicates()
+        
+        self.selectedSubject.sink { value in
+            self.changedSubject.send((isSelected, canSelect))
+        }.store(in: &cancellables)
+        
+        self.canSelectSubject.sink { value in
+            self.changedSubject.send((isSelected, canSelect))
+        }.store(in: &cancellables)
     }
 
 }
@@ -63,20 +65,15 @@ public extension SelectableProtocol {
 
     var isSelected: Bool { selectableModel.isSelected }
     var canSelect: Bool { selectableModel.canSelect }
-
-    var selectedObservable: Delegate<Bool, Void> { selectableModel.selectedEvent }
-    var canSelectObservable: Delegate<Bool, Void> { selectableModel.canSelectEvent }
-    var changedObservable: Delegate<(Bool, Bool), Void> { selectableModel.changedEvent }
-
-    func atOnce() {
-        selectedObservable.call(isSelected)
-        canSelectObservable.call(canSelect)
-        changedObservable.call((isSelected, canSelect))
-    }
+    
+    var selectedObservable: AnyPublisher<Bool, Never> { selectableModel.selectedSubject.eraseToAnyPublisher() }
+    var canSelectObservable: AnyPublisher<Bool, Never> { selectableModel.canSelectSubject.eraseToAnyPublisher() }
+    var changedObservable: AnyPublisher<(isSelected: Bool, canSelect: Bool), Never> { selectableModel.changedSubject.eraseToAnyPublisher() }
 
 }
 
 public protocol SelectableCollectionProtocol {
+    
     associatedtype Element: SelectableProtocol
 
     /// 可选元素序列

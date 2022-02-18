@@ -20,10 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
-import UIKit
+import Foundation
 
-public typealias SectionCollectionProtocol = SectionCollectionDriveProtocol & SectionCollectionFlowLayoutProtocol
-public typealias SectionCompositionalProtocol = SectionCollectionDriveProtocol & SectionCollectionCompositionalLayoutProtocol
-
-#endif
+public protocol SectionWrapperProtocol {
+    
+    associatedtype Section: SectionProtocol
+    var wrappedSection: Section { get }
+    
+}

@@ -23,7 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
-public extension SectionCollectionProtocol {
+public extension SectionCollectionDriveProtocol {
 
     func dequeue<T: UICollectionViewCell & STViewProtocol>(at row: Int) -> T {
         return sectionView.st.dequeue(at: indexPath(from: row))

@@ -120,22 +120,21 @@ open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
     open override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContext(forBoundsChange: newBounds)
-        if sectionHeadersPinToVisibleBounds {
-            assertionFailure("sectionHeadersPinToVisibleBounds == true 与 pluginMode.sectionHeadersPinToVisibleBounds 冲突")
-        } else {
-            for pluginMode in pluginModes {
-                switch pluginMode {
-                case .sectionHeadersPinToVisibleBounds(let elements):
-                    let indexPaths = elements
-                        .compactMap(\.wrappedValue)
-                        .filter { index in
-                            return sectionRects[index]?.intersects(newBounds) ?? true
-                        }
-                        .map({ IndexPath(row: 0, section: $0) })
-                    context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader, at: indexPaths)
-                default:
-                    break
+        for pluginMode in pluginModes {
+            switch pluginMode {
+            case .sectionHeadersPinToVisibleBounds(let elements):
+                if sectionHeadersPinToVisibleBounds {
+                    assertionFailure("sectionHeadersPinToVisibleBounds == true 与 pluginMode.sectionHeadersPinToVisibleBounds 冲突")
                 }
+                let indexPaths = elements
+                    .compactMap(\.wrappedValue)
+                    .filter { index in
+                        return sectionRects[index]?.intersects(newBounds) ?? true
+                    }
+                    .map({ IndexPath(row: 0, section: $0) })
+                context.invalidateSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader, at: indexPaths)
+            default:
+                break
             }
         }
         return context

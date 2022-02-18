@@ -22,36 +22,38 @@
 
 #if canImport(UIKit)
 import UIKit
+import Combine
 
-open class SelectableSection<Cell: UICollectionViewCell & STViewProtocol & ConfigurableView>: SingleTypeSection<Cell>, SelectableCollectionProtocol where Cell.Model: SelectableProtocol {
-
-    open var selectables: [Cell.Model] { models }
+open class SectionSelectableWrapper<Section: SingleTypeDriveSectionProtocol>: MutableReference<Section>, SelectableCollectionProtocol, SectionWrapperProtocol where Section.Cell.Model: SelectableProtocol {
+    
+    open var wrappedSection: Section { value }
+    
+    open var selectables: [Section.Cell.Model] { value.models }
 
     /// 是否保证选中在当前序列中是否唯一 | default: true
     private let isUnique: Bool
     /// 是否需要支持反选操作 | default: false
     private let needInvert: Bool
+    
+    private var cancellables = Set<AnyCancellable>()
 
-    public init(_ models: [Cell.Model] = [], isUnique: Bool, needInvert: Bool) {
+    public init(section: Section, isUnique: Bool = true, needInvert: Bool = false) {
         self.isUnique = isUnique
         self.needInvert = needInvert
-        super.init(models)
+        super.init(section)
+        
+        self.publishers.cell.selected.map(\.row).sink { [weak self] row in
+            self?.select(at: row, isUnique: isUnique, needInvert: needInvert)
+        }.store(in: &cancellables)
     }
     
-    public override init(_ models: [Cell.Model] = []) {
-        self.isUnique = true
-        self.needInvert = false
-        super.init(models)
+}
+
+public extension SingleTypeDriveSectionProtocol where Cell.Model: SelectableProtocol {
+    
+    func selectableWrapper(isUnique: Bool = true, needInvert: Bool = false) -> SectionSelectableWrapper<Self> {
+        .init(section: self, isUnique: isUnique, needInvert: needInvert)
     }
     
-    open override func didSelectItem(at row: Int) {
-        select(at: row, isUnique: isUnique, needInvert: needInvert)
-    }
-
-    open func didSelectElement(at index: Int, element: Cell.Model) {
-        selectedEvent.call(element)
-        selectedRowEvent.call(index)
-    }
-
 }
 #endif

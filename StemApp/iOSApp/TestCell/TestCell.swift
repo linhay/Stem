@@ -9,10 +9,31 @@
 import UIKit
 import Stem
 import SnapKit
+import Combine
 
 class TestCell: UICollectionViewCell, STViewProtocol, ConfigurableView {
     
-    struct Model: Equatable, Hashable {
+    class Model: Equatable, Hashable, SelectableProtocol {
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(title)
+            hasher.combine(width)
+            hasher.combine(height)
+            hasher.combine(ObjectIdentifier(selectableModel))
+        }
+        
+        static func == (lhs: TestCell.Model, rhs: TestCell.Model) -> Bool {
+            lhs === rhs
+        }
+        
+        init(selectableModel: SelectableModel = .init(isSelected: false, canSelect: true), title: String, width: CGFloat, height: CGFloat) {
+            self.selectableModel = selectableModel
+            self.title = title
+            self.width = width
+            self.height = height
+        }
+        
+        var selectableModel: SelectableModel
         let title: String
         let width: CGFloat
         let height: CGFloat
@@ -31,9 +52,13 @@ class TestCell: UICollectionViewCell, STViewProtocol, ConfigurableView {
         return item
     }()
     
+    private var cancellables = Set<AnyCancellable>()
+    
     func config(_ model: Model) {
-        label.text = model.title
-        contentView.backgroundColor = StemColor.random.convert()
+        self.contentView.backgroundColor = StemColor.random.convert()
+        model.selectedObservable.sink(on: self) { (self, flag) in
+            self.label.text = flag ? "selected" : model.title
+        }.store(in: &cancellables)
     }
     
     

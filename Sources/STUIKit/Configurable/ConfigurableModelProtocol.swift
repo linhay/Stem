@@ -20,10 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
-import UIKit
+import Foundation
 
-public typealias SectionCollectionProtocol = SectionCollectionDriveProtocol & SectionCollectionFlowLayoutProtocol
-public typealias SectionCompositionalProtocol = SectionCollectionDriveProtocol & SectionCollectionCompositionalLayoutProtocol
+public protocol ConfigurableModelProtocol {
+    associatedtype Model
+    func config(_ model: Model)
+    /// 数据是否可用
+    static func validate(_ model: Model) -> Bool
+}
 
-#endif
+public extension ConfigurableModelProtocol {
+    
+    static func validate(_ model: Model) -> Bool { true }
+    
+}
+
+public extension ConfigurableModelProtocol where Model == Void {
+    
+    func config(_ model: Model) { }
+    
+}

@@ -27,8 +27,10 @@ public class SectionCollectionManager: SectionScrollManager {
 
     private let sectionManager: SectionManager<UICollectionView>
     private var isPicking = false
+    private var wrappers = [Any]()
 
-    public var sections: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionProtocol]>.Elements, SectionCollectionProtocol?>>, SectionCollectionProtocol> { sectionManager.sections.lazy.compactMap({ $0 as? SectionCollectionProtocol }) }
+    public var sections: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionProtocol]>.Elements, SectionCollectionDriveProtocol?>>, SectionCollectionDriveProtocol> { sectionManager.sections.lazy.compactMap({ $0 as? SectionCollectionDriveProtocol }) }
+    
     public var sectionView: UICollectionView { sectionManager.sectionView }
 
     public init(sectionView: UICollectionView) {
@@ -41,6 +43,34 @@ public class SectionCollectionManager: SectionScrollManager {
         sectionView.dataSource = self
     }
 
+}
+
+public extension SectionCollectionManager {
+
+    enum Layout {
+        case flow
+        case compositional(UICollectionViewCompositionalLayoutConfiguration = UICollectionViewCompositionalLayoutConfiguration())
+        case custom(UICollectionViewFlowLayout)
+    }
+    
+    func collectionViewLayout(_ layout: Layout) -> UICollectionViewLayout {
+        switch layout {
+        case .flow:
+            return UICollectionViewFlowLayout()
+        case .compositional(let configuration):
+            return UICollectionViewCompositionalLayout(sectionProvider: { [weak self] index, environment in
+                guard let self = self else { return nil }
+                return (self.sections[index] as? SectionCollectionCompositionalLayoutProtocol)?.compositionalLayout(environment: environment)
+            }, configuration: configuration)
+        case .custom(let layout):
+            return layout
+        }
+    }
+    
+    func set(layout: Layout) {
+        sectionView.setCollectionViewLayout(collectionViewLayout(layout), animated: true)
+    }
+    
 }
 
 public extension SectionCollectionManager {
@@ -76,17 +106,27 @@ public extension SectionCollectionManager {
         operational(sectionManager.reload())
     }
 
-    func update(_ sections: SectionCollectionProtocol...) {
+    func update<Section: SectionWrapperProtocol>(_ sections: [Section]) where Section.Section: SectionCollectionDriveProtocol {
+        update(sections.map(\.wrappedSection))
+        self.wrappers = sections
+    }
+    
+    func update<Section: SectionWrapperProtocol>(_ sections: Section...) where Section.Section: SectionCollectionDriveProtocol {
+        update(sections)
+    }
+    
+    func update(_ sections: SectionCollectionDriveProtocol...) {
         update(sections)
     }
 
-    func update(_ sections: [SectionCollectionProtocol]) {
+    func update(_ sections: [SectionCollectionDriveProtocol]) {
         let update = sectionManager.update(sections)
         sections.forEach({ $0.config(sectionView: sectionView) })
         operational(update)
+        self.wrappers = []
     }
 
-    func insert(section: SectionCollectionProtocol, at index: Int) {
+    func insert(section: SectionCollectionDriveProtocol, at index: Int) {
         let insert = sectionManager.insert(section: section, at: index)
         section.config(sectionView: sectionView)
         operational(insert)

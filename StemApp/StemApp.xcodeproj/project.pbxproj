@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		CD358EA8260CC3ED0018CE1F /* iOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */; };
+		CD60CDD627BE625200AED510 /* SectionSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */; };
 		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
 		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
+		CD7A88F327BA3D7100243F38 /* CompositionalSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */; };
+		CD7A88F627BA576800243F38 /* AquamanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A88F527BA576800243F38 /* AquamanViewController.swift */; };
 		CD88026F2704187F0021AD5B /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD88026D2704158C0021AD5B /* iconfont.ttf */; };
 		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
 		CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70522609FF5D006150C2 /* DecorationView.swift */; };
 		CDC17B98272A7896001166F3 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDC17B97272A7896001166F3 /* Stem */; };
+		CDD0D4B327B56BBB00A6031C /* CompositionalLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
 		CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */; };
 		CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */; };
@@ -58,13 +62,17 @@
 		CD358EA5260CC3ED0018CE1F /* iOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppTests.swift; sourceTree = "<group>"; };
 		CD358EA9260CC3ED0018CE1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionSwiftUIView.swift; sourceTree = "<group>"; };
 		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
+		CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalSection.swift; sourceTree = "<group>"; };
+		CD7A88F527BA576800243F38 /* AquamanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AquamanViewController.swift; sourceTree = "<group>"; };
 		CD88026D2704158C0021AD5B /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
 		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
 		CD8D70522609FF5D006150C2 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		CDB3B524273918D900685FF6 /* iOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOSApp.entitlements; sourceTree = "<group>"; };
 		CDC17B96272A7865001166F3 /* Stem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Stem; path = ..; sourceTree = "<group>"; };
+		CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayoutViewController.swift; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +144,14 @@
 				CD358EA9260CC3ED0018CE1F /* Info.plist */,
 			);
 			path = iOSAppTests;
+			sourceTree = "<group>";
+		};
+		CD7A88F427BA574800243F38 /* Aquaman */ = {
+			isa = PBXGroup;
+			children = (
+				CD7A88F527BA576800243F38 /* AquamanViewController.swift */,
+			);
+			path = Aquaman;
 			sourceTree = "<group>";
 		};
 		CDC17B95272A7865001166F3 /* Packages */ = {
@@ -237,12 +253,16 @@
 		CDD3BFB025ECF4DC0033ECD6 /* WaterfallFlow */ = {
 			isa = PBXGroup;
 			children = (
+				CD7A88F427BA574800243F38 /* Aquaman */,
 				CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */,
 				CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */,
 				CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */,
 				CD63148B260233F700670B84 /* CoverFlowViewController.swift */,
 				CD8D70522609FF5D006150C2 /* DecorationView.swift */,
 				CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */,
+				CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */,
+				CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */,
+				CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */,
 			);
 			path = WaterfallFlow;
 			sourceTree = "<group>";
@@ -484,10 +504,14 @@
 				CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */,
 				CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */,
 				CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */,
+				CDD0D4B327B56BBB00A6031C /* CompositionalLayoutViewController.swift in Sources */,
+				CD7A88F627BA576800243F38 /* AquamanViewController.swift in Sources */,
 				CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */,
 				CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */,
 				CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */,
+				CD7A88F327BA3D7100243F38 /* CompositionalSection.swift in Sources */,
 				CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */,
+				CD60CDD627BE625200AED510 /* SectionSwiftUIView.swift in Sources */,
 				CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -639,7 +663,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -694,7 +718,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -715,7 +739,7 @@
 				DEVELOPMENT_TEAM = Q5CT3J7RAS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOSApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -739,7 +763,7 @@
 				DEVELOPMENT_TEAM = Q5CT3J7RAS;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOSApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

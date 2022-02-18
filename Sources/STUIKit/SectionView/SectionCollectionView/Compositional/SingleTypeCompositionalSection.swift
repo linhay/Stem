@@ -20,14 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
 import UIKit
 
-open class MultiSelectableSection<Cell: UICollectionViewCell & STViewProtocol & ConfigurableView>: SelectableSection<Cell> where Cell.Model: SelectableProtocol {
+open class SingleTypeCompositionalSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionCompositionalLayoutProtocol {
     
-    public override init(_ models: [Cell.Model] = []) {
-        super.init(models, isUnique: false, needInvert: true)
+    public let supplementaryProvider = Delegate<(section: SingleTypeCompositionalSection<Cell>, kind: String, at: IndexPath), UICollectionReusableView>()
+    
+    public func supplementaryView(kind: String, at indexPath: IndexPath) -> UICollectionReusableView? {
+        supplementaryProvider.call((section: self, kind: kind, at: indexPath))
+    }
+    
+    public var layoutProvider: (_ environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection?
+    
+    public init(_ models: [Cell.Model] = [],
+                layoutProvider: @escaping (_ environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? = { environment in nil }) {
+        self.layoutProvider = layoutProvider
+        super.init(models)
+    }
+    
+    open func compositionalLayout(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? {
+        return layoutProvider(environment)
     }
     
 }
-#endif

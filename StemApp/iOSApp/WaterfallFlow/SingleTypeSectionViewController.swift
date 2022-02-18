@@ -8,7 +8,11 @@
 import UIKit
 import Stem
 
-class SingleTypeSectionViewController: SectionCollectionViewController {
+class SingleTypeSectionViewController: SectionCollectionViewController, AquamanChildController {
+    
+    func aquamanScrollView() -> UIScrollView {
+        sectionView
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +27,7 @@ class SingleTypeSectionViewController: SectionCollectionViewController {
             section.apply(safeSize: SectionSafeSize({ section in
                 return .init(width: 600, height: 400)
             }))
-            var data = Array(0...3)
+            var data = Array(0...30)
 
             section.headerSizeProvider.delegate(on: self) { (self, sectionView) in
                 return .init(width: sectionView.frame.width, height: 44)

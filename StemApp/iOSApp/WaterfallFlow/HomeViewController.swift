@@ -26,6 +26,12 @@ class HomeViewController: SectionCollectionViewController {
         .init(title: "SingleTypeSection", action: {
             self.st.push(SingleTypeSectionViewController())
         }),
+        .init(title: "CompositionalLayout", action: {
+            self.st.push(CompositionalLayoutViewController())
+        }),
+        .init(title: "AquamanViewController", action: {
+            self.st.push(AquamanViewController())
+        })
     ])
     
     override func viewDidLoad() {

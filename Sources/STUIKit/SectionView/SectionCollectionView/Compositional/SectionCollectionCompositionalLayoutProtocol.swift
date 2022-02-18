@@ -20,10 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit)
 import UIKit
 
-public typealias SectionCollectionProtocol = SectionCollectionDriveProtocol & SectionCollectionFlowLayoutProtocol
-public typealias SectionCompositionalProtocol = SectionCollectionDriveProtocol & SectionCollectionCompositionalLayoutProtocol
+public protocol SectionCollectionCompositionalLayoutProtocol {
+    
+    func supplementaryView(kind: String, at indexPath: IndexPath) -> UICollectionReusableView?
+    func compositionalLayout(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection?
+    
+}
 
-#endif
+public extension SectionCollectionCompositionalLayoutProtocol {
+    
+    func supplementaryView(kind: String, at indexPath: IndexPath) -> UICollectionReusableView? { nil }
+
+}

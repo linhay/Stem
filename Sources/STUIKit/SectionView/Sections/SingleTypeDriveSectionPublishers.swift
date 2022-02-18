@@ -21,18 +21,27 @@
 // SOFTWARE.
 
 import Foundation
+import Combine
 
-public extension Bundle {
+public struct SingleTypeDriveSectionPublishers<Model> {
     
-    var isSandbox: Bool {
-        #if targetEnvironment(simulator)
-        return true
-        #else
-        guard let receiptName = self.appStoreReceiptURL?.lastPathComponent else {
-            return false
-        }
-        return receiptName == "sandboxReceipt"
-        #endif
+    public struct Supplementary {
+        public var willDisplay: AnyPublisher<SingleTypeDriveSectionSupplementaryResult, Never> { _willDisplay.eraseToAnyPublisher() }
+        public var didEndDisplaying: AnyPublisher<SingleTypeDriveSectionSupplementaryResult, Never> { _didEndDisplaying.eraseToAnyPublisher() }
+        
+        var _willDisplay = PassthroughSubject<SingleTypeDriveSectionSupplementaryResult, Never>()
+        var _didEndDisplaying = PassthroughSubject<SingleTypeDriveSectionSupplementaryResult, Never>()
     }
+    
+    public struct Cell {
+        public var selected: AnyPublisher<SingleTypeDriveSectionSelectedResult<Model>, Never> { _selected.eraseToAnyPublisher() }
+        public var willDisplay: AnyPublisher<Model, Never> { _willDisplay.eraseToAnyPublisher() }
+        
+        var _selected = PassthroughSubject<SingleTypeDriveSectionSelectedResult<Model>, Never>()
+        var _willDisplay = PassthroughSubject<Model, Never>()
+    }
+
+    public let cell = Cell()
+    public let supplementary = Supplementary()
     
 }

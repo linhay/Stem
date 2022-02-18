@@ -33,15 +33,13 @@ public class SectionSafeSize {
     
     public init(_ size: @escaping () -> CGSize) {
         self.size = { _ in
-           return size()
+            return size()
         }
     }
     
 }
 
-open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SectionCollectionProtocol {
-    
-    open internal(set) var models: [Cell.Model]
+open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionFlowLayoutProtocol {
     
     public private(set) lazy var defaultSafeSize = SectionSafeSize({ [weak self] section in
         guard let self = self else { return .zero }
@@ -55,33 +53,23 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
         case .horizontal:
             return .init(width: sectionView.bounds.width,
                          height: sectionView.bounds.height
-                            - sectionView.contentInset.top
-                            - sectionView.contentInset.bottom
-                            - sectionInset.top
-                            - sectionInset.bottom)
+                         - sectionView.contentInset.top
+                         - sectionView.contentInset.bottom
+                         - sectionInset.top
+                         - sectionInset.bottom)
         case .vertical:
             return .init(width: sectionView.bounds.width
-                            - sectionView.contentInset.left
-                            - sectionView.contentInset.right
-                            - sectionInset.left
-                            - sectionInset.right,
+                         - sectionView.contentInset.left
+                         - sectionView.contentInset.right
+                         - sectionInset.left
+                         - sectionInset.right,
                          height: sectionView.bounds.height)
         @unknown default:
             return sectionView.bounds.size
         }
     })
+    
     public lazy var safeSize = defaultSafeSize
-    
-    public let selectedEvent = Delegate<Cell.Model, Void>()
-    public let selectedRowEvent = Delegate<Int, Void>()
-    public let willDisplayEvent = Delegate<Int, Void>()
-    
-    public typealias SupplementaryViewEventItem = (view: UICollectionReusableView, elementKind: String, row: Int)
-    public let willDisplaySupplementaryViewEvent = Delegate<SupplementaryViewEventItem, Void>()
-    public let didEndDisplayingSupplementaryViewEvent = Delegate<SupplementaryViewEventItem, Void>()
-    
-    /// cell 样式配置
-    public let configCellStyleEvent = Delegate<(row: Int, cell: Cell), Void>()
     
     open var minimumLineSpacing: CGFloat = 0
     open var minimumInteritemSpacing: CGFloat = 0
@@ -90,65 +78,20 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STV
     open var hiddenHeaderWhenNoItem: Bool = true
     open var hiddenFooterWhenNoItem: Bool = true
     
-    public let headerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
+    public let headerViewProvider = Delegate<SingleTypeSection<Cell>, UICollectionReusableView>()
+    public let footerViewProvider = Delegate<SingleTypeSection<Cell>, UICollectionReusableView>()
     public let headerSizeProvider = Delegate<UICollectionView, CGSize>()
-    
-    public let footerViewProvider = Delegate<SingleTypeSection, UICollectionReusableView>()
     public let footerSizeProvider = Delegate<UICollectionView, CGSize>()
-    
-    open var core: SectionCore?
-    open var itemCount: Int { models.count }
-    
-    public init(_ models: [Cell.Model] = []) {
-        self.models = models
-    }
-    
-    open func config(models: [Cell.Model]) {
-        self.models = validate(models)
-        reload()
-    }
-    
-    /// 过滤无效数据
-    open func validate(_ models: [Cell.Model]) -> [Cell.Model] {
-        models.filter(Cell.validate)
-    }
-    
-    open func didSelectItem(at row: Int) {
-        selectedEvent.call(models[row])
-        selectedRowEvent.call(row)
-    }
-    
-    open func config(sectionView: UICollectionView) {
-        sectionView.st.register(Cell.self)
-    }
+    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
+    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
     
     open func itemSize(at row: Int) -> CGSize {
         return Cell.preferredSize(limit: safeSize.size(self), model: models[row])
     }
     
-    open func item(at row: Int) -> UICollectionViewCell {
-        let cell = dequeue(at: row) as Cell
-        cell.config(models[row])
-        configCellStyleEvent.call((row: row, cell: cell))
-        return cell
-    }
-    
-    open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
     open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
-    open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
     open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
     
-    open func willDisplayItem(at row: Int) {
-        willDisplayEvent.call(row)
-    }
-    
-    open func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
-        willDisplaySupplementaryViewEvent.call((view: view, elementKind: elementKind, row: row))
-    }
-    
-    open func didEndDisplayingSupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
-        didEndDisplayingSupplementaryViewEvent.call((view: view, elementKind: elementKind, row: row))
-    }
 }
 
 public extension SingleTypeSection {
@@ -157,30 +100,6 @@ public extension SingleTypeSection {
     func apply(safeSize: SectionSafeSize) -> Self {
         self.safeSize = safeSize
         return self
-    }
-    
-}
-
-/// 增删
-public extension SingleTypeSection {
-    
-    func swapAt(_ i: Int, _ j: Int) {
-        models.swapAt(i, j)
-        sectionView.reloadItems(at: [indexPath(from: i), indexPath(from: j)])
-    }
-    
-    func insert(_ model: Cell.Model, at row: Int) {
-        models.insert(model, at: row)
-        sectionView.insertItems(at: [indexPath(from: row)])
-    }
-    
-    func delete(at row: Int) {
-        models.remove(at: row)
-        if itemCount <= 0 {
-            reload()
-        } else {
-            sectionView.deleteItems(at: [indexPath(from: row)])
-        }
     }
     
 }
