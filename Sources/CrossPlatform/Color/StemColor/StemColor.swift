@@ -25,6 +25,13 @@ import Foundation
 // http://www.easyrgb.com/en/math.php
 // https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4
 public class StemColor {
+    
+    struct ThrowError: Error {
+        let message: String
+        init(_ message: String) {
+            self.message = message
+        }
+    }
 
     // value: 0 - 1.0
     public private(set) var alpha: Double = 1
@@ -108,13 +115,33 @@ public extension StemColor {
     ///
     /// - Parameter str: "#666666" / "0X666666" / "0x666666"
     convenience init(hex value: String) {
+        do {
+            try self.init(hexThrowing: value)
+        } catch {
+            self.init(rgb: .init(red: 0, green: 0, blue: 0))
+        }
+    }
+    
+    /// 十六进制色: 0x666666
+    ///
+    /// - Parameter RGBValue: 十六进制颜色
+    convenience init(hex value: Int) {
+        do {
+            try self.init(hexThrowing: value)
+        } catch {
+            self.init(rgb: .init(red: 0, green: 0, blue: 0))
+        }
+    }
+    
+    /// 十六进制色: 0x666666
+    ///
+    /// - Parameter str: "#666666" / "0X666666" / "0x666666"
+    convenience init(hexThrowing value: String) throws {
         var cString = value.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
         if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
         guard cString.count == 6 || cString.count == 8 else {
-            assertionFailure("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
-            self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
-            return
+            throw ThrowError("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
         }
         var value: UInt64 = 0x0
         Scanner(string: String(cString)).scanHexInt64(&value)
@@ -124,8 +151,7 @@ public extension StemColor {
     /// 十六进制色: 0x666666
     ///
     /// - Parameter RGBValue: 十六进制颜色
-    convenience init(hex value: Int) {
-
+    convenience init(hexThrowing value: Int) throws {
         var hex = value
         var count = 0
 
@@ -149,8 +175,7 @@ public extension StemColor {
             let alpha   = Double( Int64(value) & 0x000000FF       ) / divisor
             self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
         } else {
-            assertionFailure("StemColor: 位数错误, 只支持 6 或 8 位, count: \(count)")
-            self.init(rgb: RGBSpace(red: 1, green: 1, blue: 1), alpha: 1)
+            throw ThrowError("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
         }
     }
 
