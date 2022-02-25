@@ -29,7 +29,7 @@ import Combine
 open class STWebsiteCookieSyncHandler {
     
     public static let shared = STWebsiteCookieSyncHandler()
-    private let publisher = PassthroughSubject<Void, Never>()
+    private let publisher = CurrentValueSubject<Set<HTTPCookie>, Never>([])
     private var cancellable: AnyCancellable?
     
 }
@@ -42,10 +42,11 @@ public extension STWebsiteCookieSyncHandler {
         NotificationCenter.default.addObserver(self, selector: #selector(task(notification:)), name: .NSHTTPCookieManagerCookiesChanged, object: nil)
         cancellable = publisher
             .debounce(for: .seconds(1), scheduler: RunLoop.main)
+            .removeDuplicates()
             .sink { [weak self] _ in
                 self?.sync()
             }
-        publisher.send()
+        publisher.send(Set(HTTPCookieStorage.shared.cookies ?? []))
     }
     
     func stop() {
@@ -67,7 +68,7 @@ private extension STWebsiteCookieSyncHandler {
     
     @objc
     func task(notification: Notification) {
-        publisher.send()
+        publisher.send(Set(HTTPCookieStorage.shared.cookies ?? []))
     }
     
 }
