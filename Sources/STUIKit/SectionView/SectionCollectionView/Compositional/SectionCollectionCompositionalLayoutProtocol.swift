@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 public protocol SectionCollectionCompositionalLayoutProtocol {
@@ -34,3 +35,4 @@ public extension SectionCollectionCompositionalLayoutProtocol {
     func supplementaryView(kind: String, at indexPath: IndexPath) -> UICollectionReusableView? { nil }
 
 }
+#endif

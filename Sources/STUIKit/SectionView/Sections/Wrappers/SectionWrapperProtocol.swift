@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import Foundation
 
 public protocol SectionWrapperProtocol {
@@ -28,3 +29,4 @@ public protocol SectionWrapperProtocol {
     var wrappedSection: Section { get }
     
 }
+#endif

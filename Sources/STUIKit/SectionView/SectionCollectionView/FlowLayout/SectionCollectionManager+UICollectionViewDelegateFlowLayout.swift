@@ -40,8 +40,13 @@ extension SectionCollectionManager: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let section = self.section(from: indexPath.section) else {
             return .zero
+        }        
+        let size = section.itemSize(at: indexPath.item)
+        if indexPath.section == 0, indexPath.row == 0, size == .zero {
+            return .init(width: 0.01, height: 0.01)
+        } else {
+            return size
         }
-        return section.itemSize(at: indexPath.item)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

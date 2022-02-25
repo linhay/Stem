@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import UIKit
 
 open class SingleTypeCompositionalSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionCompositionalLayoutProtocol {
@@ -43,3 +44,4 @@ open class SingleTypeCompositionalSection<Cell: UICollectionViewCell & Configura
     }
     
 }
+#endif

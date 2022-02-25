@@ -20,9 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit)
 import Foundation
 import UIKit
+#if canImport(Combine)
 import Combine
+#endif
 
 public struct SingleTypeDriveSectionSelectedResult<Model> {
     public let row: Int
@@ -42,7 +45,9 @@ public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
     associatedtype Cell: UICollectionViewCell & STViewProtocol & ConfigurableModelProtocol
     var models: [Cell.Model] { get }
     
+    #if canImport(Combine)
     var publishers: SingleTypeDriveSectionPublishers<Cell.Model> { get }
+    #endif
 
     func config(models: [Cell.Model])
     func validate(_ models: [Cell.Model]) -> [Cell.Model]
@@ -140,3 +145,4 @@ public extension SingleTypeDriveSection {
     }
     
 }
+#endif

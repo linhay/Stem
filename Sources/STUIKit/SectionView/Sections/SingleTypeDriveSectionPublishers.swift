@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if canImport(UIKit) && canImport(Combine)
 import Foundation
 import Combine
 
@@ -45,3 +46,4 @@ public struct SingleTypeDriveSectionPublishers<Model> {
     public let supplementary = Supplementary()
     
 }
+#endif
