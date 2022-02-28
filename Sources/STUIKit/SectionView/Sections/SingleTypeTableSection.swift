@@ -60,7 +60,7 @@ open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol w
     
     /// 过滤无效数据
     open func validate(_ models: [Cell.Model]) -> [Cell.Model] {
-        models.filter(Cell.validate)
+        models.filter({ Cell.validate($0) })
     }
     
     open func didSelectItem(at row: Int) {

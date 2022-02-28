@@ -24,6 +24,7 @@
 
 import UIKit
 
+@MainActor
 public class SectionCore {
 
     var index: Int = 0

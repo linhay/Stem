@@ -72,6 +72,7 @@ public extension SelectableProtocol {
 
 }
 
+@MainActor
 public protocol SelectableCollectionProtocol {
     
     associatedtype Element: SelectableProtocol

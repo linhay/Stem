@@ -23,6 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
+@MainActor
 public protocol SectionTableProtocol: SectionProtocol {
     var headerHeight: CGFloat { get }
     var footerHeight: CGFloat { get }
@@ -36,6 +37,7 @@ public protocol SectionTableProtocol: SectionProtocol {
     func trailingSwipeActions(at row: Int) -> [UIContextualAction]
 }
 
+@MainActor
 public extension SectionTableProtocol {
     var headerHeight: CGFloat { 0 }
     var footerHeight: CGFloat { 0 }
@@ -53,6 +55,7 @@ public extension SectionTableProtocol {
     func trailingSwipeActions(at row: Int) -> [UIContextualAction] { return [] }
 }
 
+@MainActor
 public extension SectionTableProtocol {
 
     func dequeue<T: UITableViewCell>(at row: Int, identifier: String = String(describing: T.self)) -> T {
@@ -65,6 +68,7 @@ public extension SectionTableProtocol {
 
 }
 
+@MainActor
 public extension SectionTableProtocol {
 
     func deselect(at row: Int, animated: Bool) {
@@ -88,6 +92,7 @@ public extension SectionTableProtocol {
 
 }
 
+@MainActor
 public extension SectionTableProtocol {
 
     /// 刷新整组元素
@@ -114,6 +119,7 @@ public extension SectionTableProtocol {
 
 }
 
+@MainActor
 public extension SectionTableProtocol {
 
     func insert(at row: Int,
@@ -138,6 +144,7 @@ public extension SectionTableProtocol {
 
 }
 
+@MainActor
 public extension SectionTableProtocol {
 
     func delete(at row: Int, with animation: UITableView.RowAnimation = .none, willUpdate: (() -> Void)) {

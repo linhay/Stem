@@ -22,6 +22,7 @@
 
 import Foundation
 
+@MainActor
 public protocol ConfigurableModelProtocol {
     associatedtype Model
     func config(_ model: Model)
@@ -29,12 +30,14 @@ public protocol ConfigurableModelProtocol {
     static func validate(_ model: Model) -> Bool
 }
 
+@MainActor
 public extension ConfigurableModelProtocol {
     
     static func validate(_ model: Model) -> Bool { true }
     
 }
 
+@MainActor
 public extension ConfigurableModelProtocol where Model == Void {
     
     func config(_ model: Model) { }

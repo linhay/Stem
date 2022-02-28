@@ -23,6 +23,7 @@
 #if canImport(UIKit)
 import Foundation
 
+@MainActor
 public protocol SectionWrapperProtocol {
     
     associatedtype Section: SectionProtocol

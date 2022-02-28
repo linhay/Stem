@@ -23,6 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
+@MainActor
 public protocol SectionCollectionCompositionalLayoutProtocol {
     
     func supplementaryView(kind: String, at indexPath: IndexPath) -> UICollectionReusableView?

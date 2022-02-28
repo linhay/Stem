@@ -23,6 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
+@MainActor
 public protocol SectionCollectionFlowLayoutProtocol {
     
     var itemCount: Int { get }
@@ -44,6 +45,7 @@ public protocol SectionCollectionFlowLayoutProtocol {
     func itemSize(at row: Int) -> CGSize
 }
 
+@MainActor
 extension SectionCollectionFlowLayoutProtocol {
     
     public var headerView: UICollectionReusableView? { nil }

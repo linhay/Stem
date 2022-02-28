@@ -40,6 +40,7 @@ public struct SingleTypeDriveSectionSupplementaryResult {
     
 }
 
+@MainActor
 public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
     
     associatedtype Cell: UICollectionViewCell & STViewProtocol & ConfigurableModelProtocol
@@ -48,7 +49,7 @@ public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
     #if canImport(Combine)
     var publishers: SingleTypeDriveSectionPublishers<Cell.Model> { get }
     #endif
-
+    
     func config(models: [Cell.Model])
     func validate(_ models: [Cell.Model]) -> [Cell.Model]
     
@@ -77,6 +78,7 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & STViewProtocol & 
         self.models = models
     }
     
+    @MainActor
     open func config(models: [Cell.Model]) {
         self.models = validate(models)
         reload()
@@ -84,7 +86,7 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & STViewProtocol & 
     
     /// 过滤无效数据
     open func validate(_ models: [Cell.Model]) -> [Cell.Model] {
-        models.filter(Cell.validate)
+        models.filter({ Cell.validate($0) })
     }
     
     open func didSelectItem(at row: Int) {

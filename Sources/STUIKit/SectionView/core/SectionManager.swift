@@ -23,6 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
+@MainActor
 public class SectionManager<SectionView: UIView> {
 
     public private(set) var sections: [SectionProtocol] = []
@@ -99,6 +100,7 @@ public class SectionManager<SectionView: UIView> {
 
 }
 
+@MainActor
 private extension SectionManager {
     
     func unlink(_ sections: [SectionProtocol]) {
