@@ -13,8 +13,8 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sections = (0...5).map { _ -> DifferenceSection<TestCell> in
-            let section = DifferenceSection<TestCell>()
+        let sections = (0...5).map { _ -> SingleTypeSection<TestCell> in
+            let section = SingleTypeSection<TestCell>()
             section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)
             section.minimumLineSpacing = 4
             section.minimumInteritemSpacing = 4
@@ -40,7 +40,7 @@ class DecorationViewSectionViewController: SectionCollectionViewController {
             let models = (0...100).map { TestCell.Model(title: "\($0)", width: 50, height: 50) }
             section.config(models: models)
             return section
-        }
+        }.map(\.differenceWrapper)
         
         sectionView.set(pluginModes: [
             //.allSectionBackgroundView(view: DecorationView.self),

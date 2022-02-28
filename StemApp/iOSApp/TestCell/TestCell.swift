@@ -19,7 +19,7 @@ class TestCell: UICollectionViewCell, STViewProtocol, ConfigurableView {
             hasher.combine(title)
             hasher.combine(width)
             hasher.combine(height)
-            hasher.combine(ObjectIdentifier(selectableModel))
+//            hasher.combine(ObjectIdentifier(selectableModel))
         }
         
         static func == (lhs: TestCell.Model, rhs: TestCell.Model) -> Bool {

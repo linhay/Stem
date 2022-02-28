@@ -17,6 +17,7 @@
 		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
 		CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70522609FF5D006150C2 /* DecorationView.swift */; };
 		CDC17B98272A7896001166F3 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDC17B97272A7896001166F3 /* Stem */; };
+		CDD08DCE27CCB37600B2F0D5 /* DifferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD08DCD27CCB37600B2F0D5 /* DifferenceViewController.swift */; };
 		CDD0D4B327B56BBB00A6031C /* CompositionalLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
 		CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */; };
@@ -72,6 +73,7 @@
 		CD8D70522609FF5D006150C2 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		CDB3B524273918D900685FF6 /* iOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOSApp.entitlements; sourceTree = "<group>"; };
 		CDC17B96272A7865001166F3 /* Stem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Stem; path = ..; sourceTree = "<group>"; };
+		CDD08DCD27CCB37600B2F0D5 /* DifferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifferenceViewController.swift; sourceTree = "<group>"; };
 		CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayoutViewController.swift; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */,
 				CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */,
 				CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */,
+				CDD08DCD27CCB37600B2F0D5 /* DifferenceViewController.swift */,
 			);
 			path = WaterfallFlow;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */,
 				CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */,
 				CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */,
+				CDD08DCE27CCB37600B2F0D5 /* DifferenceViewController.swift in Sources */,
 				CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */,
 				CDD0D4B327B56BBB00A6031C /* CompositionalLayoutViewController.swift in Sources */,
 				CD7A88F627BA576800243F38 /* AquamanViewController.swift in Sources */,

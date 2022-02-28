@@ -13,22 +13,21 @@ class SingleTypeSectionViewController: SectionCollectionViewController, AquamanC
     func aquamanScrollView() -> UIScrollView {
         sectionView
     }
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         sectionView.set(pluginModes: .centerX, .sectionHeadersPinToVisibleBounds([.init(get: { 3 }), .init(get: { 2 })]))
         
-        let sections = (0...10).map { index -> DifferenceSection<TestCell> in
-            let section = DifferenceSection<TestCell>()
+        let sections = (0...10).map { index -> SingleTypeSection<TestCell> in
+            let section = SingleTypeSection<TestCell>()
             section.sectionInset = .init(top: 20, left: 20, bottom: 0, right: 20)
             section.minimumLineSpacing = 4
             section.minimumInteritemSpacing = 4
             section.apply(safeSize: SectionSafeSize({ section in
                 return .init(width: 600, height: 400)
             }))
-            var data = Array(0...30)
-
+            
             section.headerSizeProvider.delegate(on: self) { (self, sectionView) in
                 return .init(width: sectionView.frame.width, height: 44)
             }
@@ -37,22 +36,21 @@ class SingleTypeSectionViewController: SectionCollectionViewController, AquamanC
                 section.register(DecorationView.self, for: .header)
                 return section.dequeue(kind: .header) as DecorationView
             }
-                    
-            section.selectedEvent.delegate(on: self) { (self, model) in
-                if data.count > 40 {
-                    data = data.shuffled().dropLast(20)
-                } else {
-                    data = data + Array(data.count...data.count + 1)
-                }
-                let models = data
-                    .map { TestCell.Model(title: "\(index) - \($0)", width: 50, height: 50) }
-                section.config(models: models)
-            }
             
+            let data = Array(0...30)
             let models = data.map { TestCell.Model(title: "\(index) - \($0)", width: 50, height: 50) }
             section.config(models: models)
             return section
         }
+            .map(\.differenceWrapper)
+            .map { section -> SectionDifferenceWrapper<SingleTypeSection<TestCell>> in
+                section.selectedEvent.delegate(on: self) { (self, model) in
+                    var data = Array(0...Int.random(in: 0...10))
+                    let models = data.map { TestCell.Model(title: "\(section.index) - \($0)", width: 50, height: 50) }
+                    section.config(models: models)
+                }
+                return section
+            }
         
         sectionView.set(pluginModes: .sectionHeadersPinToVisibleBounds([
             .init(get: { sections[2].index }),

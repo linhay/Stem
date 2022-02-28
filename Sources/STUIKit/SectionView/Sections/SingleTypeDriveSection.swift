@@ -125,19 +125,19 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & STViewProtocol & 
 }
 
 /// 增删
-public extension SingleTypeDriveSection {
+extension SingleTypeDriveSection {
     
-    func swapAt(_ i: Int, _ j: Int) {
+    public func swapAt(_ i: Int, _ j: Int) {
         models.swapAt(i, j)
         sectionView.reloadItems(at: [indexPath(from: i), indexPath(from: j)])
     }
     
-    func insert(_ model: Cell.Model, at row: Int) {
+    public func insert(_ model: Cell.Model, at row: Int) {
         models.insert(model, at: row)
         sectionView.insertItems(at: [indexPath(from: row)])
     }
     
-    func delete(at row: Int) {
+    public func delete(at row: Int) {
         models.remove(at: row)
         if itemCount <= 0 {
             reload()

@@ -29,6 +29,9 @@ class HomeViewController: SectionCollectionViewController {
         .init(title: "CompositionalLayout", action: {
             self.st.push(CompositionalLayoutViewController())
         }),
+        .init(title: "DifferenceCollectionViewController", action: {
+            self.st.push(DifferenceCollectionViewController())
+        }),
         .init(title: "AquamanViewController", action: {
             self.st.push(AquamanViewController())
         })

@@ -10,7 +10,7 @@ import Stem
 
 class CompositionalLayoutViewController: SectionCollectionViewController {
 
-    var warppers: [SectionSelectableWrapper<DifferenceSection<TestCell>>] = []
+    var warppers: [SectionSelectableWrapper<SingleTypeSection<TestCell>>] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
