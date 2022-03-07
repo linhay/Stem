@@ -47,7 +47,7 @@ public enum FilePathReferenceType: Identifiable {
     
 }
 
-public struct FilePath: FilePathProtocol, Identifiable {
+public struct FilePath: FilePathProtocol, Identifiable, Equatable {
     
     public var id: URL { referenceType.id }
     

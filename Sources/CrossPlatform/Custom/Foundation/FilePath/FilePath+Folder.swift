@@ -25,7 +25,7 @@ import Combine
 
 public extension FilePath {
     
-    struct Folder: FilePathProtocol, Identifiable {
+    struct Folder: FilePathProtocol, Identifiable, Equatable {
         
         @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
         public final class Watcher {

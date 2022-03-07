@@ -24,7 +24,7 @@ import Foundation
 
 public extension FilePath {
     
-    struct File: FilePathProtocol, Identifiable {
+    struct File: FilePathProtocol, Identifiable, Equatable {
         
         public var id: URL { url }
 
