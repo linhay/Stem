@@ -135,7 +135,7 @@ enum ViewProvider {
     case view(UIView)
 }
 
-class AquamanCell: UICollectionViewCell, STViewProtocol, ConfigurableModelProtocol {
+class AquamanCell: UICollectionViewCell, LoadViewProtocol, ConfigurableModelProtocol {
     
     struct Model {
         let view: ViewProvider
@@ -184,7 +184,7 @@ class AquamanCell: UICollectionViewCell, STViewProtocol, ConfigurableModelProtoc
     
 }
 
-class AquamanHeaderView: UICollectionReusableView, STViewProtocol, ConfigurableModelProtocol {
+class AquamanHeaderView: UICollectionReusableView, LoadViewProtocol, ConfigurableModelProtocol {
     
     struct Model {
         let view: ViewProvider

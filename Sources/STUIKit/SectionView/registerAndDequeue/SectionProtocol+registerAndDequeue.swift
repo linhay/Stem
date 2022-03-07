@@ -25,23 +25,33 @@ import UIKit
 
 public extension SectionCollectionDriveProtocol {
 
-    func dequeue<T: UICollectionViewCell & STViewProtocol>(at row: Int) -> T {
-        return sectionView.st.dequeue(at: indexPath(from: row))
+    func dequeue<T: UICollectionViewCell & LoadViewProtocol>(at row: Int) -> T {
+        return sectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath(from: row)) as! T
     }
 
-    func dequeue<T: UICollectionReusableView & STViewProtocol>(kind: SupplementaryViewKindType) -> T {
-        return sectionView.st.dequeue(at: indexPath(from: 0), kind: kind)
+    func dequeue<T: UICollectionReusableView & LoadViewProtocol>(kind: SupplementaryViewKindType) -> T {
+        return sectionView.dequeueReusableSupplementaryView(ofKind: kind.rawValue,
+                                                            withReuseIdentifier: T.identifier,
+                                                            for: IndexPath(row: 0, section: index)) as! T
     }
     
     /// 注册 `LoadViewProtocol` 类型的 UICollectionViewCell
     ///
     /// - Parameter cell: UICollectionViewCell
-    func register<T: UICollectionViewCell & STViewProtocol>(_ cell: T.Type) {
-        sectionView.st.register(cell)
+    func register<T: UICollectionViewCell & LoadViewProtocol>(_ cell: T.Type) {
+        if let nib = T.nib {
+            sectionView.register(nib, forCellWithReuseIdentifier: T.identifier)
+        } else {
+            sectionView.register(T.self, forCellWithReuseIdentifier: T.identifier)
+        }
     }
 
-    func register<T: UICollectionReusableView & STViewProtocol>(_ view: T.Type, for kind: SupplementaryViewKindType) {
-        sectionView.st.register(view, for: kind)
+    func register<T: UICollectionReusableView & LoadViewProtocol>(_ view: T.Type, for kind: SupplementaryViewKindType) {
+        if let nib = T.nib {
+            sectionView.register(nib, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.identifier)
+        } else {
+            sectionView.register(T.self, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.identifier)
+        }
     }
     
 }
@@ -51,23 +61,39 @@ public extension SectionTableProtocol {
     /// 注册 `LoadViewProtocol` 类型的 UICollectionViewCell
     ///
     /// - Parameter cell: UICollectionViewCell
-    func register<T: UITableViewCell & STViewProtocol>(_ view: T.Type) {
-        sectionView.st.register(view)
+    func register<T: UITableViewCell>(_ cell: T.Type) where T: LoadViewProtocol {
+        if let nib = T.nib {
+            sectionView.register(nib, forCellReuseIdentifier: T.identifier)
+        } else {
+            sectionView.register(T.self, forCellReuseIdentifier: T.identifier)
+        }
+    }
+
+    func register<T: UITableViewHeaderFooterView>(_ view: T.Type, for kind: SupplementaryViewKindType) where T: LoadViewProtocol {
+        if let nib = T.nib {
+            sectionView.register(nib, forHeaderFooterViewReuseIdentifier: T.identifier)
+        } else {
+            sectionView.register(T.self, forHeaderFooterViewReuseIdentifier: T.identifier)
+        }
     }
     
     /// 从缓存池取出 Cell
     ///
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeue<T: STViewProtocol>(at row: Int) -> T {
-        sectionView.st.dequeue(at: indexPath(from: row)) as T
+    func dequeue<T: LoadViewProtocol>(at row: Int) -> T {
+        if let cell = sectionView.dequeueReusableCell(withIdentifier: T.identifier, for: indexPath(from: row)) as? T {
+            return cell
+        }
+        assertionFailure(String(describing: T.self))
+        return sectionView.dequeueReusableCell(withIdentifier: T.identifier, for: indexPath(from: row)) as! T
     }
     
     /// 从缓存池取出 UITableViewHeaderFooterView
     ///
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeue<T: UITableViewHeaderFooterView & STViewProtocol>() -> T {
-        sectionView.st.dequeue() as T
+    func dequeue<T: UITableViewHeaderFooterView>() -> T where T: LoadViewProtocol {
+        return sectionView.dequeueReusableHeaderFooterView(withIdentifier: T.identifier) as! T
     }
 
 }

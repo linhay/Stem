@@ -77,11 +77,11 @@ extension SectionCollectionManager: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         section(from: indexPath)?.willDisplaySupplementaryView(view: view, forElementKind: elementKind, at: indexPath.item)
     }
-//
-//    @available(iOS 6.0, *)
-//    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        return section(from: indexPath)?.didEndDisplaying(at: indexPath.item)
-//    }
+    
+    @available(iOS 6.0, *)
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        section(from: indexPath)?.didEndDisplaying(at: indexPath.item)
+    }
 
     @available(iOS 6.0, *)
     public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {

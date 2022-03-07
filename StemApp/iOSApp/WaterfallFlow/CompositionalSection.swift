@@ -8,7 +8,7 @@
 import UIKit
 import Stem
 
-class CompositionalSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeCompositionalSection<Cell> {
+class CompositionalSection<Cell: UICollectionViewCell & ConfigurableView & LoadViewProtocol>: SingleTypeCompositionalSection<Cell> {
     
     override func config(sectionView: UICollectionView) {
         super.config(sectionView: sectionView)
@@ -16,7 +16,7 @@ class CompositionalSection<Cell: UICollectionViewCell & ConfigurableView & STVie
     }
     
     override func compositionalLayout(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? {
-        let fraction: CGFloat = 1 / 5
+        let _: CGFloat = 1 / 5
         let inset: CGFloat = 2.5
 
         // Item

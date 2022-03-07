@@ -39,7 +39,7 @@ public class SectionSafeSize {
     
 }
 
-open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionFlowLayoutProtocol {
+open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & LoadViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionFlowLayoutProtocol {
     
     public private(set) lazy var defaultSafeSize = SectionSafeSize({ [weak self] section in
         guard let self = self else { return .zero }

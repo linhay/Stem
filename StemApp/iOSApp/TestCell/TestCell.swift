@@ -11,7 +11,7 @@ import Stem
 import SnapKit
 import Combine
 
-class TestCell: UICollectionViewCell, STViewProtocol, ConfigurableView {
+class TestCell: UICollectionViewCell, LoadViewProtocol, ConfigurableView {
     
     class Model: Equatable, Hashable, SelectableProtocol {
         

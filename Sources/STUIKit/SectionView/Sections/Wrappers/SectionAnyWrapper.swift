@@ -21,21 +21,18 @@
 // SOFTWARE.
 
 #if canImport(UIKit)
-import UIKit
+import Foundation
 
-public protocol STViewProtocol: AnyObject {
-    static var id: String { get }
-    static var nib: UINib? { get }
-}
+open class SectionAnyWrapper<Section: SectionProtocol>: MutableReference<Section>, SectionWrapperProtocol {
+        
+    open var wrappedSection: Section { value }
+    
+    private var wrapper: Any?
 
-public extension STViewProtocol {
-
-    static var id: String {
-        return String(describing: Self.self)
+    public init<T: SectionWrapperProtocol>(wrapper: T) where T.Section == Section {
+        super.init(wrapper.wrappedSection)
+        self.wrapper = wrapper
     }
-    static var nib: UINib? {
-        return nil
-    }
-
+    
 }
 #endif

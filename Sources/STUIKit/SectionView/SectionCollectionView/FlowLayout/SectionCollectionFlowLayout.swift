@@ -25,7 +25,7 @@ import UIKit
 
 open class SectionCollectionFlowLayout: UICollectionViewFlowLayout {
     
-    public typealias DecorationView = UICollectionReusableView & STViewProtocol
+    public typealias DecorationView = UICollectionReusableView & LoadViewProtocol
     public typealias DecorationElement = [BindingKey<Int>: DecorationView.Type]
     
     public class BindingKey<Value> {
@@ -246,9 +246,9 @@ private extension SectionCollectionFlowLayout {
             }
             
             if let nib = type.nib {
-                register(nib, forDecorationViewOfKind: type.id)
+                register(nib, forDecorationViewOfKind: type.identifier)
             } else {
-                register(type.self, forDecorationViewOfKind: type.id)
+                register(type.self, forDecorationViewOfKind: type.identifier)
             }
             
             let count = collectionView.numberOfItems(inSection: section)
@@ -262,7 +262,7 @@ private extension SectionCollectionFlowLayout {
                 return nil
             }
             
-            let attribute = UICollectionViewLayoutAttributes(forDecorationViewOfKind: type.id, with: sectionIndexPath)
+            let attribute = UICollectionViewLayoutAttributes(forDecorationViewOfKind: type.identifier, with: sectionIndexPath)
             attribute.zIndex = -1
             attribute.frame = elements.dropFirst().reduce(first) { return $0.union($1) }
             

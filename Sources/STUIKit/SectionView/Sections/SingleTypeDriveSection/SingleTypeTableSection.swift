@@ -23,7 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
-open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol where Cell: ConfigurableView & STViewProtocol {    
+open class SingleTypeTableSection<Cell: UITableViewCell>: SectionTableProtocol where Cell: ConfigurableView & LoadViewProtocol {    
     
     public private(set) var models: [Cell.Model]
     

@@ -23,7 +23,7 @@
 #if canImport(UIKit)
 import UIKit
 
-open class SingleTypeCompositionalSection<Cell: UICollectionViewCell & ConfigurableView & STViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionCompositionalLayoutProtocol {
+open class SingleTypeCompositionalSection<Cell: UICollectionViewCell & ConfigurableView & LoadViewProtocol>: SingleTypeDriveSection<Cell>, SectionCollectionCompositionalLayoutProtocol {
     
     public let supplementaryProvider = Delegate<(section: SingleTypeCompositionalSection<Cell>, kind: String, at: IndexPath), UICollectionReusableView>()
     

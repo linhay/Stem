@@ -30,4 +30,10 @@ public protocol SectionWrapperProtocol {
     var wrappedSection: Section { get }
     
 }
+
+public extension SectionWrapperProtocol {
+    
+    var eraseToAnyWrapper: SectionAnyWrapper<Self.Section> { .init(wrapper: self) }
+    
+}
 #endif

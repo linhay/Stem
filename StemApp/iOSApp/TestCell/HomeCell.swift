@@ -8,7 +8,7 @@
 import UIKit
 import Stem
 
-class HomeCell: UICollectionViewCell, STViewProtocol, ConfigurableView {
+class HomeCell: UICollectionViewCell, LoadViewProtocol, ConfigurableView {
     
     static func preferredSize(limit size: CGSize, model: Model?) -> CGSize {
         return .init(width: size.width, height: 44)

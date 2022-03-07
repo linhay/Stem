@@ -8,7 +8,7 @@
 import UIKit
 import Stem
 
-class DecorationView: UICollectionReusableView, STViewProtocol {
+class DecorationView: UICollectionReusableView, LoadViewProtocol {
     
     let gradientView = STLayerView<CAGradientLayer>()
     

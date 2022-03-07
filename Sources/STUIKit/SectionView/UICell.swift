@@ -26,26 +26,26 @@ import UIKit
 // MARK: - UITableView
 public extension Stem where Base: UITableView {
     
-    /// 注册 `STViewProtocol` 类型的 UITableViewCell
+    /// 注册 `LoadViewProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
-    func registers(_ views: STViewProtocol.Type...) {
+    func registers(_ views: LoadViewProtocol.Type...) {
         views.forEach { (item) in
             if let nib = item.nib {
                 switch item {
                 case is UITableViewCell.Type:
-                    base.register(nib, forCellReuseIdentifier: item.id)
+                    base.register(nib, forCellReuseIdentifier: item.identifier)
                 case is UITableViewHeaderFooterView.Type:
-                    base.register(nib, forHeaderFooterViewReuseIdentifier: item.id)
+                    base.register(nib, forHeaderFooterViewReuseIdentifier: item.identifier)
                 default:
                     break
                 }
             } else {
                 switch item {
                 case is UITableViewCell.Type:
-                    base.register(item, forCellReuseIdentifier: item.id)
+                    base.register(item, forCellReuseIdentifier: item.identifier)
                 case is UITableViewHeaderFooterView.Type:
-                    base.register(item, forHeaderFooterViewReuseIdentifier: item.id)
+                    base.register(item, forHeaderFooterViewReuseIdentifier: item.identifier)
                 default:
                     break
                 }
@@ -53,25 +53,25 @@ public extension Stem where Base: UITableView {
         }
     }
     
-    /// 注册 `STViewProtocol` 类型的 UITableViewCell
+    /// 注册 `LoadViewProtocol` 类型的 UITableViewCell
     ///
     /// - Parameter cell: UITableViewCell
-    func register<T: UITableViewCell>(_ cell: T.Type) where T: STViewProtocol {
+    func register<T: UITableViewCell>(_ cell: T.Type) where T: LoadViewProtocol {
         if let nib = T.nib {
-            base.register(nib, forCellReuseIdentifier: T.id)
+            base.register(nib, forCellReuseIdentifier: T.identifier)
         } else {
-            base.register(T.self, forCellReuseIdentifier: T.id)
+            base.register(T.self, forCellReuseIdentifier: T.identifier)
         }
     }
 
-    /// 注册 `STViewProtocol` 类型的 UITableViewHeaderFooterView
+    /// 注册 `LoadViewProtocol` 类型的 UITableViewHeaderFooterView
     ///
     /// - Parameter _: UITableViewHeaderFooterView
-    func register<T: UITableViewHeaderFooterView>(_: T.Type) where T: STViewProtocol {
+    func register<T: UITableViewHeaderFooterView>(_: T.Type) where T: LoadViewProtocol {
         if let nib = T.nib {
-            base.register(nib, forHeaderFooterViewReuseIdentifier: T.id)
+            base.register(nib, forHeaderFooterViewReuseIdentifier: T.identifier)
         } else {
-            base.register(T.self, forHeaderFooterViewReuseIdentifier: T.id)
+            base.register(T.self, forHeaderFooterViewReuseIdentifier: T.identifier)
         }
     }
     
@@ -79,59 +79,40 @@ public extension Stem where Base: UITableView {
     ///
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeue<T: STViewProtocol>(at indexPath: IndexPath) -> T {
-        if let cell = base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as? T {
+    func dequeue<T: LoadViewProtocol>(at indexPath: IndexPath) -> T {
+        if let cell = base.dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as? T {
             return cell
         }
         assertionFailure(String(describing: T.self))
-        return base.dequeueReusableCell(withIdentifier: T.id, for: indexPath) as! T
+        return base.dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as! T
     }
     
     /// 从缓存池取出 UITableViewHeaderFooterView
     ///
     /// - Returns: 具体类型的 `UITableViewCell`
-    func dequeue<T: UITableViewHeaderFooterView>() -> T where T: STViewProtocol {
-        return base.dequeueReusableHeaderFooterView(withIdentifier: T.id) as! T
-    }
-}
-
-/// SupplementaryView regist type
-///
-/// - header: header
-/// - footer: footer
-/// - custom: custom
-public enum SupplementaryViewKindType: Equatable {
-    case header
-    case footer
-    case custom(_ value: String)
-    
-    public var rawValue: String {
-        switch self {
-        case .header: return UICollectionView.elementKindSectionHeader
-        case .footer: return UICollectionView.elementKindSectionFooter
-        case .custom(let value): return value
-        }
+    func dequeue<T: UITableViewHeaderFooterView>() -> T where T: LoadViewProtocol {
+        return base.dequeueReusableHeaderFooterView(withIdentifier: T.identifier) as! T
     }
 }
 
 public extension Stem where Base: UICollectionView {
     
-    /// 注册 `STViewProtocol` 类型的 UICollectionViewCell
+    /// 注册 `LoadViewProtocol` 类型的 UICollectionViewCell
     ///
     /// - Parameter cell: UICollectionViewCell
-    func register<T: UICollectionViewCell>(_ cell: T.Type) where T: STViewProtocol {
+    func register<T: UICollectionViewCell>(_ cell: T.Type) where T: LoadViewProtocol {
         if let nib = T.nib {
-            base.register(nib, forCellWithReuseIdentifier: T.id)
+            base.register(nib, forCellWithReuseIdentifier: T.identifier)
         } else {
-            base.register(T.self, forCellWithReuseIdentifier: T.id)
+            base.register(T.self, forCellWithReuseIdentifier: T.identifier)
         }
     }
 
-    func register<T: UICollectionReusableView>(_ view: T.Type, for kind: SupplementaryViewKindType) where T: STViewProtocol {
+    func register<T: UICollectionReusableView>(_ view: T.Type, for kind: SupplementaryViewKindType) where T: LoadViewProtocol {
         if let nib = T.nib {
-            base.register(nib, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.id)
+            base.register(nib, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.identifier)
         } else {
-            base.register(T.self, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.id)
+            base.register(T.self, forSupplementaryViewOfKind: kind.rawValue, withReuseIdentifier: T.identifier)
         }
     }
     
@@ -139,23 +120,23 @@ public extension Stem where Base: UICollectionView {
     ///
     /// - Parameter indexPath: IndexPath
     /// - Returns: 具体类型的 `UICollectionViewCell`
-    func dequeue<T: UICollectionViewCell>(at indexPath: IndexPath) -> T where T: STViewProtocol {
-        return base.dequeueReusableCell(withReuseIdentifier: T.id, for: indexPath) as! T
+    func dequeue<T: UICollectionViewCell>(at indexPath: IndexPath) -> T where T: LoadViewProtocol {
+        return base.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath) as! T
     }
     
-    func dequeue<T: UICollectionReusableView>(at indexPath: IndexPath, kind: SupplementaryViewKindType) -> T where T: STViewProtocol {
-        return base.dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: T.id, for: indexPath) as! T
+    func dequeue<T: UICollectionReusableView>(at indexPath: IndexPath, kind: SupplementaryViewKindType) -> T where T: LoadViewProtocol {
+        return base.dequeueReusableSupplementaryView(ofKind: kind.rawValue, withReuseIdentifier: T.identifier, for: indexPath) as! T
     }
     
 }
 
 public extension Stem where Base: UICollectionViewLayout {
     
-    func register(_ view: (UICollectionReusableView & STViewProtocol).Type) {
+    func register(_ view: (UICollectionReusableView & LoadViewProtocol).Type) {
         if let nib = view.nib {
-            base.register(nib, forDecorationViewOfKind: view.id)
+            base.register(nib, forDecorationViewOfKind: view.identifier)
         } else {
-            base.register(view.self, forDecorationViewOfKind: view.id)
+            base.register(view.self, forDecorationViewOfKind: view.identifier)
         }
     }
     
@@ -163,8 +144,8 @@ public extension Stem where Base: UICollectionViewLayout {
         base.layoutAttributesForSupplementaryView(ofKind: kind.rawValue, at: indexPath)
     }
 
-     func layoutAttributesForDecorationView(ofKind kind: (UICollectionReusableView & STViewProtocol).Type, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        base.layoutAttributesForDecorationView(ofKind: kind.id, at: indexPath)
+     func layoutAttributesForDecorationView(ofKind kind: (UICollectionReusableView & LoadViewProtocol).Type, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        base.layoutAttributesForDecorationView(ofKind: kind.identifier, at: indexPath)
     }
     
 }

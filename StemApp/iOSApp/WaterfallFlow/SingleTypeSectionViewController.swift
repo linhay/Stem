@@ -43,21 +43,22 @@ class SingleTypeSectionViewController: SectionCollectionViewController, AquamanC
             return section
         }
             .map(\.differenceWrapper)
-            .map { section -> SectionDifferenceWrapper<SingleTypeSection<TestCell>> in
-                section.selectedEvent.delegate(on: self) { (self, model) in
-                    var data = Array(0...Int.random(in: 0...10))
-                    let models = data.map { TestCell.Model(title: "\(section.index) - \($0)", width: 50, height: 50) }
-                    section.config(models: models)
-                }
-                return section
+
+        sections.forEach { section in
+            section.selectedEvent.delegate(on: self) { (self, model) in
+                let data = Array(0...Int.random(in: 0...10))
+                let models = data.map { TestCell.Model(title: "\(section.index) - \($0)", width: 50, height: 50) }
+                section.config(models: models)
             }
+        }
         
         sectionView.set(pluginModes: .sectionHeadersPinToVisibleBounds([
             .init(get: { sections[2].index }),
             .init(get: { sections[4].index }),
             .init(get: { sections[5].index }),
         ]))
-        manager.update(sections)
+        
+        manager.update(sections.map(\.eraseToAnyWrapper))
     }
     
 }

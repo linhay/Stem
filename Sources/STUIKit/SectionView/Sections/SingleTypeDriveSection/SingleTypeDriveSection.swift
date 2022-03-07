@@ -27,35 +27,7 @@ import UIKit
 import Combine
 #endif
 
-public struct SingleTypeDriveSectionSelectedResult<Model> {
-    public let row: Int
-    public let model: Model
-}
-
-public struct SingleTypeDriveSectionSupplementaryResult {
-
-    public let view: UICollectionReusableView
-    public let elementKind: String
-    public let row: Int
-    
-}
-
-@MainActor
-public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
-    
-    associatedtype Cell: UICollectionViewCell & STViewProtocol & ConfigurableModelProtocol
-    var models: [Cell.Model] { get }
-    
-    #if canImport(Combine)
-    var publishers: SingleTypeDriveSectionPublishers<Cell.Model> { get }
-    #endif
-    
-    func config(models: [Cell.Model])
-    func validate(_ models: [Cell.Model]) -> [Cell.Model]
-    
-}
-
-open class SingleTypeDriveSection<Cell: UICollectionViewCell & STViewProtocol & ConfigurableModelProtocol>: SingleTypeDriveSectionProtocol {
+open class SingleTypeDriveSection<Cell: UICollectionViewCell & LoadViewProtocol & ConfigurableModelProtocol>: SingleTypeDriveSectionProtocol {
 
     private var cancellables = Set<AnyCancellable>()
     
@@ -66,8 +38,8 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & STViewProtocol & 
     public let selectedEvent = Delegate<Cell.Model, Void>()
     public let selectedRowEvent = Delegate<Int, Void>()
     public let willDisplayEvent = Delegate<Int, Void>()
-    public let willDisplaySupplementaryViewEvent = Delegate<SingleTypeDriveSectionSupplementaryResult, Void>()
-    public let didEndDisplayingSupplementaryViewEvent = Delegate<SingleTypeDriveSectionSupplementaryResult, Void>()
+    public let willDisplaySupplementaryViewEvent = Delegate<SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult, Void>()
+    public let didEndDisplayingSupplementaryViewEvent = Delegate<SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult, Void>()
     /// cell 样式配置
     public let cellStyleProvider  = Delegate<(row: Int, cell: Cell), Void>()
     
@@ -111,13 +83,13 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & STViewProtocol & 
     }
     
     open func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
-        let result = SingleTypeDriveSectionSupplementaryResult(view: view, elementKind: elementKind, row: row)
+        let result = SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult(view: view, elementKind: elementKind, row: row)
         willDisplaySupplementaryViewEvent.call(result)
         publishers.supplementary._willDisplay.send(result)
     }
     
     open func didEndDisplayingSupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
-        let result = SingleTypeDriveSectionSupplementaryResult(view: view, elementKind: elementKind, row: row)
+        let result = SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult(view: view, elementKind: elementKind, row: row)
         didEndDisplayingSupplementaryViewEvent.call(result)
         publishers.supplementary._didEndDisplaying.send(result)
     }

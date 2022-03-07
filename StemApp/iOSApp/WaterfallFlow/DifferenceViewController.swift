@@ -31,7 +31,7 @@ class DifferenceCollectionViewController: SectionCollectionViewController {
 
 extension DifferenceCollectionViewController {
     
-    class DifferenceCell: UICollectionViewCell, ConfigurableView, STViewProtocol {
+    class DifferenceCell: UICollectionViewCell, ConfigurableView, LoadViewProtocol {
         
         static func preferredSize(limit size: CGSize, model: Int?) -> CGSize {
             return .init(width: 100, height: 100)

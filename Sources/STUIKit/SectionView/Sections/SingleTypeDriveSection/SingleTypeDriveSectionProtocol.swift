@@ -20,30 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(UIKit) && canImport(Combine)
+#if canImport(UIKit)
 import Foundation
+import UIKit
+#if canImport(Combine)
 import Combine
+#endif
 
-public struct SingleTypeDriveSectionPublishers<Model> {
+@MainActor
+public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
     
-    public struct Supplementary {
-        public var willDisplay: AnyPublisher<SingleTypeDriveSectionSupplementaryResult, Never> { _willDisplay.eraseToAnyPublisher() }
-        public var didEndDisplaying: AnyPublisher<SingleTypeDriveSectionSupplementaryResult, Never> { _didEndDisplaying.eraseToAnyPublisher() }
-        
-        var _willDisplay = PassthroughSubject<SingleTypeDriveSectionSupplementaryResult, Never>()
-        var _didEndDisplaying = PassthroughSubject<SingleTypeDriveSectionSupplementaryResult, Never>()
-    }
+    associatedtype Cell: UICollectionViewCell & LoadViewProtocol & ConfigurableModelProtocol
+    var models: [Cell.Model] { get }
     
-    public struct Cell {
-        public var selected: AnyPublisher<SingleTypeDriveSectionSelectedResult<Model>, Never> { _selected.eraseToAnyPublisher() }
-        public var willDisplay: AnyPublisher<Model, Never> { _willDisplay.eraseToAnyPublisher() }
-        
-        var _selected = PassthroughSubject<SingleTypeDriveSectionSelectedResult<Model>, Never>()
-        var _willDisplay = PassthroughSubject<Model, Never>()
-    }
-
-    public let cell = Cell()
-    public let supplementary = Supplementary()
+    #if canImport(Combine)
+    var publishers: SingleTypeDriveSectionPublishers<Cell.Model> { get }
+    #endif
+    
+    func config(models: [Cell.Model])
+    func validate(_ models: [Cell.Model]) -> [Cell.Model]
     
 }
 #endif
