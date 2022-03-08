@@ -22,11 +22,15 @@
 
 import Combine
 
-public class SelectableModel {
-
+public class SelectableModel: Equatable {
+    
     let selectedSubject: Publishers.RemoveDuplicates<CurrentValueSubject<Bool, Never>>
     let canSelectSubject: Publishers.RemoveDuplicates<CurrentValueSubject<Bool, Never>>
     let changedSubject = PassthroughSubject<(isSelected: Bool, canSelect: Bool), Never>()
+    
+    public static func == (lhs: SelectableModel, rhs: SelectableModel) -> Bool {
+       return lhs.isSelected == rhs.isSelected && lhs.canSelect == rhs.canSelect
+    }
     
     public var isSelected: Bool {
         set { selectedSubject.upstream.send(newValue) }

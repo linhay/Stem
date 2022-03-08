@@ -32,3 +32,12 @@ open class SelectableBox<Value>: MutableReference<Value>, SelectableProtocol {
     }
     
 }
+
+extension SelectableBox: Equatable where Value: Equatable {
+    
+    public static func == (lhs: SelectableBox<Value>, rhs: SelectableBox<Value>) -> Bool {
+        return lhs.value == rhs.value && lhs.selectableModel == rhs.selectableModel
+    }
+    
+    
+}
