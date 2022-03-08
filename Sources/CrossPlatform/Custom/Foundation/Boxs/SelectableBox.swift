@@ -39,5 +39,10 @@ extension SelectableBox: Equatable where Value: Equatable {
         return lhs.value == rhs.value && lhs.selectableModel == rhs.selectableModel
     }
     
+}
+
+extension SelectableBox: Identifiable where Value: Identifiable {
+    
+    public var id: Value.ID { value.id }
     
 }
