@@ -72,6 +72,12 @@ extension FilePathProtocol {
 
 public extension FilePathProtocol {
     
+    var eraseToFilePath: FilePath {
+        get throws {
+            return try .init(url: url)
+        }
+    }
+    
     var attributes: FilePathAttributes { .init(path: url) }
     
     /// 当前路径是否存在

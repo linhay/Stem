@@ -51,13 +51,10 @@ public struct FilePath: FilePathProtocol, Identifiable, Equatable {
     
     public var id: URL { referenceType.id }
     
-    @available(iOS, introduced: 2.0, deprecated: 8.0, message: "No longer supported; please adopt FilePathItemType.")
-    public typealias ItemType = FilePathItemType
-    
     private var manager: FileManager { FileManager.default }
     private static var manager: FileManager { FileManager.default }
     
-    public let type: ItemType
+    public let type: FilePathItemType
     
     public var referenceType: FilePathReferenceType {
         switch type {
@@ -70,7 +67,7 @@ public struct FilePath: FilePathProtocol, Identifiable, Equatable {
     
     public var url: URL
     
-    public init(url: URL, type: ItemType) {
+    public init(url: URL, type: FilePathItemType) {
         self.url = url.standardized
         self.type = type
     }
