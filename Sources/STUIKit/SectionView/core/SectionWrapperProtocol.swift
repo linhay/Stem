@@ -21,21 +21,27 @@
 // SOFTWARE.
 
 #if canImport(UIKit)
-import UIKit
+import Foundation
 
-public protocol LoadViewProtocol: UIView {
-    static var identifier: String { get }
-    static var nib: UINib? { get }
+public protocol SectionWrapperCoreProtocol {
+
+    var wrappedSectionProtocol: SectionProtocol { get }
+
 }
 
-public extension LoadViewProtocol {
+@MainActor
+public protocol SectionWrapperProtocol: SectionWrapperCoreProtocol {
+    
+    associatedtype Section: SectionProtocol
+    var wrappedSection: Section { get }
+    
+}
 
-    static var identifier: String {
-        return String(describing: Self.self)
-    }
-    static var nib: UINib? {
-        return nil
-    }
+public extension SectionWrapperProtocol {
+    
+    var wrappedSectionProtocol: SectionProtocol { wrappedSection }
+    var eraseToAnyWrapper: SectionAnyWrapper<Section> { .init(wrapper: self) }
+    var eraseToDynamicType: SectionDynamicType { .wrapper(self) }
 
 }
 #endif

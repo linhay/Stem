@@ -27,23 +27,12 @@ import CommonCrypto
 
 public extension StemValue where Base == Data {
 
-    func md5<T>(_: T.Type = T.self) -> T? {
-        let uint8s = base.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> [UInt8] in
-            var hash = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
-            CC_MD5(bytes.baseAddress, CC_LONG(base.count), &hash)
-            return hash
+    func sha256() -> Data {
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        base.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(base.count), &hash)
         }
-        
-        switch T.self {
-        case _ as [Int].Type:
-            return uint8s.map({ Int($0) }) as? T
-        case _ as [UInt8].Type:
-            return uint8s as? T
-        case _ as String.Type:
-            return uint8s.map { String(format: "%02x", $0) }.joined() as? T
-        default:
-            return nil
-        }
+        return Data(hash)
     }
   
 }

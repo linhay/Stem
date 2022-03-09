@@ -32,11 +32,7 @@ public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
     
     associatedtype Cell: UICollectionViewCell & LoadViewProtocol & ConfigurableModelProtocol
     var models: [Cell.Model] { get }
-    
-    #if canImport(Combine)
     var publishers: SingleTypeDriveSectionPublishers<Cell.Model> { get }
-    #endif
-    
     func config(models: [Cell.Model])
     func validate(_ models: [Cell.Model]) -> [Cell.Model]
     

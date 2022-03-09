@@ -77,7 +77,7 @@ public extension Stem where Base: UIApplication {
                let statusBarFrame = windowScene.statusBarManager?.statusBarFrame {
                 return statusBarFrame
             }
-            return UIApplication.shared.statusBarFrame
+            return .zero
         } else {
             return UIApplication.shared.statusBarFrame
         }

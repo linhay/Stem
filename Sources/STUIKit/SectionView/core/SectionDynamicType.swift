@@ -23,17 +23,23 @@
 #if canImport(UIKit)
 import Foundation
 
-@MainActor
-public protocol SectionWrapperProtocol {
+public enum SectionDynamicType: Equatable {
     
-    associatedtype Section: SectionProtocol
-    var wrappedSection: Section { get }
+    case section(SectionProtocol)
+    case wrapper(SectionWrapperCoreProtocol)
     
-}
-
-public extension SectionWrapperProtocol {
+    public static func == (lhs: SectionDynamicType, rhs: SectionDynamicType) -> Bool {
+        lhs.section === rhs.section
+    }
     
-    var eraseToAnyWrapper: SectionAnyWrapper<Self.Section> { .init(wrapper: self) }
+    public var section: SectionProtocol {
+        switch self {
+        case .section(let section):
+            return section
+        case .wrapper(let wrapper):
+            return wrapper.wrappedSectionProtocol
+        }
+    }
     
 }
 #endif

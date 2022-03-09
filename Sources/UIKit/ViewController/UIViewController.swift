@@ -108,6 +108,11 @@ public extension Stem where Base: UIViewController {
     
     /// 获取当前显示控制器
     static var current: UIViewController? {
+        
+        guard let rootViewController = UIApplication.shared.windows.first(where: \.isKeyWindow)?.rootViewController else {
+            return nil
+        }
+        
         func find(rawVC: UIViewController) -> UIViewController {
             switch rawVC {
             case let vc where vc.presentedViewController != nil:
@@ -122,9 +127,7 @@ public extension Stem where Base: UIViewController {
                 return rawVC
             }
         }
-        guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
-            return nil
-        }
+        
         return find(rawVC: rootViewController)
     }
     
@@ -145,7 +148,7 @@ public extension Stem where Base: UIViewController {
     
     /// 能modal的控制器
     static var presented: UIViewController? {
-        var vc = UIApplication.shared.keyWindow?.rootViewController
+        var vc = UIApplication.shared.windows.first(where: \.isKeyWindow)?.rootViewController
         while let temp = vc?.presentedViewController {
             vc = temp
         }

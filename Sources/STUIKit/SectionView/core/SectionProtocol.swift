@@ -25,6 +25,7 @@ import UIKit
 
 @MainActor
 public protocol SectionProtocol: AnyObject {
+    
     var core: SectionCore? { get set }
     var index: Int { get set }
     
@@ -125,5 +126,11 @@ public extension SectionProtocol {
     var indexTitle: String? { nil }
     func canMove(at: Int) -> Bool { false }
     func move(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) { }
+}
+
+
+@MainActor
+public extension SectionProtocol {
+    var eraseToDynamicType: SectionDynamicType { .section(self) }
 }
 #endif

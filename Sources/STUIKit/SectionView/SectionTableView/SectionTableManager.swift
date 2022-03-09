@@ -25,12 +25,15 @@ import UIKit
 
 public class SectionTableManager: SectionScrollManager {
 
-    let sectionManager: SectionManager<UITableView>
-    var sectionView: UITableView { sectionManager.sectionView }
-    public var sections: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionProtocol]>.Elements, SectionTableProtocol?>>, SectionTableProtocol> { sectionManager.sections.lazy.compactMap({ $0 as? SectionTableProtocol }) }
+    private var environment: SectionReducer.Environment<UITableView>
+    private var reducer = SectionReducer(state: .init())
+        
+    var sectionView: UITableView { environment.sectionView }
+    public var sections: LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionDynamicType]>.Elements, SectionTableProtocol?>>, SectionTableProtocol> { reducer.state.types.lazy.compactMap({ $0.section as? SectionTableProtocol }) }
 
+    
     public init(sectionView: UITableView) {
-        sectionManager = .init(sectionView: sectionView)
+        environment = .init(sectionView: sectionView)
         super.init()
         sectionView.delegate = self
         sectionView.dataSource = self
@@ -38,9 +41,9 @@ public class SectionTableManager: SectionScrollManager {
 
 }
 
-public extension SectionTableManager {
+private extension SectionTableManager {
 
-    func operational(_ refresh: SectionManager<UITableView>.Refresh, with animation: UITableView.RowAnimation) {
+    func operational(_ refresh: SectionReducer.OutputAction, with animation: UITableView.RowAnimation) {
         switch refresh {
         case .none:
             break
@@ -55,8 +58,12 @@ public extension SectionTableManager {
         }
     }
 
+}
+
+public extension SectionTableManager {
+
     func reload() {
-        operational(sectionManager.reload(), with: .none)
+        operational(reducer.reducer(action: .reload, environment: environment), with: .none)
     }
 
     func update(_ sections: SectionTableProtocol..., with animation: UITableView.RowAnimation = .none) {
@@ -64,23 +71,23 @@ public extension SectionTableManager {
     }
 
     func update(_ sections: [SectionTableProtocol], with animation: UITableView.RowAnimation = .none) {
-        let update = sectionManager.update(sections)
+        let update = reducer.reducer(action: .update(types: sections.map({ .section($0) })), environment: environment)
         sections.forEach({ $0.config(sectionView: sectionView) })
         operational(update, with: animation)
     }
 
-    func insert(section: SectionTableProtocol, at index: Int, with animation: UITableView.RowAnimation = .none) {
-        let insert = sectionManager.insert(section: section, at: index)
-        section.config(sectionView: sectionView)
+    func insert(_ sections: [SectionTableProtocol], at index: Int, with animation: UITableView.RowAnimation = .none) {
+        let insert = reducer.reducer(action: .insert(types: sections.map({ .section($0) }), at: index), environment: environment)
+        sections.forEach({ $0.config(sectionView: sectionView) })
         operational(insert, with: animation)
     }
 
-    func delete(at index: Int, with animation: UITableView.RowAnimation = .none) {
-        operational(sectionManager.delete(at: index), with: animation)
+    func delete(_ sections: [SectionTableProtocol], with animation: UITableView.RowAnimation = .none) {
+        operational(reducer.reducer(action: .delete(types: sections.map({ .section($0) })), environment: environment), with: animation)
     }
 
-    func move(from: Int, to: Int, with animation: UITableView.RowAnimation = .none) {
-        operational(sectionManager.move(from: from, to: to), with: animation)
+    func move(from: SectionTableProtocol, to: SectionTableProtocol, with animation: UITableView.RowAnimation = .none) {
+        operational(reducer.reducer(action: .move(from: .section(from), to: .section(to)), environment: environment), with: animation)
     }
 
 }

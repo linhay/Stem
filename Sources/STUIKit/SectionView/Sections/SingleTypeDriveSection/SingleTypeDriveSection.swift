@@ -29,23 +29,23 @@ import Combine
 
 open class SingleTypeDriveSection<Cell: UICollectionViewCell & LoadViewProtocol & ConfigurableModelProtocol>: SingleTypeDriveSectionProtocol {
 
-    private var cancellables = Set<AnyCancellable>()
-    
+    public typealias Publishers = SingleTypeDriveSectionPublishers<Cell.Model>
     public private(set) var models: [Cell.Model]
-
-    public let publishers = SingleTypeDriveSectionPublishers<Cell.Model>()
+    public let publishers = Publishers()
         
     public let selectedEvent = Delegate<Cell.Model, Void>()
     public let selectedRowEvent = Delegate<Int, Void>()
     public let willDisplayEvent = Delegate<Int, Void>()
-    public let willDisplaySupplementaryViewEvent = Delegate<SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult, Void>()
-    public let didEndDisplayingSupplementaryViewEvent = Delegate<SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult, Void>()
+    public let willDisplaySupplementaryViewEvent      = Delegate<Publishers.SupplementaryResult, Void>()
+    public let didEndDisplayingSupplementaryViewEvent = Delegate<Publishers.SupplementaryResult, Void>()
     /// cell 样式配置
     public let cellStyleProvider  = Delegate<(row: Int, cell: Cell), Void>()
     
     open var core: SectionCore?
     open var itemCount: Int { models.count }
     
+    private var cancellables = Set<AnyCancellable>()
+
     public init(_ models: [Cell.Model] = []) {
         self.models = models
     }
@@ -83,13 +83,13 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & LoadViewProtocol 
     }
     
     open func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
-        let result = SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult(view: view, elementKind: elementKind, row: row)
+        let result = Publishers.SupplementaryResult(view: view, elementKind: elementKind, row: row)
         willDisplaySupplementaryViewEvent.call(result)
         publishers.supplementary._willDisplay.send(result)
     }
     
     open func didEndDisplayingSupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {
-        let result = SingleTypeDriveSectionPublishers<Cell.Model>.SupplementaryResult(view: view, elementKind: elementKind, row: row)
+        let result = Publishers.SupplementaryResult(view: view, elementKind: elementKind, row: row)
         didEndDisplayingSupplementaryViewEvent.call(result)
         publishers.supplementary._didEndDisplaying.send(result)
     }
