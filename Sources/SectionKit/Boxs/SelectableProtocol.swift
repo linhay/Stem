@@ -59,7 +59,7 @@ public class SelectableModel: Equatable {
 
 }
 
-public protocol SelectableProtocol: AnyObject {
+public protocol SelectableProtocol {
 
     var selectableModel: SelectableModel { get }
 
@@ -114,7 +114,13 @@ public extension SelectableCollectionProtocol {
     ///   - isUnique: 是否保证选中在当前序列中是否唯一 | default: true
     ///   - needInvert: 是否需要支持反选操作 | default: false
     func select(at index: Int, isUnique: Bool = true, needInvert: Bool = false) {
-        guard let element = selectables.value(at: index), element.canSelect else {
+        guard index >= 0, index < selectables.count else {
+            return
+        }
+        
+        let element = selectables[index]
+        
+        guard element.canSelect else {
             return
         }
 
