@@ -23,7 +23,6 @@
 #if canImport(UIKit)
 import UIKit
 
-@MainActor
 public protocol SectionProtocol: AnyObject {
     
     var core: SectionCore? { get set }
@@ -62,7 +61,6 @@ public protocol SectionProtocol: AnyObject {
     func pick(_ updates: (() -> Void), completion: ((Bool) -> Void)?)
 }
 
-@MainActor
 public extension SectionProtocol {
 
     var index: Int {
@@ -75,7 +73,6 @@ public extension SectionProtocol {
 }
 
 /// delegate
-@MainActor
 public extension SectionProtocol {
 
     /// UICollectionViewDelegate & UITableViewDelegate
@@ -104,7 +101,6 @@ public extension SectionProtocol {
 
 }
 
-@MainActor
 public extension SectionProtocol {
 
     func indexPath(from value: Int?) -> IndexPath? {
@@ -121,7 +117,6 @@ public extension SectionProtocol {
 
 }
 
-@MainActor
 public extension SectionProtocol {
     var indexTitle: String? { nil }
     func canMove(at: Int) -> Bool { false }
@@ -129,7 +124,6 @@ public extension SectionProtocol {
 }
 
 
-@MainActor
 public extension SectionProtocol {
     var eraseToDynamicType: SectionDynamicType { .section(self) }
 }

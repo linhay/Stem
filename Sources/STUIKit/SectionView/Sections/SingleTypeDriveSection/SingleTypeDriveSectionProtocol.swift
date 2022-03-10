@@ -27,7 +27,6 @@ import UIKit
 import Combine
 #endif
 
-@MainActor
 public protocol SingleTypeDriveSectionProtocol: SectionCollectionDriveProtocol {
     
     associatedtype Cell: UICollectionViewCell & LoadViewProtocol & ConfigurableModelProtocol

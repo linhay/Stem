@@ -50,7 +50,6 @@ open class SingleTypeDriveSection<Cell: UICollectionViewCell & LoadViewProtocol 
         self.models = models
     }
     
-    @MainActor
     open func config(models: [Cell.Model]) {
         self.models = validate(models)
         reload()

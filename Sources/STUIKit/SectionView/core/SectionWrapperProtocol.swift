@@ -29,7 +29,6 @@ public protocol SectionWrapperCoreProtocol {
 
 }
 
-@MainActor
 public protocol SectionWrapperProtocol: SectionWrapperCoreProtocol {
     
     associatedtype Section: SectionProtocol

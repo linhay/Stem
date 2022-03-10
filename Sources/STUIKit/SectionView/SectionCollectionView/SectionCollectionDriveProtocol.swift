@@ -23,7 +23,6 @@
 #if canImport(UIKit)
 import UIKit
 
-@MainActor
 public protocol SectionCollectionDriveProtocol: SectionProtocol {
     
     var sectionView: UICollectionView { get }
@@ -42,7 +41,6 @@ public protocol SectionCollectionDriveProtocol: SectionProtocol {
     func reload()
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
     
     func willDisplaySupplementaryView(view: UICollectionReusableView, forElementKind elementKind: String, at row: Int) {}
@@ -51,7 +49,6 @@ public extension SectionCollectionDriveProtocol {
     
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
     
     var sectionView: UICollectionView {
@@ -64,7 +61,6 @@ public extension SectionCollectionDriveProtocol {
     
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
     
     @available(iOS 13.0, *)
@@ -72,7 +68,6 @@ public extension SectionCollectionDriveProtocol {
     
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
 
     func deselect(at row: Int, animated: Bool) {
@@ -96,7 +91,6 @@ public extension SectionCollectionDriveProtocol {
 
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
 
     func reload() {
@@ -113,7 +107,6 @@ public extension SectionCollectionDriveProtocol {
 
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
 
     func insert(at row: Int, willUpdate: (() -> Void)) {
@@ -130,7 +123,6 @@ public extension SectionCollectionDriveProtocol {
 
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
 
     func delete(at row: Int, willUpdate: (() -> Void)) {
@@ -151,7 +143,6 @@ public extension SectionCollectionDriveProtocol {
 
 }
 
-@MainActor
 public extension SectionCollectionDriveProtocol {
 
     func scroll(to row: Int, at scrollPosition: UICollectionView.ScrollPosition, animated: Bool) {

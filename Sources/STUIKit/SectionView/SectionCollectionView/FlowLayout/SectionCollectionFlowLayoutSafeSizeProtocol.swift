@@ -40,7 +40,6 @@ public class SectionSafeSize {
     
 }
 
-@MainActor
 public protocol SectionCollectionFlowLayoutSafeSizeProtocol: AnyObject {
     
     var sectionInset: UIEdgeInsets { get  }

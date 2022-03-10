@@ -40,9 +40,11 @@ open class SingleTypeSection<Cell: UICollectionViewCell & ConfigurableView & Loa
     public private(set) var footerSizeProvider = Delegate<UICollectionView, CGSize>()
     
     open var headerView: UICollectionReusableView? { headerViewProvider.call(self) }
+    
     open var headerSize: CGSize { headerSizeProvider.call(sectionView) ?? .zero }
     
     open var footerView: UICollectionReusableView? { footerViewProvider.call(self) }
+    
     open var footerSize: CGSize { footerSizeProvider.call(sectionView) ?? .zero }
     
     open func itemSize(at row: Int) -> CGSize {
