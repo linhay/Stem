@@ -24,34 +24,38 @@
 import UIKit
 
 @available(iOS 13, *)
-open class SectionDifferenceWrapper<Section: SingleTypeDriveSectionProtocol & SectionProtocol>: SectionWrapperProtocol where Section.Cell.Model: Hashable {
+@dynamicMemberLookup
+public final class SectionDifferenceWrapper<Section: SingleTypeDriveSectionProtocol & SectionProtocol>: SectionWrapperProtocol where Section.Cell.Model: Hashable {
         
-    var referenceValue: Section
-    open var wrappedSection: Section { referenceValue }
+    public let wrappedSection: Section
         
     public init(_ section: Section) {
-        self.referenceValue = section
+        self.wrappedSection = section
     }
     
-    open func config(models: [Section.Cell.Model]) {
+    public func config(models: [Section.Cell.Model]) {
         let models = models.filter({ Section.Cell.validate($0) })
-        guard models.isEmpty == false, referenceValue.isLoaded else {
-            referenceValue.config(models: models)
+        guard models.isEmpty == false, wrappedSection.isLoaded else {
+            wrappedSection.config(models: models)
             return
         }
 
-        let difference = models.difference(from: referenceValue.models)
-        referenceValue.pick({
-            referenceValue.config(models: models)
+        let difference = models.difference(from: wrappedSection.models)
+        wrappedSection.pick({
+            wrappedSection.config(models: models)
             for change in difference {
                 switch change {
                 case let .remove(offset, _, _):
-                    referenceValue.delete(at: offset)
+                    wrappedSection.delete(at: offset)
                 case let .insert(offset, element, _):
-                    referenceValue.insert(element, at: offset)
+                    wrappedSection.insert(element, at: offset)
                 }
             }
         }, completion: nil)
+    }
+    
+    public subscript<T>(dynamicMember keyPath: KeyPath<Section, T>) -> T? {
+        wrappedSection[keyPath: keyPath]
     }
     
 }

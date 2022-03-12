@@ -23,13 +23,17 @@
 #if canImport(UIKit)
 import Foundation
 
-public enum SectionDynamicType: Equatable {
+public enum SectionDynamicType: Equatable, Hashable {
     
     case section(SectionProtocol)
     case wrapper(SectionWrapperCoreProtocol)
     
     public static func == (lhs: SectionDynamicType, rhs: SectionDynamicType) -> Bool {
         lhs.section === rhs.section
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(section))
     }
     
     public var section: SectionProtocol {

@@ -23,30 +23,36 @@
 #if canImport(UIKit)
 import UIKit
 
-extension SectionCollectionManager: UICollectionViewDataSource {
+class SectionCollectionViewDataSource: NSObject, UICollectionViewDataSource {
+        
+    let count = Delegate<Void, Int>()
+    let sectionEvent = Delegate<Int, SectionCollectionDriveProtocol>()
+    let sectionsEvent = Delegate<Void, LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionDynamicType]>.Elements, SectionCollectionDriveProtocol?>>, SectionCollectionDriveProtocol>>()
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sections[section].itemCount
+        return sectionEvent.call(section)?.itemCount ?? 0
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return sections[indexPath.section].item(at: indexPath.item)
+        return sectionEvent.call(indexPath.section)?.item(at: indexPath.item) ?? UICollectionViewCell()
     }
 
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count
+        return count.call() ?? 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         var view: UICollectionReusableView?
         
-        if let section = sections[indexPath.section] as? SectionCollectionFlowLayoutProtocol {
+        let section = sectionEvent.call(indexPath.section)
+        
+        if let section = section as? SectionCollectionFlowLayoutProtocol {
             switch kind {
             case UICollectionView.elementKindSectionHeader: view = section.headerView
             case UICollectionView.elementKindSectionFooter: view = section.footerView
             default: break
             }
-        } else if let section = sections[indexPath.section] as? SectionCollectionCompositionalLayoutProtocol {
+        } else if let section = section as? SectionCollectionCompositionalLayoutProtocol {
             view = section.supplementaryView(kind: kind, at: indexPath)
         }
 
@@ -54,20 +60,20 @@ extension SectionCollectionManager: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        return sections[indexPath.section].canMove(at: indexPath.item)
+        return sectionEvent.call(indexPath.section)?.canMove(at: indexPath.item) ?? false
     }
 
     public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         if sourceIndexPath.section == destinationIndexPath.section {
-            sections[sourceIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
+            sectionEvent.call(sourceIndexPath.section)?.move(from: sourceIndexPath, to: destinationIndexPath)
         } else {
-            sections[sourceIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
-            sections[destinationIndexPath.section].move(from: sourceIndexPath, to: destinationIndexPath)
+            sectionEvent.call(sourceIndexPath.section)?.move(from: sourceIndexPath, to: destinationIndexPath)
+            sectionEvent.call(destinationIndexPath.section)?.move(from: sourceIndexPath, to: destinationIndexPath)
         }
     }
     
     public func indexTitles(for collectionView: UICollectionView) -> [String]? {
-        return sections.compactMap(\.indexTitle)
+        sectionsEvent.call()?.compactMap(\.indexTitle)
     }
 
     public func collectionView(_ collectionView: UICollectionView, indexPathForIndexTitle title: String, at index: Int) -> IndexPath {

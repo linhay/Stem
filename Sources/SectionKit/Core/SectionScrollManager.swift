@@ -23,13 +23,13 @@
 #if canImport(UIKit)
 import UIKit
 
-public class SectionScrollManager: NSObject, UIScrollViewDelegate {
+public class SectionScrollViewDelegate: NSObject, UIScrollViewDelegate {
     
     private var observeScrollStore: [String: SectionWeakBox<UIScrollViewDelegate>] = [:]
     
 }
 
-public extension SectionScrollManager {
+public extension SectionScrollViewDelegate {
     
     // MARK: - ObserveScroll
     func addObserveScroll(target: NSObject & UIScrollViewDelegate) {
@@ -47,7 +47,7 @@ public extension SectionScrollManager {
 }
 
 // MARK: - scrollViewDelegate
-public extension SectionScrollManager {
+public extension SectionScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         observeScrollStore.values.forEach { $0.value?.scrollViewDidScroll?(scrollView) }

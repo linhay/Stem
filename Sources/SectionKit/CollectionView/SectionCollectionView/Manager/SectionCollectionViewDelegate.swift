@@ -24,13 +24,13 @@
 import UIKit
 
 // MARK: - UICollectionViewDelegate && UICollectionViewDataSource
-extension SectionCollectionManager: UICollectionViewDelegate {
+class SectionCollectionViewDelegate: SectionScrollViewDelegate, UICollectionViewDelegate {
     
-    private func section(from indexPath: IndexPath) -> SectionCollectionDriveProtocol? {
-        guard sections.count > indexPath.section else {
-            return nil
-        }
-        return sections[indexPath.section]
+    let sectionEvent = Delegate<Int, SectionCollectionDriveProtocol>()
+    let sectionsEvent = Delegate<Void, LazyMapSequence<LazyFilterSequence<LazyMapSequence<LazySequence<[SectionDynamicType]>.Elements, SectionCollectionDriveProtocol?>>, SectionCollectionDriveProtocol>>()
+
+    func section(from indexPath: IndexPath) -> SectionCollectionDriveProtocol? {
+        return sectionEvent.call(indexPath.section)
     }
 
     @available(iOS 6.0, *)
@@ -128,10 +128,9 @@ extension SectionCollectionManager: UICollectionViewDelegate {
         return section(from: indexPath)?.canEditItem(at: indexPath.item) ?? true
     }
 
-    //    @available(iOS 11.0, *)
-//    public func collectionView(_ collectionView: UICollectionView, shouldSpringLoadItemAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool
+// @available(iOS 11.0, *)
+// public func collectionView(_ collectionView: UICollectionView, shouldSpringLoadItemAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool
 
-    
     @available(iOS 13.0, *)
     public func collectionView(_ collectionView: UICollectionView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
             section(from: indexPath)?.shouldBeginMultipleSelectionInteraction(at: indexPath.item) ?? false
@@ -144,7 +143,9 @@ extension SectionCollectionManager: UICollectionViewDelegate {
 
     @available(iOS 13.0, *)
     public func collectionViewDidEndMultipleSelectionInteraction(_ collectionView: UICollectionView) {
-        sections.forEach({ $0.didEndMultipleSelectionInteraction() })
+        sectionsEvent.call()?.forEach { section in
+            section.didEndMultipleSelectionInteraction()
+        }
     }
 
 //    @available(iOS 13.0, *)

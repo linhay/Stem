@@ -24,10 +24,11 @@
 import UIKit
 import Combine
 
-open class SectionSelectableWrapper<Section: SingleTypeDriveSectionProtocol & SectionProtocol>: SelectableCollectionProtocol, SectionWrapperProtocol where Section.Cell.Model: SelectableProtocol {
+@dynamicMemberLookup
+public final class SectionSelectableWrapper<Section: SingleTypeDriveSectionProtocol & SectionProtocol>: SelectableCollectionProtocol, SectionWrapperProtocol where Section.Cell.Model: SelectableProtocol {
         
     public let wrappedSection: Section
-    open var selectables: [Section.Cell.Model] { wrappedSection.models }
+    public var selectables: [Section.Cell.Model] { wrappedSection.models }
 
     /// 是否保证选中在当前序列中是否唯一 | default: true
     private let isUnique: Bool
@@ -41,9 +42,13 @@ open class SectionSelectableWrapper<Section: SingleTypeDriveSectionProtocol & Se
         self.isUnique = isUnique
         self.needInvert = needInvert
         
-        section.publishers.cell.selected.map(\.row).sink { [weak self] row in
-            self?.select(at: row, isUnique: isUnique, needInvert: needInvert)
+        section.publishers.cell.selected.map(\.row).sink { row in
+            self.select(at: row, isUnique: isUnique, needInvert: needInvert)
         }.store(in: &cancellables)
+    }
+    
+    public subscript<T>(dynamicMember keyPath: KeyPath<Section, T>) -> T? {
+        wrappedSection[keyPath: keyPath]
     }
     
 }
