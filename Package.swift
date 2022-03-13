@@ -11,7 +11,6 @@ let package = Package(
     ],
     targets: [
         .target(name: "Stem", dependencies: []),
-        .target(name: "SectionKit", dependencies: []),
         .testTarget(name: "StemTests", dependencies: ["Stem"]),
     ]
 )
