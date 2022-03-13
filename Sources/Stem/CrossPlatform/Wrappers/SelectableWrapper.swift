@@ -23,33 +23,32 @@
 import Foundation
 
 @dynamicMemberLookup
-public struct SelectableWrapper<SelectableValue>: SelectableProtocol {
+public struct SelectableWrapper<ReferenceValue>: SelectableProtocol, WrapperWritableReferenceProtocol {
     
     public var selectableModel: SelectableModel
-    public var value: SelectableValue
-    
-    public init(_ value: SelectableValue, selectable: SelectableModel = SelectableModel()) {
+    public var referenceValue: ReferenceValue {
+        get { value }
+        set { value = newValue }
+    }
+    public var value: ReferenceValue
+
+    public init(_ value: ReferenceValue, selectable: SelectableModel = SelectableModel()) {
         self.value = value
         self.selectableModel = selectable
     }
     
-    public subscript<T>(dynamicMember keyPath: WritableKeyPath<SelectableValue, T>) -> T {
-        get { value[keyPath: keyPath] }
-        set { value[keyPath: keyPath] = newValue }
+}
+
+extension SelectableWrapper: Equatable where ReferenceValue: Equatable {
+    
+    public static func == (lhs: SelectableWrapper<ReferenceValue>, rhs: SelectableWrapper<ReferenceValue>) -> Bool {
+        return lhs.referenceValue == rhs.referenceValue && lhs.selectableModel == rhs.selectableModel
     }
     
 }
 
-extension SelectableWrapper: Equatable where SelectableValue: Equatable {
+extension SelectableWrapper: Identifiable where ReferenceValue: Identifiable {
     
-    public static func == (lhs: SelectableWrapper<SelectableValue>, rhs: SelectableWrapper<SelectableValue>) -> Bool {
-        return lhs.value == rhs.value && lhs.selectableModel == rhs.selectableModel
-    }
-    
-}
-
-extension SelectableWrapper: Identifiable where SelectableValue: Identifiable {
-    
-    public var id: SelectableValue.ID { value.id }
+    public var id: ReferenceValue.ID { referenceValue.id }
     
 }

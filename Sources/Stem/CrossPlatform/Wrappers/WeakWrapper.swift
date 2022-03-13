@@ -23,16 +23,17 @@
 import Foundation
 
 @dynamicMemberLookup
-public final class WeakWrapper<Value: AnyObject> {
-
+public final class WeakWrapper<Value: AnyObject>: WrapperWritableReferenceProtocol {
+    
+    public var referenceValue: Value? {
+        set { value = newValue }
+        get { value }
+    }
+    
     public weak var value: Value?
 
     public init(_ value: Value? = nil) {
         self.value = value
-    }
-    
-    public subscript<T>(dynamicMember keyPath: KeyPath<Value, T>) -> T? {
-        value?[keyPath: keyPath]
     }
     
 }
