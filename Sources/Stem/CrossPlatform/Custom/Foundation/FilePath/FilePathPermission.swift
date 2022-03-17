@@ -9,11 +9,11 @@ import Foundation
 
 public struct FilePathPermission: OptionSet {
     
-    static let exists     = FilePathPermission(rawValue: 1 << 0)
-    static let readable   = FilePathPermission(rawValue: 1 << 1)
-    static let writable   = FilePathPermission(rawValue: 1 << 2)
-    static let executable = FilePathPermission(rawValue: 1 << 3)
-    static let deletable  = FilePathPermission(rawValue: 1 << 4)
+    public static let exists     = FilePathPermission(rawValue: 1 << 0)
+    public static let readable   = FilePathPermission(rawValue: 1 << 1)
+    public static let writable   = FilePathPermission(rawValue: 1 << 2)
+    public static let executable = FilePathPermission(rawValue: 1 << 3)
+    public static let deletable  = FilePathPermission(rawValue: 1 << 4)
     
     public let rawValue: Int
     
