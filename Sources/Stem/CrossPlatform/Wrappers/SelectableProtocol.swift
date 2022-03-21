@@ -22,7 +22,7 @@
 
 import Combine
 
-public class SelectableModel: Equatable {
+public class SelectableModel: Equatable, ObservableObject {
     
     let selectedSubject: Publishers.RemoveDuplicates<CurrentValueSubject<Bool, Never>>
     let canSelectSubject: Publishers.RemoveDuplicates<CurrentValueSubject<Bool, Never>>
@@ -48,12 +48,16 @@ public class SelectableModel: Equatable {
         self.selectedSubject  = CurrentValueSubject<Bool, Never>(isSelected).removeDuplicates()
         self.canSelectSubject = CurrentValueSubject<Bool, Never>(canSelect).removeDuplicates()
         
-        self.selectedSubject.sink { value in
+        self.selectedSubject.sink { [weak self] value in
+            guard let self = self else { return }
             self.changedSubject.send((isSelected, canSelect))
+            self.objectWillChange.send()
         }.store(in: &cancellables)
         
-        self.canSelectSubject.sink { value in
+        self.canSelectSubject.sink { [weak self] value in
+            guard let self = self else { return }
             self.changedSubject.send((isSelected, canSelect))
+            self.objectWillChange.send()
         }.store(in: &cancellables)
     }
 

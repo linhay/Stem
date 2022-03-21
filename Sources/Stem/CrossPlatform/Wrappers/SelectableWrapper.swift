@@ -30,6 +30,7 @@ public struct SelectableWrapper<ReferenceValue>: SelectableProtocol, WrapperWrit
         get { value }
         set { value = newValue }
     }
+    
     public var value: ReferenceValue
 
     public init(_ value: ReferenceValue, selectable: SelectableModel = SelectableModel()) {
