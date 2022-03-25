@@ -25,6 +25,18 @@ import Foundation
 // MARK: - slice & pass for unit test & document
 public extension Array {
     
+    /// Make several slices out of a given array.
+    /// - Returns:
+    ///   An array of slices of `maxStride` elements each.
+    @inlinable
+    func slice(maxStride: Int) -> [ArraySlice<Element>] {
+        let elementsCount = self.count
+        let groupsCount = (elementsCount + maxStride - 1) / maxStride
+        return (0..<groupsCount).map({ n in
+            self[n*maxStride..<Swift.min(elementsCount, (n+1)*maxStride)]
+        })
+    }
+    
     /// Returns an index that is the specified distance from the given index.
     ///
     /// The following example slices an array from different interval ranges
@@ -42,8 +54,9 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-    func slice(_ range: CountableClosedRange<Int>) -> [Element] {
-        if isEmpty { return self }
+    @inlinable
+    func slice(_ range: CountableClosedRange<Int>) -> ArraySlice<Element> {
+        if isEmpty { return ArraySlice(self) }
         var range: (start: Int, end: Int) = (range.lowerBound, range.upperBound)
         if range.start < 0 { range.start = 0 }
         if range.end >= count { range.end = count - 1 }
@@ -51,7 +64,7 @@ public extension Array {
         if range.start == range.end { return [] }
         let start = index(startIndex, offsetBy: range.start)
         let end = index(startIndex, offsetBy: range.end)
-        return Array(self[start...end])
+        return self[start...end]
     }
     
     /// Returns an index that is the specified distance from the given index.
@@ -71,7 +84,8 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-    func slice(_ range: CountableRange<Int>) -> [Element] {
+    @inlinable
+    func slice(_ range: CountableRange<Int>) -> ArraySlice<Element> {
         let ran: CountableClosedRange<Int> = range.lowerBound...(range.upperBound - 1)
         return self.slice(ran)
     }
@@ -89,7 +103,8 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-    func slice(_ range: CountablePartialRangeFrom<Int>) -> [Element] {
+    @inlinable
+    func slice(_ range: CountablePartialRangeFrom<Int>) -> ArraySlice<Element> {
         guard (self.count - 1) >= range.lowerBound else { return [] }
         let ran: CountableClosedRange<Int> = range.lowerBound...(self.count - 1)
         return self.slice(ran)
@@ -108,7 +123,8 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-    func slice(_ range: PartialRangeUpTo<Int>) -> [Element] {
+    @inlinable
+    func slice(_ range: PartialRangeUpTo<Int>) -> ArraySlice<Element> {
         guard range.upperBound - 1 > 0 else { return [] }
         let ran: CountableClosedRange<Int> = 0...(range.upperBound - 1)
         return self.slice(ran)
@@ -127,7 +143,8 @@ public extension Array {
     /// - Parameters:
     ///   - range: A range for slice
     /// - Returns: An new Array
-    func slice(_ range: PartialRangeThrough<Int>) -> [Element] {
+    @inlinable
+    func slice(_ range: PartialRangeThrough<Int>) -> ArraySlice<Element> {
         let ran: CountableClosedRange<Int> = 0...range.upperBound
         return self.slice(ran)
     }
@@ -155,6 +172,7 @@ public extension Array {
     ///       Returns `nil` when `index` exceeds the threshold.
     ///
     /// - Complexity: Reading an element from an array is O(1).
+    @inlinable
     func value(at index: Int) -> Element? {
         let rawIndex = index < 0 ? count + index : index
         guard rawIndex < count, rawIndex >= 0 else { return nil }
@@ -179,7 +197,8 @@ public extension Array {
     ///   - repeatedValue: The element to repeat.
     ///   - count: The number of times to repeat the value passed in the
     ///     `repeating` parameter. `count` must be zero or greater.
-    @inlinable init(repeating block: (_ index: Int) -> Element, count: Int) {
+    @inlinable
+    init(repeating block: (_ index: Int) -> Element, count: Int) {
         self = (0..<count).map({ block($0) })
     }
     
@@ -197,7 +216,8 @@ public extension Array {
     ///   - repeatedValue: The element to repeat.
     ///   - count: The number of times to repeat the value passed in the
     ///     `repeating` parameter. `count` must be zero or greater.
-    @inlinable init(repeating block: () -> Element, count: Int) {
+    @inlinable
+    init(repeating block: () -> Element, count: Int) {
         self = (0..<count).map({ _ in block() })
     }
     
@@ -206,6 +226,7 @@ public extension Array {
 // MARK: - Array about other
 public extension Array {
     
+    @inlinable
     func decompose() -> (head: Iterator.Element, tail: SubSequence)? {
         return (count > 0) ? (self[0], self[1..<count]): nil
     }
@@ -224,22 +245,27 @@ extension Array where Element:Hashable {
 
 public extension Array {
     
+    @inlinable
     func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
         return dictionary(key: { $0[keyPath: key] }, value: { $0[keyPath: value] })
     }
     
+    @inlinable
     func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: (Element) throws -> Value?) rethrows -> [Key: Value] {
         return try dictionary(key: { $0[keyPath: key] }, value: value)
     }
     
+    @inlinable
     func dictionary<Key: Hashable, Value>(key: (Element) throws -> Key?, value: KeyPath<Element, Value>) rethrows -> [Key: Value] {
         return try dictionary(key: key, value: { $0[keyPath: value] })
     }
     
+    @inlinable
     func dictionary<Key: Hashable>(key: KeyPath<Element, Key>) -> [Key: Element] {
         return dictionary(key: key, value: \.self)
     }
     
+    @inlinable
     func dictionary<Key: Hashable, Value>(key: (Element) throws -> Key?, value: (Element) throws -> Value?) rethrows -> [Key: Value] {
         var result = [Key: Value]()
         for item in self {
