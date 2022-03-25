@@ -233,7 +233,7 @@ public extension Array {
     
 }
 
-extension Array where Element:Hashable {
+extension Array where Element: Hashable {
     
     var unique: [Element] {
         var uniq = Set<Element>()
