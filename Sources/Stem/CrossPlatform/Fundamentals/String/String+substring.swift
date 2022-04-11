@@ -44,7 +44,7 @@ public extension String {
 }
 
 public extension StemValue where Base == String {
-
+    
     func deleting(prefix: String) -> String {
         guard base.hasPrefix(prefix) else { return base }
         return String(base.dropFirst(prefix.count))

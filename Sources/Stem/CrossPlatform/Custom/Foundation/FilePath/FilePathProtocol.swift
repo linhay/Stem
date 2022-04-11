@@ -30,6 +30,10 @@ public protocol FilePathProtocol {
     
 }
 
+public extension FilePathProtocol {
+    var path: String { url.path }
+}
+
 extension FilePathProtocol {
     var manager: FileManager { FileManager.default }
 }

@@ -150,9 +150,7 @@ public extension FilePath.Folder {
     /// - Throws: FilePathError - 文件夹 存在, 无法创建
     @discardableResult
     func create() throws -> FilePath.Folder {
-        try manager.createDirectory(at: url,
-                                    withIntermediateDirectories: true,
-                                    attributes: nil)
+        try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         return self
     }
     
@@ -298,14 +296,9 @@ public extension FilePath.Folder {
     /// - Returns: [FilePath]
     func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         let (systemPredicates, customPredicates) = predicates.split()
-        
-        return try manager
-            .contentsOfDirectory(at: url,
-                                 includingPropertiesForKeys: nil,
-                                 options: systemPredicates)
-            .compactMap({ url in
-                return try FilePath(url: url)
-            })
+         return try manager
+            .contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: systemPredicates)
+            .compactMap({ try FilePath(url: $0) })
             .filter({ item -> Bool in
                 try customPredicates.contains(where: { try $0(item) == false }) == false
             })
