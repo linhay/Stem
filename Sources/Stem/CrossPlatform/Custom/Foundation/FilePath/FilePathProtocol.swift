@@ -84,6 +84,9 @@ public extension FilePathProtocol {
     
     var attributes: FilePathAttributes { .init(path: url) }
     
+    /// 文件权限
+    var permission: FilePathPermission { .init(url: url) }
+    
     /// 当前路径是否存在
     var isExist: Bool { manager.fileExists(atPath: url.path) }
     

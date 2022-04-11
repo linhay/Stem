@@ -304,4 +304,41 @@ public extension FilePath.Folder {
             })
     }
     
+    
+    /// 文件扫描
+    /// - Parameter scanSubFolder: 是否扫描子文件夹
+    /// - Returns: 文件序列
+    func fileScan(folderFilter: @escaping ((FilePath.Folder) async throws -> Bool) = { _ in true },
+                  fileFilter: @escaping ((FilePath.File) async throws -> Bool) = { _ in true }) -> AsyncThrowingStream<FilePath.File, Error> {
+        .init { continuation in
+            Task {
+                do {
+                    let urls = try manager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
+                    for url in urls {
+                        do {
+                            let filePath = try FilePath(url: url)
+                            switch filePath.referenceType {
+                            case .file(let file):
+                                if try await fileFilter(file) {
+                                    continuation.yield(file)
+                                }
+                            case .folder(let folder):
+                                if try await folderFilter(folder) {
+                                    for try await item in folder.fileScan(folderFilter: folderFilter) {
+                                        continuation.yield(item)
+                                    }
+                                }
+                            }
+                        } catch {
+                            debugPrint("FilePath Scan: ", error.localizedDescription)
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
+    }
+    
 }

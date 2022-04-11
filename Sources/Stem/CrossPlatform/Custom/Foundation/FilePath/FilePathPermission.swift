@@ -7,7 +7,11 @@
 
 import Foundation
 
-public struct FilePathPermission: OptionSet {
+public struct FilePathPermission: OptionSet, Comparable {
+    
+    public static func < (lhs: FilePathPermission, rhs: FilePathPermission) -> Bool {
+        lhs.rawValue < rhs.rawValue
+    }
     
     public static let exists     = FilePathPermission(rawValue: 1 << 0)
     public static let readable   = FilePathPermission(rawValue: 1 << 1)
@@ -19,6 +23,10 @@ public struct FilePathPermission: OptionSet {
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
+    }
+    
+    public init(url: URL) {
+        self.init(path: url.path)
     }
     
     public init(path: String) {
