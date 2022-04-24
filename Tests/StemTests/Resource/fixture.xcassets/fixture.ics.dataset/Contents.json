@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.ics",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.apple.ical.ics"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

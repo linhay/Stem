@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-bdav.mts",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.avchd-mpeg-2-transport-stream"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

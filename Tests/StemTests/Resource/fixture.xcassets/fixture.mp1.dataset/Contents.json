@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.mp1",
+      "idiom" : "universal",
+      "universal-type-identifier" : "io.iina.mpeg-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

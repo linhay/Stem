@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.ico",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.microsoft.ico"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

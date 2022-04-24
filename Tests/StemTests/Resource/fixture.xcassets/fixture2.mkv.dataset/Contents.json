@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture2.mkv",
+      "idiom" : "universal",
+      "universal-type-identifier" : "io.iina.mkv"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

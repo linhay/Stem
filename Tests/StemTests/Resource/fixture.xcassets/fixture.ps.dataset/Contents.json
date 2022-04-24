@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.ps",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.adobe.postscript"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

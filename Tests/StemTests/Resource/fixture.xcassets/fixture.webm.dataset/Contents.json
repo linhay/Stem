@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.webm",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.webmproject.webm"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

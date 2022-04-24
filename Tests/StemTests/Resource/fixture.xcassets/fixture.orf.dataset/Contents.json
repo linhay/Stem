@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.orf",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.olympus.raw-image"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

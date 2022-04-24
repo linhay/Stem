@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.amr",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.3gpp.adaptive-multi-rate-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

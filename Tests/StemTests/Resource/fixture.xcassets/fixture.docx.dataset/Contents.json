@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.docx",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.openxmlformats.wordprocessingml.document"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

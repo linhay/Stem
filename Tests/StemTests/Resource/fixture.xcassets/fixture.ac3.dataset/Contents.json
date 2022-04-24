@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.ac3",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.ac3-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

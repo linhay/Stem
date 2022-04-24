@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.bz2",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.bzip2-archive"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

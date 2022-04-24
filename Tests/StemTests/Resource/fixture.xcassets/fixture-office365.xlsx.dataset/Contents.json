@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-office365.xlsx",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.openxmlformats.spreadsheetml.sheet"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

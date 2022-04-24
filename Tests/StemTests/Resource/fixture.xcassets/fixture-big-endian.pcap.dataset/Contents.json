@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-big-endian.pcap",
+      "idiom" : "universal",
+      "universal-type-identifier" : "dyn.ah62d4rv4ge81a25bsa"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

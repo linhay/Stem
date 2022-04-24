@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.opus",
+      "idiom" : "universal",
+      "universal-type-identifier" : "io.iina.opus"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.dcm",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.nema.dicom"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

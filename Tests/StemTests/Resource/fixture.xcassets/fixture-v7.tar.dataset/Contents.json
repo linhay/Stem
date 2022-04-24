@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-v7.tar",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.tar-archive"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

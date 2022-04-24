@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.mp2",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.mp2"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

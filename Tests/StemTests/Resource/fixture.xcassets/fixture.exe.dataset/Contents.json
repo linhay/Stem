@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.exe",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.microsoft.windows-executable"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

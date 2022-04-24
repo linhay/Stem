@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.tar.gz",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.gnu.gnu-zip-archive"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

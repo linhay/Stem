@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.3gp",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.3gpp"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

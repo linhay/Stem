@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.epub",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.idpf.epub-container"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.sub.mpg",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.mpeg"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

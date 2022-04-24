@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.raf",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.fuji.raw-image"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

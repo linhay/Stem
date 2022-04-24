@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-unknown-ogg.ogx",
+      "idiom" : "universal",
+      "universal-type-identifier" : "dyn.ah62d4rv4ge808352"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

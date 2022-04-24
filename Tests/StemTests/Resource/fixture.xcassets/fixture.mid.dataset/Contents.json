@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.mid",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.midi-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

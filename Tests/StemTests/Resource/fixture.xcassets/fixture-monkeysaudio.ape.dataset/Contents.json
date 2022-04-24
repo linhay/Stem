@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-monkeysaudio.ape",
+      "idiom" : "universal",
+      "universal-type-identifier" : "io.iina.ape"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

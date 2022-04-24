@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.bmp",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.microsoft.bmp"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

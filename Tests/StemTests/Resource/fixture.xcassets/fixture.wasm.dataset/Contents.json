@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.wasm",
+      "idiom" : "universal",
+      "universal-type-identifier" : "dyn.ah62d4rv4ge81s2pxry"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

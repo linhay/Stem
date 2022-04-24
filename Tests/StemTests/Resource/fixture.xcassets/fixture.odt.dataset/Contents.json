@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.odt",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.oasis-open.opendocument.text"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

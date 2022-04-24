@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture3.nef",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.nikon.raw-image"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

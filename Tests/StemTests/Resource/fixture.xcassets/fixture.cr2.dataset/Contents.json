@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.cr2",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.canon.cr2-raw-image"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

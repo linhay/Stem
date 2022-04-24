@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-Leica-M10.dng",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.adobe.raw-image"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

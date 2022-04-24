@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.tar.xz",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.tukaani.xz-archive"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

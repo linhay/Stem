@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.stl",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.standard-tesselated-geometry-format"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

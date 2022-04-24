@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-sony-zv-e10.arw",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.sony.arw-raw-image"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

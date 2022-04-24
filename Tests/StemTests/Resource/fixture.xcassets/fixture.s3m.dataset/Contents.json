@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.s3m",
+      "idiom" : "universal",
+      "universal-type-identifier" : "dyn.ah62d4rv4ge81gq5r"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

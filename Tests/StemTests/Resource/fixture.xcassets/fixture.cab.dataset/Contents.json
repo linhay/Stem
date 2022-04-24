@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.cab",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.microsoft.cab"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

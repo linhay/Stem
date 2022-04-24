@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-id3v2.flac",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.xiph.flac"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-utf16-le-bom.xml",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.xml"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

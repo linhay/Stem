@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.odp",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.oasis-open.opendocument.presentation"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

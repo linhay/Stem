@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.deb",
+      "idiom" : "universal",
+      "universal-type-identifier" : "dyn.ah62d4rv4ge80k3pc"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

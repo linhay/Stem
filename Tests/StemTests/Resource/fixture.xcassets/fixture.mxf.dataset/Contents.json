@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.mxf",
+      "idiom" : "universal",
+      "universal-type-identifier" : "org.smpte.mxf"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

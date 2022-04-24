@@ -45,6 +45,8 @@ public extension FilePathAttributes {
 
 public extension FilePathAttributes {
     
+    var typeIdentifier: String { (try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier) ?? "" }
+    
     /// 返回一个字符串数组，表示给定路径的用户可见组件。
     var componentsToDisplay: [String] { FileManager.default.componentsToDisplay(forPath: url.path) ?? [] }
     /// 文件名

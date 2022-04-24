@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.spx",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.apple.systemprofiler.document"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.eps",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.adobe.encapsulated-postscript"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

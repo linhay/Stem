@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.avi",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.avi"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

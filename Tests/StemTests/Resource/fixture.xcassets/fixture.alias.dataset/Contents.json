@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.alias",
+      "idiom" : "universal",
+      "universal-type-identifier" : "dyn.ah62d4rv4ge80c5dmqf3u"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

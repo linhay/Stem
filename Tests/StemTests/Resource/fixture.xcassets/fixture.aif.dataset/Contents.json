@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.aif",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.aiff-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

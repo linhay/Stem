@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture.jp2",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.jpeg-2000"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

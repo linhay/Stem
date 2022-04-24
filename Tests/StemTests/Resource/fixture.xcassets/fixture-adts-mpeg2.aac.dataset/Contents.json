@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "fixture-adts-mpeg2.aac",
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.aac-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
