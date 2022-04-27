@@ -11,6 +11,49 @@ import Stem
 
 class AttributeHtmlTests: XCTestCase {
     
+    enum ParseHtmlResult {
+        case dxmm(String)
+        case text(String)
+    }
+    
+    func testHtmlImageSrc() throws {
+        let html = #"不错的帖子<img class="emotion emotion-default" src="https://assets.dxycdn.com/app/bbs/emotions/dxmm/04.png" />哈哈哈<img class="emotion emotion-default" src="https://assets.dxycdn.com/app/bbs/emotions/dxmm/13.png" />可以的可以<img class="emotion emotion-default" src="https://assets.dxycdn.com/app/bbs/emotions/dxmm/13.png" /><img class="emotion emotion-default" src="https://assets.dxycdn.com/app/bbs/emotions/dxmm/13.png" />的哈哈哈"#
+        guard html.isEmpty == false,
+              let imgRegex = try? NSRegularExpression(pattern: #"<(img|IMG)[^\<\>]*>"#),
+              let dxmmRegex = try? NSRegularExpression.init(pattern: #"src="(.+)""#) else {
+            return
+        }
+        let matches = imgRegex.matches(in: html, options: [], range: .init(location: 0, length: html.count))
+        let ranges = matches.map(\.range)
+        var result = [ParseHtmlResult]()
+        
+        func substring(_ range: NSRange, in string: String) -> String {
+            string[.init(utf16Offset: range.location, in: string)..<(.init(utf16Offset: range.location+range.length, in: string))].description
+        }
+        
+        func substring(_ range: ClosedRange<Int>, in string: String) -> String {
+            string[.init(utf16Offset: range.lowerBound, in: string)...(.init(utf16Offset: range.upperBound, in: string))].description
+        }
+        
+        var lastRange: NSRange = .init(location: 0, length: 0)
+        for range in ranges {
+            if range.location > lastRange.location+lastRange.length {
+                result.append(.text(substring(lastRange.location+lastRange.length...range.location-1, in: html)))
+            }
+            let str = substring(range, in: html)
+            if let range = dxmmRegex.firstMatch(in: str, range: .init(location: 0, length: str.count))?.range(at: 1) {
+                result.append(.dxmm(substring(range, in: str)))
+            } else {
+                result.append(.text(str))
+            }
+            lastRange = range
+        }
+        if lastRange.location + lastRange.length < html.count {
+            result.append(.text(substring(lastRange.location+lastRange.length...html.count-1, in: html)))
+        }
+        result
+    }
+    
     func testHtmlToString() throws {
       try Gcd.duration { duration in
             let data = #"""

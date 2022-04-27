@@ -10,12 +10,15 @@ import Stem
 
 class MimeTypeTest: XCTestCase {
 
-    func data(_ name: String) -> Data {
-        return NSDataAsset(name: name, bundle: .module)!.data
+    func data(_ name: String) -> Data? {
+        return NSDataAsset(name: name, bundle: .module)?.data
     }
     
     func Assert(_ name: String, _ type: Data.FileType) {
-        let mimeType = data(name).st.mimeType!
+        guard let mimeType = data(name)?.st.mimeType else {
+            XCTAssert(false, "not found: \(name) \(type)")
+            return
+        }
         let fileType = mimeType.fileType
         XCTAssert(fileType == type, "\(name): \(fileType) != \(type)")
     }
