@@ -51,7 +51,6 @@ class AttributeHtmlTests: XCTestCase {
         if lastRange.location + lastRange.length < html.count {
             result.append(.text(substring(lastRange.location+lastRange.length...html.count-1, in: html)))
         }
-        result
     }
     
     func testHtmlToString() throws {
