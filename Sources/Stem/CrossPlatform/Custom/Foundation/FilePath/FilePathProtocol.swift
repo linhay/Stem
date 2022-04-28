@@ -121,10 +121,10 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
     @discardableResult
-    func replace(_ path: Self) throws -> Self {
+    func replace(_ path: FilePathProtocol) throws -> Self {
         try? path.delete()
         try manager.copyItem(at: url, to: path.url)
-        return path
+        return try .init(url: path.url)
     }
     
     /// 获取所在文件夹
