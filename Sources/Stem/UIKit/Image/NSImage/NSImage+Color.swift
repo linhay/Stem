@@ -15,21 +15,26 @@ public extension Stem where Base: NSImage {
     /// - Parameter points: 点位
     /// - Returns: 颜色集合
     func pixels() -> [[StemColor]] {
-        guard let data = base.tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: data) else {
-            return []
-        }
+        let bmp = base.representations[0] as! NSBitmapImageRep
+        var data = bmp.bitmapData!
+        var pixels: [[StemColor]] = []
         
-        return (0...bitmap.pixelsHigh).lazy.map { y in
-            (0...bitmap.pixelsWide)
-                .lazy
-                .compactMap { x in
-                    bitmap.colorAt(x: x, y: y)
-                }
-                .map { color in
-                    StemColor.init(color)
-                }
+        for _ in 0..<bmp.pixelsHigh {
+            var rows = [StemColor]()
+           for _ in 0..<bmp.pixelsWide {
+               let r = data.pointee
+               data = data.advanced(by: 1)
+               let g = data.pointee
+               data = data.advanced(by: 1)
+               let b = data.pointee
+               data = data.advanced(by: 1)
+               let a = data.pointee
+               data = data.advanced(by: 1)
+               rows.append(.init(rgb: .init([r, g, b].map({ Double($0) / 255 })), alpha: Double(a) / 255))
+           }
+            pixels.append(rows)
         }
+        return pixels
     }
     
 }

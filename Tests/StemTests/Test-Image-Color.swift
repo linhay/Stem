@@ -15,23 +15,12 @@ class TestImageColor: XCTestCase {
         return NSDataAsset(name: "fixture.png", bundle: .module)!.data
     }
     
-    fileprivate struct STRGBAPixel {
-        let r: UInt8
-        let g: UInt8
-        let b: UInt8
-        let a: UInt8
-    }
-    
     func test() throws {
-        let bitmap = NSBitmapImageRep(data: data())!
-        let colors = (0...bitmap.pixelsHigh).map { y in
-            (0...bitmap.pixelsWide).compactMap { x in
-                bitmap.colorAt(x: x, y: y)
-            }
-        }
-        
-        
-
+        let image = NSImage(data: data())!
+        let colors = image.st.pixels()
+            .flatMap({ $0 })
+            .kmeansClusterAnalysis(count: 9, difference: .cie76)
+        print(colors.count)
     }
     
 }
