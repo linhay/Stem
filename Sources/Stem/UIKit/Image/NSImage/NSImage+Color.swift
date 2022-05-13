@@ -12,7 +12,7 @@ import AppKit
 public extension Stem where Base: NSImage {
     
     private var cgImage: CGImage? {
-        guard let imageData = self.tiffRepresentation else { return nil }
+        guard let imageData = base.tiffRepresentation else { return nil }
         guard let sourceData = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
         return CGImageSourceCreateImageAtIndex(sourceData, 0, nil)
     }
