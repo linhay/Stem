@@ -53,6 +53,21 @@ private extension Stem where Base: CGImage {
 
 public extension Stem where Base: CGImage {
     
+    /// 获取全部像素的颜色
+    /// - Parameter points: 点位
+    /// - Returns: 颜色集合
+    func colorCountedSet() -> [StemColor: Int] {
+        var result = [StemColor: Int]()
+        pixels().flatMap({ $0 }).forEach { color in
+            if result[color] == nil {
+                result[color] = 1
+            } else {
+                result[color] = result[color]! + 1
+            }
+        }
+        return result
+    }
+    
     /// 获取某几个点位像素的颜色
     /// - Parameter points: 点位
     /// - Returns: 颜色集合

@@ -94,15 +94,7 @@ public extension Stem where Base: UIImage {
     /// - Parameter points: 点位
     /// - Returns: 颜色集合
     func colorCountedSet() -> [StemColor: Int] {
-        var result = [StemColor: Int]()
-        pixels().flatMap({ $0 }).forEach { color in
-            if result[color] == nil {
-                result[color] = 1
-            } else {
-                result[color] = result[color]! + 1
-            }
-        }
-        return result
+        return base.cgImage?.st.colorCountedSet() ?? [:]
     }
 
     /// 获取某几个点位像素的颜色
