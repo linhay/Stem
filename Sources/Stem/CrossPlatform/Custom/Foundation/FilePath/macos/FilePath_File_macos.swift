@@ -12,7 +12,8 @@ import SwiftUI
 
 public extension FilePath.File {
     
-    struct AssociatedApplication {
+    struct AssociatedApplication: Identifiable, Equatable, Hashable {
+        public var id: URL { url }
         
         public let url: URL
         
