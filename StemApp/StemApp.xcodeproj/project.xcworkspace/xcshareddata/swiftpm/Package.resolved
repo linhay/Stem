@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "SectionKit",
+        "repositoryURL": "https://github.com/linhay/SectionKit",
+        "state": {
+          "branch": "feature/1.0.0",
+          "revision": "038b31e9c9399aabf507de805536a2ea0b71adc0",
+          "version": null
+        }
+      },
+      {
         "package": "SnapKit",
         "repositoryURL": "https://github.com/SnapKit/SnapKit",
         "state": {

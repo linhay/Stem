@@ -8,17 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		CD358EA8260CC3ED0018CE1F /* iOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */; };
-		CD60CDD627BE625200AED510 /* SectionSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */; };
-		CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63148B260233F700670B84 /* CoverFlowViewController.swift */; };
+		CD5A7672281A858E00337098 /* SectionKit in Frameworks */ = {isa = PBXBuildFile; productRef = CD5A7671281A858E00337098 /* SectionKit */; };
 		CD6314942602359E00670B84 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CD6314932602359E00670B84 /* Stem */; };
-		CD7A88F327BA3D7100243F38 /* CompositionalSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */; };
-		CD7A88F627BA576800243F38 /* AquamanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A88F527BA576800243F38 /* AquamanViewController.swift */; };
-		CD88026F2704187F0021AD5B /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD88026D2704158C0021AD5B /* iconfont.ttf */; };
-		CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */; };
-		CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D70522609FF5D006150C2 /* DecorationView.swift */; };
 		CDC17B98272A7896001166F3 /* Stem in Frameworks */ = {isa = PBXBuildFile; productRef = CDC17B97272A7896001166F3 /* Stem */; };
-		CDD08DCE27CCB37600B2F0D5 /* DifferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD08DCD27CCB37600B2F0D5 /* DifferenceViewController.swift */; };
-		CDD0D4B327B56BBB00A6031C /* CompositionalLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */; };
 		CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */; };
 		CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */; };
 		CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */; };
@@ -29,17 +21,13 @@
 		CDD3BF8425ECF37F0033ECD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8325ECF37F0033ECD6 /* Assets.xcassets */; };
 		CDD3BF8725ECF37F0033ECD6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8625ECF37F0033ECD6 /* Preview Assets.xcassets */; };
 		CDD3BF8A25ECF37F0033ECD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD3BF8825ECF37F0033ECD6 /* Main.storyboard */; };
-		CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */; };
-		CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */; };
 		CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */; };
 		CDD3BFC125ECF5680033ECD6 /* macOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFC025ECF5680033ECD6 /* macOSAppTests.swift */; };
 		CDD3BFD325ECF5B50033ECD6 /* TestInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCB25ECF5B50033ECD6 /* TestInvocation.swift */; };
 		CDD3BFD425ECF5B50033ECD6 /* TestSelectedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCC25ECF5B50033ECD6 /* TestSelectedProtocol.swift */; };
 		CDD3BFD525ECF5B50033ECD6 /* TestFilePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCD25ECF5B50033ECD6 /* TestFilePath.swift */; };
 		CDD3BFD625ECF5B50033ECD6 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD3BFCE25ECF5B50033ECD6 /* Double.swift */; };
-		CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE768D025FB06B4001045A4 /* HomeCell.swift */; };
 		CDE768DA25FB1636001045A4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDE768D925FB1636001045A4 /* SnapKit */; };
-		CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,18 +51,9 @@
 		CD358EA5260CC3ED0018CE1F /* iOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD358EA7260CC3ED0018CE1F /* iOSAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppTests.swift; sourceTree = "<group>"; };
 		CD358EA9260CC3ED0018CE1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionSwiftUIView.swift; sourceTree = "<group>"; };
-		CD63148B260233F700670B84 /* CoverFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverFlowViewController.swift; sourceTree = "<group>"; };
-		CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalSection.swift; sourceTree = "<group>"; };
-		CD7A88F527BA576800243F38 /* AquamanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AquamanViewController.swift; sourceTree = "<group>"; };
-		CD88026D2704158C0021AD5B /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
 		CD8D6A7826038E4C006150C2 /* Stem.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Stem.podspec; path = ../Stem.podspec; sourceTree = "<group>"; };
-		CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationViewSectionViewController.swift; sourceTree = "<group>"; };
-		CD8D70522609FF5D006150C2 /* DecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationView.swift; sourceTree = "<group>"; };
 		CDB3B524273918D900685FF6 /* iOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOSApp.entitlements; sourceTree = "<group>"; };
 		CDC17B96272A7865001166F3 /* Stem */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Stem; path = ..; sourceTree = "<group>"; };
-		CDD08DCD27CCB37600B2F0D5 /* DifferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifferenceViewController.swift; sourceTree = "<group>"; };
-		CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayoutViewController.swift; sourceTree = "<group>"; };
 		CDD3BF6425ECF3210033ECD6 /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,8 +69,6 @@
 		CDD3BF8925ECF37F0033ECD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CDD3BF8B25ECF37F0033ECD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDD3BF8C25ECF37F0033ECD6 /* macOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSApp.entitlements; sourceTree = "<group>"; };
-		CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCell.swift; sourceTree = "<group>"; };
-		CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterfallFlowViewController.swift; sourceTree = "<group>"; };
 		CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CDD3BFBE25ECF5680033ECD6 /* macOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD3BFC025ECF5680033ECD6 /* macOSAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSAppTests.swift; sourceTree = "<group>"; };
@@ -100,8 +77,6 @@
 		CDD3BFCC25ECF5B50033ECD6 /* TestSelectedProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSelectedProtocol.swift; sourceTree = "<group>"; };
 		CDD3BFCD25ECF5B50033ECD6 /* TestFilePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFilePath.swift; sourceTree = "<group>"; };
 		CDD3BFCE25ECF5B50033ECD6 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
-		CDE768D025FB06B4001045A4 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
-		CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTypeSectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +93,7 @@
 			files = (
 				CDE768DA25FB1636001045A4 /* SnapKit in Frameworks */,
 				CD6314942602359E00670B84 /* Stem in Frameworks */,
+				CD5A7672281A858E00337098 /* SectionKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,14 +122,6 @@
 				CD358EA9260CC3ED0018CE1F /* Info.plist */,
 			);
 			path = iOSAppTests;
-			sourceTree = "<group>";
-		};
-		CD7A88F427BA574800243F38 /* Aquaman */ = {
-			isa = PBXGroup;
-			children = (
-				CD7A88F527BA576800243F38 /* AquamanViewController.swift */,
-			);
-			path = Aquaman;
 			sourceTree = "<group>";
 		};
 		CDC17B95272A7865001166F3 /* Packages */ = {
@@ -193,12 +161,10 @@
 			isa = PBXGroup;
 			children = (
 				CDB3B524273918D900685FF6 /* iOSApp.entitlements */,
-				CDD3BFAE25ECF4DC0033ECD6 /* TestCell */,
-				CDD3BFB025ECF4DC0033ECD6 /* WaterfallFlow */,
 				CDD3BF6625ECF3220033ECD6 /* AppDelegate.swift */,
+				CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */,
 				CDD3BF6825ECF3220033ECD6 /* SceneDelegate.swift */,
 				CDD3BF6C25ECF3220033ECD6 /* Assets.xcassets */,
-				CD88026D2704158C0021AD5B /* iconfont.ttf */,
 				CDD3BF7125ECF3220033ECD6 /* LaunchScreen.storyboard */,
 				CDD3BF7425ECF3220033ECD6 /* Info.plist */,
 				CDD3BF6E25ECF3220033ECD6 /* Preview Content */,
@@ -241,33 +207,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CDD3BFAE25ECF4DC0033ECD6 /* TestCell */ = {
-			isa = PBXGroup;
-			children = (
-				CDD3BFAF25ECF4DC0033ECD6 /* TestCell.swift */,
-				CDE768D025FB06B4001045A4 /* HomeCell.swift */,
-			);
-			path = TestCell;
-			sourceTree = "<group>";
-		};
-		CDD3BFB025ECF4DC0033ECD6 /* WaterfallFlow */ = {
-			isa = PBXGroup;
-			children = (
-				CD7A88F427BA574800243F38 /* Aquaman */,
-				CDD3BFB125ECF4DC0033ECD6 /* WaterfallFlowViewController.swift */,
-				CDE768DE25FB59FA001045A4 /* SingleTypeSectionViewController.swift */,
-				CDD3BFB225ECF4DC0033ECD6 /* HomeViewController.swift */,
-				CD63148B260233F700670B84 /* CoverFlowViewController.swift */,
-				CD8D70522609FF5D006150C2 /* DecorationView.swift */,
-				CD8D70472609FB91006150C2 /* DecorationViewSectionViewController.swift */,
-				CDD0D4B227B56BBB00A6031C /* CompositionalLayoutViewController.swift */,
-				CD7A88F227BA3D7100243F38 /* CompositionalSection.swift */,
-				CD60CDD527BE625200AED510 /* SectionSwiftUIView.swift */,
-				CDD08DCD27CCB37600B2F0D5 /* DifferenceViewController.swift */,
-			);
-			path = WaterfallFlow;
 			sourceTree = "<group>";
 		};
 		CDD3BFBF25ECF5680033ECD6 /* macOSAppTests */ = {
@@ -321,6 +260,7 @@
 			packageProductDependencies = (
 				CDE768D925FB1636001045A4 /* SnapKit */,
 				CD6314932602359E00670B84 /* Stem */,
+				CD5A7671281A858E00337098 /* SectionKit */,
 			);
 			productName = iOSApp;
 			productReference = CDD3BF6425ECF3210033ECD6 /* iOSApp.app */;
@@ -401,6 +341,7 @@
 			mainGroup = CDD3BF3D25ECF25D0033ECD6;
 			packageReferences = (
 				CDE768D825FB1636001045A4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				CD5A7670281A858E00337098 /* XCRemoteSwiftPackageReference "SectionKit" */,
 			);
 			productRefGroup = CDD3BF4725ECF25D0033ECD6 /* Products */;
 			projectDirPath = "";
@@ -426,7 +367,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD88026F2704187F0021AD5B /* iconfont.ttf in Resources */,
 				CDD3BF7325ECF3220033ECD6 /* LaunchScreen.storyboard in Resources */,
 				CDD3BF7025ECF3220033ECD6 /* Preview Assets.xcassets in Resources */,
 				CDD3BF6D25ECF3220033ECD6 /* Assets.xcassets in Resources */,
@@ -502,20 +442,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD8D70482609FB91006150C2 /* DecorationViewSectionViewController.swift in Sources */,
 				CDD3BF6725ECF3220033ECD6 /* AppDelegate.swift in Sources */,
 				CDD3BF6925ECF3220033ECD6 /* SceneDelegate.swift in Sources */,
-				CDD3BFB425ECF4DC0033ECD6 /* WaterfallFlowViewController.swift in Sources */,
-				CDD08DCE27CCB37600B2F0D5 /* DifferenceViewController.swift in Sources */,
-				CD8D70532609FF5D006150C2 /* DecorationView.swift in Sources */,
-				CDD0D4B327B56BBB00A6031C /* CompositionalLayoutViewController.swift in Sources */,
-				CD7A88F627BA576800243F38 /* AquamanViewController.swift in Sources */,
-				CDD3BFB325ECF4DC0033ECD6 /* TestCell.swift in Sources */,
-				CDE768D125FB06B4001045A4 /* HomeCell.swift in Sources */,
-				CDE768DF25FB59FB001045A4 /* SingleTypeSectionViewController.swift in Sources */,
-				CD7A88F327BA3D7100243F38 /* CompositionalSection.swift in Sources */,
-				CD63148C260233F700670B84 /* CoverFlowViewController.swift in Sources */,
-				CD60CDD627BE625200AED510 /* SectionSwiftUIView.swift in Sources */,
 				CDD3BFB525ECF4DC0033ECD6 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -925,6 +853,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CD5A7670281A858E00337098 /* XCRemoteSwiftPackageReference "SectionKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/linhay/SectionKit";
+			requirement = {
+				branch = feature/1.0.0;
+				kind = branch;
+			};
+		};
 		CDE768D825FB1636001045A4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -936,6 +872,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CD5A7671281A858E00337098 /* SectionKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD5A7670281A858E00337098 /* XCRemoteSwiftPackageReference "SectionKit" */;
+			productName = SectionKit;
+		};
 		CD6314932602359E00670B84 /* Stem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stem;
