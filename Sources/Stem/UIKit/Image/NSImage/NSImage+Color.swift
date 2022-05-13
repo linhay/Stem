@@ -12,7 +12,9 @@ import AppKit
 public extension Stem where Base: NSImage {
     
     private var cgImage: CGImage? {
-        base.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        guard let imageData = self.tiffRepresentation else { return nil }
+        guard let sourceData = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
+        return CGImageSourceCreateImageAtIndex(sourceData, 0, nil)
     }
 
     /// 获取全部像素的颜色
