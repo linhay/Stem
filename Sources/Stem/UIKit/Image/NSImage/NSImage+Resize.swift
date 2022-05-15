@@ -16,7 +16,7 @@ public extension Stem where Base: NSImage {
               let representation = base.bestRepresentation(for: .init(origin: .zero, size: size), context: nil, hints: nil) else {
             return nil
         }
-        return NSImage.init(size: size, flipped: false) { rect in
+        return NSImage(size: size, flipped: false) { rect in
             representation.draw(in: rect)
         }
     }
