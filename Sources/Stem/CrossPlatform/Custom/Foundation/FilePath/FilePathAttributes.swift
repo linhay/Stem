@@ -45,12 +45,25 @@ public extension FilePathAttributes {
 
 public extension FilePathAttributes {
     
+    struct URLComponents {
+        let name: String
+        let `extension`: String
+    }
+    
     var typeIdentifier: String { (try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier) ?? "" }
     
     /// 返回一个字符串数组，表示给定路径的用户可见组件。
     var componentsToDisplay: [String] { FileManager.default.componentsToDisplay(forPath: url.path) ?? [] }
     /// 文件名
     var name: String { FileManager.default.displayName(atPath: url.path) }
+    
+    var nameComponents: URLComponents {
+        let list = name.split(separator: ".")
+        guard list.count > 1 else {
+            return .init(name: name, extension: "")
+        }
+        return .init(name: list.dropLast().joined(separator: "."), extension: String(list.last!))
+    }
     
     var attributes: [FileAttributeKey: Any] { (try? FileManager.default.attributesOfItem(atPath: url.path)) ?? [:] }
     /// 文件属性字典中的键，其值指示文件是否为只读。

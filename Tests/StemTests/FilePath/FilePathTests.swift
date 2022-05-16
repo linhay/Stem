@@ -18,8 +18,13 @@ final class FilePathTests: XCTestCase {
         print(try FilePath(path: "~/Desktop/.."))
         
         for try await item in try FilePath.Folder(path: "~/Desktop").fileScan() {
-            print(item.path)
+//            print(item.path)
+//            print(FileManager.default.displayName(atPath: item.path))
+            print(FileManager.default.componentsToDisplay(forPath: item.path))
+            
         }
+        
+        
     }
 
 }
