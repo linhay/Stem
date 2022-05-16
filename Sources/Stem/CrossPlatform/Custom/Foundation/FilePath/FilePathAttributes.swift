@@ -45,9 +45,23 @@ public extension FilePathAttributes {
 
 public extension FilePathAttributes {
     
-    struct URLComponents {
-        let name: String
-        let `extension`: String
+    struct NameComponents {
+        
+        public var name: String
+        public var `extension`: String?
+        public var filename: String { [name, self.extension].compactMap({ $0 }).joined(separator: ".") }
+        
+        init(_ name: String) {
+            let list = name.split(separator: ".")
+            guard list.count > 1, let `extension` = list.last else {
+                self.name = name
+                self.extension = nil
+                return
+            }
+            
+            self.name = name
+            self.`extension` = String(`extension`)
+        }
     }
     
     var typeIdentifier: String { (try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier) ?? "" }
@@ -57,13 +71,7 @@ public extension FilePathAttributes {
     /// 文件名
     var name: String { FileManager.default.displayName(atPath: url.path) }
     
-    var nameComponents: URLComponents {
-        let list = name.split(separator: ".")
-        guard list.count > 1 else {
-            return .init(name: name, extension: "")
-        }
-        return .init(name: list.dropLast().joined(separator: "."), extension: String(list.last!))
-    }
+    var nameComponents: NameComponents { .init(name) }
     
     var attributes: [FileAttributeKey: Any] { (try? FileManager.default.attributesOfItem(atPath: url.path)) ?? [:] }
     /// 文件属性字典中的键，其值指示文件是否为只读。
