@@ -59,7 +59,7 @@ public extension FilePathAttributes {
                 return
             }
             
-            self.name = name
+            self.name = String(list.dropLast().joined(separator: "."))
             self.`extension` = String(`extension`)
         }
     }
