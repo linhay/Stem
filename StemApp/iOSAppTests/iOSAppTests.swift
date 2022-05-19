@@ -12,7 +12,7 @@ import AVKit
 class iOSAppTests: XCTestCase {
 
     func testMMAP() throws {
-        let filePath = try FilePath.Folder(sanbox: .cache).file(name: "mmap5.json")
+        let filePath = try Folder(sanbox: .cache).file(name: "mmap5.json")
         try? filePath.delete()
         try? filePath.create()
         

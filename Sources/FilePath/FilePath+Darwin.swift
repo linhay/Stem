@@ -23,15 +23,15 @@
 import Foundation
 import Darwin
 
-public extension FilePath.File {
+public extension File {
     
     var system: System { System(filePath: self) }
         
     class System {
         
-        let filePath: FilePath.File
+        let filePath: File
         
-        init(filePath: FilePath.File) {
+        init(filePath: File) {
             self.filePath = filePath
         }
         
@@ -39,7 +39,7 @@ public extension FilePath.File {
     
 }
 
-public extension FilePath.File.System {
+public extension File.System {
 
     func open(flag1: OpenType, flag2: OpenFlag?, mode: OpenMode?) throws -> Int32 {
         var flag: Int32 = flag1.rawValue
@@ -124,7 +124,7 @@ public extension FilePath.File.System {
     
 }
 
-public extension FilePath.File.System {
+public extension File.System {
     
     struct OpenMode: OptionSet {
         /// S_IRWXU 00700 权限, 代表该文件所有者具有可读、可写及可执行的权限.

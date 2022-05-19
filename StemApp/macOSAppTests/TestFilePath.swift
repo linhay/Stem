@@ -31,7 +31,7 @@ class TestFilePath: XCTestCase {
     }
 
     func testCheckAndroidAARFilename() throws {
-        let folder = try FilePath.Folder(path: "/Users/linhey/Desktop/dxyer-assets-2/Icons")
+        let folder = try Folder(path: "/Users/linhey/Desktop/dxyer-assets-2/Icons")
         try folder
             .allSubFilePaths()
             .map(\.attributes.name)

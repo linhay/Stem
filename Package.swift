@@ -8,9 +8,11 @@ let package = Package(
     platforms: [.iOS(.v13), .macOS(.v10_15), .tvOS(.v13), .watchOS(.v6)],
     products: [
         .library(name: "Stem", targets: ["Stem"]),
+        .library(name: "FilePath", targets: ["FilePath"]),
     ],
     targets: [
         .target(name: "Stem", dependencies: []),
-        .testTarget(name: "StemTests", dependencies: ["Stem"]),
+        .target(name: "FilePath", dependencies: []),
+        .testTarget(name: "StemTests", dependencies: ["Stem", "FilePath"]),
     ]
 )

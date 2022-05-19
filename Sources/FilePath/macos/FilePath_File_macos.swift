@@ -10,7 +10,7 @@ import Foundation
 import AppKit
 import SwiftUI
 
-public extension FilePath.File {
+public extension File {
     
     struct AssociatedApplication: Identifiable, Equatable, Hashable {
         
@@ -35,7 +35,7 @@ public extension FilePath.File {
             .init(nsImage: icon())
         }
         
-        public func open(_ files: [FilePath.File]) {
+        public func open(_ files: [File]) {
             NSWorkspace.shared.open(files.map(\.url), withApplicationAt: url, configuration: NSWorkspace.OpenConfiguration())
         }
     }

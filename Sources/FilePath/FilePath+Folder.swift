@@ -23,94 +23,91 @@
 import Foundation
 import Combine
 
-public extension FilePath {
+public struct Folder: FilePathProtocol, Identifiable, Equatable {
     
-    struct Folder: FilePathProtocol, Identifiable, Equatable {
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public final class Watcher {
         
-        @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-        public final class Watcher {
-            
-            enum State: Int, Equatable {
-                case cancel
-                case activate
-                case suspend
-            }
-            
-            public private(set) lazy var publisher = subject.eraseToAnyPublisher()
-            
-            private let subject = PassthroughSubject<Void, Never>()
-            private let queue = DispatchQueue(label: "stem.folder.watcher.queue")
-            private var observer: DispatchSourceFileSystemObject?
-            private var state = State.cancel
-            private let folder: Folder
-            
-            init(folder: Folder) {
-                self.folder = folder
-            }
-            
-            @discardableResult
-            public func cancel() -> Watcher {
-                guard state != .cancel else { return self }
-                observer?.cancel()
-                state = .cancel
-                return self
-            }
-            
-            @discardableResult
-            public func activate() -> Watcher {
-                switch state {
-                case .cancel:
-                    let descriptor = Darwin.open(folder.url.path, O_EVTONLY)
-                    let observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
-                                                                             eventMask: .write,
-                                                                             queue: queue)
-                    observer.setEventHandler { [weak self] in
-                        self?.subject.send(())
-                    }
-                    
-                    observer.setCancelHandler {
-                        Darwin.close(descriptor)
-                    }
-                    self.observer = observer
-                case .activate:
-                    return self
-                case .suspend:
-                    break
+        enum State: Int, Equatable {
+            case cancel
+            case activate
+            case suspend
+        }
+        
+        public private(set) lazy var publisher = subject.eraseToAnyPublisher()
+        
+        private let subject = PassthroughSubject<Void, Never>()
+        private let queue = DispatchQueue(label: "stem.folder.watcher.queue")
+        private var observer: DispatchSourceFileSystemObject?
+        private var state = State.cancel
+        private let folder: Folder
+        
+        init(folder: Folder) {
+            self.folder = folder
+        }
+        
+        @discardableResult
+        public func cancel() -> Watcher {
+            guard state != .cancel else { return self }
+            observer?.cancel()
+            state = .cancel
+            return self
+        }
+        
+        @discardableResult
+        public func activate() -> Watcher {
+            switch state {
+            case .cancel:
+                let descriptor = Darwin.open(folder.url.path, O_EVTONLY)
+                let observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
+                                                                         eventMask: .write,
+                                                                         queue: queue)
+                observer.setEventHandler { [weak self] in
+                    self?.subject.send(())
                 }
-                state = .activate
-                observer?.activate()
+                
+                observer.setCancelHandler {
+                    Darwin.close(descriptor)
+                }
+                self.observer = observer
+            case .activate:
                 return self
+            case .suspend:
+                break
             }
-            
-            @discardableResult
-            public func suspend() -> Watcher {
-                guard state == .activate else { return self }
-                state = .suspend
-                observer?.suspend()
-                return self
-            }
+            state = .activate
+            observer?.activate()
+            return self
         }
         
-        public var id: URL { url }
-
-        public let url: URL
-        
-        public init(url: URL) {
-            self.url = url.standardized
+        @discardableResult
+        public func suspend() -> Watcher {
+            guard state == .activate else { return self }
+            state = .suspend
+            observer?.suspend()
+            return self
         }
-        
-        public init(path: String) throws {
-            try self.init(url: Self.standardizedPath(path))
-        }
-        
+    }
+    
+    public var id: URL { url }
+    
+    public let url: URL
+    
+    public init(_ url: URL) {
+        self.url = url.standardized
+    }
+    
+    public init(_ path: String) throws {
+        try self.init(Self.standardizedPath(path))
     }
     
 }
 
-public extension FilePath.Folder {
+
+public extension Folder {
     
     @discardableResult
-    func merge(with folder: FilePath.Folder) -> FilePath.Folder {
+    func merge(with folder: Folder) -> Folder {
         return folder
     }
     
@@ -121,18 +118,18 @@ public extension FilePath.Folder {
     
 }
 
-public extension FilePath.Folder {
+public extension Folder {
     
-    func file(name: String) -> FilePath.File {
-        FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
+    func file(name: String) -> File {
+        File(url.appendingPathComponent(name, isDirectory: false))
     }
     
-    func folder(name: String) -> FilePath.Folder {
-        FilePath.Folder(url: url.appendingPathComponent(name, isDirectory: true))
+    func folder(name: String) -> Folder {
+        Folder(url.appendingPathComponent(name, isDirectory: true))
     }
     
-    func open(name: String) throws -> FilePath.File {
-        let file = FilePath.File(url: url.appendingPathComponent(name, isDirectory: false))
+    func open(name: String) throws -> File {
+        let file = File(url.appendingPathComponent(name, isDirectory: false))
         if file.isExist {
             return file
         } else {
@@ -144,19 +141,19 @@ public extension FilePath.Folder {
 }
 
 
-public extension FilePath.Folder {
+public extension Folder {
     
     /// 根据当前[FilePath]文件夹
     /// - Throws: FilePathError - 文件夹 存在, 无法创建
     @discardableResult
-    func create() throws -> FilePath.Folder {
+    func create() throws -> Folder {
         try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         return self
     }
     
     @discardableResult
-    func create(file name: String, data: Data? = nil) throws -> FilePath.File {
-        return try FilePath.File(url: url.appendingPathComponent(name, isDirectory: false)).create(with: data)
+    func create(file name: String, data: Data? = nil) throws -> File {
+        return try File(url.appendingPathComponent(name, isDirectory: false)).create(with: data)
     }
     
     /// 在当前路径下创建文件夹
@@ -164,15 +161,15 @@ public extension FilePath.Folder {
     /// - Throws: FileManager error
     /// - Returns: 创建文件夹的 FilePath
     @discardableResult
-    func create(folder name: String) throws -> FilePath.Folder {
-        return try FilePath.Folder(url: url.appendingPathComponent(name, isDirectory: true)).create()
+    func create(folder name: String) throws -> Folder {
+        return try Folder(url.appendingPathComponent(name, isDirectory: true)).create()
     }
     
 }
 
 
 // MARK: - get subFilePaths
-public extension FilePath.Folder {
+public extension Folder {
     
     enum SearchPredicate {
         case skipsSubdirectoryDescendants
@@ -187,7 +184,7 @@ public extension FilePath.Folder {
     
 }
 
-extension Array where Element == FilePath.Folder.SearchPredicate {
+extension Array where Element == Folder.SearchPredicate {
     
     func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath) throws -> Bool]) {
         var systemPredicates: FileManager.DirectoryEnumerationOptions = []
@@ -202,33 +199,33 @@ extension Array where Element == FilePath.Folder.SearchPredicate {
             case .skipsHiddenFiles:
                 systemPredicates.insert(.skipsHiddenFiles)
             case .includesDirectoriesPostOrder:
-                #if os(iOS)
+#if os(iOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #elseif os(tvOS)
+#elseif os(tvOS)
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #elseif os(macOS)
+#elseif os(macOS)
                 if #available(macOS 10.15, *) {
                     systemPredicates.insert(.includesDirectoriesPostOrder)
                 }
-                #endif
+#endif
             case .producesRelativePathURLs:
-                #if os(iOS)
+#if os(iOS)
                 if #available(iOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #elseif os(tvOS)
+#elseif os(tvOS)
                 if #available(tvOS 13.0, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #elseif os(macOS)
+#elseif os(macOS)
                 if #available(macOS 10.15, *) {
                     systemPredicates.insert(.producesRelativePathURLs)
                 }
-                #endif
+#endif
             case .custom(let v):
                 customPredicates.append(v)
             }
@@ -239,7 +236,7 @@ extension Array where Element == FilePath.Folder.SearchPredicate {
     
 }
 
-public extension FilePath.Folder {
+public extension Folder {
     
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
@@ -272,7 +269,7 @@ public extension FilePath.Folder {
                 continue
             }
             
-            let item = FilePath(url: fileURL, type: isDirectory ? .folder : .file)
+            let item = FilePath(fileURL, as: isDirectory ? .folder : .file)
             if try customPredicates.contains(where: { try $0(item) == false }) {
                 continue
             }
@@ -296,9 +293,9 @@ public extension FilePath.Folder {
     /// - Returns: [FilePath]
     func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
         let (systemPredicates, customPredicates) = predicates.split()
-         return try manager
+        return try manager
             .contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: systemPredicates)
-            .compactMap({ try FilePath(url: $0) })
+            .compactMap({ try FilePath($0) })
             .filter({ item -> Bool in
                 try customPredicates.contains(where: { try $0(item) == false }) == false
             })
@@ -308,15 +305,15 @@ public extension FilePath.Folder {
     /// 文件扫描
     /// - Parameter scanSubFolder: 是否扫描子文件夹
     /// - Returns: 文件序列
-    func fileScan(folderFilter: @escaping ((FilePath.Folder) async throws -> Bool) = { _ in true },
-                  fileFilter: @escaping ((FilePath.File) async throws -> Bool) = { _ in true }) -> AsyncThrowingStream<FilePath.File, Error> {
+    func fileScan(folderFilter: @escaping ((Folder) async throws -> Bool) = { _ in true },
+                  fileFilter: @escaping ((File) async throws -> Bool) = { _ in true }) -> AsyncThrowingStream<File, Error> {
         .init { continuation in
             Task {
                 do {
                     let urls = try manager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
                     for url in urls {
                         do {
-                            let filePath = try FilePath(url: url)
+                            let filePath = try FilePath(url)
                             switch filePath.referenceType {
                             case .file(let file):
                                 if try await fileFilter(file) {

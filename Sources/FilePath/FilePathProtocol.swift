@@ -26,7 +26,7 @@ public protocol FilePathProtocol {
     
     var url: URL { get }
     
-    init(url: URL) throws
+    init(_ url: URL) throws
     
 }
 
@@ -43,11 +43,11 @@ extension FilePathProtocol {
     
    public static func standardizedPath(_ path: String) throws -> URL {
         if path == "~" {
-            return try FilePath.Folder.SanboxRootPath.home.url()
+            return try Folder.SanboxRootPath.home.url()
         } else if path.hasPrefix("~/") {
             var components = path.split(separator: "/").map({ $0.description })
             components = Array(components.dropFirst())
-            let home = FilePath.Folder.SanboxRootPath.home.path?.split(separator: "/").map({ $0.description }) ?? []
+            let home = Folder.SanboxRootPath.home.path?.split(separator: "/").map({ $0.description }) ?? []
             components.insert(contentsOf: home, at: 0)
             return URL(fileURLWithPath: Self.standardizedPath(components))
         } else {
@@ -78,7 +78,7 @@ public extension FilePathProtocol {
     
     var eraseToFilePath: FilePath {
         get throws {
-            return try .init(url: url)
+            return try .init(url)
         }
     }
     
@@ -101,20 +101,20 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError -
     @discardableResult
-    func move(into folder: FilePath.Folder) throws -> Self {
+    func move(into folder: Folder) throws -> Self {
         let fileURL = folder.url.appendingPathComponent(attributes.name)
         try manager.moveItem(at: url, to: fileURL)
-        return try .init(url: fileURL)
+        return try .init(fileURL)
     }
     
     /// 复制至目标文件夹
     /// - Parameter path: 目标文件夹
     /// - Throws: FileManagerError -
     @discardableResult
-    func copy(into folder: FilePath.Folder) throws -> Self {
+    func copy(into folder: Folder) throws -> Self {
         let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
         try manager.copyItem(at: url, to: desURL)
-        return try .init(url: desURL)
+        return try .init(desURL)
     }
     
     /// 替换至目标路径
@@ -124,17 +124,17 @@ public extension FilePathProtocol {
     func replace(_ path: FilePathProtocol) throws -> Self {
         try? path.delete()
         try manager.copyItem(at: url, to: path.url)
-        return try .init(url: path.url)
+        return try .init(path.url)
     }
     
     /// 获取所在文件夹
     /// - Returns: 所在文件夹
-    func parentFolder() -> FilePath.Folder? {
+    func parentFolder() -> Folder? {
         let parent = url.deletingLastPathComponent()
         guard parent != url else {
             return nil
         }
-        return .init(url: parent)
+        return .init(parent)
     }
     
 }

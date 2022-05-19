@@ -22,27 +22,23 @@
 
 import Foundation
 
-public extension FilePath {
+public struct File: FilePathProtocol, Identifiable, Equatable {
     
-    struct File: FilePathProtocol, Identifiable, Equatable {
-        
-        public var id: URL { url }
-
-        public let url: URL
-        
-        public init(url: URL) {
-            self.url = url.standardized
-        }
-        
-        public init(path: String) throws {
-            try self.init(url: Self.standardizedPath(path))
-        }
-        
+    public var id: URL { url }
+    
+    public let url: URL
+    
+    public init(_ url: URL) {
+        self.url = url.standardized
+    }
+    
+    public init(_ path: String) throws {
+        try self.init(Self.standardizedPath(path))
     }
     
 }
 
-public extension FilePath.File {
+public extension File {
     
     func read(_ options: Data.ReadingOptions = [], encoding: String.Encoding = .utf8) throws -> String {
         String(data: try data(options: options), encoding: encoding) ?? ""
@@ -54,7 +50,7 @@ public extension FilePath.File {
     
 }
 
-public extension FilePath.File {
+public extension File {
     
     /// 文件数据
     /// - Throws: Data error
@@ -66,11 +62,11 @@ public extension FilePath.File {
     /// 根据当前[FilePath]创建文件/文件夹
     /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
     @discardableResult
-    func create(with data: Data? = nil) throws -> FilePath.File {
+    func create(with data: Data? = nil) throws -> File {
         if isExist {
             throw FilePath.Error(message: "文件存在, 无法创建: \(url.path)")
         }
-        try FilePath.Folder(url: url.deletingLastPathComponent()).create()
+        try Folder(url.deletingLastPathComponent()).create()
         manager.createFile(atPath: url.path, contents: data, attributes: nil)
         return self
     }

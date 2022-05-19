@@ -29,6 +29,13 @@ public extension Array where Element == StemColor {
         public let size: Int
     }
     
+    /// MMCQ (modified median cut quantization) algorithm from
+    /// the Leptonica library (http://www.leptonica.com/).
+    func mmcq() {
+        /// https://github.com/DanBloomberg/leptonica/blob/0ffbc6822c23725b5b9f6876e2620a22ba3689f4/src/colorquant2.c
+        
+    }
+    
     /// k-均值算法
     /// - Parameters:
     ///   - count: 中心点数量

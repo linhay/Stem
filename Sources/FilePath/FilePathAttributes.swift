@@ -40,7 +40,7 @@ public extension FilePathAttributes {
         attributes[key] = value
         try FileManager.default.setAttributes(attributes, ofItemAtPath: url.path)
     }
-
+    
 }
 
 public extension FilePathAttributes {

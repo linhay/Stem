@@ -9,6 +9,14 @@ import Foundation
 #if canImport(AppKit)
 import AppKit
 #endif
+#if canImport(UIKit)
+import UIKit
+#endif
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
+
+
 
 public class StemSVG {
     

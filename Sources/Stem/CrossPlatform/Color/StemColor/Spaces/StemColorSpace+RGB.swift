@@ -55,9 +55,13 @@ public extension StemColor {
 public extension StemColor.RGBSpace {
     
     var simd: SIMD3<Double> { .init(red, green, blue) }
-    
+
     init(_ simd: SIMD3<Double>) {
         self.init(red: simd.x, green: simd.y, blue: simd.z)
+    }
+    
+    init(_ simd: SIMD3<UInt8>) {
+        self.init(simd.indices.map({ simd[$0] }).map({ Double($0) / 255 }))
     }
     
 }

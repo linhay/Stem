@@ -27,7 +27,7 @@ import AppKit
 public extension FilePathProtocol {
     
     func showInFinder() {
-        guard let referenceType = try? FilePath(url: url).referenceType else {
+        guard let referenceType = try? FilePath(url).referenceType else {
             return
         }
         switch referenceType {
@@ -48,7 +48,7 @@ public extension FilePathProtocol {
         panel.directoryURL = folder
         
         if panel.runModal() == .OK {
-            return panel.urls.compactMap({ try? .init(url: $0) })
+            return panel.urls.compactMap({ try? .init($0) })
         }
         
         return []
@@ -56,7 +56,7 @@ public extension FilePathProtocol {
     
 }
 
-public extension FilePath.Folder {
+public extension Folder {
     
     func selectInFinder(support: [FilePathItemType] = [.file, .folder],
                         allowsMultipleSelection: Bool = true) -> [FilePath] {

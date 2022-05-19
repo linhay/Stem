@@ -10,14 +10,33 @@ import XCTest
 import Stem
 import Darwin
 import ReplayKit
+import FilePath
+#if canImport(AppKit)
+import AppKit
+#endif
+#if canImport(UIKit)
+import UIKit
+#endif
 
 class TestImageColor: XCTestCase {
     
     var png: Data { NSDataAsset(name: "fixture.png", bundle: .module)!.data }
+    
+#if canImport(AppKit)
     var svg: NSImage { Bundle.module.image(forResource: "fixture.svg")! }
+#endif
+#if canImport(UIKit)
+    var svg: UIImage { UIImage.init(named: "fixture.svg", in: .module, with: nil)! }
+#endif
     
     func testPng() throws {
+#if canImport(AppKit)
         let image = NSImage(data: png)!
+#endif
+#if canImport(UIKit)
+        let image = UIImage(data: png)!
+#endif
+        
         let colors = image.st.pixels()
         assert(colors.isEmpty == false)
     }
@@ -28,12 +47,13 @@ class TestImageColor: XCTestCase {
         assert(colors.isEmpty == false)
     }
     
+#if canImport(AppKit)
     func testSize() throws {
         let size = CGSize(width: 1024, height: 1024)
         let data = svg
             .st.scale(size: size)?
             .st.data(using: .jpeg, properties: [.compressionFactor: 1])
-        let file = try FilePath.File(path: "~/Downloads/test-size.jpg")
+        let file = try File("~/Downloads/test-size.jpg")
         _ = try? file.delete()
         try file.create(with: data)
         assert(file.isExist)
@@ -51,11 +71,12 @@ class TestImageColor: XCTestCase {
                 let data = svg
                     .st.scale(size: size)?
                     .st.data(using: .png, properties: [.compressionFactor: 1])
-                let file = try FilePath.File(path: "~/Downloads/icons/icon_\(Int(size.width))_\(Int(size.height)).png")
+                let file = try File("~/Downloads/icons/icon_\(Int(size.width))_\(Int(size.height)).png")
                 _ = try? file.delete()
                 try file.create(with: data)
             }
     }
+#endif
     
     func test() {
         let data = """

@@ -24,7 +24,7 @@ import Darwin
 import Foundation
 
 // MARK: - Error
-public extension FilePath.File.System {
+public extension File.System {
     
     class MMAP {
         
@@ -77,7 +77,7 @@ public extension FilePath.File.System {
     
 }
 
-public extension FilePath.File.System.MMAP {
+public extension File.System.MMAP {
     
     func sync() {
         msync(startPoint, Int(fileSize), descriptor)

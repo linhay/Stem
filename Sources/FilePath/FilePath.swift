@@ -33,8 +33,8 @@ public enum FilePathItemType: Int, Equatable, Codable {
 
 public enum FilePathReferenceType: Identifiable {
     
-    case file(FilePath.File)
-    case folder(FilePath.Folder)
+    case file(File)
+    case folder(Folder)
     
     public var id: URL {
         switch self {
@@ -59,38 +59,38 @@ public struct FilePath: FilePathProtocol, Identifiable, Equatable {
     public var referenceType: FilePathReferenceType {
         switch type {
         case .file:
-            return .file(.init(url: url))
+            return .file(.init(url))
         case .folder:
-            return .folder(.init(url: url))
+            return .folder(.init(url))
         }
     }
     
     public var url: URL
     
-    public init(url: URL, type: FilePathItemType) {
+    public init(_ url: URL, as type: FilePathItemType) {
         self.url = url.standardized
         self.type = type
     }
     
-    public init(url: URL) throws {
-        self.init(url: url, type: try FilePath.isFolder(url) ? .folder : .file)
+    public init(_ url: URL) throws {
+        self.init(url, as: try FilePath.isFolder(url) ? .folder : .file)
     }
     
-    public init(path: String) throws {
-        try self.init(url: Self.standardizedPath(path))
+    public init(_ path: String) throws {
+        try self.init(Self.standardizedPath(path))
     }
 }
 
 public extension FilePath {
     
-    var asFile: FilePath.File? {
-        type == .file ? .init(url: url) : nil
+    var asFile: File? {
+        type == .file ? .init(url) : nil
     }
     
-    var asFolder: FilePath.Folder? {
-        type == .folder ? .init(url: url) : nil
+    var asFolder: Folder? {
+        type == .folder ? .init(url) : nil
     }
-    
+      
 }
 
 private extension FilePath {

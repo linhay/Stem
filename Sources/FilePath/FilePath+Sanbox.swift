@@ -22,9 +22,9 @@
 
 import Foundation
 
-public extension FilePath.Folder {
-
-    static let home = try! FilePath.Folder(sanbox: .home)
+public extension Folder {
+    
+    static let home = try! Folder(sanbox: .home)
     
     /// iOS 沙盒路径
     enum SanboxRootPath {
@@ -34,7 +34,7 @@ public extension FilePath.Folder {
         case library
         case cache
         case temporary
-
+        
         var path: String? {
             try? url().path
         }
@@ -56,11 +56,11 @@ public extension FilePath.Folder {
                 return URL(fileURLWithPath: NSTemporaryDirectory())
             }
         }
-
+        
     }
-
+    
     init(sanbox rootPath: SanboxRootPath) throws {
-        self.init(url: try rootPath.url())
+        self.init(try rootPath.url())
     }
-
+    
 }

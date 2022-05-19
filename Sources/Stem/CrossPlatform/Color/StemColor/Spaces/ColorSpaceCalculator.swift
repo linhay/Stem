@@ -35,7 +35,7 @@ public extension StemColor {
 public extension StemColor.SpaceCalculator {
     
     func convert(_ space: StemColor.RGBSpace) -> StemColor.HSLSpace {
-        let (red, green, blue) = space.unpack
+        let (red, green, blue) = (space.red, space.green, space.blue)
         let Max = max(red, green, blue)
         let Min = min(red, green, blue)
         let delMax = Max - Min
@@ -259,8 +259,8 @@ public extension StemColor.SpaceCalculator {
     }
     
     func convert(_ space: StemColor.RGBSpace) -> StemColor.HSBSpace {
-        let (red, green, blue) = space.unpack
-        
+        let (red, green, blue) = (space.red, space.green, space.blue)
+
         let Max = max(red, green, blue)
         let Min = min(red, green, blue)
         let delMax = Max - Min
