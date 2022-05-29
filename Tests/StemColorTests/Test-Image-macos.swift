@@ -10,7 +10,8 @@ import XCTest
 import Stem
 import Darwin
 import ReplayKit
-import FilePath
+import StemFilePath
+import StemColor
 #if canImport(AppKit)
 import AppKit
 #endif
@@ -22,7 +23,7 @@ class TestImageColor: XCTestCase {
     
     var png: Data { NSDataAsset(name: "fixture.png", bundle: .module)!.data }
     
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
     var svg: NSImage { Bundle.module.image(forResource: "fixture.svg")! }
 #endif
 #if canImport(UIKit)
@@ -30,24 +31,24 @@ class TestImageColor: XCTestCase {
 #endif
     
     func testPng() throws {
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
         let image = NSImage(data: png)!
 #endif
 #if canImport(UIKit)
         let image = UIImage(data: png)!
 #endif
         
-        let colors = image.st.pixels()
+        let colors = StemColor.array(from: image, filter: StemColor.ImageFilterPixel.allCases)
         assert(colors.isEmpty == false)
     }
     
     func testSVG() throws {
         let image = svg
-        let colors = image.st.pixels()
-        assert(colors.isEmpty == false)
+        let colors = StemColor.array(from: image)
+        assert(colors.count == 512 * 512)
     }
     
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
     func testSize() throws {
         let size = CGSize(width: 1024, height: 1024)
         let data = svg

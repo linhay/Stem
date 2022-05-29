@@ -23,7 +23,7 @@
 import Foundation
 
 // MARK: - Error
-public extension FilePath {
+public extension Path {
     
     struct Error: LocalizedError {
         

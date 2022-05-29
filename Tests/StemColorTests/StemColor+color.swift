@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Stem
+import StemColor
 
 extension StemColor {
     

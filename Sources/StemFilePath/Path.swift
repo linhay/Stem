@@ -47,7 +47,7 @@ public enum FilePathReferenceType: Identifiable {
     
 }
 
-public struct FilePath: FilePathProtocol, Identifiable, Equatable {
+public struct Path: FilePathProtocol, Identifiable, Equatable {
     
     public var id: URL { referenceType.id }
     
@@ -73,7 +73,7 @@ public struct FilePath: FilePathProtocol, Identifiable, Equatable {
     }
     
     public init(_ url: URL) throws {
-        self.init(url, as: try FilePath.isFolder(url) ? .folder : .file)
+        self.init(url, as: try Path.isFolder(url) ? .folder : .file)
     }
     
     public init(_ path: String) throws {
@@ -81,7 +81,7 @@ public struct FilePath: FilePathProtocol, Identifiable, Equatable {
     }
 }
 
-public extension FilePath {
+public extension Path {
     
     var asFile: File? {
         type == .file ? .init(url) : nil
@@ -93,7 +93,7 @@ public extension FilePath {
       
 }
 
-private extension FilePath {
+private extension Path {
     
     /// 文件/文件夹类型
     /// - Parameter url: 文件路径

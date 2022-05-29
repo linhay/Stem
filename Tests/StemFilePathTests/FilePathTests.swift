@@ -7,16 +7,14 @@
 
 import Foundation
 import XCTest
-import Stem
-import FilePath
+import StemFilePath
 
 final class FilePathTests: XCTestCase {
 
     func testInit() async throws {
-        print(try FilePath("~/Desktop/Stem/Package.swift"))
-        print(try FilePath("~/Desktop/./"))
-        print(try FilePath("~/Desktop/.."))
-        
+        print(try Path("~/Desktop/Stem/Package.swift"))
+        print(try Path("~/Desktop/./"))
+        print(try Path("~/Desktop/.."))
         for try await _ in try Folder("~/Desktop").fileScan() {
 
         }

@@ -22,7 +22,7 @@ public class StemSVG {
     
    private static let CoreSVG = dlopen("/System/Library/PrivateFrameworks/CoreSVG.framework/CoreSVG", RTLD_NOW)
     
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
     private static let SVGImageRep: NSImageRep.Type? = {
         guard let rep = NSClassFromString("_NSSVGImageRep") as? NSImageRep.Type else {
             return nil
@@ -53,7 +53,7 @@ public class StemSVG {
         self.size = CanvasSize(document)
         self.document = document
         
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
         if let ImageRep = (Self.SVGImageRep as AnyObject as? NSObjectProtocol),
            let rep = ImageRep
             .perform(.init("alloc"))

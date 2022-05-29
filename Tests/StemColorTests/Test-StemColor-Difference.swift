@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import Stem
+import StemColor
 
 class StemColorDifferenceTests: XCTestCase {
     

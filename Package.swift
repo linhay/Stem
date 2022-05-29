@@ -8,11 +8,15 @@ let package = Package(
     platforms: [.iOS(.v13), .macOS(.v10_15), .tvOS(.v13), .watchOS(.v6)],
     products: [
         .library(name: "Stem", targets: ["Stem"]),
-        .library(name: "FilePath", targets: ["FilePath"]),
+        .library(name: "StemFilePath", targets: ["StemFilePath"]),
+        .library(name: "StemColor", targets: ["StemColor"]),
     ],
     targets: [
         .target(name: "Stem", dependencies: []),
-        .target(name: "FilePath", dependencies: []),
-        .testTarget(name: "StemTests", dependencies: ["Stem", "FilePath"]),
+        .target(name: "StemFilePath", dependencies: []),
+        .target(name: "StemColor", dependencies: []),
+        .testTarget(name: "StemTests", dependencies: ["Stem", "StemFilePath"]),
+        .testTarget(name: "StemColorTests", dependencies: ["Stem", "StemColor", "StemFilePath"]),
+        .testTarget(name: "StemFilePathTests", dependencies: ["StemFilePath"]),
     ]
 )

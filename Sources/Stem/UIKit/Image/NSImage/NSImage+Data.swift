@@ -9,6 +9,7 @@
 import Foundation
 import AppKit
 
+@available(macCatalyst, unavailable)
 public extension Stem where Base: NSImage {
     
     var bitmapImageRep: NSBitmapImageRep? {

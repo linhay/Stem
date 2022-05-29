@@ -179,16 +179,16 @@ public extension Folder {
         case includesDirectoriesPostOrder
         @available(iOS 13.0, *) @available(macOS 10.15, *) @available(tvOS 13.0, *)
         case producesRelativePathURLs
-        case custom((FilePath) throws -> Bool)
+        case custom((Path) throws -> Bool)
     }
     
 }
 
 extension Array where Element == Folder.SearchPredicate {
     
-    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(FilePath) throws -> Bool]) {
+    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(Path) throws -> Bool]) {
         var systemPredicates: FileManager.DirectoryEnumerationOptions = []
-        var customPredicates = [(FilePath) throws -> Bool]()
+        var customPredicates = [(Path) throws -> Bool]()
         
         self.forEach { item in
             switch item {
@@ -242,7 +242,7 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+    func allSubFilePaths(predicates: SearchPredicate...) throws -> [Path] {
         try allSubFilePaths(predicates: predicates)
     }
     
@@ -250,7 +250,7 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
+    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [Path] {
         let (systemPredicates, customPredicates) = predicates.split()
         
         let resourceValues: [URLResourceKey] = [.isDirectoryKey]
@@ -261,7 +261,7 @@ public extension Folder {
             return []
         }
         
-        var list = [FilePath]()
+        var list = [Path]()
         for case let fileURL as URL in enumerator {
             guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues)),
                   let isDirectory = resourceValues.isDirectory
@@ -269,7 +269,7 @@ public extension Folder {
                 continue
             }
             
-            let item = FilePath(fileURL, as: isDirectory ? .folder : .file)
+            let item = Path(fileURL, as: isDirectory ? .folder : .file)
             if try customPredicates.contains(where: { try $0(item) == false }) {
                 continue
             }
@@ -283,7 +283,7 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths(predicates: SearchPredicate...) throws -> [FilePath] {
+    func subFilePaths(predicates: SearchPredicate...) throws -> [Path] {
         try subFilePaths(predicates: predicates)
     }
     
@@ -291,11 +291,11 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [FilePath] {
+    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [Path] {
         let (systemPredicates, customPredicates) = predicates.split()
         return try manager
             .contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: systemPredicates)
-            .compactMap({ try FilePath($0) })
+            .compactMap({ try Path($0) })
             .filter({ item -> Bool in
                 try customPredicates.contains(where: { try $0(item) == false }) == false
             })
@@ -313,7 +313,7 @@ public extension Folder {
                     let urls = try manager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
                     for url in urls {
                         do {
-                            let filePath = try FilePath(url)
+                            let filePath = try Path(url)
                             switch filePath.referenceType {
                             case .file(let file):
                                 if try await fileFilter(file) {

@@ -50,7 +50,7 @@ public extension File.System {
         
         let result = Darwin.open(filePath.url.path, flag, mode?.rawValue ?? 0)
         if result < 0 {
-            throw FilePath.Error(posix: Darwin.errno)
+            throw Path.Error(posix: Darwin.errno)
         }
         return result
     }
@@ -59,7 +59,7 @@ public extension File.System {
         var result = Darwin.stat()
         let flag = fstat(descriptor, &result)
         if flag != 0 {
-            throw FilePath.Error(message: "赋值文件属性错误", code: Int(flag))
+            throw Path.Error(message: "赋值文件属性错误", code: Int(flag))
         }
         return result
     }
@@ -74,14 +74,14 @@ public extension File.System {
     /// truncate会将参数fd指定的文件大小改为参数length指定的大小
     func truncate(descriptor: Int32, size: Int) throws {
         if ftruncate(descriptor, .init(size)) == -1 {
-           throw FilePath.Error(posix: Darwin.errno)
+           throw Path.Error(posix: Darwin.errno)
         }
     }
     
     /// fsync函数同步内存中所有已修改的文件数据到储存设备。
     func sync(descriptor: Int32) throws {
         if fsync(descriptor) == -1 {
-           throw FilePath.Error(posix: Darwin.errno)
+           throw Path.Error(posix: Darwin.errno)
         }
     }
     
@@ -92,7 +92,7 @@ public extension File.System {
               offset: Int = 0) throws -> MMAP {
         
         guard filePath.isExist else {
-            throw FilePath.Error(message: "Cannot open '\(filePath.url.absoluteURL)'")
+            throw Path.Error(message: "Cannot open '\(filePath.url.absoluteURL)'")
         }
         
         let descriptor = try open(flag1: .readAndWrite, flag2: nil, mode: nil)
@@ -102,7 +102,7 @@ public extension File.System {
             let size = alignmentPageSize(from: size ?? Int(fileSize))
             
             guard size > 0 else {
-                throw FilePath.Error(message: "size 必须大于 0")
+                throw Path.Error(message: "size 必须大于 0")
             }
             
             try truncate(descriptor: descriptor, size: size)

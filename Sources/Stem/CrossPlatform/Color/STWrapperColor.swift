@@ -61,24 +61,6 @@ extension STWrapperColor {
 // MARK: - init
 public extension STWrapperColor {
     
-    /// 十六进制色: 0x666666
-    ///
-    /// - Parameter str: "#666666" / "0X666666" / "0x666666"
-    convenience init(_ value: String) {
-        let color = StemColor(hex: value)
-        let rgbSpace = color.rgbSpace
-        self.init(red: rgbSpace.red, green: rgbSpace.green, blue: rgbSpace.blue, alpha: color.alpha)
-    }
-    
-    /// 十六进制色: 0x666666
-    ///
-    /// - Parameter RGBValue: 十六进制颜色
-    convenience init(_ value: Int) {
-        let color = StemColor(hex: value)
-        let rgbSpace = color.rgbSpace
-        self.init(red: rgbSpace.red, green: rgbSpace.green, blue: rgbSpace.blue, alpha: color.alpha)
-    }
-    
     /// 设置RGBA颜色
     ///
     /// - Parameters:

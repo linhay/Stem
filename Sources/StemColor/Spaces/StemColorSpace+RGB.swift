@@ -35,7 +35,6 @@ public extension StemColor {
         public let blue: Double
         
         public init(red: Double, green: Double, blue: Double) {
-            
             func map(_ value: Double) -> Double {
                 var value = value
                 if value > 0.9999 { value = 1 }

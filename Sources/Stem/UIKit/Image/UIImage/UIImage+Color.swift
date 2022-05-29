@@ -86,30 +86,4 @@ public extension Stem where Base: UIImage {
     }
 
 }
-
-
-public extension Stem where Base: UIImage {
-
-    /// 获取全部像素的颜色
-    /// - Parameter points: 点位
-    /// - Returns: 颜色集合
-    func colorCountedSet() -> [StemColor: Int] {
-        return base.cgImage?.st.colorCountedSet() ?? [:]
-    }
-
-    /// 获取某几个点位像素的颜色
-    /// - Parameter points: 点位
-    /// - Returns: 颜色集合
-    func pixels(at points: [(x: Int, y: Int)]) -> [StemColor] {
-        return base.cgImage?.st.pixels(at: points) ?? []
-    }
-    
-    /// 获取某全部点位像素的颜色
-    /// - Parameter points: 点位
-    /// - Returns: 颜色集合
-    func pixels() -> [[StemColor]] {
-        return base.cgImage?.st.pixels() ?? []
-    }
-    
-}
 #endif

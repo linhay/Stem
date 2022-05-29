@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-import Stem
+import StemColor
 
 class KMeansTests: XCTestCase {
     

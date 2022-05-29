@@ -20,27 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import Foundation
 import AppKit
 
 public extension FilePathProtocol {
     
     func showInFinder() {
-        guard let referenceType = try? FilePath(url).referenceType else {
+        guard let referenceType = try? Path(url).referenceType else {
             return
         }
         switch referenceType {
         case .file(let value):
             NSWorkspace.shared.activateFileViewerSelecting([value.url])
         case .folder(let value):
-            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: value.url.path)
+           _ = NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: value.url.path)
         }
     }
     
     static func selectInFinder(_ folder: URL,
                                support: [FilePathItemType] = [.file, .folder],
-                               allowsMultipleSelection: Bool = true) -> [FilePath] {
+                               allowsMultipleSelection: Bool = true) -> [Path] {
         let panel = NSOpenPanel()
         panel.canChooseFiles = support.contains(.file)
         panel.canChooseDirectories = support.contains(.folder)
@@ -56,10 +56,11 @@ public extension FilePathProtocol {
     
 }
 
+@available(macCatalyst, unavailable)
 public extension Folder {
     
     func selectInFinder(support: [FilePathItemType] = [.file, .folder],
-                        allowsMultipleSelection: Bool = true) -> [FilePath] {
+                        allowsMultipleSelection: Bool = true) -> [Path] {
         return Self.selectInFinder(url,
                                    support: support,
                                    allowsMultipleSelection: allowsMultipleSelection)

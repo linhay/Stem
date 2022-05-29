@@ -76,7 +76,7 @@ extension FilePathProtocol {
 
 public extension FilePathProtocol {
     
-    var eraseToFilePath: FilePath {
+    var eraseToFilePath: Path {
         get throws {
             return try .init(url)
         }

@@ -64,7 +64,7 @@ public extension File {
     @discardableResult
     func create(with data: Data? = nil) throws -> File {
         if isExist {
-            throw FilePath.Error(message: "文件存在, 无法创建: \(url.path)")
+            throw Path.Error(message: "文件存在, 无法创建: \(url.path)")
         }
         try Folder(url.deletingLastPathComponent()).create()
         manager.createFile(atPath: url.path, contents: data, attributes: nil)

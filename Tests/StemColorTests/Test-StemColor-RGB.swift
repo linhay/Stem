@@ -1,4 +1,5 @@
 import XCTest
+import StemColor
 import Stem
 
 class StemColorRGBTests: XCTestCase {

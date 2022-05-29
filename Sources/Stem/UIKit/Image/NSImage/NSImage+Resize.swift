@@ -5,7 +5,7 @@
 //  Created by linhey on 2022/5/13.
 //
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import Foundation
 import AppKit
 

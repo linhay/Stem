@@ -62,7 +62,7 @@ public extension File.System {
                                           .init(offset))
             if startPoint == MAP_FAILED {
                 close(descriptor)
-                throw FilePath.Error(posix: Darwin.errno)
+                throw Path.Error(posix: Darwin.errno)
             }
         }
         
@@ -96,7 +96,7 @@ public extension File.System.MMAP {
     
     func write(data: Data, offset: Int = 0) throws {
         if data.count + offset > size {
-            throw FilePath.Error(message: "写入数据超出映射区大小, 映射区size: \(size)")
+            throw Path.Error(message: "写入数据超出映射区大小, 映射区size: \(size)")
         }
         let point = startPoint + offset
         var data = data
