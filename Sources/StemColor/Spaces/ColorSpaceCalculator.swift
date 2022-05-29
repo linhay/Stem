@@ -109,7 +109,7 @@ public extension StemColor.SpaceCalculator {
 public extension StemColor.SpaceCalculator {
     
     func convert(_ space: StemColor.RYBSpace) -> StemColor.RGBSpace {
-        var ryb = space.simd
+        var ryb = space.simd(as: Double.self)
         let w = ryb.min()
         
         ryb -= w
@@ -134,7 +134,7 @@ public extension StemColor.SpaceCalculator {
     }
     
     func convert(_ space: StemColor.RGBSpace) -> StemColor.RYBSpace {
-        var rgb = space.simd
+        var rgb = space.simd(as: Double.self)
         let w = rgb.min()
         rgb -= w
         let mg = rgb.max()
@@ -273,7 +273,7 @@ public extension StemColor.SpaceCalculator {
         if delMax != 0 {
             saturation = delMax / Max
             
-            var vector = SIMD3(Max, Max, Max) - space.simd
+            var vector = SIMD3(Max, Max, Max) - space.simd(as: Double.self)
             vector /= 6
             vector += delMax / 2
             vector /= delMax

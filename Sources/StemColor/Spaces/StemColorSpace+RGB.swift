@@ -50,25 +50,9 @@ public extension StemColor {
     
 }
 
-/// SIMD3
-public extension StemColor.RGBSpace {
-    
-    var simd: SIMD3<Double> { .init(red, green, blue) }
-
-    init(_ simd: SIMD3<Double>) {
-        self.init(red: simd.x, green: simd.y, blue: simd.z)
-    }
-    
-    init(_ simd: SIMD3<UInt8>) {
-        self.init(simd.indices.map({ simd[$0] }).map({ Double($0) / 255 }))
-    }
-    
-}
-
 public extension StemColor.RGBSpace {
 
     var linear: StemColor.RGBSpace {
-        
         func f(_ value: Double) -> Double {
             if (value <= 0.04045) {
                 return value / 12.92
@@ -76,12 +60,10 @@ public extension StemColor.RGBSpace {
                 return pow((value + 0.055) / 1.055, 2.4)
             }
         }
-        
-        return StemColor.RGBSpace.init(list.map(f))
+        return StemColor.RGBSpace(list(as: Double.self).map(f))
     }
     
     init(linear: StemColor.RGBSpace) {
-        
         func f(_ linear: Double) -> Double {
             if (linear <= 0.0031308) {
                 return linear * 12.92
@@ -90,7 +72,8 @@ public extension StemColor.RGBSpace {
             }
         }
         
-        self.init(linear.list.map(f))
+        let list = linear.list(as: Double.self)
+        self.init(list.map(f))
     }
     
 }
@@ -129,21 +112,55 @@ public extension StemColor.RGBSpace {
     
 }
 
-extension StemColor.RGBSpace: StemColorSpacePack {
-    
-    public var unpack: (red: Double, green: Double, blue: Double) { (red, green, blue) }
-    public var list: [Double] { [red, green, blue] }
-    public var intUnpack: (red: Int, green: Int, blue: Int) {
-        func map(_ v: Double) -> Int { Int(round(v * 255)) }
-        return (map(red), map(green), map(blue))
+public extension StemColor.RGBSpace {
+
+    struct Unpack<T: Equatable> {
+        
+        public let red: T
+        public let green: T
+        public let blue: T
+        
+        public func map<V>(_ transform: (T) throws -> V) rethrows -> Unpack<V> {
+            .init(red: try transform(red), green: try transform(green), blue: try transform(blue))
+        }
     }
     
-    public init(_ list: [Double]) {
-        self.init(red: list[0], green: list[1], blue: list[2])
+    func unpack<T: FixedWidthInteger>(as type: T.Type) -> Unpack<T> {
+        let list = list(as: type)
+        return .init(red: list[0], green: list[1], blue: list[2])
     }
     
-    public init() {
-        self.init([0.0, 0.0, 0.0])
+    func unpack<T: BinaryFloatingPoint>(as type: T.Type) -> Unpack<T> {
+        return .init(red: .init(red), green: .init(green), blue: .init(blue))
+    }
+    
+    func list<T: FixedWidthInteger>(as type: T.Type) -> [T] {
+        func map(_ v: Double) -> T { T(round(v * 255)) }
+        return [map(red),map(green),map(blue)]
+    }
+    
+    func list<T: BinaryFloatingPoint>(as type: T.Type) -> [T] {
+        [T(red),T(green),T(blue)]
+    }
+    
+    func simd<T: FixedWidthInteger>(as type: T.Type) -> SIMD3<T> {
+        return .init(list(as: type))
+    }
+    
+    func simd<T: BinaryFloatingPoint>(as type: T.Type) -> SIMD3<T> {
+        return .init(list(as: type))
+    }
+    
+    init<T: BinaryFloatingPoint>(_ list: [T]) {
+        self.init(red: Double(list[0]), green: Double(list[1]), blue: Double(list[2]))
+    }
+    
+    init<T: BinaryFloatingPoint>(_ list: SIMD3<T>) {
+        self.init(red: Double(list.x), green: Double(list.y), blue: Double(list.z))
+    }
+    
+    init() {
+        self.init([0,0,0])
     }
     
 }

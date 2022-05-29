@@ -19,8 +19,8 @@ struct StemColorMMCQ {
     ///   - green: the green value
     ///   - blue: the blue value
     /// - Returns: the color index
-    static func makeColorIndexOf(red: Int, green: Int, blue: Int) -> Int {
-        return (red << (2 * signalBits)) + (green << signalBits) + blue
+    static func makeColorIndex(of unpack: StemColor.RGBSpace.Unpack<Int>) -> Int {
+        return (unpack.red << (2 * signalBits)) + (unpack.green << signalBits) + unpack.blue
     }
 
     public struct Color {
@@ -116,7 +116,7 @@ struct StemColorMMCQ {
                 for i in rRange {
                     for j in gRange {
                         for k in bRange {
-                            let index = StemColorMMCQ.makeColorIndexOf(red: i, green: j, blue: k)
+                            let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                             count += histogram[index]
                         }
                     }
@@ -139,7 +139,7 @@ struct StemColorMMCQ {
                 for i in rRange {
                     for j in gRange {
                         for k in bRange {
-                            let index = StemColorMMCQ.makeColorIndexOf(red: i, green: j, blue: k)
+                            let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                             let hval = histogram[index]
                             ntot += hval
                             rSum += Int(Double(hval) * (Double(i) + 0.5) * Double(StemColorMMCQ.multiplier))
@@ -217,7 +217,7 @@ struct StemColorMMCQ {
     }
 
     /// Histo (1-d array, giving the number of pixels in each quantized region of color space), or null on error.
-    private static func makeHistogramAndVBox(from pixels: [UInt8], quality: Int, ignoreWhite: Bool) -> ([Int], VBox) {
+    private static func makeHistogramAndVBox(from pixels: [StemColor], quality: Int) -> ([Int], VBox) {
         var histogram = [Int](repeating: 0, count: histogramSize)
         var rMin = UInt8.max
         var rMax = UInt8.min
@@ -226,32 +226,25 @@ struct StemColorMMCQ {
         var bMin = UInt8.max
         var bMax = UInt8.min
 
-        let pixelCount = pixels.count / 4
-        for i in stride(from: 0, to: pixelCount, by: quality) {
-            let a = pixels[i * 4 + 0]
-            let b = pixels[i * 4 + 1]
-            let g = pixels[i * 4 + 2]
-            let r = pixels[i * 4 + 3]
-
+        for pixel in pixels {
+            let a = UInt8(pixel.alpha * 255)
             // If pixel is not mostly opaque or white
-            guard a >= 125 && !(ignoreWhite && r > 250 && g > 250 && b > 250) else {
+            guard a >= 125 else {
                 continue
             }
 
-            let shiftedR = r >> UInt8(rightShift)
-            let shiftedG = g >> UInt8(rightShift)
-            let shiftedB = b >> UInt8(rightShift)
+            let shifted = pixel.rgbSpace.unpack(as: UInt8.self).map({ $0 >> UInt8(rightShift) })
 
             // find min/max
-            rMin = min(rMin, shiftedR)
-            rMax = max(rMax, shiftedR)
-            gMin = min(gMin, shiftedG)
-            gMax = max(gMax, shiftedG)
-            bMin = min(bMin, shiftedB)
-            bMax = max(bMax, shiftedB)
+            rMin = min(rMin, shifted.red)
+            rMax = max(rMax, shifted.red)
+            gMin = min(gMin, shifted.green)
+            gMax = max(gMax, shifted.green)
+            bMin = min(bMin, shifted.blue)
+            bMax = max(bMax, shifted.blue)
 
             // increment histgram
-            let index = StemColorMMCQ.makeColorIndexOf(red: Int(shiftedR), green: Int(shiftedG), blue: Int(shiftedB))
+            let index = StemColorMMCQ.makeColorIndex(of: shifted.map({ Int($0) }))
             histogram[index] += 1
         }
 
@@ -280,7 +273,7 @@ struct StemColorMMCQ {
                 var sum = 0
                 for j in vbox.gRange {
                     for k in vbox.bRange {
-                        let index = StemColorMMCQ.makeColorIndexOf(red: i, green: j, blue: k)
+                        let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                         sum += histogram[index]
                     }
                 }
@@ -292,7 +285,7 @@ struct StemColorMMCQ {
                 var sum = 0
                 for j in vbox.rRange {
                     for k in vbox.bRange {
-                        let index = StemColorMMCQ.makeColorIndexOf(red: j, green: i, blue: k)
+                        let index = StemColorMMCQ.makeColorIndex(of: .init(red: j, green: i, blue: k))
                         sum += histogram[index]
                     }
                 }
@@ -304,7 +297,7 @@ struct StemColorMMCQ {
                 var sum = 0
                 for j in vbox.rRange {
                     for k in vbox.gRange {
-                        let index = StemColorMMCQ.makeColorIndexOf(red: j, green: k, blue: i)
+                        let index = StemColorMMCQ.makeColorIndex(of: .init(red: j, green: k, blue: i))
                         sum += histogram[index]
                     }
                 }
@@ -382,14 +375,14 @@ struct StemColorMMCQ {
         fatalError("VBox can't be cut")
     }
 
-    static func quantize(_ pixels: [UInt8], quality: Int, ignoreWhite: Bool, maxColors: Int) -> ColorMap? {
+    static func quantize(_ pixels: [StemColor], quality: Int, ignoreWhite: Bool, maxColors: Int) -> ColorMap? {
         // short-circuit
-        guard !pixels.isEmpty && maxColors > 1 && maxColors <= 256 else {
+        guard !pixels.isEmpty, maxColors > 1, maxColors <= 256 else {
             return nil
         }
 
         // get the histogram and the beginning vbox from the colors
-        let (histogram, vbox) = makeHistogramAndVBox(from: pixels, quality: quality, ignoreWhite: ignoreWhite)
+        let (histogram, vbox) = makeHistogramAndVBox(from: pixels, quality: quality)
 
         // priority queue
         var pq = [vbox]

@@ -61,7 +61,7 @@ public extension StemColor.CMYSpace {
 
 }
 
-extension StemColor.CMYSpace: StemColorSpacePack {
+extension StemColor.CMYSpace {
 
     public var unpack: (cyan: Double, magenta: Double, yellow: Double) { (cyan, magenta, yellow) }
     public var list: [Double] { [cyan, magenta, yellow] }

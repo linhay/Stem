@@ -29,17 +29,20 @@ public extension StemColor {
         case kubelkaMunk([RGBSpace])
     }
 
-    private static func cmykAverage(with colors: [CMYKSpace]) -> CMYKSpace? {
+    private static func cmykAverage(with colors: [CMYKSpace]) -> CMYKSpace {
         if colors.isEmpty {
-            return nil
+            return .init()
         }
-        return CMYKSpace.average(colors)
+        let simd = colors.map({ $0.simd(as: Double.self) })
+            .reduce(SIMD4<Double>(0, 0, 0, 0)) { result, item in
+                return result + item
+            }
+        return .init(simd.indices.map({ simd[$0] / Double(colors.count) }))
     }
 
-    private static func kubelkaMunk(with colors: [RGBSpace]) -> RGBSpace? {
-
+    private static func kubelkaMunk(with colors: [RGBSpace]) -> RGBSpace {
         if colors.isEmpty {
-            return nil
+            return .init()
         }
 
         func absorbance(_ value: Double) -> Double {
@@ -53,7 +56,7 @@ public extension StemColor {
         let concentration = 1.0 / Double(colors.count)
 
         let list = colors
-            .map(\.list)
+            .map({ $0.list(as: Double.self) })
             .map { $0
                 .map({ max($0, 0.00001) * concentration })
 //                .map { absorbance($0) }
@@ -70,22 +73,17 @@ public extension StemColor {
         return RGBSpace(list)
     }
     
-    static func mix(use mixer: Mixer) -> StemColor? {
+    static func mix(use mixer: Mixer) -> StemColor {
         switch mixer {
         case .kubelkaMunk(let colors):
-            if let value = kubelkaMunk(with: colors) {
-                return .init(rgb: value)
-            }
+            return .init(rgb: kubelkaMunk(with: colors))
         case .cmykAverage(let colors):
-            if let value = cmykAverage(with: colors) {
-                return .init(cmyk: value)
-            }
+            return .init(cmyk: cmykAverage(with: colors))
         }
-        return nil
     }
     
     func mix(use mixer: Mixer) -> StemColor {
-        StemColor.mix(use: mixer) ?? self
+        StemColor.mix(use: mixer)
     }
 
 }

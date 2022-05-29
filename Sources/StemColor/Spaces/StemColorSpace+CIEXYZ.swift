@@ -66,7 +66,7 @@ public extension StemColor.CIEXYZSpace {
 
 }
 
-extension StemColor.CIEXYZSpace: StemColorSpacePack {
+extension StemColor.CIEXYZSpace {
 
     public var unpack: (x: Double, y: Double, z: Double) { (x, y, z) }
     public var list: [Double] { [x, y, z] }

@@ -80,7 +80,7 @@ public extension StemColor.HSBSpace {
 
 }
 
-extension StemColor.HSBSpace: StemColorSpacePack {
+extension StemColor.HSBSpace {
 
     public var unpack: (hue: Double, saturation: Double, brightness: Double) { (hue, saturation, brightness) }
     public var list: [Double] { [hue, saturation, brightness] }

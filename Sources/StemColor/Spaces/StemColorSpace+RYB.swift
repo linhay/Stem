@@ -40,27 +40,50 @@ public extension StemColor {
 
 }
 
-/// SIMD3
 public extension StemColor.RYBSpace {
-    
-    var simd: SIMD3<Double> { .init(red, yellow, blue) }
-    
-    init(_ simd: SIMD3<Double>) {
-        self.init(red: simd.x, yellow: simd.y, blue: simd.z)
+
+    struct Unpack<T: Equatable> {
+        
+        public let red: T
+        public let yellow: T
+        public let blue: T
+        
+        public func map<V>(_ transform: (T) throws -> V) rethrows -> Unpack<V> {
+            .init(red: try transform(red), yellow: try transform(yellow), blue: try transform(blue))
+        }
     }
     
-}
-
-extension StemColor.RYBSpace: StemColorSpacePack {
-
-    public var unpack: (red: Double, yellow: Double, blue: Double) { (red, yellow, blue) }
-    public var list: [Double] { [red, yellow, blue] }
-
-    public init(_ list: [Double]) {
-        self.init(red: list[0], yellow: list[1], blue: list[2])
+    func unpack<T: FixedWidthInteger>(as type: T.Type) -> Unpack<T> {
+        let list = list(as: type)
+        return .init(red: list[0], yellow: list[1], blue: list[2])
     }
-
-    public init() {
+    
+    func unpack<T: BinaryFloatingPoint>(as type: T.Type) -> Unpack<T> {
+        return .init(red: .init(red), yellow: .init(yellow), blue: .init(blue))
+    }
+    
+    func list<T: FixedWidthInteger>(as type: T.Type) -> [T] {
+        func map(_ v: Double) -> T { T(round(v * 255)) }
+        return [map(red),map(yellow),map(blue)]
+    }
+    
+    func list<T: BinaryFloatingPoint>(as type: T.Type) -> [T] {
+        [T(red),T(yellow),T(blue)]
+    }
+    
+    func simd<T: BinaryFloatingPoint>(as type: T.Type) -> SIMD3<T> {
+        return .init(list(as: type))
+    }
+    
+    init<T: BinaryFloatingPoint>(_ list: [T]) {
+        self.init(red: Double(list[0]), yellow: Double(list[1]), blue: Double(list[2]))
+    }
+    
+    init<T: BinaryFloatingPoint>(_ list: SIMD3<T>) {
+        self.init(red: Double(list.x), yellow: Double(list.y), blue: Double(list.z))
+    }
+    
+    init() {
         self.init([0.0, 0.0, 0.0])
     }
 

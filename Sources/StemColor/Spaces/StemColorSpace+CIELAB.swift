@@ -85,7 +85,7 @@ public extension StemColor.CIELABSpace {
     
 }
 
-extension StemColor.CIELABSpace: StemColorSpacePack {
+extension StemColor.CIELABSpace {
 
     public static var ranges: [ClosedRange<Double>] {
         return [0...100, -128...128, -128...128]

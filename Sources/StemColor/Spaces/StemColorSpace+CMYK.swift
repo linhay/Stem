@@ -46,17 +46,6 @@ public extension StemColor {
 
 }
 
-/// SIMD3
-public extension StemColor.CMYKSpace {
-    
-    var simd: SIMD4<Double> { .init(cyan, magenta, yellow, key) }
-    
-    init(_ simd: SIMD4<Double>) {
-        self.init(cyan: simd.x, magenta: simd.y, yellow: simd.z, key: simd.w)
-    }
-    
-}
-
 public extension StemColor.CMYKSpace {
 
     func cyan(with value: Double)    -> Self { .init(cyan: value, magenta: magenta, yellow: yellow, key: key) }
@@ -66,19 +55,50 @@ public extension StemColor.CMYKSpace {
 
 }
 
-extension StemColor.CMYKSpace: StemColorSpacePack {
+public extension StemColor.CMYKSpace {
 
-    public var unpack: (cyan: Double, magenta: Double, yellow: Double, key: Double) { (cyan, magenta, yellow, key) }
-    public var list: [Double] { [cyan, magenta, yellow, key] }
-
-    public init(_ list: [Double]) {
-        self.init(cyan: list[0], magenta: list[1], yellow: list[2], key: list[3])
+    struct Unpack<T: Equatable> {
+        
+        public let cyan: T
+        public let magenta: T
+        public let yellow: T
+        public let key: T
+        
+        public func map<V>(_ transform: (T) throws -> V) rethrows -> Unpack<V> {
+            .init(cyan: try transform(cyan),
+                  magenta: try transform(magenta),
+                  yellow: try transform(yellow),
+                  key: try transform(key))
+        }
+        
     }
-
-    public init() {
-        self.init([0.0, 0.0, 0.0, 0.0])
+    
+    func unpack<T: BinaryFloatingPoint>(as type: T.Type) -> Unpack<T> {
+        return .init(cyan: .init(cyan),
+                     magenta: .init(magenta),
+                     yellow: .init(yellow),
+                     key: .init(key))
     }
-
+    
+    func list<T: BinaryFloatingPoint>(as type: T.Type) -> [T] {
+        [T(cyan),T(magenta),T(yellow), T(key)]
+    }
+    
+    func simd<T: BinaryFloatingPoint>(as type: T.Type) -> SIMD4<T> {
+        .init(list(as: type))
+    }
+    
+    init<T: BinaryFloatingPoint>(_ list: [T]) {
+        self.init(cyan: Double(list[0]),
+                  magenta: Double(list[1]),
+                  yellow: Double(list[2]),
+                  key: Double(list[3]))
+    }
+    
+    init() {
+        self.init([0,0,0,0])
+    }
+    
 }
 
 extension StemColor.CMYKSpace {

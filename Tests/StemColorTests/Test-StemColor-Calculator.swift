@@ -15,7 +15,7 @@ class StemColorCalculatorTests: XCTestCase {
         assertEqual(color.hslSpace.list,  [0, 1, 0.5])
         assertEqual(color.hsvSpace.list,  [0, 1, 1])
         assertEqual(color.cmySpace.list,  [0, 1, 1])
-        assertEqual(color.cmykSpace.list, [0, 1, 1, 0])
+        assertEqual(color.cmykSpace.list(as: Double.self), [0, 1, 1, 0])
         assertEqual(color.labSpace.list,  [53.241, 80.092, 67.203])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [41.246, 21.267, 1.933])
     }
@@ -25,7 +25,7 @@ class StemColorCalculatorTests: XCTestCase {
         assertEqual(color.hslSpace.list,  [0.33333, 1.00000, 0.50000])
         assertEqual(color.hsvSpace.list,  [0.33333, 1.00000, 1.00000])
         assertEqual(color.cmySpace.list,  [1.00000, 0.00000, 1.00000])
-        assertEqual(color.cmykSpace.list, [1.00000, 0.00000, 1.00000, 0.00000])
+        assertEqual(color.cmykSpace.list(as: Double.self), [1.00000, 0.00000, 1.00000, 0.00000])
         assertEqual(color.labSpace.list,  [87.735,-86.183,83.179])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [35.758,71.515,11.919])
     }
@@ -35,7 +35,7 @@ class StemColorCalculatorTests: XCTestCase {
         assertEqual(color.hslSpace.list,  [0.66667, 1.00000, 0.50000])
         assertEqual(color.hsvSpace.list,  [0.66667, 1.00000, 1.00000])
         assertEqual(color.cmySpace.list,  [1.00000, 1.00000, 0.00000])
-        assertEqual(color.cmykSpace.list, [1.00000, 1.00000, 0.00000, 0.00000])
+        assertEqual(color.cmykSpace.list(as: Double.self), [1.00000, 1.00000, 0.00000, 0.00000])
         assertEqual(color.labSpace.list,  [32.297, 79.188, -107.860])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [18.044, 7.217, 95.030])
     }
@@ -45,7 +45,7 @@ class StemColorCalculatorTests: XCTestCase {
         assertEqual(color.hslSpace.list,  [0.00000, 0.00000, 1.00000])
         assertEqual(color.hsvSpace.list,  [0.00000, 0.00000, 1.00000])
         assertEqual(color.cmySpace.list,  [0.00000, 0.00000, 0.00000])
-        assertEqual(color.cmykSpace.list, [0.00000, 0.00000, 0.00000, 0.00000])
+        assertEqual(color.cmykSpace.list(as: Double.self), [0.00000, 0.00000, 0.00000, 0.00000])
         assertEqual(color.labSpace.list,  [100.000,   0.000,  -0.000])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [95.047, 100.000, 108.883])
     }
@@ -55,7 +55,7 @@ class StemColorCalculatorTests: XCTestCase {
         assertEqual(color.hslSpace.list,  [0.00000, 0.00000, 0.00000])
         assertEqual(color.hsvSpace.list,  [0.00000, 0.00000, 0.00000])
         assertEqual(color.cmySpace.list,  [1.00000, 1.00000, 1.00000])
-        assertEqual(color.cmykSpace.list, [0.00000, 0.00000, 0.00000, 1.00000])
+        assertEqual(color.cmykSpace.list(as: Double.self), [0.00000, 0.00000, 0.00000, 1.00000])
         assertEqual(color.labSpace.list,  [0.000,   0.000,   0.000])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [0.000,   0.000,   0.000])
     }
@@ -65,7 +65,7 @@ class StemColorCalculatorTests: XCTestCase {
         assertEqual(color.hslSpace.list,  [0.72263, 0.62558, 0.57059])
         assertEqual(color.hsvSpace.list,  [0.72263, 0.64019, 0.83922])
         assertEqual(color.cmySpace.list,  [0.51765, 0.69804, 0.16078])
-        assertEqual(color.cmykSpace.list, [0.42524, 0.64019, 0.00000, 0.16078])
+        assertEqual(color.cmykSpace.list(as: Double.self), [0.42524, 0.64019, 0.00000, 0.16078])
         assertEqual(color.labSpace.list,  [44.763, 49.471, -63.785])
         assertEqual(color.xyzSpace.list.map({ $0 * 100 }), [22.957, 14.373, 65.171])
     }
@@ -74,14 +74,14 @@ class StemColorCalculatorTests: XCTestCase {
         let color = StemColor.purple
         let calcualtor = StemColor.spaceCalculator
         
-        assertEqual((calcualtor.convert(color.xyzSpace) as StemColor.RGBSpace).list, color.rgbSpace.list)
+        assertEqual((calcualtor.convert(color.xyzSpace) as StemColor.RGBSpace).list(as: Double.self), color.rgbSpace.list(as: Double.self))
         assertEqual((calcualtor.convert(color.rgbSpace, illuminants: .D65) as StemColor.CIEXYZSpace).list, color.xyzSpace.list)
 
         assertEqual((calcualtor.convert(color.xyzSpace) as StemColor.CIELABSpace).list, color.labSpace.list)
         assertEqual((calcualtor.convert(color.labSpace) as StemColor.CIEXYZSpace).list, color.xyzSpace.list)
         
-        assertEqual((calcualtor.convert(color.rgbSpace) as StemColor.RYBSpace).list, color.rybSpace.list)
-        assertEqual((calcualtor.convert(color.rybSpace) as StemColor.RGBSpace).list, color.rgbSpace.list)
+        assertEqual((calcualtor.convert(color.rgbSpace) as StemColor.RYBSpace).list(as: Double.self), color.rybSpace.list(as: Double.self))
+        assertEqual((calcualtor.convert(color.rybSpace) as StemColor.RGBSpace).list(as: Double.self), color.rgbSpace.list(as: Double.self))
     }
     
     func testHex() {
