@@ -47,17 +47,13 @@ struct StemColorMMCQ {
             self.histogram = vbox.histogram
         }
 
-        func makeRange(min: UInt8, max: UInt8) -> CountableRange<Int> {
+        var range: StemColor.RGBSpace.Unpack<CountableRange<Int>> { minUnpack.with(maxUnpack) { min, max in
             if min <= max {
                 return Int(min) ..< Int(max + 1)
             } else {
                 return Int(max) ..< Int(max)
             }
-        }
-
-        var rRange: CountableRange<Int> { return makeRange(min: minUnpack.red, max: maxUnpack.red) }
-        var gRange: CountableRange<Int> { return makeRange(min: minUnpack.green, max: maxUnpack.green) }
-        var bRange: CountableRange<Int> { return makeRange(min: minUnpack.blue, max: maxUnpack.blue) }
+        } }
 
         /// Get 3 dimensional volume of the color space
         ///
@@ -82,9 +78,9 @@ struct StemColorMMCQ {
                 return count
             } else {
                 var count = 0
-                for i in rRange {
-                    for j in gRange {
-                        for k in bRange {
+                for i in range.red {
+                    for j in range.green {
+                        for k in range.blue {
                             let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                             count += histogram[index]
                         }
@@ -105,9 +101,9 @@ struct StemColorMMCQ {
                 var gSum = 0
                 var bSum = 0
 
-                for i in rRange {
-                    for j in gRange {
-                        for k in bRange {
+                for i in range.red {
+                    for j in range.green {
+                        for k in range.blue {
                             let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                             let hval = histogram[index]
                             ntot += hval
@@ -223,10 +219,10 @@ struct StemColorMMCQ {
         let axis = vbox.widestColorChannel()
         switch axis {
         case .red:
-            for i in vbox.rRange {
+            for i in vbox.range.red {
                 var sum = 0
-                for j in vbox.gRange {
-                    for k in vbox.bRange {
+                for j in vbox.range.green {
+                    for k in vbox.range.blue {
                         let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                         sum += histogram[index]
                     }
@@ -235,10 +231,10 @@ struct StemColorMMCQ {
                 partialSum[i] = total
             }
         case .green:
-            for i in vbox.gRange {
+            for i in vbox.range.green {
                 var sum = 0
-                for j in vbox.rRange {
-                    for k in vbox.bRange {
+                for j in vbox.range.red {
+                    for k in vbox.range.blue {
                         let index = StemColorMMCQ.makeColorIndex(of: .init(red: j, green: i, blue: k))
                         sum += histogram[index]
                     }
@@ -247,10 +243,10 @@ struct StemColorMMCQ {
                 partialSum[i] = total
             }
         case .blue:
-            for i in vbox.bRange {
+            for i in vbox.range.blue {
                 var sum = 0
-                for j in vbox.rRange {
-                    for k in vbox.gRange {
+                for j in vbox.range.red {
+                    for k in vbox.range.green {
                         let index = StemColorMMCQ.makeColorIndex(of: .init(red: j, green: k, blue: i))
                         sum += histogram[index]
                     }
