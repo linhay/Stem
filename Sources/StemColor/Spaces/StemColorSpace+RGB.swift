@@ -113,16 +113,51 @@ public extension StemColor.RGBSpace {
 }
 
 public extension StemColor.RGBSpace {
+    
+    enum Channel {
+        case red
+        case green
+        case blue
+    }
 
     struct Unpack<T: Equatable> {
         
-        public let red: T
-        public let green: T
-        public let blue: T
+        public var red: T
+        public var green: T
+        public var blue: T
         
         public func map<V>(_ transform: (T) throws -> V) rethrows -> Unpack<V> {
             .init(red: try transform(red), green: try transform(green), blue: try transform(blue))
         }
+
+        public func with<O, V>(_ other: Unpack<O>, _ transform: (T, O) throws -> V) rethrows -> Unpack<V> {
+            .init(red: try transform(red, other.red), green: try transform(green, other.green), blue: try transform(blue, other.blue))
+        }
+
+        func min() -> T where T: Comparable {
+            Swift.min(red, green, blue)
+        }
+        
+        func max() -> T where T: Comparable {
+            Swift.max(red, green, blue)
+        }
+        
+        func sum() -> T where T: BinaryFloatingPoint {
+            return red + green + blue
+        }
+        
+        func multiplier() -> T where T: BinaryFloatingPoint {
+            return red * green * blue
+        }
+        
+        func sum() -> T where T: FixedWidthInteger {
+            return red + green + blue
+        }
+        
+        func multiplier() -> T where T: FixedWidthInteger {
+            return red * green * blue
+        }
+        
     }
     
     func unpack<T: FixedWidthInteger>(as type: T.Type) -> Unpack<T> {

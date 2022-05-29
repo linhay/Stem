@@ -23,58 +23,27 @@ struct StemColorMMCQ {
         return (unpack.red << (2 * signalBits)) + (unpack.green << signalBits) + unpack.blue
     }
 
-    public struct Color {
-        public var r: UInt8
-        public var g: UInt8
-        public var b: UInt8
-
-        init(r: UInt8, g: UInt8, b: UInt8) {
-            self.r = r
-            self.g = g
-            self.b = b
-        }
-
-    }
-
-    enum ColorChannel {
-        case r
-        case g
-        case b
-    }
-
     /// 3D color space box.
     class VBox {
 
-        var rMin: UInt8
-        var rMax: UInt8
-        var gMin: UInt8
-        var gMax: UInt8
-        var bMin: UInt8
-        var bMax: UInt8
+        var minUnpack: StemColor.RGBSpace.Unpack<UInt8>
+        var maxUnpack: StemColor.RGBSpace.Unpack<UInt8>
 
         private let histogram: [Int]
 
-        private var average: Color?
+        private var average: StemColor.RGBSpace.Unpack<UInt8>?
         private var volume: Int?
         private var count: Int?
 
-        init(rMin: UInt8, rMax: UInt8, gMin: UInt8, gMax: UInt8, bMin: UInt8, bMax: UInt8, histogram: [Int]) {
-            self.rMin = rMin
-            self.rMax = rMax
-            self.gMin = gMin
-            self.gMax = gMax
-            self.bMin = bMin
-            self.bMax = bMax
+        init(min: StemColor.RGBSpace.Unpack<UInt8>, max: StemColor.RGBSpace.Unpack<UInt8>, histogram: [Int]) {
+            self.minUnpack = min
+            self.maxUnpack = max
             self.histogram = histogram
         }
 
         init(vbox: VBox) {
-            self.rMin = vbox.rMin
-            self.rMax = vbox.rMax
-            self.gMin = vbox.gMin
-            self.gMax = vbox.gMax
-            self.bMin = vbox.bMin
-            self.bMax = vbox.bMax
+            self.maxUnpack = vbox.maxUnpack
+            self.minUnpack = vbox.minUnpack
             self.histogram = vbox.histogram
         }
 
@@ -86,9 +55,9 @@ struct StemColorMMCQ {
             }
         }
 
-        var rRange: CountableRange<Int> { return makeRange(min: rMin, max: rMax) }
-        var gRange: CountableRange<Int> { return makeRange(min: gMin, max: gMax) }
-        var bRange: CountableRange<Int> { return makeRange(min: bMin, max: bMax) }
+        var rRange: CountableRange<Int> { return makeRange(min: minUnpack.red, max: maxUnpack.red) }
+        var gRange: CountableRange<Int> { return makeRange(min: minUnpack.green, max: maxUnpack.green) }
+        var bRange: CountableRange<Int> { return makeRange(min: minUnpack.blue, max: maxUnpack.blue) }
 
         /// Get 3 dimensional volume of the color space
         ///
@@ -98,7 +67,7 @@ struct StemColorMMCQ {
             if let volume = volume, !force {
                 return volume
             } else {
-                let volume = (Int(rMax) - Int(rMin) + 1) * (Int(gMax) - Int(gMin) + 1) * (Int(bMax) - Int(bMin) + 1)
+                let volume = maxUnpack.with(minUnpack, { (Int($0) - Int($1) + 1) }).multiplier()
                 self.volume = volume
                 return volume
             }
@@ -126,7 +95,7 @@ struct StemColorMMCQ {
             }
         }
 
-        func getAverage(forceRecalculate force: Bool = false) -> Color {
+        func getAverage(forceRecalculate force: Bool = false) -> StemColor.RGBSpace.Unpack<UInt8> {
             if let average = average, !force {
                 return average
             } else {
@@ -149,17 +118,15 @@ struct StemColorMMCQ {
                     }
                 }
 
-                let average: Color
+                let average: StemColor.RGBSpace.Unpack<UInt8>
                 if ntot > 0 {
                     let r = UInt8(rSum / ntot)
                     let g = UInt8(gSum / ntot)
                     let b = UInt8(bSum / ntot)
-                    average = Color(r: r, g: g, b: b)
+                    average = StemColor.RGBSpace.Unpack<UInt8>(red: r, green: g, blue: b)
                 } else {
-                    let r = UInt8(min(StemColorMMCQ.multiplier * (Int(rMin) + Int(rMax) + 1) / 2, 255))
-                    let g = UInt8(min(StemColorMMCQ.multiplier * (Int(gMin) + Int(gMax) + 1) / 2, 255))
-                    let b = UInt8(min(StemColorMMCQ.multiplier * (Int(bMin) + Int(bMax) + 1) / 2, 255))
-                    average = Color(r: r, g: g, b: b)
+                   let unpack = minUnpack.with(maxUnpack, { UInt8(min(StemColorMMCQ.multiplier * (Int($0) + Int($1) + 1) / 2, 255)) })
+                    average = unpack
                 }
 
                 self.average = average
@@ -167,17 +134,15 @@ struct StemColorMMCQ {
             }
         }
 
-        func widestColorChannel() -> ColorChannel {
-            let rWidth = rMax - rMin
-            let gWidth = gMax - gMin
-            let bWidth = bMax - bMin
-            switch max(rWidth, gWidth, bWidth) {
-            case rWidth:
-                return .r
-            case gWidth:
-                return .g
+        func widestColorChannel() -> StemColor.RGBSpace.Channel {
+            let width = maxUnpack.with(minUnpack, { $0 - $1 })
+            switch width.max() {
+            case width.red:
+                return .red
+            case width.green:
+                return .green
             default:
-                return .b
+                return .blue
             }
         }
 
@@ -192,20 +157,17 @@ struct StemColorMMCQ {
             vboxes.append(vbox)
         }
 
-        open func makePalette() -> [Color] {
+        open func makePalette() -> [StemColor.RGBSpace.Unpack<UInt8>] {
             return vboxes.map { $0.getAverage() }
         }
 
-        open func makeNearestColor(to color: Color) -> Color {
+        open func makeNearestColor(to color: StemColor.RGBSpace.Unpack<UInt8>) -> StemColor.RGBSpace.Unpack<UInt8> {
             var nearestDistance = Int.max
-            var nearestColor = Color(r: 0, g: 0, b: 0)
+            var nearestColor = StemColor.RGBSpace.Unpack<UInt8>.init(red: 0, green: 0, blue: 0)
 
             for vbox in vboxes {
                 let vbColor = vbox.getAverage()
-                let dr = abs(Int(color.r) - Int(vbColor.r))
-                let dg = abs(Int(color.g) - Int(vbColor.g))
-                let db = abs(Int(color.b) - Int(vbColor.b))
-                let distance = dr + dg + db
+                let distance = color.with(vbColor, { abs(Int($0) - Int($1)) }).sum()
                 if distance < nearestDistance {
                     nearestDistance = distance
                     nearestColor = vbColor
@@ -217,14 +179,10 @@ struct StemColorMMCQ {
     }
 
     /// Histo (1-d array, giving the number of pixels in each quantized region of color space), or null on error.
-    private static func makeHistogramAndVBox(from pixels: [StemColor], quality: Int) -> ([Int], VBox) {
+    private static func makeHistogramAndVBox(from pixels: [StemColor]) -> ([Int], VBox) {
         var histogram = [Int](repeating: 0, count: histogramSize)
-        var rMin = UInt8.max
-        var rMax = UInt8.min
-        var gMin = UInt8.max
-        var gMax = UInt8.min
-        var bMin = UInt8.max
-        var bMax = UInt8.min
+        var minUnpack = StemColor.RGBSpace.Unpack<UInt8>(red: .max, green: .max, blue: .max)
+        var maxUnpack = StemColor.RGBSpace.Unpack<UInt8>(red: .min, green: .min, blue: .min)
 
         for pixel in pixels {
             let a = UInt8(pixel.alpha * 255)
@@ -233,22 +191,18 @@ struct StemColorMMCQ {
                 continue
             }
 
-            let shifted = pixel.rgbSpace.unpack(as: UInt8.self).map({ $0 >> UInt8(rightShift) })
-
-            // find min/max
-            rMin = min(rMin, shifted.red)
-            rMax = max(rMax, shifted.red)
-            gMin = min(gMin, shifted.green)
-            gMax = max(gMax, shifted.green)
-            bMin = min(bMin, shifted.blue)
-            bMax = max(bMax, shifted.blue)
-
+            let shifted = pixel.rgbSpace
+                .unpack(as: UInt8.self)
+                .map({ $0 >> UInt8(rightShift) })
+                
+            minUnpack = shifted.with(minUnpack, min)
+            maxUnpack = shifted.with(maxUnpack, max)
             // increment histgram
             let index = StemColorMMCQ.makeColorIndex(of: shifted.map({ Int($0) }))
             histogram[index] += 1
         }
 
-        let vbox = VBox(rMin: rMin, rMax: rMax, gMin: gMin, gMax: gMax, bMin: bMin, bMax: bMax, histogram: histogram)
+        let vbox = VBox(min: minUnpack, max: maxUnpack, histogram: histogram)
         return (histogram, vbox)
     }
 
@@ -268,7 +222,7 @@ struct StemColorMMCQ {
 
         let axis = vbox.widestColorChannel()
         switch axis {
-        case .r:
+        case .red:
             for i in vbox.rRange {
                 var sum = 0
                 for j in vbox.gRange {
@@ -280,7 +234,7 @@ struct StemColorMMCQ {
                 total += sum
                 partialSum[i] = total
             }
-        case .g:
+        case .green:
             for i in vbox.gRange {
                 var sum = 0
                 for j in vbox.rRange {
@@ -292,7 +246,7 @@ struct StemColorMMCQ {
                 total += sum
                 partialSum[i] = total
             }
-        case .b:
+        case .blue:
             for i in vbox.bRange {
                 var sum = 0
                 for j in vbox.rRange {
@@ -314,20 +268,24 @@ struct StemColorMMCQ {
         return cut(by: axis, vbox: vbox, partialSum: partialSum, lookAheadSum: lookAheadSum, total: total)
     }
 
-    private static func cut(by axis: ColorChannel, vbox: VBox, partialSum: [Int], lookAheadSum: [Int], total: Int) -> [VBox] {
+    private static func cut(by axis: StemColor.RGBSpace.Channel,
+                            vbox: VBox,
+                            partialSum: [Int],
+                            lookAheadSum: [Int],
+                            total: Int) -> [VBox] {
         let vboxMin: Int
         let vboxMax: Int
 
         switch axis {
-        case .r:
-            vboxMin = Int(vbox.rMin)
-            vboxMax = Int(vbox.rMax)
-        case .g:
-            vboxMin = Int(vbox.gMin)
-            vboxMax = Int(vbox.gMax)
-        case .b:
-            vboxMin = Int(vbox.bMin)
-            vboxMax = Int(vbox.bMax)
+        case .red:
+            vboxMin = Int(vbox.minUnpack.red)
+            vboxMax = Int(vbox.maxUnpack.red)
+        case .green:
+            vboxMin = Int(vbox.minUnpack.green)
+            vboxMax = Int(vbox.maxUnpack.green)
+        case .blue:
+            vboxMin = Int(vbox.minUnpack.blue)
+            vboxMax = Int(vbox.maxUnpack.blue)
         }
 
         for i in vboxMin ... vboxMax where partialSum[i] > total / 2 {
@@ -358,15 +316,15 @@ struct StemColorMMCQ {
 
             // set dimensions
             switch axis {
-            case .r:
-                vbox1.rMax = UInt8(d2)
-                vbox2.rMin = UInt8(d2 + 1)
-            case .g:
-                vbox1.gMax = UInt8(d2)
-                vbox2.gMin = UInt8(d2 + 1)
-            case .b:
-                vbox1.bMax = UInt8(d2)
-                vbox2.bMin = UInt8(d2 + 1)
+            case .red:
+                vbox1.maxUnpack.red = UInt8(d2)
+                vbox2.minUnpack.red = UInt8(d2 + 1)
+            case .green:
+                vbox1.maxUnpack.green = UInt8(d2)
+                vbox2.minUnpack.green = UInt8(d2 + 1)
+            case .blue:
+                vbox1.maxUnpack.blue = UInt8(d2)
+                vbox2.minUnpack.blue = UInt8(d2 + 1)
             }
 
             return [vbox1, vbox2]
@@ -375,14 +333,14 @@ struct StemColorMMCQ {
         fatalError("VBox can't be cut")
     }
 
-    static func quantize(_ pixels: [StemColor], quality: Int, ignoreWhite: Bool, maxColors: Int) -> ColorMap? {
+    static func quantize(_ pixels: [StemColor], maxColors: Int) -> ColorMap? {
         // short-circuit
         guard !pixels.isEmpty, maxColors > 1, maxColors <= 256 else {
             return nil
         }
 
         // get the histogram and the beginning vbox from the colors
-        let (histogram, vbox) = makeHistogramAndVBox(from: pixels, quality: quality)
+        let (histogram, vbox) = makeHistogramAndVBox(from: pixels)
 
         // priority queue
         var pq = [vbox]
