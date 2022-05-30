@@ -120,18 +120,36 @@ public extension StemColor.RGBSpace {
         case blue
     }
 
-    struct Unpack<T: Equatable> {
+    struct Unpack<T: Codable> {
         
         public var red: T
         public var green: T
         public var blue: T
         
+        public init(red: T, green: T, blue: T) {
+            self.red = red
+            self.green = green
+            self.blue = blue
+        }
+                        
         public func map<V>(_ transform: (T) throws -> V) rethrows -> Unpack<V> {
             .init(red: try transform(red), green: try transform(green), blue: try transform(blue))
         }
 
         public func with<O, V>(_ other: Unpack<O>, _ transform: (T, O) throws -> V) rethrows -> Unpack<V> {
             .init(red: try transform(red, other.red), green: try transform(green, other.green), blue: try transform(blue, other.blue))
+        }
+        
+        var list: [T] {
+            [red,green,blue]
+        }
+                
+        func simd() -> SIMD3<T> where T: FixedWidthInteger {
+            return SIMD3.init(list)
+        }
+        
+        func simd() -> SIMD3<T> where T: BinaryFloatingPoint {
+            return SIMD3.init(list)
         }
 
         func min() -> T where T: Comparable {
@@ -186,16 +204,29 @@ public extension StemColor.RGBSpace {
         return .init(list(as: type))
     }
     
-    init<T: BinaryFloatingPoint>(_ list: [T]) {
-        self.init(red: Double(list[0]), green: Double(list[1]), blue: Double(list[2]))
+    init<T: BinaryFloatingPoint & Codable>(_ list: [T]) {
+        self.init(Unpack(red: list[0], green: list[1], blue: list[2]))
+    }
+
+    init<T: FixedWidthInteger>(_ list: SIMD3<T>) {
+        self.init(Unpack(red: list.x, green: list.y, blue: list.z))
     }
     
     init<T: BinaryFloatingPoint>(_ list: SIMD3<T>) {
-        self.init(red: Double(list.x), green: Double(list.y), blue: Double(list.z))
+        self.init(Unpack(red: list.x, green: list.y, blue: list.z))
+    }
+    
+    init<T: FixedWidthInteger>(_ list: Unpack<T>) {
+        let list = list.map({ Double($0) / 255 })
+        self.init(red: list.red, green: list.green, blue: list.blue)
+    }
+    
+    init<T: BinaryFloatingPoint>(_ list: Unpack<T>) {
+        self.init(red: Double(list.red), green: Double(list.green), blue: Double(list.blue))
     }
     
     init() {
-        self.init([0,0,0])
+        self.init(red: 0, green: 0, blue: 0)
     }
     
 }

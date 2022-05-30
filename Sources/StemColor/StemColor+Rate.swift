@@ -31,9 +31,9 @@ public extension Array where Element == StemColor {
     
     /// MMCQ (modified median cut quantization) algorithm from
     /// the Leptonica library (http://www.leptonica.com/).
-    func mmcq() {
-//        StemColorMMCQ.quantize(<#T##pixels: [StemColor]##[StemColor]#>, quality: <#T##Int#>, ignoreWhite: <#T##Bool#>, maxColors: <#T##Int#>)
-        /// https://github.com/DanBloomberg/leptonica/blob/0ffbc6822c23725b5b9f6876e2620a22ba3689f4/src/colorquant2.c
+    func mmcq(maxCount: Int, quality: Int) -> [StemColor] {
+        let list = stride(from: 0, to: count, by: quality).map({ self[$0] })
+        return StemColorMMCQ.quantize(list, maxColors: maxCount)?.vboxes.map({ StemColor(rgb: .init($0.average()), alpha: 1) }) ?? []
     }
     
     /// k-均值算法

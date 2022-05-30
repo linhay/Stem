@@ -59,12 +59,12 @@ struct StemColorMMCQ {
         ///
         /// - Parameter force: force recalculate
         /// - Returns: the volume
-        func getVolume(forceRecalculate force: Bool = false) -> Int {
+        func volume(forceRecalculate force: Bool = false) -> Int {
             if let volume = volume, !force {
                 return volume
             } else {
                 let volume = maxUnpack.with(minUnpack, { (Int($0) - Int($1) + 1) }).multiplier()
-                self.volume = volume
+                defer { self.volume = volume }
                 return volume
             }
         }
@@ -73,11 +73,12 @@ struct StemColorMMCQ {
         ///
         /// - Parameter force: force recalculate
         /// - Returns: the volume
-        func getCount(forceRecalculate force: Bool = false) -> Int {
+        func count(forceRecalculate force: Bool = false) -> Int {
             if let count = count, !force {
                 return count
             } else {
                 var count = 0
+                defer { self.count = count }
                 for i in range.red {
                     for j in range.green {
                         for k in range.blue {
@@ -86,59 +87,47 @@ struct StemColorMMCQ {
                         }
                     }
                 }
-                self.count = count
                 return count
             }
         }
 
-        func getAverage(forceRecalculate force: Bool = false) -> StemColor.RGBSpace.Unpack<UInt8> {
+        func average(forceRecalculate force: Bool = false) -> StemColor.RGBSpace.Unpack<UInt8> {
             if let average = average, !force {
                 return average
             } else {
                 var ntot = 0
-
-                var rSum = 0
-                var gSum = 0
-                var bSum = 0
-
+                var sum = StemColor.RGBSpace.Unpack<Int>(red: 0, green: 0, blue: 0)
                 for i in range.red {
                     for j in range.green {
                         for k in range.blue {
                             let index = StemColorMMCQ.makeColorIndex(of: .init(red: i, green: j, blue: k))
                             let hval = histogram[index]
                             ntot += hval
-                            rSum += Int(Double(hval) * (Double(i) + 0.5) * Double(StemColorMMCQ.multiplier))
-                            gSum += Int(Double(hval) * (Double(j) + 0.5) * Double(StemColorMMCQ.multiplier))
-                            bSum += Int(Double(hval) * (Double(k) + 0.5) * Double(StemColorMMCQ.multiplier))
+                            let item = StemColor.RGBSpace.Unpack<Int>(red: i, green: j, blue: k)
+                            sum = sum.with(item, { $0 + Int(Double(hval) * (Double($1) + 0.5) * Double(StemColorMMCQ.multiplier)) })
                         }
                     }
                 }
 
                 let average: StemColor.RGBSpace.Unpack<UInt8>
+                defer { self.average = average }
+                
                 if ntot > 0 {
-                    let r = UInt8(rSum / ntot)
-                    let g = UInt8(gSum / ntot)
-                    let b = UInt8(bSum / ntot)
-                    average = StemColor.RGBSpace.Unpack<UInt8>(red: r, green: g, blue: b)
+                    average = sum.map({ UInt8($0 / ntot) })
                 } else {
                    let unpack = minUnpack.with(maxUnpack, { UInt8(min(StemColorMMCQ.multiplier * (Int($0) + Int($1) + 1) / 2, 255)) })
                     average = unpack
                 }
-
-                self.average = average
                 return average
             }
         }
 
-        func widestColorChannel() -> StemColor.RGBSpace.Channel {
+        func widestChannel() -> StemColor.RGBSpace.Channel {
             let width = maxUnpack.with(minUnpack, { $0 - $1 })
             switch width.max() {
-            case width.red:
-                return .red
-            case width.green:
-                return .green
-            default:
-                return .blue
+            case width.red:   return .red
+            case width.green: return .green
+            default: return .blue
             }
         }
 
@@ -153,16 +142,16 @@ struct StemColorMMCQ {
             vboxes.append(vbox)
         }
 
-        open func makePalette() -> [StemColor.RGBSpace.Unpack<UInt8>] {
-            return vboxes.map { $0.getAverage() }
+        open func palette() -> [StemColor.RGBSpace.Unpack<UInt8>] {
+            return vboxes.map { $0.average() }
         }
 
-        open func makeNearestColor(to color: StemColor.RGBSpace.Unpack<UInt8>) -> StemColor.RGBSpace.Unpack<UInt8> {
+        open func nearest(to color: StemColor.RGBSpace.Unpack<UInt8>) -> StemColor.RGBSpace.Unpack<UInt8> {
             var nearestDistance = Int.max
             var nearestColor = StemColor.RGBSpace.Unpack<UInt8>.init(red: 0, green: 0, blue: 0)
 
             for vbox in vboxes {
-                let vbColor = vbox.getAverage()
+                let vbColor = vbox.average()
                 let distance = color.with(vbColor, { abs(Int($0) - Int($1)) }).sum()
                 if distance < nearestDistance {
                     nearestDistance = distance
@@ -203,12 +192,12 @@ struct StemColorMMCQ {
     }
 
     private static func applyMedianCut(with histogram: [Int], vbox: VBox) -> [VBox] {
-        guard vbox.getCount() != 0 else {
+        guard vbox.count() != 0 else {
             return []
         }
 
         // only one pixel, no split
-        guard vbox.getCount() != 1 else {
+        guard vbox.count() != 1 else {
             return [vbox]
         }
 
@@ -216,7 +205,7 @@ struct StemColorMMCQ {
         var total = 0
         var partialSum = [Int](repeating: -1, count: vboxLength) // -1 = not set / 0 = 0
 
-        let axis = vbox.widestColorChannel()
+        let axis = vbox.widestChannel()
         switch axis {
         case .red:
             for i in vbox.range.red {
@@ -264,7 +253,7 @@ struct StemColorMMCQ {
         return cut(by: axis, vbox: vbox, partialSum: partialSum, lookAheadSum: lookAheadSum, total: total)
     }
 
-    private static func cut(by axis: StemColor.RGBSpace.Channel,
+    private static func cut(by channel: StemColor.RGBSpace.Channel,
                             vbox: VBox,
                             partialSum: [Int],
                             lookAheadSum: [Int],
@@ -272,7 +261,7 @@ struct StemColorMMCQ {
         let vboxMin: Int
         let vboxMax: Int
 
-        switch axis {
+        switch channel {
         case .red:
             vboxMin = Int(vbox.minUnpack.red)
             vboxMax = Int(vbox.maxUnpack.red)
@@ -311,7 +300,7 @@ struct StemColorMMCQ {
             }
 
             // set dimensions
-            switch axis {
+            switch channel {
             case .red:
                 vbox1.maxUnpack.red = UInt8(d2)
                 vbox2.minUnpack.red = UInt8(d2 + 1)
@@ -371,7 +360,7 @@ struct StemColorMMCQ {
                 return
             }
 
-            if vbox.getCount() == 0 {
+            if vbox.count() == 0 {
                 queue.sort(by: comparator)
                 continue
             }
@@ -393,14 +382,14 @@ struct StemColorMMCQ {
     }
 
     private static func compareByCount(_ a: VBox, _ b: VBox) -> Bool {
-        return a.getCount() < b.getCount()
+        return a.count() < b.count()
     }
 
     private static func compareByProduct(_ a: VBox, _ b: VBox) -> Bool {
-        let aCount = a.getCount()
-        let bCount = b.getCount()
-        let aVolume = a.getVolume()
-        let bVolume = b.getVolume()
+        let aCount = a.count()
+        let bCount = b.count()
+        let aVolume = a.volume()
+        let bVolume = b.volume()
 
         if aCount == bCount {
             // If count is 0 for both (or the same), sort by volume

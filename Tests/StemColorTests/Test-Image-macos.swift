@@ -12,38 +12,16 @@ import Darwin
 import ReplayKit
 import StemFilePath
 import StemColor
-#if canImport(AppKit)
-import AppKit
-#endif
-#if canImport(UIKit)
-import UIKit
-#endif
 
 class TestImageColor: XCTestCase {
     
-    var png: Data { NSDataAsset(name: "fixture.png", bundle: .module)!.data }
-    
-#if canImport(AppKit) && !targetEnvironment(macCatalyst)
-    var svg: NSImage { Bundle.module.image(forResource: "fixture.svg")! }
-#endif
-#if canImport(UIKit)
-    var svg: UIImage { UIImage.init(named: "fixture.svg", in: .module, with: nil)! }
-#endif
-    
     func testPng() throws {
-#if canImport(AppKit) && !targetEnvironment(macCatalyst)
-        let image = NSImage(data: png)!
-#endif
-#if canImport(UIKit)
-        let image = UIImage(data: png)!
-#endif
-        
-        let colors = StemColor.array(from: image, filter: StemColor.ImageFilterPixel.allCases)
+        let colors = StemColor.array(from: Resource.png, filter: StemColor.ImageFilterPixel.allCases)
         assert(colors.isEmpty == false)
     }
     
     func testSVG() throws {
-        let image = svg
+        let image = Resource.svg
         let colors = StemColor.array(from: image)
         assert(colors.count == 512 * 512)
     }
@@ -51,7 +29,7 @@ class TestImageColor: XCTestCase {
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
     func testSize() throws {
         let size = CGSize(width: 1024, height: 1024)
-        let data = svg
+        let data = Resource.svg
             .st.scale(size: size)?
             .st.data(using: .jpeg, properties: [.compressionFactor: 1])
         let file = try File("~/Downloads/test-size.jpg")
@@ -69,7 +47,7 @@ class TestImageColor: XCTestCase {
         try [16,32,64, 128,256,512,1024]
             .map({ CGSize(width: $0, height: $0) })
             .forEach { size in
-                let data = svg
+                let data = Resource.svg
                     .st.scale(size: size)?
                     .st.data(using: .png, properties: [.compressionFactor: 1])
                 let file = try File("~/Downloads/icons/icon_\(Int(size.width))_\(Int(size.height)).png")

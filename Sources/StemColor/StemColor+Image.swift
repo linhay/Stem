@@ -19,7 +19,7 @@ public extension StemColor {
        public func equal(_ color: StemColor) -> Bool {
             switch self {
             case .white:
-                return color.rgbSpace.list(as: Int.self) == [1, 1, 1]
+                return !color.rgbSpace.list(as: Int.self).map({ $0 > 250 }).contains(false)
             case .blank:
                 return color.rgbSpace.list(as: Int.self) == [0, 0, 0]
             case .transparent:
