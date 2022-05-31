@@ -150,11 +150,11 @@ public extension StemColor.RGBSpace {
         }
                 
         public func simd() -> SIMD3<T> where T: FixedWidthInteger {
-            return SIMD3.init(list)
+            return SIMD3(list)
         }
         
         public func simd() -> SIMD3<T> where T: BinaryFloatingPoint {
-            return SIMD3.init(list)
+            return SIMD3(list)
         }
 
         public func min() -> T where T: Comparable {
@@ -169,12 +169,12 @@ public extension StemColor.RGBSpace {
             return red + green + blue
         }
         
-        public func multiplier() -> T where T: BinaryFloatingPoint {
-            return red * green * blue
-        }
-        
         public func sum() -> T where T: FixedWidthInteger {
             return red + green + blue
+        }
+        
+        public func multiplier() -> T where T: BinaryFloatingPoint {
+            return red * green * blue
         }
         
         public func multiplier() -> T where T: FixedWidthInteger {
