@@ -1,3 +1,13 @@
+
+public extension Array where Element == StemColor.RGBSpace.Unpack<UInt8> {
+
+    func mmcq(maxCount: Int, quality: Int) -> [StemColor.RGBSpace.Unpack<UInt8>] {
+        let list = stride(from: 0, to: count, by: quality).map({ self[$0] })
+        return StemColorMMCQ.quantize(list, maxColors: maxCount)?.vboxes.map({ $0.average() }) ?? []
+    }
+    
+}
+
 import Foundation
 /// MMCQ (modified median cut quantization) algorithm from
 /// the Leptonica library (http://www.leptonica.com/).
@@ -164,15 +174,13 @@ struct StemColorMMCQ {
     }
 
     /// Histo (1-d array, giving the number of pixels in each quantized region of color space), or null on error.
-    private static func makeHistogramAndVBox(from pixels: [StemColor]) -> ([Int], VBox) {
+    private static func makeHistogramAndVBox(from pixels: [StemColor.RGBSpace.Unpack<UInt8>]) -> ([Int], VBox) {
         var histogram = [Int](repeating: 0, count: histogramSize)
         var minUnpack = StemColor.RGBSpace.Unpack<UInt8>(red: .max, green: .max, blue: .max)
         var maxUnpack = StemColor.RGBSpace.Unpack<UInt8>(red: .min, green: .min, blue: .min)
 
         for pixel in pixels {
-            let shifted = pixel.rgbSpace
-                .unpack(as: UInt8.self)
-                .map({ $0 >> UInt8(rightShift) })
+            let shifted = pixel.map({ $0 >> UInt8(rightShift) })
                 
             minUnpack = shifted.with(minUnpack, min)
             maxUnpack = shifted.with(maxUnpack, max)
@@ -312,7 +320,7 @@ struct StemColorMMCQ {
         fatalError("VBox can't be cut")
     }
 
-    static func quantize(_ pixels: [StemColor], maxColors: Int) -> ColorMap? {
+    static func quantize(_ pixels: [StemColor.RGBSpace.Unpack<UInt8>], maxColors: Int) -> ColorMap? {
         // short-circuit
         guard !pixels.isEmpty, maxColors > 1, maxColors <= 256 else {
             return nil

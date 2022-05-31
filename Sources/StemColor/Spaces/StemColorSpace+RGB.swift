@@ -37,16 +37,22 @@ public extension StemColor {
         public var blue: Double { unpack.blue }
         
         public init(red: Double, green: Double, blue: Double) {
-            
             func map(_ value: Double) -> Double {
                 var value = value
                 if value > 0.9999 { value = 1 }
                 else if value < 0 { value = 0 }
                 return value
             }
-            
             self.unpack = .init(red: map(red), green: map(green), blue: map(blue))
         }
+        
+        public init(int red: UInt8, green: UInt8, blue: UInt8) {
+            func map(_ value: UInt8) -> Double {
+                return Double(value) / 255
+            }
+            self.unpack = .init(red: map(red), green: map(green), blue: map(blue))
+        }
+        
     }
     
 }
@@ -231,7 +237,7 @@ public extension StemColor.RGBSpace {
     }
     
     init() {
-        self.init(red: 0, green: 0, blue: 0)
+        self.init(red: 0.0, green: 0.0, blue: 0.0)
     }
     
 }

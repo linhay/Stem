@@ -1,21 +1,44 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by linhey on 2022/5/29.
 //
 
-
 public extension StemColor {
     
     static func array(fromRGBAs pixels: [UInt8]) -> [StemColor] {
-        let count = pixels.count / 4
         var list = [StemColor]()
-        for i in stride(from: 0, to: count, by: 1) {
+        for i in (0..<pixels.count/4) {
             let rgb = RGBSpace(red: Double(pixels[i * 4 + 3]) / 255,
                                green: Double(pixels[i * 4 + 2]) / 255,
                                blue: Double(pixels[i * 4 + 1]) / 255)
             list.append(.init(rgb: rgb, alpha: Double(pixels[i * 4]) / 255))
+        }
+        return list
+    }
+    
+    static func array(from image: StemColorImage, filter: ((StemColor) -> Bool)? = nil) -> [StemColor] {
+        let colors = array(fromRGBAs: pixels(from: image))
+        if let filter = filter {
+            return colors.filter(filter)
+        } else {
+            return colors
+        }
+    }
+    
+}
+
+public extension StemColor.RGBSpace.Unpack where T == UInt8 {
+    
+    static func array(fromRGBAs pixels: [UInt8], filter: ((_ rgb: StemColor.RGBSpace.Unpack<UInt8>, _ alpha: UInt8) -> Bool)? = nil) -> [StemColor.RGBSpace.Unpack<UInt8>] {
+        var list = [StemColor.RGBSpace.Unpack<UInt8>]()
+        for i in (0..<(pixels.count / 4)) {
+            let rgb = StemColor.RGBSpace.Unpack<UInt8>(red: pixels[i * 4 + 3], green: pixels[i * 4 + 2], blue: pixels[i * 4 + 1])
+            if let filter = filter, filter(rgb, pixels[i * 4]) {
+                continue
+            }
+            list.append(rgb)
         }
         return list
     }
@@ -26,15 +49,6 @@ public extension StemColor {
 import AppKit
 
 public extension StemColor {
-    
-    static func array(from image: NSImage, filter: ((StemColor) -> Bool)?) -> [StemColor] {
-     let colors = array(fromRGBAs: pixels(from: image))
-        if let filter = filter {
-            return colors.filter(filter)
-        } else {
-            return colors
-        }
-    }
     
     static func array(from image: NSImage) -> [StemColor] {
         return array(from: image, filter: nil)
@@ -50,7 +64,7 @@ public extension StemColor {
         }
     }
     
-    private static func pixels(from image: NSImage) -> [UInt8] {
+    static func pixels(from image: NSImage) -> [UInt8] {
         guard let bmp = bitmapImageRep(image), let buffer = bmp.bitmapData else {
             return []
         }
@@ -66,16 +80,8 @@ import UIKit
 
 public extension StemColor {
     
-    static func array(from image: UIImage, filter: ((StemColor) -> Bool)? = nil) -> [StemColor] {
-        guard let image = image.cgImage else {
-            return []
-        }
-        let colors = array(fromRGBAs: pixels(from: image))
-        if let filter = filter {
-            return colors.filter(filter)
-        } else {
-            return colors
-        }
+    static func pixels(from image: UIImage) -> [UInt8] {
+        return image.cgImage.map(pixels(from:)) ?? []
     }
     
 }
@@ -85,6 +91,7 @@ public extension StemColor {
 
 #if canImport(CoreGraphics)
 import CoreGraphics
+import SwiftUI
 
 fileprivate extension StemColor {
     
@@ -110,20 +117,18 @@ fileprivate extension StemColor {
     }
 
     static func makeBytesFromIncompatibleImage(_ image: CGImage) -> [UInt8] {
-        let width = image.width
-        let height = image.height
-        var rawData = [UInt8](repeating: 0, count: width * height * 4)
+        var rawData = [UInt8](repeating: 0, count: image.width * image.height * 4)
         guard let context = CGContext(
             data: &rawData,
-            width: width,
-            height: height,
+            width: image.width,
+            height: image.height,
             bitsPerComponent: 8,
-            bytesPerRow: 4 * width,
+            bytesPerRow: 4 * image.width,
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue | CGBitmapInfo.byteOrder32Little.rawValue) else {
-                return []
+            return []
         }
-        context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+        context.draw(image, in: .init(origin: .zero, size: .init(width: image.width, height: image.height)))
         return rawData
     }
     

@@ -22,6 +22,21 @@
 
 import Foundation
 
+struct StemColorAnalysis {
+    
+    func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int) -> [StemColor] {
+        mmcq(StemColor.pixels(from: data), maxCount: maxCount, quality: quality)
+    }
+    
+    func mmcq(_ data: [UInt8], maxCount: Int, quality: Int) -> [StemColor] {
+        StemColor.RGBSpace.Unpack<UInt8>
+            .array(fromRGBAs: data)
+            .mmcq(maxCount: maxCount, quality: quality)
+            .map({ .init(rgb: .init($0), alpha: 1) })
+    }
+    
+}
+
 public extension Array where Element == StemColor {
     
     struct KmeansResult {
@@ -32,8 +47,10 @@ public extension Array where Element == StemColor {
     /// MMCQ (modified median cut quantization) algorithm from
     /// the Leptonica library (http://www.leptonica.com/).
     func mmcq(maxCount: Int, quality: Int) -> [StemColor] {
-        let list = stride(from: 0, to: count, by: quality).map({ self[$0] })
-        return StemColorMMCQ.quantize(list, maxColors: maxCount)?.vboxes.map({ StemColor(rgb: .init($0.average()), alpha: 1) }) ?? []
+        return self.map(\.rgbSpace)
+            .map({ $0.unpack(as: UInt8.self) })
+            .mmcq(maxCount: maxCount, quality: quality)
+            .map({ .init(rgb: .init($0), alpha: 1) })
     }
     
     /// k-均值算法
