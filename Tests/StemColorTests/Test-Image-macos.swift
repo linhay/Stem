@@ -16,7 +16,7 @@ import StemColor
 class TestImageColor: XCTestCase {
     
     func testPng() throws {
-        let colors = StemColor.array(from: Resource.png, filter: StemColor.ImageFilterPixel.allCases)
+        let colors = StemColor.array(from: Resource.png)
         assert(colors.isEmpty == false)
     }
     

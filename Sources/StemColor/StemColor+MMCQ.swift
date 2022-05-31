@@ -170,12 +170,6 @@ struct StemColorMMCQ {
         var maxUnpack = StemColor.RGBSpace.Unpack<UInt8>(red: .min, green: .min, blue: .min)
 
         for pixel in pixels {
-            let a = UInt8(pixel.alpha * 255)
-            // If pixel is not mostly opaque or white
-            guard a >= 125 else {
-                continue
-            }
-
             let shifted = pixel.rgbSpace
                 .unpack(as: UInt8.self)
                 .map({ $0 >> UInt8(rightShift) })

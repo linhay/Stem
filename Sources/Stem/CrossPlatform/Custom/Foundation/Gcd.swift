@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class Gcd {
+public struct Gcd {
 
     public enum QueueType {
         case main
@@ -59,7 +59,7 @@ public class Gcd {
     ///   - label: 标识
     ///   - time: 时间 (秒)
     ///   - event: 延时事件
-    public class func delay(_ queueType: QueueType = .main, seconds: TimeInterval = 0, event: @escaping () -> Void) {
+    public static func delay(_ queueType: QueueType = .main, seconds: TimeInterval = 0, event: @escaping () -> Void) {
         let time = DispatchTime.now() + .milliseconds(Int(seconds * 1000))
         queueType.queue.asyncAfter(deadline: time) {
             event()
@@ -68,7 +68,7 @@ public class Gcd {
 
     /// 耗时(秒)
     /// - Parameter block: 需要测试执行的代码
-    public class func duration(unit: Double = 1e-9, _ closure: (@escaping () throws -> Double) throws -> Void) rethrows {
+    public static func duration(unit: Double = 1e-9, _ closure: (@escaping () throws -> Double) throws -> Void) rethrows {
         // 获取转换因子
         var info = mach_timebase_info_data_t()
         mach_timebase_info(&info)
@@ -86,7 +86,7 @@ public class Gcd {
     /// - Parameters:
     ///   - asyncs: 异步线程组
     ///   - notify: 全部完成回调
-    public class func group(asyncs: (() -> Void)..., notify: @escaping () -> Void) {
+    public static func group(asyncs: (() -> Void)..., notify: @escaping () -> Void) {
         let group = DispatchGroup()
         let randromLabel = "stem.gcd.group.\(Int.random(in: 0...10000))"
         var flag = 0
@@ -112,7 +112,7 @@ public class Gcd {
     ///   - completion: 完成回调
     /// - Returns: DispatchSourceTimer
     @discardableResult
-    public class func `repeat`(interval: TimeInterval,
+    public static func `repeat`(interval: TimeInterval,
                                event: @escaping ((_: DispatchSourceTimer) -> Void),
                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
        return self.repeat(interval: interval, keep: 0, leeway: 0.1, event: event, completion: completion)
@@ -127,7 +127,7 @@ public class Gcd {
     ///   - completion: 完成回调
     /// - Returns: DispatchSourceTimer
     @discardableResult
-    public class func `repeat`(interval: TimeInterval,
+    public static func `repeat`(interval: TimeInterval,
                                keep: TimeInterval,
                                event: @escaping (_: DispatchSourceTimer) -> Void,
                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
@@ -144,7 +144,7 @@ public class Gcd {
     ///   - completion: 完成回调
     /// - Returns: DispatchSourceTimer
     @discardableResult
-    public class func `repeat`(interval: TimeInterval,
+    public static func `repeat`(interval: TimeInterval,
                                keep: TimeInterval,
                                leeway: Double = 0.1,
                                event: @escaping ((_: DispatchSourceTimer) -> Void),

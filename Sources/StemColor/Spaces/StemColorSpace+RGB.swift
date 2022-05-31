@@ -27,14 +27,17 @@ public extension StemColor {
     struct RGBSpace: StemColorSpace {
         
         public private(set) var ranges: [ClosedRange<Double>] = [0...1, 0...1, 0...1]
+        public let unpack: Unpack<Double>
+        
         // value: 0 - 1.0
-        public let red: Double
+        public var red: Double { unpack.red }
         // value: 0 - 1.0
-        public let green: Double
+        public var green: Double { unpack.green }
         // value: 0 - 1.0
-        public let blue: Double
+        public var blue: Double { unpack.blue }
         
         public init(red: Double, green: Double, blue: Double) {
+            
             func map(_ value: Double) -> Double {
                 var value = value
                 if value > 0.9999 { value = 1 }
@@ -42,9 +45,7 @@ public extension StemColor {
                 return value
             }
             
-            self.red   = map(red)
-            self.green = map(green)
-            self.blue  = map(blue)
+            self.unpack = .init(red: map(red), green: map(green), blue: map(blue))
         }
     }
     
@@ -120,7 +121,7 @@ public extension StemColor.RGBSpace {
         case blue
     }
 
-    struct Unpack<T: Codable> {
+    struct Unpack<T: Codable & Hashable>: Codable, Hashable {
         
         public var red: T
         public var green: T
@@ -140,39 +141,43 @@ public extension StemColor.RGBSpace {
             .init(red: try transform(red, other.red), green: try transform(green, other.green), blue: try transform(blue, other.blue))
         }
         
-        var list: [T] {
-            [red,green,blue]
+        public var list: [T] {
+            [red, green, blue]
+        }
+        
+        public func contains(where predicate: (T) throws -> Bool) rethrows -> Bool {
+            return try predicate(red) || predicate(green) || predicate(blue)
         }
                 
-        func simd() -> SIMD3<T> where T: FixedWidthInteger {
+        public func simd() -> SIMD3<T> where T: FixedWidthInteger {
             return SIMD3.init(list)
         }
         
-        func simd() -> SIMD3<T> where T: BinaryFloatingPoint {
+        public func simd() -> SIMD3<T> where T: BinaryFloatingPoint {
             return SIMD3.init(list)
         }
 
-        func min() -> T where T: Comparable {
+        public func min() -> T where T: Comparable {
             Swift.min(red, green, blue)
         }
         
-        func max() -> T where T: Comparable {
+        public func max() -> T where T: Comparable {
             Swift.max(red, green, blue)
         }
         
-        func sum() -> T where T: BinaryFloatingPoint {
+        public func sum() -> T where T: BinaryFloatingPoint {
             return red + green + blue
         }
         
-        func multiplier() -> T where T: BinaryFloatingPoint {
+        public func multiplier() -> T where T: BinaryFloatingPoint {
             return red * green * blue
         }
         
-        func sum() -> T where T: FixedWidthInteger {
+        public func sum() -> T where T: FixedWidthInteger {
             return red + green + blue
         }
         
-        func multiplier() -> T where T: FixedWidthInteger {
+        public func multiplier() -> T where T: FixedWidthInteger {
             return red * green * blue
         }
         

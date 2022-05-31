@@ -7,26 +7,6 @@
 
 
 public extension StemColor {
-
-    enum ImageFilterPixel: Int, CaseIterable {
-        /// 白色
-        case white
-        /// 黑色
-        case blank
-        /// 透明像素
-        case transparent
-        
-       public func equal(_ color: StemColor) -> Bool {
-            switch self {
-            case .white:
-                return !color.rgbSpace.list(as: Int.self).map({ $0 > 250 }).contains(false)
-            case .blank:
-                return color.rgbSpace.list(as: Int.self) == [0, 0, 0]
-            case .transparent:
-                return color.alpha == .zero
-            }
-        }
-    }
     
     static func array(fromRGBAs pixels: [UInt8]) -> [StemColor] {
         let count = pixels.count / 4
@@ -56,17 +36,8 @@ public extension StemColor {
         }
     }
     
-    static func array(from image: NSImage, filter options: [ImageFilterPixel] = []) -> [StemColor] {
-        if options.isEmpty {
-            return array(from: image, filter: nil)
-        } else {
-            return array(from: image) { color in
-                for option in options where option.equal(color) {
-                    return false
-                }
-                return true
-            }
-        }
+    static func array(from image: NSImage) -> [StemColor] {
+        return array(from: image, filter: nil)
     }
     
     private static func bitmapImageRep(_ image: NSImage) -> NSBitmapImageRep? {
@@ -95,7 +66,7 @@ import UIKit
 
 public extension StemColor {
     
-    static func array(from image: UIImage, filter: ((StemColor) -> Bool)?) -> [StemColor] {
+    static func array(from image: UIImage, filter: ((StemColor) -> Bool)? = nil) -> [StemColor] {
         guard let image = image.cgImage else {
             return []
         }
@@ -104,19 +75,6 @@ public extension StemColor {
             return colors.filter(filter)
         } else {
             return colors
-        }
-    }
-    
-    static func array(from image: UIImage, filter options: [ImageFilterPixel] = []) -> [StemColor] {
-        if options.isEmpty {
-            return array(from: image, filter: nil)
-        } else {
-            return array(from: image) { color in
-                for option in options where option.equal(color) {
-                    return false
-                }
-                return true
-            }
         }
     }
     
