@@ -40,6 +40,16 @@
 					<string>Local Baseline</string>
 				</dict>
 			</dict>
+			<key>testBaseline()</key>
+			<dict>
+				<key>com.apple.dt.XCTMetric_Memory.physical_peak</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.000000</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+				</dict>
+			</dict>
 			<key>testBaselineForReadImage()</key>
 			<dict>
 				<key>com.apple.dt.XCTMetric_CPU.cycles</key>

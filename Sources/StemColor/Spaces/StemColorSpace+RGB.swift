@@ -58,7 +58,7 @@ public extension StemColor {
 }
 
 public extension StemColor.RGBSpace {
-
+    
     var linear: StemColor.RGBSpace {
         func f(_ value: Double) -> Double {
             if (value <= 0.04045) {
@@ -126,7 +126,7 @@ public extension StemColor.RGBSpace {
         case green
         case blue
     }
-
+    
     struct Unpack<T: Codable & Hashable>: Codable, Hashable {
         
         public var red: T
@@ -138,51 +138,63 @@ public extension StemColor.RGBSpace {
             self.green = green
             self.blue = blue
         }
-                        
+        
+        @inlinable
         public func map<V>(_ transform: (T) throws -> V) rethrows -> Unpack<V> {
             .init(red: try transform(red), green: try transform(green), blue: try transform(blue))
         }
-
+        
+        @inlinable
         public func with<O, V>(_ other: Unpack<O>, _ transform: (T, O) throws -> V) rethrows -> Unpack<V> {
             .init(red: try transform(red, other.red), green: try transform(green, other.green), blue: try transform(blue, other.blue))
         }
         
+        @inlinable
         public var list: [T] {
             [red, green, blue]
         }
         
+        @inlinable
         public func contains(where predicate: (T) throws -> Bool) rethrows -> Bool {
             return try predicate(red) || predicate(green) || predicate(blue)
         }
-                
+        
+        @inlinable
         public func simd() -> SIMD3<T> where T: FixedWidthInteger {
             return SIMD3(list)
         }
         
+        @inlinable
         public func simd() -> SIMD3<T> where T: BinaryFloatingPoint {
             return SIMD3(list)
         }
-
+        
+        @inlinable
         public func min() -> T where T: Comparable {
             Swift.min(red, green, blue)
         }
         
+        @inlinable
         public func max() -> T where T: Comparable {
             Swift.max(red, green, blue)
         }
         
+        @inlinable
         public func sum() -> T where T: BinaryFloatingPoint {
             return red + green + blue
         }
         
+        @inlinable
         public func sum() -> T where T: FixedWidthInteger {
             return red + green + blue
         }
         
+        @inlinable
         public func multiplier() -> T where T: BinaryFloatingPoint {
             return red * green * blue
         }
         
+        @inlinable
         public func multiplier() -> T where T: FixedWidthInteger {
             return red * green * blue
         }
@@ -218,7 +230,7 @@ public extension StemColor.RGBSpace {
     init<T: BinaryFloatingPoint & Codable>(_ list: [T]) {
         self.init(Unpack(red: list[0], green: list[1], blue: list[2]))
     }
-
+    
     init<T: FixedWidthInteger>(_ list: SIMD3<T>) {
         self.init(Unpack(red: list.x, green: list.y, blue: list.z))
     }
