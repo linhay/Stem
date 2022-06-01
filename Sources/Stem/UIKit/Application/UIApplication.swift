@@ -34,7 +34,7 @@ public extension UIApplication {
         public let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? ""
     }
     
-    struct STPath {
+    struct Path {
         public var documentsURL: URL? { return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last }
         public var documentsPath: String? { return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first }
         public var cachesURL: URL? { return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last }
@@ -69,7 +69,7 @@ public extension UIApplication {
 public extension Stem where Base: UIApplication {
     
     var info: UIApplication.Info { return UIApplication.Info() }
-    var path: UIApplication.STPath { return UIApplication.Path() }
+    var path: UIApplication.Path { return UIApplication.Path() }
     
     var statusBarFrame: CGRect {
         if #available(iOS 13.0, *) {

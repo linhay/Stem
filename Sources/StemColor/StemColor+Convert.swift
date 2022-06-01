@@ -45,10 +45,9 @@ public extension StemColor {
 }
 #endif
 
-#if canImport(AppKit)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import AppKit
 
-@available(macCatalyst, unavailable)
 public extension StemColor {
 
     func convert(mode: DisplayMode = .displayP3) -> NSColor {
@@ -67,6 +66,20 @@ public extension StemColor {
     }
     
 }
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+public extension StemColor {
+
+    @available(macOS 12.0, *)
+    func convert(mode: DisplayMode = .displayP3) -> Color {
+        .init(nsColor: convert(mode: mode))
+    }
+
+}
+#endif
+
 #endif
 
 #if canImport(UIKit)
@@ -90,5 +103,18 @@ public extension StemColor {
     }
     
 }
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+public extension StemColor {
+
+    func convert(mode: DisplayMode = .displayP3) -> Color {
+        .init(convert(mode: mode))
+    }
+
+}
+#endif
+
 #endif
 
