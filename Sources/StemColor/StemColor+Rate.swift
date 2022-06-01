@@ -21,12 +21,13 @@
 // SOFTWARE.
 
 import Foundation
+import Combine
 
 public struct StemColorAnalysis {
     
     public struct MMCQOption {
         
-        public static let `default` = MMCQOption(filterTransparency: true, filterWhite: true, filterBlank: true)
+        public static let `default` = MMCQOption(filterTransparency: true, filterWhite: true, filterBlank: false)
         
         let filterTransparency: Bool
         let filterWhite: Bool
@@ -37,6 +38,12 @@ public struct StemColorAnalysis {
             self.filterWhite = filterWhite
             self.filterBlank = filterBlank
         }
+    }
+
+    public static func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int, option: MMCQOption = .default) -> AnyPublisher<[StemColor], Never> {
+        Future { callback in
+            callback(.success(mmcq(StemColor.pixels(from: data), maxCount: maxCount, quality: quality)))
+        }.eraseToAnyPublisher()
     }
     
     public static func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int, option: MMCQOption = .default) -> [StemColor] {
@@ -89,7 +96,7 @@ public extension Array where Element == StemColor {
         return kmeas.train(k: count) { lhs, rhs in
             switch formula {
             case .cie76:
-               return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
+                return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
             case .cie94(let value):
                 return StemColor.difference(.cie94(.init(lhs), .init(rhs), value))
             case .ciede2000:
