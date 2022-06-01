@@ -10,7 +10,7 @@ import Foundation
 import AppKit
 import SwiftUI
 
-public extension File {
+public extension STFile {
     
     struct AssociatedApplication: Identifiable, Equatable, Hashable {
         
@@ -39,7 +39,7 @@ public extension File {
         
         /// 打开指定文件
         /// - Parameter files: 文件列表
-        public func open(_ files: [File]) {
+        public func open(_ files: [STFile]) {
             NSWorkspace.shared.open(files.map(\.url), withApplicationAt: url, configuration: NSWorkspace.OpenConfiguration())
         }
     }

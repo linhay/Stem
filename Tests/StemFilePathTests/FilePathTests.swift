@@ -12,10 +12,10 @@ import StemFilePath
 final class FilePathTests: XCTestCase {
 
     func testInit() async throws {
-        print(try Path("~/Desktop/Stem/Package.swift"))
-        print(try Path("~/Desktop/./"))
-        print(try Path("~/Desktop/.."))
-        for try await _ in try Folder("~/Desktop").fileScan() {
+        print(try STPath("~/Desktop/Stem/Package.swift"))
+        print(try STPath("~/Desktop/./"))
+        print(try STPath("~/Desktop/.."))
+        for try await _ in try STFolder("~/Desktop").fileScan() {
 
         }
     }

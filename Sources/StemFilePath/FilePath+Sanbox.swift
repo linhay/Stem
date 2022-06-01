@@ -22,9 +22,9 @@
 
 import Foundation
 
-public extension Folder {
+public extension STFolder {
     
-    static let home = try! Folder(sanbox: .home)
+    static let home = try! STFolder(sanbox: .home)
     
     /// iOS 沙盒路径
     enum SanboxRootPath {

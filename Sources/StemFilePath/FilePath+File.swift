@@ -22,7 +22,7 @@
 
 import Foundation
 
-public struct File: FilePathProtocol, Identifiable, Equatable {
+public struct STFile: FilePathProtocol, Identifiable, Equatable {
     
     public var id: URL { url }
     
@@ -38,7 +38,7 @@ public struct File: FilePathProtocol, Identifiable, Equatable {
     
 }
 
-public extension File {
+public extension STFile {
     
     func read(_ options: Data.ReadingOptions = [], encoding: String.Encoding = .utf8) throws -> String {
         String(data: try data(options: options), encoding: encoding) ?? ""
@@ -50,7 +50,7 @@ public extension File {
     
 }
 
-public extension File {
+public extension STFile {
     
     /// 文件数据
     /// - Throws: Data error
@@ -62,11 +62,11 @@ public extension File {
     /// 根据当前[FilePath]创建文件/文件夹
     /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
     @discardableResult
-    func create(with data: Data? = nil) throws -> File {
+    func create(with data: Data? = nil) throws -> STFile {
         if isExist {
-            throw Path.Error(message: "文件存在, 无法创建: \(url.path)")
+            throw STPath.Error(message: "文件存在, 无法创建: \(url.path)")
         }
-        try Folder(url.deletingLastPathComponent()).create()
+        try STFolder(url.deletingLastPathComponent()).create()
         manager.createFile(atPath: url.path, contents: data, attributes: nil)
         return self
     }

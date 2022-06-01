@@ -43,11 +43,11 @@ extension FilePathProtocol {
     
    public static func standardizedPath(_ path: String) throws -> URL {
         if path == "~" {
-            return try Folder.SanboxRootPath.home.url()
+            return try STFolder.SanboxRootPath.home.url()
         } else if path.hasPrefix("~/") {
             var components = path.split(separator: "/").map({ $0.description })
             components = Array(components.dropFirst())
-            let home = Folder.SanboxRootPath.home.path?.split(separator: "/").map({ $0.description }) ?? []
+            let home = STFolder.SanboxRootPath.home.path?.split(separator: "/").map({ $0.description }) ?? []
             components.insert(contentsOf: home, at: 0)
             return URL(fileURLWithPath: Self.standardizedPath(components))
         } else {
@@ -76,7 +76,7 @@ extension FilePathProtocol {
 
 public extension FilePathProtocol {
     
-    var eraseToFilePath: Path {
+    var eraseToFilePath: STPath {
         get throws {
             return try .init(url)
         }
@@ -101,7 +101,7 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError -
     @discardableResult
-    func move(into folder: Folder) throws -> Self {
+    func move(into folder: STFolder) throws -> Self {
         let fileURL = folder.url.appendingPathComponent(attributes.name)
         try manager.moveItem(at: url, to: fileURL)
         return try .init(fileURL)
@@ -111,7 +111,7 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标文件夹
     /// - Throws: FileManagerError -
     @discardableResult
-    func copy(into folder: Folder) throws -> Self {
+    func copy(into folder: STFolder) throws -> Self {
         let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
         try manager.copyItem(at: url, to: desURL)
         return try .init(desURL)
@@ -129,7 +129,7 @@ public extension FilePathProtocol {
     
     /// 获取所在文件夹
     /// - Returns: 所在文件夹
-    func parentFolder() -> Folder? {
+    func parentFolder() -> STFolder? {
         let parent = url.deletingLastPathComponent()
         guard parent != url else {
             return nil

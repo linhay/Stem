@@ -23,7 +23,7 @@
 import Foundation
 import Combine
 
-public struct Folder: FilePathProtocol, Identifiable, Equatable {
+public struct STFolder: FilePathProtocol, Identifiable, Equatable {
     
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public final class Watcher {
@@ -40,9 +40,9 @@ public struct Folder: FilePathProtocol, Identifiable, Equatable {
         private let queue = DispatchQueue(label: "stem.folder.watcher.queue")
         private var observer: DispatchSourceFileSystemObject?
         private var state = State.cancel
-        private let folder: Folder
+        private let folder: STFolder
         
-        init(folder: Folder) {
+        init(folder: STFolder) {
             self.folder = folder
         }
         
@@ -104,10 +104,10 @@ public struct Folder: FilePathProtocol, Identifiable, Equatable {
 }
 
 
-public extension Folder {
+public extension STFolder {
     
     @discardableResult
-    func merge(with folder: Folder) -> Folder {
+    func merge(with folder: STFolder) -> STFolder {
         return folder
     }
     
@@ -118,18 +118,18 @@ public extension Folder {
     
 }
 
-public extension Folder {
+public extension STFolder {
     
-    func file(name: String) -> File {
-        File(url.appendingPathComponent(name, isDirectory: false))
+    func file(name: String) -> STFile {
+        STFile(url.appendingPathComponent(name, isDirectory: false))
     }
     
-    func folder(name: String) -> Folder {
-        Folder(url.appendingPathComponent(name, isDirectory: true))
+    func folder(name: String) -> STFolder {
+        STFolder(url.appendingPathComponent(name, isDirectory: true))
     }
     
-    func open(name: String) throws -> File {
-        let file = File(url.appendingPathComponent(name, isDirectory: false))
+    func open(name: String) throws -> STFile {
+        let file = STFile(url.appendingPathComponent(name, isDirectory: false))
         if file.isExist {
             return file
         } else {
@@ -141,19 +141,19 @@ public extension Folder {
 }
 
 
-public extension Folder {
+public extension STFolder {
     
     /// 根据当前[FilePath]文件夹
     /// - Throws: FilePathError - 文件夹 存在, 无法创建
     @discardableResult
-    func create() throws -> Folder {
+    func create() throws -> STFolder {
         try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         return self
     }
     
     @discardableResult
-    func create(file name: String, data: Data? = nil) throws -> File {
-        return try File(url.appendingPathComponent(name, isDirectory: false)).create(with: data)
+    func create(file name: String, data: Data? = nil) throws -> STFile {
+        return try STFile(url.appendingPathComponent(name, isDirectory: false)).create(with: data)
     }
     
     /// 在当前路径下创建文件夹
@@ -161,15 +161,15 @@ public extension Folder {
     /// - Throws: FileManager error
     /// - Returns: 创建文件夹的 FilePath
     @discardableResult
-    func create(folder name: String) throws -> Folder {
-        return try Folder(url.appendingPathComponent(name, isDirectory: true)).create()
+    func create(folder name: String) throws -> STFolder {
+        return try STFolder(url.appendingPathComponent(name, isDirectory: true)).create()
     }
     
 }
 
 
 // MARK: - get subFilePaths
-public extension Folder {
+public extension STFolder {
     
     enum SearchPredicate {
         case skipsSubdirectoryDescendants
@@ -179,16 +179,16 @@ public extension Folder {
         case includesDirectoriesPostOrder
         @available(iOS 13.0, *) @available(macOS 10.15, *) @available(tvOS 13.0, *)
         case producesRelativePathURLs
-        case custom((Path) throws -> Bool)
+        case custom((STPath) throws -> Bool)
     }
     
 }
 
-extension Array where Element == Folder.SearchPredicate {
+extension Array where Element == STFolder.SearchPredicate {
     
-    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(Path) throws -> Bool]) {
+    func split() -> (system: FileManager.DirectoryEnumerationOptions, custom: [(STPath) throws -> Bool]) {
         var systemPredicates: FileManager.DirectoryEnumerationOptions = []
-        var customPredicates = [(Path) throws -> Bool]()
+        var customPredicates = [(STPath) throws -> Bool]()
         
         self.forEach { item in
             switch item {
@@ -236,13 +236,13 @@ extension Array where Element == Folder.SearchPredicate {
     
 }
 
-public extension Folder {
+public extension STFolder {
     
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: SearchPredicate...) throws -> [Path] {
+    func allSubFilePaths(predicates: SearchPredicate...) throws -> [STPath] {
         try allSubFilePaths(predicates: predicates)
     }
     
@@ -250,7 +250,7 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [Path] {
+    func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [STPath] {
         let (systemPredicates, customPredicates) = predicates.split()
         
         let resourceValues: [URLResourceKey] = [.isDirectoryKey]
@@ -261,7 +261,7 @@ public extension Folder {
             return []
         }
         
-        var list = [Path]()
+        var list = [STPath]()
         for case let fileURL as URL in enumerator {
             guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues)),
                   let isDirectory = resourceValues.isDirectory
@@ -269,7 +269,7 @@ public extension Folder {
                 continue
             }
             
-            let item = Path(fileURL, as: isDirectory ? .folder : .file)
+            let item = STPath(fileURL, as: isDirectory ? .folder : .file)
             if try customPredicates.contains(where: { try $0(item) == false }) {
                 continue
             }
@@ -283,7 +283,7 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths(predicates: SearchPredicate...) throws -> [Path] {
+    func subFilePaths(predicates: SearchPredicate...) throws -> [STPath] {
         try subFilePaths(predicates: predicates)
     }
     
@@ -291,11 +291,11 @@ public extension Folder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [Path] {
+    func subFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [STPath] {
         let (systemPredicates, customPredicates) = predicates.split()
         return try manager
             .contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: systemPredicates)
-            .compactMap({ try Path($0) })
+            .compactMap({ try STPath($0) })
             .filter({ item -> Bool in
                 try customPredicates.contains(where: { try $0(item) == false }) == false
             })
@@ -305,15 +305,15 @@ public extension Folder {
     /// 文件扫描
     /// - Parameter scanSubFolder: 是否扫描子文件夹
     /// - Returns: 文件序列
-    func fileScan(folderFilter: @escaping ((Folder) async throws -> Bool) = { _ in true },
-                  fileFilter: @escaping ((File) async throws -> Bool) = { _ in true }) -> AsyncThrowingStream<File, Error> {
+    func fileScan(folderFilter: @escaping ((STFolder) async throws -> Bool) = { _ in true },
+                  fileFilter: @escaping ((STFile) async throws -> Bool) = { _ in true }) -> AsyncThrowingStream<STFile, Error> {
         .init { continuation in
             Task {
                 do {
                     let urls = try manager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
                     for url in urls {
                         do {
-                            let filePath = try Path(url)
+                            let filePath = try STPath(url)
                             switch filePath.referenceType {
                             case .file(let file):
                                 if try await fileFilter(file) {

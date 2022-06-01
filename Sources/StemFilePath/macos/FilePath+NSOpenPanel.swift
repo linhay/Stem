@@ -27,7 +27,7 @@ import AppKit
 public extension FilePathProtocol {
     
     func showInFinder() {
-        guard let referenceType = try? Path(url).referenceType else {
+        guard let referenceType = try? STPath(url).referenceType else {
             return
         }
         switch referenceType {
@@ -40,7 +40,7 @@ public extension FilePathProtocol {
     
     static func selectInFinder(_ folder: URL,
                                support: [FilePathItemType] = [.file, .folder],
-                               allowsMultipleSelection: Bool = true) -> [Path] {
+                               allowsMultipleSelection: Bool = true) -> [STPath] {
         let panel = NSOpenPanel()
         panel.canChooseFiles = support.contains(.file)
         panel.canChooseDirectories = support.contains(.folder)
@@ -57,10 +57,10 @@ public extension FilePathProtocol {
 }
 
 @available(macCatalyst, unavailable)
-public extension Folder {
+public extension STFolder {
     
     func selectInFinder(support: [FilePathItemType] = [.file, .folder],
-                        allowsMultipleSelection: Bool = true) -> [Path] {
+                        allowsMultipleSelection: Bool = true) -> [STPath] {
         return Self.selectInFinder(url,
                                    support: support,
                                    allowsMultipleSelection: allowsMultipleSelection)
