@@ -35,7 +35,7 @@ public extension StemColor.RGBSpace.Unpack where T == UInt8 {
         var list = [StemColor.RGBSpace.Unpack<UInt8>]()
         for i in (0..<(pixels.count / 4)) {
             let rgb = StemColor.RGBSpace.Unpack<UInt8>(red: pixels[i * 4 + 3], green: pixels[i * 4 + 2], blue: pixels[i * 4 + 1])
-            if let filter = filter, filter(rgb, pixels[i * 4]) {
+            if let filter = filter, !filter(rgb, pixels[i * 4]) {
                 continue
             }
             list.append(rgb)
