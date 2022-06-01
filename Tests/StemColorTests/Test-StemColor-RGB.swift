@@ -12,7 +12,7 @@ class StemColorRGBTests: XCTestCase {
     // Init
     
     func testInitBlack() {
-        let color = StemColor(hex: blackHex)
+        let color = StemColor(blackHex)
         let space = color.rgbSpace
         XCTAssertEqual(space.red, 0)
         XCTAssertEqual(space.green, 0)
@@ -21,7 +21,7 @@ class StemColorRGBTests: XCTestCase {
     }
     
     func testInitWhite() {
-        let color = StemColor(hex: whiteHex)
+        let color = StemColor(whiteHex)
         let space = color.rgbSpace
         XCTAssertEqual(space.red, 1)
         XCTAssertEqual(space.green, 1)
@@ -30,7 +30,7 @@ class StemColorRGBTests: XCTestCase {
     }
     
     func testInitRed() {
-        let color = StemColor(hex: redHex)
+        let color = StemColor(redHex)
         let space = color.rgbSpace
         XCTAssertEqual(space.red, 255.0 / 255.0)
         XCTAssertEqual(space.green, 0.0 / 255.0)
@@ -39,7 +39,7 @@ class StemColorRGBTests: XCTestCase {
     }
     
     func testInitDarkGreen() {
-        let color = StemColor(hex: darkGreen)
+        let color = StemColor(darkGreen)
         let space = color.rgbSpace
         XCTAssertEqual(space.red, 50.0 / 255.0)
         XCTAssertEqual(space.green, 168.0 / 255.0)

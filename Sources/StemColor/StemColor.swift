@@ -114,9 +114,9 @@ public extension StemColor {
     /// 十六进制色: 0x666666
     ///
     /// - Parameter str: "#666666" / "0X666666" / "0x666666"
-    convenience init(hex value: String) {
+    convenience init(_ value: String) {
         do {
-            try self.init(hexThrowing: value)
+            try self.init(throwing: value)
         } catch {
             self.init(rgb: .init(red: 0, green: 0, blue: 0))
         }
@@ -125,9 +125,9 @@ public extension StemColor {
     /// 十六进制色: 0x666666
     ///
     /// - Parameter RGBValue: 十六进制颜色
-    convenience init(hex value: Int) {
+    convenience init(_ value: Int) {
         do {
-            try self.init(hexThrowing: value)
+            try self.init(throwing: value)
         } catch {
             self.init(rgb: .init(red: 0, green: 0, blue: 0))
         }
@@ -136,7 +136,7 @@ public extension StemColor {
     /// 十六进制色: 0x666666
     ///
     /// - Parameter str: "#666666" / "0X666666" / "0x666666"
-    convenience init(hexThrowing value: String) throws {
+    convenience init(throwing value: String) throws {
         var cString = value.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
         if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
@@ -145,13 +145,13 @@ public extension StemColor {
         }
         var value: UInt64 = 0x0
         Scanner(string: String(cString)).scanHexInt64(&value)
-        self.init(hex: Int(value))
+        self.init(Int(value))
     }
 
     /// 十六进制色: 0x666666
     ///
     /// - Parameter RGBValue: 十六进制颜色
-    convenience init(hexThrowing value: Int) throws {
+    convenience init(throwing value: Int) throws {
         var hex = value
         var count = 0
 
