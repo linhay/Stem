@@ -22,13 +22,13 @@
 
 import Foundation
 
-struct StemColorAnalysis {
+public struct StemColorAnalysis {
     
-    func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int) -> [StemColor] {
+    public static func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int) -> [StemColor] {
         mmcq(StemColor.pixels(from: data), maxCount: maxCount, quality: quality)
     }
     
-    func mmcq(_ data: [UInt8], maxCount: Int, quality: Int) -> [StemColor] {
+    public static func mmcq(_ data: [UInt8], maxCount: Int, quality: Int) -> [StemColor] {
         StemColor.RGBSpace.Unpack<UInt8>
             .array(fromRGBAs: data)
             .mmcq(maxCount: maxCount, quality: quality)
