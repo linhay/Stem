@@ -24,13 +24,39 @@ import Foundation
 
 public struct StemColorAnalysis {
     
-    public static func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int) -> [StemColor] {
+    public struct MMCQOption {
+        
+        public static let `default` = MMCQOption(filterTransparency: true, filterWhite: true, filterBlank: true)
+        
+        let filterTransparency: Bool
+        let filterWhite: Bool
+        let filterBlank: Bool
+        
+        public init(filterTransparency: Bool, filterWhite: Bool, filterBlank: Bool) {
+            self.filterTransparency = filterTransparency
+            self.filterWhite = filterWhite
+            self.filterBlank = filterBlank
+        }
+    }
+    
+    public static func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int, option: MMCQOption = .default) -> [StemColor] {
         mmcq(StemColor.pixels(from: data), maxCount: maxCount, quality: quality)
     }
     
-    public static func mmcq(_ data: [UInt8], maxCount: Int, quality: Int) -> [StemColor] {
+    public static func mmcq(_ data: [UInt8], maxCount: Int, quality: Int, option: MMCQOption = .default) -> [StemColor] {
         StemColor.RGBSpace.Unpack<UInt8>
-            .array(fromRGBAs: data)
+            .array(fromRGBAs: data, filter: { rgb, alpha in
+                if option.filterTransparency, alpha < 125 {
+                    return false
+                }
+                if option.filterWhite, rgb.min() >= 250 {
+                    return false
+                }
+                if option.filterBlank, rgb.max() <= 5 {
+                    return false
+                }
+                return true
+            })
             .mmcq(maxCount: maxCount, quality: quality)
             .map({ .init(rgb: .init($0), alpha: 1) })
     }
