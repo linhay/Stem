@@ -40,7 +40,7 @@ public struct StemColorAnalysis {
         }
     }
 
-    public static func mmcq(_ data: StemColorImage, maxCount: Int, quality: Int, option: MMCQOption = .default) -> AnyPublisher<[StemColor], Never> {
+    public static func mmcqPublisher(_ data: StemColorImage, maxCount: Int, quality: Int, option: MMCQOption = .default) -> AnyPublisher<[StemColor], Never> {
         Future { callback in
             callback(.success(mmcq(StemColor.pixels(from: data), maxCount: maxCount, quality: quality)))
         }.eraseToAnyPublisher()
