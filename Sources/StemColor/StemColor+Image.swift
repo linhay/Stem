@@ -68,8 +68,7 @@ public extension StemColor {
         guard let bmp = bitmapImageRep(image), let buffer = bmp.bitmapData else {
             return []
         }
-        
-        return Array(UnsafeBufferPointer(start: buffer, count: bmp.pixelsWide * bmp.pixelsHigh * 4))
+        return StemColorPixel.bytes(from: buffer, width: bmp.pixelsWide, height: bmp.pixelsHigh)
     }
     
 }
