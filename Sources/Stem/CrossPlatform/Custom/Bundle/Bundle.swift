@@ -22,13 +22,13 @@
 
 import Foundation
 
-public extension Bundle {
+public extension StemValue where Base: Bundle {
     
     var isSandbox: Bool {
         #if targetEnvironment(simulator)
         return true
         #else
-        guard let receiptName = self.appStoreReceiptURL?.lastPathComponent else {
+        guard let receiptName = base.appStoreReceiptURL?.lastPathComponent else {
             return false
         }
         return receiptName == "sandboxReceipt"
@@ -36,14 +36,25 @@ public extension Bundle {
     }
     
     struct Info {
-        /// App版本号
-        public let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-        /// App构建版本号
-        public let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
-        public let bundleName = Bundle.main.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String ?? ""
-        public let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? ""
+        let bundle: Bundle
+        /* The version of the Info.plist format */
+        public var infoVersion: String? { bundle.object(forInfoDictionaryKey: kCFBundleInfoDictionaryVersionKey as String) as? String }
+        /* The name of the executable in this bundle, if any */
+        public var executableName: String? { bundle.object(forInfoDictionaryKey: kCFBundleExecutableKey as String) as? String }
+        /* The bundle identifier (for CFBundleGetBundleWithIdentifier()) */
+        public var identifier: String? { bundle.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String }
+        /* The version number of the bundle.  For Mac OS 9 style version numbers (for example "2.5.3d5"), */
+        /* clients can use CFBundleGetVersionNumber() instead of accessing this key directly since that */
+        /* function will properly convert the version string into its compact integer representation. */
+        public var version: String? { bundle.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String }
+        /* The name of the development language of the bundle. */
+        public var language: String? { bundle.object(forInfoDictionaryKey: kCFBundleDevelopmentRegionKey as String) as? String }
+        /* The human-readable name of the bundle.  This key is often found in the InfoPlist.strings since it is usually localized. */
+        public var name: String? { bundle.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String }
+        /* Allows an unbundled application that handles localization itself to specify which localizations it has available. */
+        public var localizations: String? { bundle.object(forInfoDictionaryKey: kCFBundleLocalizationsKey as String) as? String }
     }
     
-    var info: Info { return Bundle.Info() }
+    var info: Info { return Info(bundle: base) }
     
 }
