@@ -35,4 +35,15 @@ public extension Bundle {
         #endif
     }
     
+    struct Info {
+        /// App版本号
+        public let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        /// App构建版本号
+        public let bundleVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
+        public let bundleName = Bundle.main.object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String ?? ""
+        public let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as? String ?? ""
+    }
+    
+    var info: Info { return Bundle.Info() }
+    
 }
