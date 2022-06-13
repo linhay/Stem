@@ -22,7 +22,7 @@
 
 import Foundation
 
-public extension StemValue where Base: Bundle {
+public extension Stem where Base: Bundle {
     
     var isSandbox: Bool {
         #if targetEnvironment(simulator)
