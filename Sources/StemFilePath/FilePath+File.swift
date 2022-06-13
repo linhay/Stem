@@ -71,4 +71,21 @@ public extension STFile {
         return self
     }
     
+    /// 追加数据到文件末尾
+    /// - Parameter data: 数据
+    func append(data: Data?) throws {
+        if !isExist {
+            try create(with: data)
+            return
+        }
+        
+        guard let data = data,
+              let handle = FileHandle(forWritingAtPath: path) else {
+            return
+        }
+        
+        try handle.seekToEnd()
+        try handle.write(contentsOf: data)
+    }
+    
 }
