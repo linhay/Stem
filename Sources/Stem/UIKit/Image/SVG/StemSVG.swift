@@ -124,9 +124,7 @@ public class StemSVG {
             y: target.height / size.height
         )
         
-        let rect = (
-            document: CGRect(origin: .zero, size: size), ()
-        )
+        let rect = (document: CGRect(origin: .zero, size: size), ())
         
         let scale: (x: CGFloat, y: CGFloat)
         
@@ -145,7 +143,8 @@ public class StemSVG {
         
         let transform = (
             scale: CGAffineTransform(scaleX: scale.x, y: scale.y),
-            aspect: CGAffineTransform(translationX: (target.width / scale.x - rect.document.width) / 2, y: (target.height / scale.y - rect.document.height) / 2)
+            aspect: CGAffineTransform(translationX: (target.width / scale.x - rect.document.width) / 2,
+                                      y: (target.height / scale.y - rect.document.height) / 2)
         )
         
         context.translateBy(x: 0, y: target.height)

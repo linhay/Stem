@@ -21,5 +21,40 @@ public extension Stem where Base: NSImage {
         }
     }
     
+    /// 缩放至指定高度
+    ///
+    /// - Parameters:
+    ///   - toWidth: 高度
+    ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
+    /// - Returns: 新的图片
+    func scale(toHeight: CGFloat, opaque: Bool = false) -> NSImage? {
+        let newWidth = base.size.width / base.size.height * toHeight
+        return scale(size: CGSize(width: newWidth, height: toHeight), opaque: opaque)
+    }
+    
+    /// 缩放至指定宽度
+    ///
+    /// - Parameters:
+    ///   - toWidth: 宽度
+    ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
+    /// - Returns: 新的图片
+    func scale(toWidth: CGFloat, opaque: Bool = false) -> NSImage? {
+        let newHeight = base.size.height / base.size.width * toWidth
+        return scale(size: CGSize(width: toWidth, height: newHeight), opaque: opaque)
+    }
+    
+    /// 缩放至最长边
+    /// - Parameters:
+    ///   - side: 最长边
+    ///   - opaque: 透明开关，如果图形完全不用透明，设置为YES以优化位图的存储
+    /// - Returns: 新的图片
+    func scale(longestSide side: CGFloat, opaque: Bool = false) -> NSImage? {
+        if base.size.width >= base.size.height {
+            return scale(toWidth: base.size.width, opaque: opaque)
+        } else {
+            return scale(toHeight: base.size.height, opaque: opaque)
+        }
+    }
+    
 }
 #endif
