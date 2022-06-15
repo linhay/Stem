@@ -71,7 +71,18 @@ public extension STFile {
         return self
     }
     
-    /// 追加数据到文件末尾
+    /// 覆盖文件内容(文件不存在则会创建文件)
+    /// - Parameter with: 数据
+    func overlay(with data: Data?) throws {
+        if !isExist {
+            try create(with: data)
+            return
+        }
+        try delete()
+        try create(with: data)
+    }
+    
+    /// 追加数据到文件末尾(文件不存在则会创建文件)
     /// - Parameter data: 数据
     func append(data: Data?) throws {
         if !isExist {
