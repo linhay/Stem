@@ -25,7 +25,7 @@ import Foundation
 // MARK: Registartion
 public extension Stem where Base: NSObject {
 
-    func observeDeinit(callback: @escaping () -> Void) {
+    func observe(deinit callback: @escaping () -> Void) {
         let key = "com.linhey.stem.nsobject.deinit.observer"
         if let observer = base.st.getAssociated(for: key) as DeinitObserver? {
             observer.callbacks.append(callback)
