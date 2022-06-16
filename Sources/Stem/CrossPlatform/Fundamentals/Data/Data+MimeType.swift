@@ -53,7 +53,7 @@ public extension Data {
         
         public init(_ fileType: FileType, mime: String, ext: String, _ condition: [UInt8], at: Int) {
             self.init(fileType, mime: mime, ext: ext) { data in
-               let bytes = data(at...at+condition.count-1)
+                let bytes = data(at...at+condition.count-1)
                 return bytes == condition
             }
         }
@@ -61,7 +61,7 @@ public extension Data {
         public init(_ fileType: FileType, mime: String, ext: String, _ condition: [UInt8]) {
             self.init(fileType, mime: mime, ext: ext, condition, at: 0)
         }
-
+        
         public static let all = imageSet + audioSet + videoSet + applicationSet
         public static let audioSet = [
             mid, mp3,
@@ -115,7 +115,7 @@ public extension Data {
         public static let m4p = MimeType(.m4p, mime: "video/mp4", ext: "m4p") { ftypIdentifiable($0) == "M4P" }
         public static let f4v = MimeType(.f4v, mime: "video/mp4", ext: "f4v") { ftypIdentifiable($0) == "F4V" }
         public static let f4p = MimeType(.f4p, mime: "video/mp4", ext: "f4p") { ftypIdentifiable($0) == "F4P" }
-
+        
         public static let avi = MimeType(.avi, mime: "video/x-msvideo", ext: "avi") { data in
             (data(0...3) == [0x52, 0x49, 0x46, 0x46]) && (data(8...10) == [0x41, 0x56, 0x49])
         }
@@ -160,7 +160,7 @@ public extension Data {
         
         public static let mif1 = MimeType(.mif1, mime: "image/heif", ext: "heic") { ftypIdentifiable($0) == "mif1" }
         public static let msf1 = MimeType(.msf1, mime: "image/heif-sequence", ext: "heic") { ftypIdentifiable($0) == "msf1" }
-
+        
         // MARK: - Application Types
         public static let sqlite = MimeType(.sqlite, mime: "application/x-sqlite3", ext: "sqlite", [0x53, 0x51, 0x4C, 0x69])
         public static let crx = MimeType(.crx, mime: "application/x-google-chrome-extension", ext: "crx", [0x43, 0x72, 0x32, 0x34])
@@ -208,7 +208,7 @@ public extension Data {
         public static let deb = MimeType(.deb, mime: "application/x-deb", ext: "deb", [
             0x21, 0x3C, 0x61, 0x72, 0x63, 0x68, 0x3E, 0x0A, 0x64, 0x65, 0x62, 0x69,
             0x61, 0x6E, 0x2D, 0x62, 0x69, 0x6E, 0x61, 0x72, 0x79
-          ])
+        ])
         public static let z = MimeType(.z, mime: "application/x-compress", ext: "z") { data in
             data(0...1) == [0x1F, 0xA0] || data(0...1) == [0x1F, 0x9D]
         }
@@ -252,89 +252,33 @@ public extension Data {
         return String(data: Data(data(8...11)), encoding: .utf8)?.trimmingCharacters(in: .whitespaces) ?? ""
     }
     
-    enum FileType: Int {
+    enum FileType: Int, CaseIterable, Equatable, Codable {
         case unknown
         
+        public static let videos: [FileType] = [.mp4, .m4v, .m4p, .f4v, .f4p, .avi, .wmv, .flv, .quicktime]
+        public static let audios: [FileType] = [.amr, .mp3, .ogg, .flac, .wav, .mid, .m4a, .m4b, .f4a, .f4b, .opus]
+        public static let images: [FileType] = [.avif, .jxr, .flif, .pdf, .png, .jpeg, .gif, .webp, .tiff, .bmp, .psd,
+                                                .cr2, .cr3, .mif1, .msf1, .heic, .heix, .hevc, .hevx]
+        public static let applications: [FileType] = [.z, .ar, .rpm, .deb, .crx, .cab, .xz, .nes, .ps, .eot,
+                                                      .ttf, .otf, .woff, .woff2, .rtf, .dmg, .bz2, ._7z, .gz,
+                                                      .zip, .xpi, .epub, .ico, .sqlite, .tar, .rar, .gzip, .exe,
+                                                      .swf, .lz, .msi, .mxf]
+        
         // MARK: - Video Types
-        case mp4
-        case m4v
-        case m4p
-        case f4v
-        case f4p
-        case quicktime
-        case avi
-        case wmv
-        case flv
+        case mp4, m4v, m4p, f4v, f4p, avi, wmv, flv, quicktime
         
         // MARK: - Audio Types
         // case aac
-        case amr
-        case mp3
-        case ogg
-        case flac
-        case wav
-        case mid
-        case m4a
-        case m4b
-        case f4a
-        case f4b
-        case opus
+        case amr, mp3, ogg, flac, wav, mid, m4a, m4b, f4a, f4b, opus
         
         // MARK: - Image Types
-        case avif
-        case jxr
-        case flif
-        case pdf
-        case png
-        case jpeg
-        case gif
-        case webp
-        case tiff
-        case bmp
-        case psd
-        case cr2
-        case cr3
-        // MARK: - Application Types
-        case z
-        case ar
-        case rpm
-        case deb
-        case crx
-        case cab
-        case xz
-        case nes
-        case ps
-        case eot
-        case ttf
-        case otf
-        case woff
-        case woff2
-        case rtf
-        case dmg
-        case bz2
-        case _7z
-        case gz
-        case zip
-        case xpi
-        case epub
-        case ico
-        case sqlite
-        case tar
-        case rar
-        case gzip
-        case exe
-        case swf
-        case lz
-        case msi
-        case mxf
+        case avif, jxr, flif, pdf, png, jpeg, gif, webp, tiff,
+             bmp, psd, cr2, cr3, mif1, msf1, heic, heix, hevc, hevx
         
-        /// heic
-        case mif1
-        case msf1
-        case heic
-        case heix
-        case hevc
-        case hevx
+        // MARK: - Application Types
+        case z, ar, rpm, deb, crx, cab, xz, nes, ps, eot, ttf,
+             otf, woff, woff2, rtf, dmg, bz2, _7z, gz, zip, xpi,
+             epub, ico, sqlite, tar, rar, gzip, exe, swf, lz, msi, mxf
     }
     
 }
@@ -343,5 +287,5 @@ public extension StemValue where Base == Data {
     
     var mimeType: Data.MimeType? { .init(base) }
     var fileType: Data.FileType { Data.MimeType(base)?.fileType ?? .unknown }
-
+    
 }
