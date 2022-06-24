@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import Foundation
+import UniformTypeIdentifiers
 
 public extension Data {
     
@@ -287,5 +288,7 @@ public extension StemValue where Base == Data {
     
     var mimeType: Data.MimeType? { .init(base) }
     var fileType: Data.FileType { Data.MimeType(base)?.fileType ?? .unknown }
+    @available(macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0, *)
+    var utType: UTType? { UTType(mimeType: mimeType?.mime ?? "") }
     
 }

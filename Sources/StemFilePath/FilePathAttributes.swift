@@ -69,7 +69,7 @@ public extension FilePathAttributes {
     /// 返回一个字符串数组，表示给定路径的用户可见组件。
     var componentsToDisplay: [String] { FileManager.default.componentsToDisplay(forPath: url.path) ?? [] }
     /// 文件名
-    var name: String { FileManager.default.displayName(atPath: url.path) }
+    var name: String { url.lastPathComponent.replacingOccurrences(of: ":", with: "/") }
     
     var nameComponents: NameComponents { .init(name) }
     

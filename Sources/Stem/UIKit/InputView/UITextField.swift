@@ -22,6 +22,7 @@
 
 #if canImport(UIKit)
 import UIKit
+import Combine
 
 public extension Stem where Base: UITextField {
     
@@ -37,47 +38,33 @@ public extension Stem where Base: UITextField {
 // MARK: - Padding
 public extension Stem where Base: UITextField {
 
-    /// 左边间距
-    var leftPadding: CGFloat {
-        get {
-            return base.leftView?.frame.size.width ?? 0
-        }
-        set {
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: newValue, height: base.frame.size.height))
-            base.leftView = view
-            base.leftViewMode = .always
-        }
+    var textPublisher: AnyPublisher<String?, Never> {
+        NotificationCenter
+            .default
+            .publisher(for: UITextField.textDidChangeNotification, object: base)
+            .compactMap { $0.object as? UITextField }
+            .filter { $0.markedTextRange == nil }
+            .map(\.text)
+            .eraseToAnyPublisher()
     }
-
-    /// 右边间距
-    var rightPadding: CGFloat {
-        get {
-            return base.rightView?.frame.size.width ?? 0
-        }
-        set {
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: newValue, height: base.frame.size.height))
-            base.rightView = view
-            base.rightViewMode = .always
-        }
-    }
-}
-
-// MARK: - placeholder
-public extension Stem where Base: UITextField {
-
-    /// 占位文本控件
-    var placeholderLabel: UILabel? { return self.value(for: "_placeholderLabel") }
-
-    /// 占位文字颜色
-    var placeholderColor: UIColor? {
-        get { return placeholderLabel?.textColor }
-        set { placeholderLabel?.textColor = newValue }
-    }
-
-    /// 占位文字字体
-    var placeholderFont: UIFont? {
-        get { return placeholderLabel?.font }
-        set { placeholderLabel?.font = newValue }
+    
+    /// 字数限制
+    /// - Parameter count: 字数限制
+    /// - Parameter willExceedLimit: 超出限制时回调
+    /// - Returns: Cancellable
+    func countLimit(_ count: Int, exceedLimit: (() -> Void)? = nil) -> Cancellable {
+        textPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak base] text in
+                guard let text = text else {
+                    return
+                }
+                guard text.count > count else {
+                    return
+                }
+                exceedLimit?()
+                base?.text = String(text.prefix(count))
+            }
     }
 
 }

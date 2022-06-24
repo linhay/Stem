@@ -53,8 +53,8 @@ class AttributeHtmlTests: XCTestCase {
         }
     }
     
-    func testHtmlToString() throws {
-      try Gcd.duration { duration in
+    func testHtmlToString() async throws {
+        try await Gcd.duration { duration in
             let data = #"""
     <!doctype html>
     <html lang="zh-CN">

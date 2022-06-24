@@ -17,6 +17,6 @@ let package = Package(
         .target(name: "StemColor", dependencies: []),
         .testTarget(name: "StemTests", dependencies: ["Stem", "StemFilePath"]),
         .testTarget(name: "StemColorTests", dependencies: ["Stem", "StemColor", "StemFilePath"]),
-        .testTarget(name: "StemFilePathTests", dependencies: ["StemFilePath"]),
+        .testTarget(name: "StemFilePathTests", dependencies: ["Stem", "StemFilePath"]),
     ]
 )

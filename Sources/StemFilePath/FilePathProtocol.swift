@@ -24,6 +24,7 @@ import Foundation
 
 public protocol FilePathProtocol {
     
+    var type: FilePathItemType { get }
     var url: URL { get }
     
     init(_ url: URL) throws
@@ -121,7 +122,7 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
     @discardableResult
-    func replace(_ path: STFile) throws -> Self {
+    func replace(_ path: FilePathProtocol) throws -> Self {
         try? path.delete()
         try manager.copyItem(at: url, to: path.url)
         return try .init(path.url)
@@ -132,9 +133,8 @@ public extension FilePathProtocol {
     /// - Throws: FileManagerError
     @discardableResult
     func replace(into folder: STFolder) throws -> Self {
-        let desFile = folder.file(name: url.lastPathComponent)
-        try? desFile.delete()
-        return try replace(desFile)
+        let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
+        return try replace(STPath(desURL, as: type))
     }
     
     /// 获取所在文件夹

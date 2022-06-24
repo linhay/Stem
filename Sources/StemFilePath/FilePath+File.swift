@@ -24,8 +24,8 @@ import Foundation
 
 public struct STFile: FilePathProtocol, Identifiable, Equatable {
     
+    public let type: FilePathItemType = .file
     public var id: URL { url }
-    
     public let url: URL
     
     public init(_ url: URL) {
@@ -84,6 +84,7 @@ public extension STFile {
     
     /// 追加数据到文件末尾(文件不存在则会创建文件)
     /// - Parameter data: 数据
+    @available(macOS 10.15.4, iOS 13.4, watchOS 6.2, tvOS 13.4, *)
     func append(data: Data?) throws {
         if !isExist {
             try create(with: data)

@@ -89,8 +89,8 @@ public struct STFolder: FilePathProtocol, Identifiable, Equatable {
         }
     }
     
+    public let type: FilePathItemType = .folder
     public var id: URL { url }
-    
     public let url: URL
     
     public init(_ url: URL) {
@@ -305,6 +305,7 @@ public extension STFolder {
     /// 文件扫描
     /// - Parameter scanSubFolder: 是否扫描子文件夹
     /// - Returns: 文件序列
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
     func fileScan(folderFilter: @escaping ((STFolder) async throws -> Bool) = { _ in true },
                   fileFilter: @escaping ((STFile) async throws -> Bool) = { _ in true }) -> AsyncThrowingStream<STFile, Error> {
         .init { continuation in
