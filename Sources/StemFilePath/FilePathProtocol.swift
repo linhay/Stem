@@ -37,6 +37,14 @@ extension FilePathProtocol {
     public var path: String { url.path }
     public var id: URL { url }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.url == rhs.url
+    }
+    
 }
 
 extension FilePathProtocol {

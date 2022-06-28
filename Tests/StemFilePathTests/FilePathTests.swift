@@ -16,12 +16,16 @@ final class FilePathTests: XCTestCase {
     private var cancellables = Set<AnyCancellable>()
     
     func test() async throws {
-        let folder = try STFolder("~/Desktop")
+        var folder = try STFolder("~/Desktop")
         folder.watcher().publisher.sink { _ in
             print("===>")
         }.store(in: &cancellables)
-        let file = try folder.create(file: "test1.txt")
-        try file.delete()
+        let file1 = folder.file(name: "test1.txt")
+        let file2 = folder.file(name: "test2.txt")
+        try? file1.delete()
+        try? file2.delete()
+        try file1.create()
+        try file2.create()
     }
     
     func testInit() async throws {
