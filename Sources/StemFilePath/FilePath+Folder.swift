@@ -25,69 +25,7 @@ import Combine
 
 public struct STFolder: FilePathProtocol {
     
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public final class Watcher {
-        
-        enum State: Int, Equatable {
-            case cancel
-            case activate
-            case suspend
-        }
-        
-        public private(set) lazy var publisher = subject.eraseToAnyPublisher()
-        
-        private let subject = PassthroughSubject<Void, Never>()
-        private let queue = DispatchQueue(label: "stem.folder.watcher.queue")
-        private var observer: DispatchSourceFileSystemObject?
-        private var state = State.cancel
-        private let folder: STFolder
-        
-        init(folder: STFolder) {
-            self.folder = folder
-        }
-        
-        @discardableResult
-        public func cancel() -> Watcher {
-            guard state != .cancel else { return self }
-            observer?.cancel()
-            state = .cancel
-            return self
-        }
-        
-        @discardableResult
-        public func activate() -> Watcher {
-            switch state {
-            case .cancel:
-                let descriptor = Darwin.open(folder.url.path, O_EVTONLY)
-                let observer = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor,
-                                                                         eventMask: .write,
-                                                                         queue: queue)
-                observer.setEventHandler { [weak self] in
-                    self?.subject.send(())
-                }
-                
-                observer.setCancelHandler {
-                    Darwin.close(descriptor)
-                }
-                self.observer = observer
-            case .activate:
-                return self
-            case .suspend:
-                break
-            }
-            state = .activate
-            observer?.activate()
-            return self
-        }
-        
-        @discardableResult
-        public func suspend() -> Watcher {
-            guard state == .activate else { return self }
-            state = .suspend
-            observer?.suspend()
-            return self
-        }
-    }
+
     
     public let type: FilePathItemType = .folder
     public let url: URL
@@ -102,17 +40,89 @@ public struct STFolder: FilePathProtocol {
     
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+public extension STFolder {
+    
+    func watcher() -> Watcher {
+        let watcher = Watcher(self)
+        watcher.startMonitoring()
+        return watcher
+    }
+    
+    final class Watcher {
+        
+        public private(set) lazy var publisher = subject.eraseToAnyPublisher()
+        private let subject = PassthroughSubject<Void, Never>()
+        
+        // MARK: Initializers
+        public init(_ folder: STFolder) {
+            self.url = folder.url
+        }
+        
+        public init(_ url: URL) {
+            self.url = url
+        }
+        
+        deinit {
+            stopMonitoring()
+        }
+        
+        // MARK: Properties
+        /// A file descriptor for the monitored directory.
+        var monitoredDirectoryFileDescriptor: CInt = -1
+        /// A dispatch queue used for sending file changes in the directory.
+        let directoryMonitorQueue =  DispatchQueue(label: "directorymonitor", attributes: .concurrent)
+        /// A dispatch source to monitor a file descriptor created from the directory.
+        var directoryMonitorSource: DispatchSource?
+        /// URL for the directory being monitored.
+        var url: URL
+
+        // MARK: Monitoring
+        public func startMonitoring() {
+            // Listen for changes to the directory (if we are not already).
+            if directoryMonitorSource == nil && monitoredDirectoryFileDescriptor == -1 {
+                // Open the directory referenced by URL for monitoring only.
+                monitoredDirectoryFileDescriptor = Darwin.open((url as NSURL).fileSystemRepresentation, O_EVTONLY)
+
+                // Define a dispatch source monitoring the directory for additions, deletions, and renamings.
+                directoryMonitorSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: monitoredDirectoryFileDescriptor, eventMask: DispatchSource.FileSystemEvent.write, queue: directoryMonitorQueue) as? DispatchSource
+
+                // Define the block to call when a file change is detected.
+                directoryMonitorSource?.setEventHandler{
+                    // Call out to the `DirectoryMonitorDelegate` so that it can react appropriately to the change.
+                    self.subject.send()
+                }
+
+                // Define a cancel handler to ensure the directory is closed when the source is cancelled.
+                directoryMonitorSource?.setCancelHandler{
+                    close(self.monitoredDirectoryFileDescriptor)
+
+                    self.monitoredDirectoryFileDescriptor = -1
+
+                    self.directoryMonitorSource = nil
+                }
+
+                // Start monitoring the directory via the source.
+                directoryMonitorSource?.resume()
+            }
+        }
+
+        public func stopMonitoring() {
+            // Stop listening for changes to the directory, if the source has been created.
+            if directoryMonitorSource != nil {
+                // Stop monitoring the directory via the source.
+                directoryMonitorSource?.cancel()
+            }
+        }
+    }
+}
+
 
 public extension STFolder {
     
     @discardableResult
     func merge(with folder: STFolder) -> STFolder {
         return folder
-    }
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func watcher() -> Watcher {
-        return .init(folder: self)
     }
     
 }

@@ -9,8 +9,20 @@ import Foundation
 import XCTest
 import StemFilePath
 import Stem
+import Combine
 
 final class FilePathTests: XCTestCase {
+
+    private var cancellables = Set<AnyCancellable>()
+    
+    func test() async throws {
+        let folder = try STFolder("~/Desktop")
+        folder.watcher().publisher.sink { _ in
+            print("===>")
+        }.store(in: &cancellables)
+        let file = try folder.create(file: "test1.txt")
+        try file.delete()
+    }
     
     func testInit() async throws {
         let folder = try STFolder("~/Desktop")
