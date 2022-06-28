@@ -23,7 +23,7 @@
 import Foundation
 import Combine
 
-public struct STFolder: FilePathProtocol, Identifiable, Equatable {
+public struct STFolder: FilePathProtocol {
     
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public final class Watcher {
@@ -90,7 +90,6 @@ public struct STFolder: FilePathProtocol, Identifiable, Equatable {
     }
     
     public let type: FilePathItemType = .folder
-    public var id: URL { url }
     public let url: URL
     
     public init(_ url: URL) {

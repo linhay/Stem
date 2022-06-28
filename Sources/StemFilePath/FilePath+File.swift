@@ -22,10 +22,9 @@
 
 import Foundation
 
-public struct STFile: FilePathProtocol, Identifiable, Equatable {
+public struct STFile: FilePathProtocol {
     
     public let type: FilePathItemType = .file
-    public var id: URL { url }
     public let url: URL
     
     public init(_ url: URL) {

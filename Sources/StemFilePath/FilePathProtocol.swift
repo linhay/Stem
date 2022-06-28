@@ -22,17 +22,21 @@
 
 import Foundation
 
-public protocol FilePathProtocol {
+public protocol FilePathProtocol: Identifiable, Hashable {
     
     var type: FilePathItemType { get }
     var url: URL { get }
+    var id: URL {get }
     
     init(_ url: URL) throws
     
 }
 
-public extension FilePathProtocol {
-    var path: String { url.path }
+extension FilePathProtocol {
+    
+    public var path: String { url.path }
+    public var id: URL { url }
+    
 }
 
 extension FilePathProtocol {
@@ -122,7 +126,7 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
     @discardableResult
-    func replace(_ path: FilePathProtocol) throws -> Self {
+    func replace(_ path: any FilePathProtocol) throws -> Self {
         try? path.delete()
         try manager.copyItem(at: url, to: path.url)
         return try .init(path.url)
