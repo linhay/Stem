@@ -14,6 +14,7 @@ public struct StemShell { }
 @available(macOS 11, *)
 public extension StemShell {
     
+    @discardableResult
     static func zsh(_ command: String, environment: [String: String]? = nil, currentDirectoryURL: URL? = nil) throws -> Data {
         try data(["-c", command], environment: environment, executableURL: URL(fileURLWithPath: "/bin/zsh"), currentDirectoryURL: currentDirectoryURL)
     }
