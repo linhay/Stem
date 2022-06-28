@@ -126,7 +126,7 @@ public extension FilePathProtocol {
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
     @discardableResult
-    func replace(_ path: any FilePathProtocol) throws -> Self {
+    func replace<Path: FilePathProtocol>(_ path: Path) throws -> Self where Path.ID == URL {
         try? path.delete()
         try manager.copyItem(at: url, to: path.url)
         return try .init(path.url)
