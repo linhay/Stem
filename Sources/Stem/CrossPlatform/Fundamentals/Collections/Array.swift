@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import Foundation
+import Accessibility
 
 // MARK: - slice & pass for unit test & document
 public extension Array {
@@ -223,16 +224,6 @@ public extension Array {
     
 }
 
-// MARK: - Array about other
-public extension Array {
-    
-    @inlinable
-    func decompose() -> (head: Iterator.Element, tail: SubSequence)? {
-        return (count > 0) ? (self[0], self[1..<count]): nil
-    }
-    
-}
-
 extension Array where Element: Hashable {
     
     var unique: [Element] {
@@ -245,11 +236,49 @@ extension Array where Element: Hashable {
 
 public extension Array {
     
+    @inlinable
     func sorted<Key: Comparable>(by key: KeyPath<Element, Key>, _ areInIncreasingOrder: (Key, Key) throws -> Bool) rethrows -> Self {
         try self.sorted { (lhs, rhs) in
             try areInIncreasingOrder(lhs[keyPath: key], rhs[keyPath: key])
         }
     }
+    
+    
+    @inlinable
+    func decompose<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: [Value]] {
+        return decompose(key: { $0[keyPath: key] }, value: { $0[keyPath: value] })
+    }
+    
+    @inlinable
+    func decompose<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: (Element) throws -> Value?) rethrows -> [Key: [Value]] {
+        return try decompose(key: { $0[keyPath: key] }, value: value)
+    }
+    
+    @inlinable
+    func decompose<Key: Hashable, Value>(key: (Element) throws -> Key?, value: KeyPath<Element, Value>) rethrows -> [Key: [Value]] {
+        return try decompose(key: key, value: { $0[keyPath: value] })
+    }
+    
+    @inlinable
+    func decompose<Key: Hashable>(key: KeyPath<Element, Key>) -> [Key: [Element]] {
+        return decompose(key: key, value: \.self)
+    }
+    
+    @inlinable
+    func decompose<Key: Hashable, Value>(key: (Element) throws -> Key?, value: (Element) throws -> Value?) rethrows -> [Key: [Value]] {
+        var result = [Key: [Value]]()
+        for item in self {
+            if let key = try key(item), let value = try value(item) {
+                if result[key] == nil {
+                    result[key] = [value]
+                } else {
+                    result[key]?.append(value)
+                }
+            }
+        }
+        return result
+    }
+
     
     @inlinable
     func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
