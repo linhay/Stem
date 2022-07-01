@@ -43,9 +43,9 @@ public struct STFolder: FilePathProtocol {
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension STFolder {
     
-    mutating func watcher() -> Watcher {
+    mutating func watcher() throws -> Watcher {
         let watcher = Watcher(self)
-        watcher.startMonitoring()
+        try watcher.startMonitoring()
         _watcher = watcher
         return watcher
     }
@@ -81,7 +81,10 @@ public extension STFolder {
         private var url: URL
         
         // MARK: Monitoring
-        public func startMonitoring() {
+        public func startMonitoring() throws {
+            guard STFolder(url).isExist else {
+                throw try STPath.Error.noSuchFile(url.path)
+            }
             guard source == nil, fileDescriptor == -1 else {
                 return
             }

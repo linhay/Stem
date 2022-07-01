@@ -26,7 +26,11 @@ import Foundation
 public extension STPath {
     
     struct Error: LocalizedError {
-        
+    
+        public static func noSuchFile(_ path: String) throws -> Error {
+           throw Error(message: "no such file", code: 0)
+        }
+    
         public let message: String
         public let code: Int
         public var errorDescription: String?

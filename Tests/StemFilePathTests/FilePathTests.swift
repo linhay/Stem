@@ -17,7 +17,7 @@ final class FilePathTests: XCTestCase {
     
     func test() async throws {
         var folder = try STFolder("~/Desktop")
-        folder.watcher().publisher.sink { _ in
+        try folder.watcher().publisher.sink { _ in
             print("===>")
         }.store(in: &cancellables)
         let file1 = folder.file(name: "test1.txt")
