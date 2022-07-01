@@ -245,6 +245,12 @@ extension Array where Element: Hashable {
 
 public extension Array {
     
+    func sorted<Key: Comparable>(by key: KeyPath<Element, Key>, _ areInIncreasingOrder: (Key, Key) throws -> Bool) rethrows -> Self {
+        try self.sorted { (lhs, rhs) in
+            try areInIncreasingOrder(lhs[keyPath: key], rhs[keyPath: key])
+        }
+    }
+    
     @inlinable
     func dictionary<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: Value] {
         return dictionary(key: { $0[keyPath: key] }, value: { $0[keyPath: value] })
@@ -275,5 +281,5 @@ public extension Array {
         }
         return result
     }
-
+    
 }
