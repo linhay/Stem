@@ -10,6 +10,11 @@ import Foundation
 import UniformTypeIdentifiers
 
 public extension Stem where Base: NSItemProvider {
+    
+    @available(macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0, *)
+    func hasItemConform(to type: UTType) -> Bool {
+        base.hasItemConformingToTypeIdentifier(type.identifier)
+    }
 
     @available(macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0, *)
     func loadDataRepresentation(for type: UTType) async throws -> Data? {
