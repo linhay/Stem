@@ -23,12 +23,12 @@
 import Foundation
 
 public struct Gcd {
-
+    
     public enum QueueType {
         case main
         case global(DispatchQoS.QoSClass)
         case custom(String)
-
+        
         var queue: DispatchQueue {
             switch self {
             case .main:
@@ -39,9 +39,9 @@ public struct Gcd {
                 return DispatchQueue(label: label)
             }
         }
-
+        
     }
-
+    
     /// 原子锁
     ///
     /// - Parameters:
@@ -52,7 +52,7 @@ public struct Gcd {
         closure()
         objc_sync_exit(lock)
     }
-
+    
     /// 子线程线程异步延时
     ///
     /// - Parameters:
@@ -65,7 +65,7 @@ public struct Gcd {
             event()
         }
     }
-
+    
     /// 耗时(秒)
     /// - Parameter block: 需要测试执行的代码
     public static func duration(unit: Double = 1e-9, _ closure: (_ finished: @escaping () throws -> Double) async throws -> Void) async rethrows {
@@ -80,7 +80,22 @@ public struct Gcd {
             return TimeInterval(Int(t1 - t0) * Int(info.numer) / Int(info.denom)) * unit
         })
     }
-
+    
+    /// 耗时(秒)
+    /// - Parameter block: 需要测试执行的代码
+    public static func duration(unit: Double = 1e-9, _ closure: (_ finished: @escaping () throws -> Double) throws -> Void) rethrows {
+        // 获取转换因子
+        var info = mach_timebase_info_data_t()
+        mach_timebase_info(&info)
+        // 获取开始时间
+        let t0 = mach_absolute_time()
+        try closure({
+            // 获取结束时间
+            let t1 = mach_absolute_time()
+            return TimeInterval(Int(t1 - t0) * Int(info.numer) / Int(info.denom)) * unit
+        })
+    }
+    
     /// 异步线程组
     ///
     /// - Parameters:
@@ -90,7 +105,7 @@ public struct Gcd {
         let group = DispatchGroup()
         let randromLabel = "stem.gcd.group.\(Int.random(in: 0...10000))"
         var flag = 0
-
+        
         for item in asyncs {
             let queue = DispatchQueue(label: randromLabel + ".\(flag)")
             queue.async(group: group) {
@@ -101,9 +116,9 @@ public struct Gcd {
         group.notify(queue: DispatchQueue.main) {
             notify()
         }
-
+        
     }
-
+    
     /// 定时
     ///
     /// - Parameters:
@@ -113,11 +128,11 @@ public struct Gcd {
     /// - Returns: DispatchSourceTimer
     @discardableResult
     public static func `repeat`(interval: TimeInterval,
-                               event: @escaping ((_: DispatchSourceTimer) -> Void),
-                               completion: (() -> Void)? = nil) -> DispatchSourceTimer {
-       return self.repeat(interval: interval, keep: 0, leeway: 0.1, event: event, completion: completion)
+                                event: @escaping ((_: DispatchSourceTimer) -> Void),
+                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
+        return self.repeat(interval: interval, keep: 0, leeway: 0.1, event: event, completion: completion)
     }
-
+    
     /// 定时
     ///
     /// - Parameters:
@@ -128,12 +143,12 @@ public struct Gcd {
     /// - Returns: DispatchSourceTimer
     @discardableResult
     public static func `repeat`(interval: TimeInterval,
-                               keep: TimeInterval,
-                               event: @escaping (_: DispatchSourceTimer) -> Void,
-                               completion: (() -> Void)? = nil) -> DispatchSourceTimer {
-      return self.repeat(interval: interval, keep: keep, leeway: 0.1, event: event, completion: completion)
+                                keep: TimeInterval,
+                                event: @escaping (_: DispatchSourceTimer) -> Void,
+                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
+        return self.repeat(interval: interval, keep: keep, leeway: 0.1, event: event, completion: completion)
     }
-
+    
     /// 定时
     ///
     /// - Parameters:
@@ -145,16 +160,16 @@ public struct Gcd {
     /// - Returns: DispatchSourceTimer
     @discardableResult
     public static func `repeat`(interval: TimeInterval,
-                               keep: TimeInterval,
-                               leeway: Double = 0.1,
-                               event: @escaping ((_: DispatchSourceTimer) -> Void),
-                               completion: (() -> Void)? = nil) -> DispatchSourceTimer {
+                                keep: TimeInterval,
+                                leeway: Double = 0.1,
+                                event: @escaping ((_: DispatchSourceTimer) -> Void),
+                                completion: (() -> Void)? = nil) -> DispatchSourceTimer {
         let intervalTime = DispatchTimeInterval.milliseconds(Int(interval * 1000))
         let leewayTime = DispatchTimeInterval.milliseconds(Int(leeway * 1000))
-
+        
         let queue = DispatchQueue.global()
         let timer = DispatchSource.makeTimerSource(flags: [], queue: queue)
-
+        
         if keep > 0 {
             let keepTime = DispatchTime.now() + .milliseconds(Int(keep * 1000))
             queue.asyncAfter(deadline: keepTime) {
@@ -163,18 +178,18 @@ public struct Gcd {
                 completion?()
             }
         }
-
+        
         timer.schedule(deadline: .now(), repeating: intervalTime, leeway: leewayTime)
         timer.setCancelHandler {
             DispatchQueue.main.async { completion?() }
         }
-
+        
         timer.setEventHandler {
             DispatchQueue.main.async { event(timer) }
         }
-
+        
         timer.resume()
         return timer
     }
-
+    
 }
