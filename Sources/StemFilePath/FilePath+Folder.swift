@@ -249,6 +249,16 @@ extension Array where Element == STFolder.SearchPredicate {
 }
 
 public extension STFolder {
+
+    @inlinable
+    func contains<Element: FilePathProtocol>(_ predicate: Element) -> Bool {
+        let components = self.url.pathComponents
+        return Array(predicate.url.pathComponents.prefix(components.count)) == components
+    }
+    
+}
+
+public extension STFolder {
     
     /// 递归获取文件夹中所有文件/文件夹
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
@@ -264,7 +274,6 @@ public extension STFolder {
     /// - Returns: [FilePath]
     func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [STPath] {
         let (systemPredicates, customPredicates) = predicates.split()
-        
         let resourceValues: [URLResourceKey] = [.isDirectoryKey]
         guard let enumerator = manager.enumerator(at: url,
                                                   includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
