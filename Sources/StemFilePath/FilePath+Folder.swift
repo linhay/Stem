@@ -32,94 +32,13 @@ public struct STFolder: FilePathProtocol {
         self.url = url.standardized
     }
     
-    private var _watcher: Watcher?
+    var _watcher: Watcher?
     
     public init(_ path: String) throws {
         try self.init(Self.standardizedPath(path))
     }
     
 }
-
-@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public extension STFolder {
-    
-    mutating func watcher() throws -> Watcher {
-        let watcher = Watcher(self)
-        try watcher.startMonitoring()
-        _watcher = watcher
-        return watcher
-    }
-    
-    final class Watcher {
-        
-        public private(set) lazy var publisher = subject.eraseToAnyPublisher()
-        private let subject = PassthroughSubject<Void, Never>()
-        
-        // MARK: Initializers
-        public convenience init(_ folder: STFolder, eventMask: DispatchSource.FileSystemEvent = .write) {
-            self.init(folder.url, eventMask: eventMask)
-        }
-        
-        public init(_ url: URL, eventMask: DispatchSource.FileSystemEvent = .write) {
-            self.url = url
-            self.eventMask = eventMask
-        }
-        
-        deinit {
-            stopMonitoring()
-        }
-        
-        // MARK: Properties
-        private let eventMask: DispatchSource.FileSystemEvent
-        /// A file descriptor for the monitored directory.
-        private var fileDescriptor: CInt = -1
-        /// A dispatch queue used for sending file changes in the directory.
-        private let queue = DispatchQueue(label: "directorymonitor", attributes: .concurrent)
-        /// A dispatch source to monitor a file descriptor created from the directory.
-        private var source: DispatchSourceFileSystemObject?
-        /// URL for the directory being monitored.
-        private var url: URL
-        
-        // MARK: Monitoring
-        public func startMonitoring() throws {
-            guard STFolder(url).isExist else {
-                throw try STPath.Error.noSuchFile(url.path)
-            }
-            guard source == nil, fileDescriptor == -1 else {
-                return
-            }
-            
-            fileDescriptor = Darwin.open((url as NSURL).fileSystemRepresentation, O_EVTONLY)
-            source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fileDescriptor, eventMask: eventMask, queue: queue)
-            source?.setEventHandler { [weak self] in
-                guard let self = self,
-                      let events = self.source?.data,
-                      events.contains(self.eventMask) else {
-                    return
-                }
-                self.subject.send()
-            }
-            
-            source?.setCancelHandler { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                close(self.fileDescriptor)
-                self.fileDescriptor = -1
-                self.source = nil
-            }
-            
-            source?.resume()
-        }
-        
-        public func stopMonitoring() {
-            if source != nil {
-                source?.cancel()
-            }
-        }
-    }
-}
-
 
 public extension STFolder {
     
