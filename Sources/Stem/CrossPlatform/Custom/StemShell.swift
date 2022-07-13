@@ -1,12 +1,6 @@
-//
-//  File.swift
-//  
-//
-//  Created by linhey on 2022/6/28.
-//
-
 #if os(macOS)
 import Foundation
+import Combine
 
 @available(macOS 11, *)
 public struct StemShell { }
@@ -19,24 +13,149 @@ public extension StemShell {
         public var environment: [String: String]?
         public var currentDirectory: URL?
         
-        public var standardOutput: ((String) -> Void)?
-        public var standardError: ((String) -> Void)?
+        public let standardOutput: PassthroughSubject<Data, Never>?
+        public var standardError: PassthroughSubject<Data, Never>?
         
-        public init(environment: [String : String]? = nil,
-                    at currentDirectory: URL? = nil,
-                    standardOutput: ((String) -> Void)? = nil,
-                    standardError: ((String) -> Void)? = nil) {
+        internal init(environment: [String : String]? = nil,
+                      at currentDirectory: URL? = nil,
+                      standardOutput: PassthroughSubject<Data, Never>? = .init(),
+                      standardError: PassthroughSubject<Data, Never>? = .init()) {
             self.environment = environment
             self.currentDirectory = currentDirectory
             self.standardOutput = standardOutput
             self.standardError = standardError
         }
+    }
+    
+    
+    class Standard {
+        
+        let pipe = Pipe()
+        let publisher: PassthroughSubject<Data, Never>?
+        
+        var availableData: Data? {
+            get throws {
+                guard let data = _availableData, !data.isEmpty else {
+                    return try pipe.fileHandleForReading.readToEnd()
+                }
+                return data
+            }
+        }
+        
+        private var _availableData: Data?
+        
+        deinit {
+            self.pipe.fileHandleForReading.readabilityHandler = nil
+        }
+        
+        init(publisher: PassthroughSubject<Data, Never>?) {
+            self.publisher = publisher
+        }
+        
+        func append(to standard: inout Any?) -> Self {
+            _availableData = Data()
+            standard = pipe
+            pipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
+                guard let self = self else { return }
+                let data = fh.availableData
+                if data.isEmpty {
+                    self.pipe.fileHandleForReading.readabilityHandler = nil
+                } else {
+                    self._availableData?.append(data)
+                    self.publisher?.send(data)
+                }
+            }
+            return self
+        }
         
     }
+    
+    
+}
+
+public extension StemShell {
+    
+    @discardableResult
+    static func zsh(_ command: String, context: Context? = nil) throws -> Data {
+        try data(URL(fileURLWithPath: "/bin/zsh"), ["-c", command], context: context)
+    }
+    
+    @discardableResult
+    static func zsh(string command: String, context: Context? = nil) throws -> String? {
+        let data = try zsh(command, context: context)
+        return String.init(data: data, encoding: .utf8)
+    }
+    
+    @discardableResult
+    static func string(_ exec: URL, _ commands: [String], context: Context? = nil) throws -> String {
+        let data = try data(exec, commands, context: context)
+        return String(data: data, encoding: .utf8) ?? ""
+    }
+    
+    @discardableResult
+    static func data(_ exec: URL, _ commands: [String], context: Context? = nil) throws -> Data {
+        let process = self.setupProcess(exec, commands, context: context)
+        let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
+        let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
+        try process.run()
+        process.waitUntilExit()
+        return try result(process, output: output.availableData, error: error.availableData).get()
+    }
+    
+}
+
+public extension StemShell {
+    
+    @discardableResult
+    static func zshPublisher(_ command: String, context: Context? = nil) -> AnyPublisher<Data, Error> {
+        dataPublisher(URL(fileURLWithPath: "/bin/zsh"), ["-c", command], context: context)
+    }
+    
+    @discardableResult
+    static func zshPublisher(string command: String, context: Context? = nil) -> AnyPublisher<String?, Error> {
+        return zshPublisher(command, context: context).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
+    }
+    
+    @discardableResult
+    static func stringPublisher(_ exec: URL, _ commands: [String], context: Context? = nil) -> AnyPublisher<String?, Error> {
+        return dataPublisher(exec, commands, context: context).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
+    }
+    
+    @discardableResult
+    static func dataPublisher(_ exec: URL, _ commands: [String], context: Context? = nil) -> AnyPublisher<Data, Error> {
+        Future<Data, Error> { promise in
+            do {
+                let process = self.setupProcess(exec, commands, context: context)
+                let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
+                let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
+                try process.run()
+                process.terminationHandler = { process in
+                    do {
+                        let data = try result(process, output: output.availableData, error: error.availableData).get()
+                        promise(.success(data))
+                    } catch {
+                        promise(.failure(error))
+                    }
+                }
+            } catch {
+                promise(.failure(error))
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+}
+
+public extension StemShell {
     
     @discardableResult
     static func zsh(_ command: String, context: Context? = nil) async throws -> Data {
         try await data(URL(fileURLWithPath: "/bin/zsh"), ["-c", command], context: context)
+    }
+    
+    @discardableResult
+    static func zsh(string command: String, context: Context? = nil) async throws -> String? {
+        let data = try await zsh(command, context: context)
+        return String.init(data: data, encoding: .utf8)
     }
     
     @discardableResult
@@ -47,68 +166,60 @@ public extension StemShell {
     
     @discardableResult
     static func data(_ exec: URL, _ commands: [String], context: Context? = nil) async throws -> Data {
-       try await withUnsafeThrowingContinuation { continuation in
-           do {
-               let process = Process()
-               process.executableURL = exec
-               process.arguments = commands
-               process.currentDirectoryURL = context?.currentDirectory
-               
-               if let environment = context?.environment, !environment.isEmpty {
-                   process.environment = environment
-               }
-               
-               let outputPipe = pipe(for: &process.standardOutput, callback: context?.standardOutput)
-               let errorPipe  = pipe(for: &process.standardError, callback: context?.standardError)
-               
-               process.terminationHandler = { process in
-                   if process.terminationStatus != .zero {
-                       if let message = String(data: errorPipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) {
-                           continuation.resume(throwing: StemError(message: message))
-                       }
-                       
-                       var message = [String]()
-                       if let currentDirectory = process.currentDirectoryURL?.path {
-                           message.append("currentDirectory: \(currentDirectory)")
-                       }
-                       message.append("reason: \(process.terminationReason)")
-                       message.append("code: \(process.terminationReason.rawValue)")
-                       continuation.resume(throwing: StemError(message: message.joined(separator: "\n")))
-                   }
-                   
-                   let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
-                   continuation.resume(with: .success(data))
-               }
-               try process.run()
-           } catch {
-               continuation.resume(throwing: error)
-           }
+        try await withUnsafeThrowingContinuation { continuation in
+            do {
+                let process = self.setupProcess(exec, commands, context: context)
+                let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
+                let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
+                try process.run()
+                process.terminationHandler = { process in
+                    do {
+                        let data = try result(process, output: output.availableData, error: error.availableData).get()
+                        continuation.resume(with: .success(data))
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
         }
     }
     
 }
 
-
 private extension StemShell {
     
-    static func pipe(for standard: inout Any?, callback: ((String) -> Void)?) -> Pipe {
-        let pipe = Pipe()
-        standard = pipe
-        guard let callback = callback else {
-            return pipe
-        }
-        pipe.fileHandleForReading.readabilityHandler = { handle in
-            let data = handle.availableData
-            guard !handle.availableData.isEmpty,
-                  let line = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !line.isEmpty else {
-                return
+    static func result(_ process: Process, output: Data?, error: Data?) -> Result<Data, Error> {
+        if process.terminationStatus != .zero {
+            if let data = error, let message = String(data: data, encoding: .utf8) {
+                return .failure(StemError(code: 0, message: message))
             }
-            callback(line)
+            
+            var message = [String]()
+            if let currentDirectory = process.currentDirectoryURL?.path {
+                message.append("currentDirectory: \(currentDirectory)")
+            }
+            message.append("reason: \(process.terminationReason)")
+            message.append("code: \(process.terminationReason.rawValue)")
+            return .failure(StemError(code: 0, message: message.joined(separator: "\n")))
         }
-        return pipe
+        return .success(output ?? Data())
+    }
+    
+    static func setupProcess(_ exec: URL, _ commands: [String], context: Context? = nil) -> Process {
+        let process = Process()
+        process.executableURL = exec
+        process.arguments = commands
+        process.currentDirectoryURL = context?.currentDirectory
+        
+        if let environment = context?.environment, !environment.isEmpty {
+            process.environment = environment
+        }
+        return process
     }
     
 }
 
 #endif
+
