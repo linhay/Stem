@@ -125,6 +125,9 @@ public extension FilePathProtocol {
     /// - Throws: FileManagerError -
     @discardableResult
     func copy(into folder: STFolder) throws -> Self {
+        if !folder.isExist {
+            try folder.create()
+        }
         let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
         try manager.copyItem(at: url, to: desURL)
         return try .init(desURL)
