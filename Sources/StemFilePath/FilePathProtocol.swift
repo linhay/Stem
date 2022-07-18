@@ -133,20 +133,16 @@ public extension FilePathProtocol {
     /// 替换至目标路径
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
-    @discardableResult
-    func replace<Path: FilePathProtocol>(_ path: Path) throws -> Self where Path.ID == URL {
-        try? path.delete()
-        try manager.copyItem(at: url, to: path.url)
-        return try .init(path.url)
+    func replace(_ file: STFile) throws {
+        try? file.delete()
+        try manager.copyItem(at: url, to: file.url)
     }
     
     /// 替换至目标路径
     /// - Parameter path: 目标路径
     /// - Throws: FileManagerError
-    @discardableResult
-    func replace(into folder: STFolder) throws -> Self {
-        let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
-        return try replace(STPath(desURL, as: type))
+    func replace(into folder: STFolder) throws {
+        try replace(folder.file(name: url.lastPathComponent))
     }
     
     /// 获取所在文件夹

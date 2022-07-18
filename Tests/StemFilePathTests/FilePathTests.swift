@@ -12,7 +12,7 @@ import Stem
 import Combine
 
 final class FilePathTests: XCTestCase {
-
+    
     private var cancellables = Set<AnyCancellable>()
     
     func test() async throws {
@@ -33,7 +33,7 @@ final class FilePathTests: XCTestCase {
         let paths = try folder.subFilePaths()
         var old = [String]()
         var new = [String]()
-        try await Gcd.duration { finished in
+        try Gcd.duration { finished in
             print("==== old ====")
             old = paths
                 .map({ item in
@@ -43,7 +43,7 @@ final class FilePathTests: XCTestCase {
             print("old \(paths.count) => ", try finished())
             print("==== old end ====")
         }
-        try await Gcd.duration { finished in
+        try Gcd.duration { finished in
             print("==== new ====")
             new = paths.map(\.attributes.name)
             print("new \(paths.count) => ", try finished())

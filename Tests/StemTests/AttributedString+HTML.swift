@@ -54,11 +54,11 @@ class AttributeHtmlTests: XCTestCase {
     }
     
     func testHtmlToString() async throws {
-        try await Gcd.duration { duration in
+        try Gcd.duration { duration in
             let data = #"""
     <!doctype html>
     <html lang="zh-CN">
-
+    
     <head>
       <title>腾讯首页</title>
       <meta charset="gb2312">
@@ -115,11 +115,11 @@ class AttributeHtmlTests: XCTestCase {
         .iebrowser .qq-nav .nav-mod{
             background-color: #b0b0b1 !important;
         }
-
+    
         .iebrowser .searchBtn{
           background-color: #b0b0b1 !important;
         }
-
+    
         .iebrowser .mod .hd .tit.active a{
           display: inline-block !important;
           color: #161617 !important;
@@ -152,28 +152,28 @@ class AttributeHtmlTests: XCTestCase {
         }
       </style>
     </head>
-
+    
     <body>
-
+    
       <div class="global" data-beacon-expo="qn_elementid=pv&qn_event_type=show">
-
+    
         <!-- 大皮肤 -->
         <div id="big-skin" class="layout qq-skin"></div>
         <!-- /大皮肤 -->
-
+    
         <!-- 头部 -->
         <div class="layout qq-top cf" bossexpo="bg_top">
-
+    
           <h1 class="top-logo fl">
             <a href="/" target="_blank" bosszone="top_logo" data-beacon-expo="qn_elementid=top_logo&qn_event_type=show" data-beacon-click="qn_elementid=top_logo&qn_event_type=click">
               <img width="100%" src="//inews.gtimg.com/newsapp_bt/0/0923142908664_4470/0" alt="腾讯网">
             </a>
           </h1>
-
+    
           <!-- 小皮肤 -->
           <div id="small-skin" class="skin-min fl"></div>
           <!-- /小皮肤 -->
-
+    
           <!-- 搜索 -->
     <div class="top-search fl" id="sosobar" role="search" bosszone="top_search"  data-beacon-expo="qn_elementid=top_search&qn_event_type=show" data-beacon-click="qn_elementid=top_search&qn_event_type=click">
         <form id="searchForm" method="get" name="soso_search_box"
@@ -198,15 +198,15 @@ class AttributeHtmlTests: XCTestCase {
     </div>
     <script type="text/javascript">
         function sogouShow() {}
-
+    
         function sosoShow() {}
     </script>
     <!-- /搜索 -->
-
+    
     <div class="fl barrierLink" style="margin: 28px 0 0 270px;font-size: 14px;">
         <a href="//new.qq.com/barrierfree.html" target="_blank" style="color: #1479d7;">关怀版</a>
     </div>
-
+    
     <!-- 登录 -->
     <div id="top-login" class="top-login fr">
         <div class="item item-qzone fl" data-beacon-expo="qn_elementid=top_qzone&qn_event_type=show" data-beacon-click="qn_elementid=top_qzone&qn_event_type=click">
@@ -233,17 +233,17 @@ class AttributeHtmlTests: XCTestCase {
         </div>
     </div>
     <!-- /登录 --><!--93ec87ac054bad1983e652d59b0e1be3-->
-
+    
         </div>
         <!-- /头部 -->
-
+    
         <!-- 导航 -->
         <div class="layout qq-nav">
           <div class="nav-mod cf">
             <style type="text/css">
     .qq-nav .nav-mod .nav-item{white-space: nowrap;}
     </style>
-
+    
     <ul class="nav-main fl" bossexpo="bg_dh_1">
         <li class="nav-item">
         <a href="http://news.qq.com/" target="_blank" data-beacon-click="qn_elementid=dh_1&qn_event_type=click" data-beacon-expo="qn_elementid=dh_1&qn_event_type=show"   bosszone="dh_1">新闻</a>
@@ -406,7 +406,7 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /导航 -->
-
+    
         <!-- 广告1 -->
         <div class="layout qq-gg gg-1 cf">
           <div class="col-1 fl">
@@ -446,12 +446,12 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /广告1 -->
-
+    
         <div class="layout qq-main cf">
           <div class="col col-1 fl">
-
+    
             <div id="main-news" class="mod m-news">
-
+    
               <div class="hd cf">
                 <h2 class="tit active fl"><a href="//news.qq.com" target="_blank" bosszone="yw_logo">要闻</a></h2>
                 <span class="tit-line fl"></span>
@@ -464,9 +464,9 @@ class AttributeHtmlTests: XCTestCase {
         <div id="weatherIcon" class="w-icon fl"></div>
         <div id="weatherTemperature" class="w-du fl"></div>
       </a>
-
+    
       <div id="weatherMore" class="weather-more">
-
+    
         <!-- 天气详情 -->
         <div class="face front">
           <div class="weatherMoreTitle cf">
@@ -517,7 +517,7 @@ class AttributeHtmlTests: XCTestCase {
           </a>
         </div>
         <!-- /天气详情 -->
-
+    
         <!-- 城市设置 -->
         <div class="face back">
           <div class="weatherMoreTitle cf">
@@ -586,12 +586,12 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /城市设置 -->
-
+    
       </div>
     </div><!--22387c29e2e6565bc4936f977fba8cfc--><!--[if !IE]>|xGv00|e8fbb0435570dc4bd2db993b13cd0260<![endif]-->
               </div>
               <div class="bd">
-
+    
                 <!-- 要闻 -->
                 <div id="tab-news-01" class="tab-news" bossexpo="bg_yw">
                   <style>
@@ -616,55 +616,55 @@ class AttributeHtmlTests: XCTestCase {
           <a class=" bold" href="https://new.qq.com/omn/20211123/20211123A09RC100.html" target="_blank" data-beacon-expo="qn_elementid=yw1_1&qn_event_type=show" data-beacon-click="qn_elementid=yw1_1&qn_event_type=click" newsexpo="yw1_1" style="">习近平对全军后勤工作会议作出重要指示</a>
       
       </li>
-
+    
           
       <li class=" ">
           
             <a data-a="false" style="" class=" bold" href="https://new.qq.com/omn/20211123/20211123A052B100.html" target="_blank" data-icon="no-icon" data-beacon-expo="qn_elementid=yw2_1&qn_event_type=show" data-beacon-click="qn_elementid=yw2_1&qn_event_type=click" newsexpo="yw2_1">构建中国-东盟命运共同体</a>        <a data-a="false" style="" class=" bold" href="https://new.qq.com/omn/TWF20211/TWF2021112300833100.html" target="_blank" data-icon="no-icon" data-beacon-expo="qn_elementid=yw2_2&qn_event_type=show" data-beacon-click="qn_elementid=yw2_2&qn_event_type=click" newsexpo="yw2_2">三名航天员获航天功勋奖章</a>
       </li>
-
+    
           
       <li class=" ">
           
             <a data-a="false" style="" class=" bold" href="https://new.qq.com/omn/20211122/20211122A0AYPU00.html" target="_blank" data-icon="no-icon" data-beacon-expo="qn_elementid=yw3_1&qn_event_type=show" data-beacon-click="qn_elementid=yw3_1&qn_event_type=click" newsexpo="yw3_1">“五个一百”</a>        <a data-a="false" style="" class=" bold" href="https://new.qq.com/omn/20211123/20211123A026JV00.html" target="_blank" data-icon="no-icon" data-beacon-expo="qn_elementid=yw3_2&qn_event_type=show" data-beacon-click="qn_elementid=yw3_2&qn_event_type=click" newsexpo="yw3_2">释放向上向善的正能量</a>        <a data-a="false" style="" class=" bold" href="https://new.qq.com/omn/20211123/20211123A026JW00.html" target="_blank" data-icon="no-icon" data-beacon-expo="qn_elementid=yw3_3&qn_event_type=show" data-beacon-click="qn_elementid=yw3_3&qn_event_type=click" newsexpo="yw3_3">环球漫评</a>
       </li>
-
+    
           
       <li class=" ">
           <a class="" href="https://new.qq.com/omn/20211123/20211123A01IBQ00.html" target="_blank" data-beacon-expo="qn_elementid=yw4_1&qn_event_type=show" data-beacon-click="qn_elementid=yw4_1&qn_event_type=click" newsexpo="yw4_1" style="">中央网信办发文规范娱乐明星网上信息</a>
       
       </li>
-
+    
           
       <li class=" ">
           <a class="" href="https://new.qq.com/omn/TWF20211/TWF2021112300540500.html" target="_blank" data-beacon-expo="qn_elementid=yw5_1&qn_event_type=show" data-beacon-click="qn_elementid=yw5_1&qn_event_type=click" newsexpo="yw5_1" style="">百年经验告诉我们未来怎样继续成功</a>
       
       </li>
-
+    
           
       <li class=" ">
           <a class="" href="https://new.qq.com/omn/20211122/20211122A07GOR00.html" target="_blank" data-beacon-expo="qn_elementid=yw6_1&qn_event_type=show" data-beacon-click="qn_elementid=yw6_1&qn_event_type=click" newsexpo="yw6_1" style="">通讯：中国煤炭大市鄂尔多斯“保供”记</a>
       
       </li>
-
+    
           
       <li class=" ">
           <a class="" href="https://new.qq.com/omn/20211123/20211123A036MI00.html" target="_blank" data-beacon-expo="qn_elementid=yw7_1&qn_event_type=show" data-beacon-click="qn_elementid=yw7_1&qn_event_type=click" newsexpo="yw7_1" style="">弘扬“老西藏精神” 激发奋进力量</a>
       
       </li>
-
+    
           
       <li class=" ">
           <a class="" href="https://new.qq.com/omn/20211123/20211123A04Q6100.html" target="_blank" data-beacon-expo="qn_elementid=yw8_1&qn_event_type=show" data-beacon-click="qn_elementid=yw8_1&qn_event_type=click" newsexpo="yw8_1" style="">《长津湖》在香港热映：一堂生动的爱国主义教育课</a>
       
       </li>
-
+    
         </ul><!--a2ccc477ebfc35f5ac367528bbd10f43-->
                   <style type="text/css">
     .news_color_3{color:#0c82ff!important;}
     .news_color_4{color:#df5147!important;}
     </style>
-
+    
     <ul class="yw-list" bosszone="yw_2">
               <li class="news-pic-txt cf">
           <div class="pic fl">
@@ -733,7 +733,7 @@ class AttributeHtmlTests: XCTestCase {
       </ul><!--fa36af4a712a084da2bed672b957f927-->
                 </div>
                 <!-- /要闻 -->
-
+    
                 <!-- 抗肺炎 -->
                 <div id="tab-news-02" class="tab-news" data-beacon-expo="qn_elementid=antip_yw&qn_event_type=show" data-beacon-click="qn_elementid=antip_yw&qn_event_type=click" bossexpo="antip_yw" style="display:none;">
                   <div id="scaleContainer" style="display:none;" data-src="https://mat1.gtimg.com/rain/apub2019/ddea48edb444.qq_top1x1.svg">
@@ -823,7 +823,7 @@ class AttributeHtmlTests: XCTestCase {
         </ul>
                 </div>
                 <!-- /抗肺炎 -->
-
+    
                 <!-- 地方新闻 -->
                 <div id="tab-news-03" class="tab-news undis" bossexpo="bg_dfz">
                   <ul class="yw-list" bosszone="dfz_1">
@@ -881,12 +881,12 @@ class AttributeHtmlTests: XCTestCase {
       </ul><!--991636fbe8c375d613bd50eeee5dadad--><!--[if !IE]>|xGv00|e15d36cd2e0736bada6acb6250ab238f<![endif]-->
                 </div>
                 <!-- /地方新闻 -->
-
+    
               </div>
             </div>
           </div>
           <div class="col col-2 fl">
-
+    
             <!-- 今日话题 -->
             <div class="mod m-topic" data-beacon-expo="qn_elementid=bg_jrht&qn_event_type=show" data-beacon-click="qn_elementid=bg_jrht&qn_event_type=click" bossexpo="bg_jrht">
       <div class="hd cf">
@@ -925,7 +925,7 @@ class AttributeHtmlTests: XCTestCase {
       </div>
     </div><!--b407ace3951798e4c1ad779374f26738-->
             <!-- /今日话题 -->
-
+    
             <!-- 原创 十三邀 -->
             <div class="mod m-yao13" bossexpo="bg_ycsp">
       <div class="hd-2 cf" style="height:50px;">
@@ -949,7 +949,7 @@ class AttributeHtmlTests: XCTestCase {
                 <div class="txt fl">
                   <a href="https://new.qq.com/newsvideo.htm#/cover/mzc002007g3egar/t33092deon3" target="_blank">真假蒋昌建在线PK，你愿意让机器人代替你活下去吗</a>
                   <div class="info">
-
+    
                   </div>
                 </div>
               </li>
@@ -975,7 +975,7 @@ class AttributeHtmlTests: XCTestCase {
       </div>
     </div><!--963d3b6aee790c9d44b5952951717b93-->
             <!-- /原创 十三邀 -->
-
+    
             <!-- 图话 -->
             <div class="mod m-picture" bossexpo="bg_th">
               <div class="hd-2 cf">
@@ -1029,10 +1029,10 @@ class AttributeHtmlTests: XCTestCase {
               </div>
             </div>
             <!-- /图话 -->
-
+    
           </div>
           <div class="col col-3 fr">
-
+    
             <!-- 产品 -->
             <div id="m-product" class="m-product">
       <ul class="list f14">
@@ -1120,7 +1120,7 @@ class AttributeHtmlTests: XCTestCase {
       </div>
     </div><!--67cce3d3884c72fbc1f8f7598ea9d328-->
             <!-- /产品 -->
-
+    
             <!-- 热门赛事 -->
             <div class="mod m-match" bossexpo="bg_rmss">
       <div class="hd cf">
@@ -1164,7 +1164,7 @@ class AttributeHtmlTests: XCTestCase {
       </div>
     </div><!--49edf3bff2e6f34afbc306f8c2b9cf5b-->
             <!-- /热门赛事 -->
-
+    
             <!-- 今日热播 -->
             <div class="mod m-todayhot" bossexpo="bg_jrrb">
       <div class="hd-2 cf">
@@ -1215,17 +1215,17 @@ class AttributeHtmlTests: XCTestCase {
     </div><!--6d2575a9d7a3ef80e09f68357fd37374-->
             <!-- /今日热播 -->
           </div>
-
+    
         </div>
         <!-- /要闻 -->
-
+    
         <!-- 视觉焦点 -->
         <div class="layout">
           <div class="index-dom-html structure-imgs" id="visual_focus_20200724"></div>
         </div>
         <!--include virtual="/ninja/visual_focus_20200724.htm"-->
         <!-- /视觉焦点 -->
-
+    
         <!-- 广告2 -->
         <div class="layout qq-gg gg-2 cf">
           <div class="col-1 fl">
@@ -1236,12 +1236,12 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /广告2 -->
-
+    
         <!-- 娱乐/体育/NBA -->
         <div class="layout qq-channel2col channelent channel-num6 cf">
-
+    
           <div class="col col-2 fl">
-
+    
             <!-- 娱乐 -->
             <div class="mod-ch">
               <div class="title nst">
@@ -1272,7 +1272,7 @@ class AttributeHtmlTests: XCTestCase {
               </div>
             </div>
             <!-- /娱乐 -->
-
+    
             <!-- 体育 -->
             <div class="mod-ch">
               <div class="title nst">
@@ -1305,10 +1305,10 @@ class AttributeHtmlTests: XCTestCase {
               </div>
             </div>
             <!-- /体育 -->
-
-
+    
+    
           </div>
-
+    
           <div class="col col-1 fr">
             <div id="mod-recommend" class="mod mod-recommend">
               <i class="line"></i>
@@ -1325,10 +1325,10 @@ class AttributeHtmlTests: XCTestCase {
               </div>
             </div>
           </div>
-
+    
         </div>
         <!-- /娱乐/体育/NBA -->
-
+    
         <!-- 财经/军事 -->
         <div class="layout channel2col qq-channel2col channel-num6 cf">
           <div class="col col-2 fl">
@@ -1399,7 +1399,7 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- 财经/军事 -->
-
+    
         <!-- NBA/大家 -->
         <div class="layout channel2col qq-channel2col channel-num6 cf">
             <div class="col col-2 fl">
@@ -1438,7 +1438,7 @@ class AttributeHtmlTests: XCTestCase {
             </div>
           </div>
           <!-- 财经/大家 -->
-
+    
         <!-- 科技/时尚 -->
         <div class="layout channel2col qq-channel2col channel-num6 cf">
           <div class="col col-2 fl">
@@ -1477,7 +1477,7 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- 科技/时尚 -->
-
+    
        <!-- 汽车/房产 -->
         <div class="layout channel2col qq-channel2col channel-num6 cf">
           <div class="col col-2 fl">
@@ -1515,7 +1515,7 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /汽车/房产 -->
-
+    
         <!-- 综艺影视剧 -->
         <div class="layout qq-videos m40" style="display:none;">
           <div class="title" id="js_vtitle">
@@ -1534,7 +1534,7 @@ class AttributeHtmlTests: XCTestCase {
             <div id="js_bdzy" bossexpo="bg_zongyi">
               <div class="bdwrap">
                 <div class="bd-inner cf" id="js_zyCon">
-
+    
                   <!--include virtual="/ninja/index_zongyi_2018.htm"-->
                 </div>
               </div>
@@ -1579,13 +1579,13 @@ class AttributeHtmlTests: XCTestCase {
             <div class="vplayer">
               <div class="layer"></div>
               <div id="js_videoplayer">
-
+    
               </div>
             </div>
           </div>
         </div>
         <!-- /综艺影视剧 -->
-
+    
         <!-- 广告3 -->
         <div class="layout qq-gg gg-3 cf">
           <div class="col-1 fl">
@@ -1596,7 +1596,7 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /广告3 -->
-
+    
         <!-- 军事/历史/文化佛学 -->
         <div class="layout qq-channel3col cf">
           <div class="col col-1">
@@ -1638,7 +1638,7 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- /军事/历史/文化佛学 -->
-
+    
         <!-- 星座每日运势/游戏动漫/财报 -->
         <div class="layout qq-channel3col cf">
           <div class="col col-1">
@@ -1730,23 +1730,23 @@ class AttributeHtmlTests: XCTestCase {
           </div>
         </div>
         <!-- 星座每日运势/游戏动漫/财报 -->
-
+    
         <!-- 高清组图 -->
         <div class="layout">
           <div class="index-dom-html structure-imgs" id="hd_picture_20200724"></div>
         </div>
         <!--include virtual="/ninja/hd_picture_20200724.htm"-->
         <!-- /高清组图 -->
-
+    
         <!-- 广告4 -->
         <div class="layout qq-gg gg-4">
           <!--NEW_QQCOM_N_Width4_div AD begin...."l=NEW_QQCOM_N_Width4&log=off"--><div id="NEW_QQCOM_N_Width4" style="width:1400px;height:90px;" class="l_qq_com"></div><!--NEW_QQCOM_N_Width4 AD end --><!--[if !IE]>|xGv00|988d4677a77862e5edbcb3f52aba9377<![endif]-->
         </div>
         <!-- /广告4 -->
-
+    
         <!--NEW_WWW_RM_RightMove1_div AD begin...."l=NEW_WWW_RM_RightMove1&log=off"--><div id="NEW_WWW_RM_RightMove1" style="width:400px;height:300px;display:none;margin:0 auto;" class="l_qq_com"></div><!--NEW_WWW_RM_RightMove1 AD end --><!--[if !IE]>|xGv00|c020c69143131b5b928166fd08447a05<![endif]-->
         <!--NEW_QQ_Couplet_div AD begin...."l=NEW_QQ_Couplet&log=off"--><div id="NEW_QQ_Couplet" style="width:100px;height:300px;display:none;" class="l_qq_com"></div><!--NEW_QQ_Couplet AD end --><!--[if !IE]>|xGv00|5b0b305532624ef799bf7dc76b9e5338<![endif]-->
-
+    
         <!-- 版权信息 -->
         <div class="layout qq-footer" bosszone="dibu" bossexpo="bg_dibu">
       <a href="http://www.tencent.com/" target="_blank" rel="nofollow">关于腾讯</a> | <a href="http://www.tencent.com/index_e.shtml"
@@ -1807,7 +1807,7 @@ class AttributeHtmlTests: XCTestCase {
     </script>
     <!--b4ce8cf858f404a6d8f2081d0b7ee0ca-->
         <!-- /版权信息 -->
-
+    
         <!-- 电梯 -->
         <div class="elevator" id="elevator">
           <a href="javascript:" class="refresh fix" id="js_refresh" title="刷新" bosszone="shuaxin"><span class="icon"></span><br />刷新</a>
@@ -1815,9 +1815,9 @@ class AttributeHtmlTests: XCTestCase {
           <a href="javascript:void(0)" target="_self" class="backtop" id="js_gotop" title="返回顶部" data-beacon-expo="qn_elementid=dingbu&qn_event_type=show" data-beacon-click="qn_elementid=dingbu&qn_event_type=click" bosszone="dingbu"><span class="icon"></span></a>
         </div>
         <!-- /电梯 -->
-
+    
       </div>
-
+    
       <!-- 视频弹层 -->
       <div id="pop-player" class="pop-player">
       <div class="inner">
@@ -1835,7 +1835,7 @@ class AttributeHtmlTests: XCTestCase {
         </div>
       </div>
     </div>
-
+    
     <div id="pop-player2" class="pop-player pop-player2">
       <div class="inner">
         <div class="player-hd">
@@ -1853,7 +1853,7 @@ class AttributeHtmlTests: XCTestCase {
         </div>
       </div>
     </div>
-
+    
     <div id="min-player" class="min-player">
       <div class="min-hd cf">
         <h2 class="tit fl"></h2>
@@ -1864,7 +1864,7 @@ class AttributeHtmlTests: XCTestCase {
       </div>
     </div><!--ec4544fe058862e423cdc3225e110e49--><!--[if !IE]>|xGv00|6254f87b049c4c938babd0b80a015de3<![endif]-->
       <!-- /视频浮层 -->
-
+    
       
       <script type="text/javascript">
       //<![CDATA[
@@ -1880,7 +1880,7 @@ class AttributeHtmlTests: XCTestCase {
       <script src="//mat1.gtimg.com/pingjs/ext2020/dc2017/publicjs/m/ping.js"></script>
         <script>if(typeof(pgvMain) == 'function')pgvMain();</script>
       <script src="//mat1.gtimg.com/qqcdn/qqindex2021/qqhome/js/qq_91c04101.js" charset="utf-8"></script>
-
+    
       <script type="text/javascript" src="//imgcache.qq.com/qzone/biz/comm/js/qbs.js"></script>
     <script type="text/javascript">
     var TIME_BEFORE_LOAD_CRYSTAL = (new Date).getTime();
@@ -1897,7 +1897,7 @@ class AttributeHtmlTests: XCTestCase {
     </script>
     <style>.absolute{position:absolute;}</style>
     <!--[if !IE]>|xGv00|34ba8056fb38cac38d53027a9f08814a<![endif]-->
-
+    
       <script>
       // 腾讯分析代码
       var _mtac = {};
@@ -1910,39 +1910,39 @@ class AttributeHtmlTests: XCTestCase {
           s.parentNode.insertBefore(mta, s);
       })();
       </script>
-
+    
     </body>
-
+    
     </html>
     """#.data(using: .utf8)!
-          
-          var html = try NSMutableAttributedString(data: data,
-                                                   options: [.documentType: NSAttributedString.DocumentType.html,
-                                                             .characterEncoding: String.Encoding.utf8.rawValue],
-                                                   documentAttributes: nil)
-              .string
-          
-          html = html.reduce("") { result, item in
-              
-              if item != "\n" {
-                  if item.st.isObjectReplacement {
-                      return result
-                  }
-                  
-                  if item.isWhitespace {
-                      return result
-                  }
-              } else if result.last == "\n" {
-                  return result
-              }
-              
-              return result + item.description
-          }.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            var html = try NSMutableAttributedString(data: data,
+                                                     options: [.documentType: NSAttributedString.DocumentType.html,
+                                                               .characterEncoding: String.Encoding.utf8.rawValue],
+                                                     documentAttributes: nil)
+                .string
+            
+            html = html.reduce("") { result, item in
+                
+                if item != "\n" {
+                    if item.st.isObjectReplacement {
+                        return result
+                    }
                     
-          print(try duration())
-          print(html)
-      }
-
+                    if item.isWhitespace {
+                        return result
+                    }
+                } else if result.last == "\n" {
+                    return result
+                }
+                
+                return result + item.description
+            }.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            print(try duration())
+            print(html)
+        }
+        
     }
     
     
