@@ -39,6 +39,29 @@ public struct STFile: FilePathProtocol {
 
 public extension STFile {
     
+    /// 替换目标文件夹中指定文件
+    /// - Parameter file: 指定文件路径
+    /// - Throws: FileManagerError
+    func replace(_ file: STFile) throws {
+        if file.isExist {
+            try file.delete()
+        }
+        try self.copy(to: file)
+    }
+    
+    /// 复制至目标文件夹
+    /// - Parameter file: 指定文件路径
+    /// - Throws: FileManagerError
+    @discardableResult
+    func copy(to file: STFile) throws -> STFile {
+        try manager.copyItem(at: url, to: file.url)
+        return file
+    }
+    
+}
+
+public extension STFile {
+    
     func read(_ options: Data.ReadingOptions = [], encoding: String.Encoding = .utf8) throws -> String {
         String(data: try data(options: options), encoding: encoding) ?? ""
     }
