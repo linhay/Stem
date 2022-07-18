@@ -16,10 +16,10 @@ public extension StemShell {
         public let standardOutput: PassthroughSubject<Data, Never>?
         public var standardError: PassthroughSubject<Data, Never>?
         
-        internal init(environment: [String : String]? = nil,
-                      at currentDirectory: URL? = nil,
-                      standardOutput: PassthroughSubject<Data, Never>? = .init(),
-                      standardError: PassthroughSubject<Data, Never>? = .init()) {
+        public init(environment: [String : String]? = nil,
+                    at currentDirectory: URL? = nil,
+                    standardOutput: PassthroughSubject<Data, Never>? = .init(),
+                    standardError: PassthroughSubject<Data, Never>? = .init()) {
             self.environment = environment
             self.currentDirectory = currentDirectory
             self.standardOutput = standardOutput
