@@ -42,23 +42,23 @@ public struct STFolder: FilePathProtocol {
 
 public extension STFolder {
     
-    @discardableResult
-    func merge(with folder: STFolder) -> STFolder {
-        return folder
-    }
-    
-}
-
-public extension STFolder {
-    
+    /// 当前文件夹下的文件 (不校验存在性)
+    /// - Parameter name: 文件名
+    /// - Returns: STFile
     func file(name: String) -> STFile {
         STFile(url.appendingPathComponent(name, isDirectory: false))
     }
     
+    /// 当前文件夹下的文件夹 (不校验存在性)
+    /// - Parameter name: 文件夹名
+    /// - Returns: STFile
     func folder(name: String) -> STFolder {
         STFolder(url.appendingPathComponent(name, isDirectory: true))
     }
     
+    /// 当前文件夹下存在的文件 (不存在则创建空白文件)
+    /// - Parameter name: 文件名
+    /// - Returns: STFile
     func open(name: String) throws -> STFile {
         let file = STFile(url.appendingPathComponent(name, isDirectory: false))
         if file.isExist {
