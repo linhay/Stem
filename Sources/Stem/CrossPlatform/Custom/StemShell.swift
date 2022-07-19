@@ -27,7 +27,6 @@ public extension StemShell {
         }
     }
     
-    
     class Standard {
         
         let pipe = Pipe()
@@ -67,9 +66,7 @@ public extension StemShell {
             }
             return self
         }
-        
     }
-    
     
 }
 
@@ -194,7 +191,11 @@ private extension StemShell {
     static func result(_ process: Process, output: Data?, error: Data?) -> Result<Data, Error> {
         if process.terminationStatus != .zero {
             if let data = error, let message = String(data: data, encoding: .utf8) {
-                return .failure(StemError(code: 0, message: message))
+                return .failure(StemError(message: message))
+            }
+            
+            if let data = output, let message = String(data: data, encoding: .utf8) {
+                return .failure(StemError(message: message))
             }
             
             var message = [String]()
@@ -203,7 +204,7 @@ private extension StemShell {
             }
             message.append("reason: \(process.terminationReason)")
             message.append("code: \(process.terminationReason.rawValue)")
-            return .failure(StemError(code: 0, message: message.joined(separator: "\n")))
+            return .failure(StemError(message: message.joined(separator: "\n")))
         }
         return .success(output ?? Data())
     }
