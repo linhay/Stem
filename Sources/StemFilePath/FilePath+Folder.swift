@@ -34,7 +34,7 @@ public struct STFolder: FilePathProtocol {
     
     var _watcher: Watcher?
     
-    public init(_ path: String) throws {
+    public init(_ path: String) {
         self.init(Self.standardizedPath(path))
     }
     

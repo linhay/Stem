@@ -16,7 +16,7 @@ final class FilePathTests: XCTestCase {
     private var cancellables = Set<AnyCancellable>()
     
     func test() async throws {
-        var folder = try STFolder("~/Desktop")
+        var folder = STFolder("~/Desktop")
         try folder.watcher().publisher.sink { _ in
             print("===>")
         }.store(in: &cancellables)
@@ -29,7 +29,7 @@ final class FilePathTests: XCTestCase {
     }
     
     func testInit() async throws {
-        let folder = try STFolder("~/Desktop")
+        let folder = STFolder("~/Desktop")
         let paths = try folder.subFilePaths()
         var old = [String]()
         var new = [String]()
