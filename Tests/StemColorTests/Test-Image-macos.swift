@@ -32,7 +32,7 @@ class TestImageColor: XCTestCase {
         let data = Resource.svg
             .st.scale(size: size)?
             .st.data(using: .jpeg, properties: [.compressionFactor: 1])
-        let file = try STFile("~/Downloads/test-size.jpg")
+        let file = STFile("~/Downloads/test-size.jpg")
         _ = try? file.delete()
         try file.create(with: data)
         assert(file.isExist)
@@ -50,7 +50,7 @@ class TestImageColor: XCTestCase {
                 let data = Resource.svg
                     .st.scale(size: size)?
                     .st.data(using: .png, properties: [.compressionFactor: 1])
-                let file = try STFile("~/Downloads/icons/icon_\(Int(size.width))_\(Int(size.height)).png")
+                let file = STFile("~/Downloads/icons/icon_\(Int(size.width))_\(Int(size.height)).png")
                 _ = try? file.delete()
                 try file.create(with: data)
             }

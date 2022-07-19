@@ -26,9 +26,11 @@ public enum FilePathItemType: Int, Equatable, Codable {
     
     case file
     case folder
+    case notExist
     
     public var isFile: Bool { self == .file }
     public var isFolder: Bool { self == .folder }
+    public var isExist: Bool { self != .notExist }
 }
 
 public enum FilePathReferenceType: Identifiable {
@@ -49,35 +51,38 @@ public enum FilePathReferenceType: Identifiable {
 
 public struct STPath: FilePathProtocol {
     
-    public var id: URL { referenceType.id }
+    public var id: URL { url }
     
     private var manager: FileManager { FileManager.default }
     private static var manager: FileManager { FileManager.default }
     
-    public let type: FilePathItemType
+    public var type: FilePathItemType {
+        if !isExist {
+            return .notExist
+        }
+        let flag = (try? STPath.isFolder(url)) ?? false
+        return flag ? .folder : .file
+    }
     
-    public var referenceType: FilePathReferenceType {
+    public var referenceType: FilePathReferenceType? {
         switch type {
         case .file:
             return .file(.init(url))
         case .folder:
             return .folder(.init(url))
+        case .notExist:
+            return nil
         }
     }
     
     public var url: URL
     
-    public init(_ url: URL, as type: FilePathItemType) {
+    public init(_ url: URL) {
         self.url = url.standardized
-        self.type = type
     }
     
-    public init(_ url: URL) throws {
-        self.init(url, as: try STPath.isFolder(url) ? .folder : .file)
-    }
-    
-    public init(_ path: String) throws {
-        try self.init(Self.standardizedPath(path))
+    public init(_ path: String) {
+        self.init(Self.standardizedPath(path))
     }
 }
 
@@ -90,7 +95,7 @@ public extension STPath {
     var asFolder: STFolder? {
         type == .folder ? .init(url) : nil
     }
-      
+    
 }
 
 private extension STPath {

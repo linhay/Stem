@@ -31,8 +31,8 @@ public struct STFile: FilePathProtocol {
         self.url = url.standardized
     }
     
-    public init(_ path: String) throws {
-        try self.init(Self.standardizedPath(path))
+    public init(_ path: String) {
+        self.init(Self.standardizedPath(path))
     }
     
 }

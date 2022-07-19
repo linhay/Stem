@@ -35,12 +35,19 @@ public struct STFolder: FilePathProtocol {
     var _watcher: Watcher?
     
     public init(_ path: String) throws {
-        try self.init(Self.standardizedPath(path))
+        self.init(Self.standardizedPath(path))
     }
     
 }
 
 public extension STFolder {
+    
+    /// 当前文件夹下的路径 (不校验存在性)
+    /// - Parameter name: 文件名
+    /// - Returns: STFile
+    func subpath(name: String) -> STPath {
+        STPath(url.appendingPathComponent(name))
+    }
     
     /// 当前文件夹下的文件 (不校验存在性)
     /// - Parameter name: 文件名
@@ -193,7 +200,6 @@ public extension STFolder {
     /// - Returns: [FilePath]
     func allSubFilePaths(predicates: [SearchPredicate] = [.skipsHiddenFiles]) throws -> [STPath] {
         let (systemPredicates, customPredicates) = predicates.split()
-        let resourceValues: [URLResourceKey] = [.isDirectoryKey]
         guard let enumerator = manager.enumerator(at: url,
                                                   includingPropertiesForKeys: [.nameKey, .isDirectoryKey],
                                                   options: systemPredicates,
@@ -203,13 +209,7 @@ public extension STFolder {
         
         var list = [STPath]()
         for case let fileURL as URL in enumerator {
-            guard let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceValues)),
-                  let isDirectory = resourceValues.isDirectory
-            else {
-                continue
-            }
-            
-            let item = STPath(fileURL, as: isDirectory ? .folder : .file)
+            let item = STPath(fileURL)
             if try customPredicates.contains(where: { try $0(item) == false }) {
                 continue
             }
@@ -235,7 +235,7 @@ public extension STFolder {
         let (systemPredicates, customPredicates) = predicates.split()
         return try manager
             .contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: systemPredicates)
-            .compactMap({ try STPath($0) })
+            .compactMap({ STPath($0) })
             .filter({ item -> Bool in
                 try customPredicates.contains(where: { try $0(item) == false }) == false
             })
@@ -254,7 +254,7 @@ public extension STFolder {
                     let urls = try manager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
                     for url in urls {
                         do {
-                            let filePath = try STPath(url)
+                            let filePath = STPath(url)
                             switch filePath.referenceType {
                             case .file(let file):
                                 if try await fileFilter(file) {
@@ -266,6 +266,8 @@ public extension STFolder {
                                         continuation.yield(item)
                                     }
                                 }
+                            case .none:
+                                continue
                             }
                         } catch {
                             debugPrint("FilePath Scan: ", error.localizedDescription)

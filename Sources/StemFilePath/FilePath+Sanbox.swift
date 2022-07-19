@@ -23,44 +23,34 @@
 import Foundation
 
 public extension STFolder {
-    
-    static let home = try! STFolder(sanbox: .home)
-    
-    /// iOS 沙盒路径
-    enum SanboxRootPath {
-        case root
-        case home
-        case document
-        case library
-        case cache
-        case temporary
         
-        var path: String? {
-            try? url().path
-        }
+    struct Sanbox {
         
-        func url() throws -> URL {
-            let manager = FileManager.default
-            switch self {
-            case .root:
-                return URL(string: NSOpenStepRootDirectory())!
-            case .home:
-                return URL(string: NSHomeDirectory())!
-            case .document:
-                return try manager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            case .library:
-                return try manager.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            case .cache:
-                return try manager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            case .temporary:
-                return URL(fileURLWithPath: NSTemporaryDirectory())
+        let url: URL
+        
+        public static var root: Sanbox { .init(url: URL(fileURLWithPath: NSOpenStepRootDirectory())) }
+        public static var home: Sanbox { .init(url: URL(fileURLWithPath: NSHomeDirectory())) }
+        public static var temporary: Sanbox { .init(url: URL(fileURLWithPath: NSTemporaryDirectory())) }
+        
+        public static var document: Sanbox {
+            get throws {
+                .init(url: try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false))
             }
         }
-        
+        public static var library: Sanbox {
+            get throws {
+                .init(url: try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false))
+            }
+        }
+        public static var cache: Sanbox {
+            get throws {
+                .init(url: try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false))
+            }
+        }
     }
     
-    init(sanbox rootPath: SanboxRootPath) throws {
-        self.init(try rootPath.url())
+    init(sanbox rootPath: Sanbox) throws {
+        self.init(rootPath.url)
     }
     
 }

@@ -27,7 +27,7 @@ import AppKit
 public extension FilePathProtocol {
     
     func showInFinder() {
-        guard let referenceType = try? STPath(url).referenceType else {
+        guard let referenceType = STPath(url).referenceType else {
             return
         }
         switch referenceType {
@@ -48,7 +48,7 @@ public extension FilePathProtocol {
         panel.directoryURL = folder
         
         if panel.runModal() == .OK {
-            return panel.urls.compactMap({ try? .init($0) })
+            return panel.urls.compactMap(STPath.init)
         }
         
         return []

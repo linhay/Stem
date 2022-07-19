@@ -54,13 +54,13 @@ extension FilePathProtocol {
 
 extension FilePathProtocol {
     
-   public static func standardizedPath(_ path: String) throws -> URL {
+   public static func standardizedPath(_ path: String) -> URL {
         if path == "~" {
-            return try STFolder.SanboxRootPath.home.url()
+            return STFolder.Sanbox.home.url
         } else if path.hasPrefix("~/") {
             var components = path.split(separator: "/").map({ $0.description })
             components = Array(components.dropFirst())
-            let home = STFolder.SanboxRootPath.home.path?.split(separator: "/").map({ $0.description }) ?? []
+            let home = STFolder.Sanbox.home.url.path.split(separator: "/").map({ $0.description })
             components.insert(contentsOf: home, at: 0)
             return URL(fileURLWithPath: Self.standardizedPath(components))
         } else {
@@ -89,11 +89,7 @@ extension FilePathProtocol {
 
 public extension FilePathProtocol {
     
-    var eraseToFilePath: STPath {
-        get throws {
-            return try .init(url)
-        }
-    }
+    var eraseToFilePath: STPath { return .init(url) }
     
     var attributes: FilePathAttributes { .init(path: url) }
     
