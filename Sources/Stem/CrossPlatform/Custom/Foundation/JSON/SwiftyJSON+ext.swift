@@ -35,7 +35,7 @@ public extension JSON {
 public extension LazyMapSequence where Base == [String], Element == JSON {
     
     private var firstValue: JSON? {
-        first(where: { $0.exists() })
+        first(where: \.isExists)
     }
     
     var string: String? {
