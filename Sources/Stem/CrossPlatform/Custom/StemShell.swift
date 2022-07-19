@@ -77,7 +77,8 @@ public extension StemShell {
     
     @discardableResult
     static func zsh(_ command: String, context: Context? = nil) throws -> Data {
-        try data(URL(fileURLWithPath: "/bin/zsh"), ["-c", command], context: context)
+        let path = ProcessInfo.processInfo.environment["SHELL"] ?? "/bin/zsh"
+        return try data(URL(fileURLWithPath: path), ["-c", command], context: context)
     }
     
     @discardableResult
