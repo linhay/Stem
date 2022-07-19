@@ -88,13 +88,13 @@ public extension StemShell {
     }
     
     @discardableResult
-    static func string(_ exec: URL, _ commands: [String], context: Context? = nil) throws -> String {
+    static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> String {
         let data = try data(exec, commands, context: context)
         return String(data: data, encoding: .utf8) ?? ""
     }
     
     @discardableResult
-    static func data(_ exec: URL, _ commands: [String], context: Context? = nil) throws -> Data {
+    static func data(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> Data {
         let process = self.setupProcess(exec, commands, context: context)
         let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
         let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
@@ -118,12 +118,12 @@ public extension StemShell {
     }
     
     @discardableResult
-    static func stringPublisher(_ exec: URL, _ commands: [String], context: Context? = nil) -> AnyPublisher<String?, Error> {
+    static func stringPublisher(_ exec: URL?, _ commands: [String], context: Context? = nil) -> AnyPublisher<String?, Error> {
         return dataPublisher(exec, commands, context: context).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
     }
     
     @discardableResult
-    static func dataPublisher(_ exec: URL, _ commands: [String], context: Context? = nil) -> AnyPublisher<Data, Error> {
+    static func dataPublisher(_ exec: URL?, _ commands: [String], context: Context? = nil) -> AnyPublisher<Data, Error> {
         Future<Data, Error> { promise in
             do {
                 let process = self.setupProcess(exec, commands, context: context)
@@ -160,13 +160,13 @@ public extension StemShell {
     }
     
     @discardableResult
-    static func string(_ exec: URL, _ commands: [String], context: Context? = nil) async throws -> String {
+    static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) async throws -> String {
         let data = try await data(exec, commands, context: context)
         return String(data: data, encoding: .utf8) ?? ""
     }
     
     @discardableResult
-    static func data(_ exec: URL, _ commands: [String], context: Context? = nil) async throws -> Data {
+    static func data(_ exec: URL?, _ commands: [String], context: Context? = nil) async throws -> Data {
         try await withUnsafeThrowingContinuation { continuation in
             do {
                 let process = self.setupProcess(exec, commands, context: context)
@@ -208,7 +208,7 @@ private extension StemShell {
         return .success(output ?? Data())
     }
     
-    static func setupProcess(_ exec: URL, _ commands: [String], context: Context? = nil) -> Process {
+    static func setupProcess(_ exec: URL?, _ commands: [String], context: Context? = nil) -> Process {
         let process = Process()
         process.executableURL = exec
         process.arguments = commands
