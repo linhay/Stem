@@ -121,6 +121,9 @@ public extension FilePathProtocol {
                try path.delete()
             }
         }
+        if !folder.isExist {
+            try folder.create()
+        }
         try manager.moveItem(at: url, to: fileURL)
         return try .init(fileURL)
     }
@@ -132,15 +135,18 @@ public extension FilePathProtocol {
     /// - Returns: FileManagerError
     @discardableResult
     func copy(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
-        let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
+        let fileURL = folder.url.appendingPathComponent(url.lastPathComponent)
         if isOverlay {
-            let path = STPath(desURL)
+            let path = STPath(fileURL)
             if path.isExist {
                try path.delete()
             }
         }
-        try manager.copyItem(at: url, to: folder.url)
-        return try .init(desURL)
+        if !folder.isExist {
+            try folder.create()
+        }
+        try manager.copyItem(at: url, to: fileURL)
+        return try .init(fileURL)
     }
     
     /// 获取所在文件夹
