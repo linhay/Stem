@@ -125,12 +125,20 @@ public extension FilePathProtocol {
         return try .init(fileURL)
     }
     
-    /// 复制至目标文件夹
-    /// - Parameter path: 目标文件夹
-    /// - Throws: FileManagerError -
+    /// 复制至目标路径
+    /// - Parameters:
+    ///   - folder: 目标路径
+    ///   - isOverlay: 目标目录存在相应文件, 是否覆盖
+    /// - Returns: FileManagerError
     @discardableResult
-    func copy(into folder: STFolder) throws -> Self {
+    func copy(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
         let desURL = folder.url.appendingPathComponent(url.lastPathComponent)
+        if isOverlay {
+            let path = STPath(desURL)
+            if path.isExist {
+               try path.delete()
+            }
+        }
         try manager.copyItem(at: url, to: desURL)
         return try .init(desURL)
     }
