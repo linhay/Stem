@@ -139,7 +139,7 @@ public extension FilePathProtocol {
                try path.delete()
             }
         }
-        try manager.copyItem(at: url, to: desURL)
+        try manager.copyItem(at: url, to: folder.url)
         return try .init(desURL)
     }
     
