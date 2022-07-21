@@ -87,7 +87,7 @@ public extension StemShell {
     @discardableResult
     static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> String {
         let data = try data(exec, commands, context: context)
-        return String(data: data, encoding: .utf8) ?? ""
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines) ?? ""
     }
     
     @discardableResult
@@ -153,13 +153,13 @@ public extension StemShell {
     @discardableResult
     static func zsh(string command: String, context: Context? = nil) async throws -> String? {
         let data = try await zsh(command, context: context)
-        return String.init(data: data, encoding: .utf8)
+        return String(data: data, encoding: .utf8)
     }
     
     @discardableResult
     static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) async throws -> String {
         let data = try await data(exec, commands, context: context)
-        return String(data: data, encoding: .utf8) ?? ""
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines) ?? ""
     }
     
     @discardableResult

@@ -106,12 +106,21 @@ public extension FilePathProtocol {
         try manager.removeItem(at: url)
     }
     
+
     /// 移动至目标路径
-    /// - Parameter path: 目标路径
-    /// - Throws: FileManagerError -
+    /// - Parameters:
+    ///   - folder: 目标路径
+    ///   - isOverlay: 目标目录存在相应文件, 是否覆盖
+    /// - Returns: FileManagerError
     @discardableResult
-    func move(into folder: STFolder) throws -> Self {
+    func move(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
         let fileURL = folder.url.appendingPathComponent(attributes.name)
+        if isOverlay {
+            let path = STPath(fileURL)
+            if path.isExist {
+               try path.delete()
+            }
+        }
         try manager.moveItem(at: url, to: fileURL)
         return try .init(fileURL)
     }
