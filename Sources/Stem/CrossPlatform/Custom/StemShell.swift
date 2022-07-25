@@ -10,20 +10,31 @@ public extension StemShell {
     
     struct Context {
         
-        public var environment: [String: String]?
+        public var environment: [String: String]
         public var currentDirectory: URL?
         
         public let standardOutput: PassthroughSubject<Data, Never>?
         public var standardError: PassthroughSubject<Data, Never>?
         
-        public init(environment: [String : String]? = nil,
+        public init(environment: [String : String] = [:],
                     at currentDirectory: URL? = nil,
                     standardOutput: PassthroughSubject<Data, Never>? = .init(),
                     standardError: PassthroughSubject<Data, Never>? = .init()) {
-            self.environment = environment
+            self.environment = ProcessInfo.processInfo.environment.merging(environment, uniquingKeysWith: { $1 })
             self.currentDirectory = currentDirectory
             self.standardOutput = standardOutput
             self.standardError = standardError
+            let libs = ["/bin", "/sbin",
+                        "/usr/bin", "/usr/sbin",
+                        "/opt/homebrew/bin", "/opt/homebrew/sbin",
+                        "/usr/local/bin", "/usr/local/sbin",
+                        "/usr/local/opt/ruby/bin", "/Library/Apple/usr/bin"]
+            if var paths = environment["PATH"]?.split(separator: ":").map({ String($0) }), !paths.isEmpty {
+                paths.append(contentsOf: libs)
+                self.environment["PATH"] = Set(paths).joined(separator: ":")
+            } else {
+                self.environment["PATH"] = Set(libs).joined(separator: ":")
+            }
         }
     }
     
@@ -81,7 +92,7 @@ public extension StemShell {
     @discardableResult
     static func zsh(string command: String, context: Context? = nil) throws -> String? {
         let data = try zsh(command, context: context)
-        return String.init(data: data, encoding: .utf8)
+        return String.init(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines)
     }
     
     @discardableResult
