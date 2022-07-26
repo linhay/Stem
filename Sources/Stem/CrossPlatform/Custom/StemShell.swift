@@ -25,25 +25,24 @@ public extension StemShell {
             self.standardOutput = standardOutput
             self.standardError = standardError
             
+            var processInfo = ProcessInfo.processInfo.environment
             var paths = ["/bin", "/sbin",
-                        "/usr/bin", "/usr/sbin",
-                        "/opt/homebrew/bin", "/opt/homebrew/sbin",
-                        "/usr/local/bin", "/usr/local/sbin",
-                        "/usr/local/opt/ruby/bin", "/Library/Apple/usr/bin"]
-            if let items = ProcessInfo.processInfo.environment["PATH"]?.split(separator: ":").map({ String($0) }) {
+                         "/usr/bin", "/usr/sbin",
+                         "/opt/homebrew/bin", "/opt/homebrew/sbin",
+                         "/usr/local/bin", "/usr/local/sbin",
+                         "/usr/local/opt/ruby/bin", "/Library/Apple/usr/bin"]
+            if let items = processInfo["PATH"]?.split(separator: ":").map({ String($0) }) {
                 paths.append(contentsOf: items)
             }
             if let items = environment["PATH"]?.split(separator: ":").map({ String($0) }) {
                 paths.append(contentsOf: items)
             }
             self.environment["PATH"] = Set(paths).joined(separator: ":")
-            
+            if self.environment["LANG"] == nil { self.environment["LANG"] = processInfo["LANG"] ?? "en_US.UTF-8" }
+            if self.environment["HOME"] == nil { self.environment["HOME"] = processInfo["HOME"] }
 #if arch(arm64)
-            
 #elseif arch(x86_64)
-            if self.environment["SSH_AUTH_SOCK"] == nil {
-                self.environment["SSH_AUTH_SOCK"] = ProcessInfo.processInfo.environment["SSH_AUTH_SOCK"]
-            }
+            if self.environment["SSH_AUTH_SOCK"] == nil { self.environment["SSH_AUTH_SOCK"] = processInfo["SSH_AUTH_SOCK"] }
 #endif
         }
     }
