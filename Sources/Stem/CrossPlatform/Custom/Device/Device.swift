@@ -22,11 +22,11 @@
 
 import Foundation
 
-public class Device { }
+public struct Device { }
 
 public extension Device {
     
-    class Battery { }
+    struct Battery { }
     
 }
 

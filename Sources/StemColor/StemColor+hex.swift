@@ -38,6 +38,9 @@ public extension StemColor {
         var cString = value.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if cString.hasPrefix("0X") { cString = String(cString.dropFirst(2)) }
         if cString.hasPrefix("#") { cString = String(cString.dropFirst(1)) }
+        guard CharacterSet(charactersIn: cString).isSubset(of: .decimalDigits.union(.init(charactersIn: "A"..."F"))) else {
+            throw ThrowError("StemColor: 无法解析, value: \(value)")
+        }
         guard cString.count == 6 || cString.count == 8 else {
             throw ThrowError("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
         }
