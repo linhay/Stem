@@ -11,9 +11,66 @@ import Stem
 
 class AttributeHtmlTests: XCTestCase {
     
+    enum StringType {
+        case htmlLink
+        case htmlDIV
+        case link
+    }
+    
+    func testParse() throws {
+        let html = #"""
+        <a href="http://www.hairy.com" target="_blank" class="unline">测试</a>
+        <div class="more-txt" bosszone="dh_more">更多</div>
+        atthttp://www.baidu.com
+        前缀http://www.baidu.com
+        www.baidu.com
+        """#
+        
+        let htmlLinkRegex = try StemStringMarker.RegexMark(type: StringType.htmlLink, pattern: #"<a.*<\/a>"#)
+        let htmlDIVRegex = try StemStringMarker.RegexMark(type: StringType.htmlDIV, pattern: #"<.*?>.*<\/.*?>"#)
+        let linkRegex = try StemStringMarker.RegexMark(type: StringType.link, pattern: #"(?:https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"#)
+        
+        let results = try StemStringMarker.matches(html, mark: [
+            .regex(htmlLinkRegex),
+            .regex(htmlDIVRegex),
+            .regex(linkRegex),
+            .detector(.init(type: .link, pattern: .link))
+        ])
+
+        for result in results {
+            switch result {
+            case let .mark(mark, payload):
+                print(payload, mark)
+                switch mark {
+                case .link:
+                    assert(["http://www.baidu.com", "www.baidu.com"].contains(payload))
+                case .htmlDIV:
+                    assert(payload == #"<div class="more-txt" bosszone="dh_more">更多</div>"#)
+                    let content = try StemStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
+                    assert(content.last == #"更多"#)
+                case .htmlLink:
+                    assert(payload == #"<a href="http://www.hairy.com" target="_blank" class="unline">测试</a>"#)
+                    let href = try StemStringMarker.extract(payload, pattern: #"(?:data-full-resolution|src|href|data)="(.*?)""#)
+                    assert(href.last == #"http://www.hairy.com"#)
+                    let content = try StemStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
+                    assert(content.last == #"测试"#)
+                }
+            case let .unknown(payload):
+                print(payload)
+            }
+        }
+    }
+    
+    
     enum ParseHtmlResult {
         case dxmm(String)
         case text(String)
+    }
+    
+    enum Html {
+        case link
+        case image
+        case newline
     }
     
     func testHtmlImageSrc() throws {
@@ -1916,12 +1973,16 @@ class AttributeHtmlTests: XCTestCase {
     </html>
     """#.data(using: .utf8)!
             
-            var html = try NSMutableAttributedString(data: data,
-                                                     options: [.documentType: NSAttributedString.DocumentType.html,
-                                                               .characterEncoding: String.Encoding.utf8.rawValue],
-                                                     documentAttributes: nil)
-                .string
+            let attributed = try NSMutableAttributedString(data: data,
+                                                           options: [.documentType: NSAttributedString.DocumentType.html,
+                                                                     .characterEncoding: String.Encoding.utf8.rawValue],
+                                                           documentAttributes: nil)
+            let wholeRange = NSRange(attributed.string.startIndex..., in: attributed.string)
+            attributed.enumerateAttribute(.link, in: wholeRange) { value, range, pointee in
+                print("==> \(range)", attributed.attributedSubstring(from: range).string)
+            }
             
+            var html = attributed.string
             html = html.reduce("") { result, item in
                 
                 if item != "\n" {
