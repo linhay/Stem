@@ -44,4 +44,9 @@ public struct StemError: LocalizedError, CustomStringConvertible, CustomDebugStr
         self.message = message
     }
     
+    public init(_ message: String) {
+        self.code = -1
+        self.message = message
+    }
+    
 }

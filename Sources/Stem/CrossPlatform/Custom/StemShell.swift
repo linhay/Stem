@@ -211,11 +211,11 @@ private extension StemShell {
     static func result(_ process: Process, output: Data?, error: Data?) -> Result<Data, Error> {
         if process.terminationStatus != .zero {
             if let data = error, let message = String(data: data, encoding: .utf8) {
-                return .failure(StemError(message: message))
+                return .failure(StemError(message))
             }
             
             if let data = output, let message = String(data: data, encoding: .utf8) {
-                return .failure(StemError(message: message))
+                return .failure(StemError(message))
             }
             
             var message = [String]()
@@ -224,7 +224,7 @@ private extension StemShell {
             }
             message.append("reason: \(process.terminationReason)")
             message.append("code: \(process.terminationReason.rawValue)")
-            return .failure(StemError(message: message.joined(separator: "\n")))
+            return .failure(StemError(message.joined(separator: "\n")))
         }
         return .success(output ?? Data())
     }
