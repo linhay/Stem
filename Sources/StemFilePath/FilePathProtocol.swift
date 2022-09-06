@@ -52,9 +52,28 @@ extension FilePathProtocol {
 }
 
 
-extension FilePathProtocol {
+public extension FilePathProtocol {
+
+    func relativePath(from base: STFile) -> String {
+        relativePath(from: base.parentFolder()!)
+    }
     
-   public static func standardizedPath(_ path: String) -> URL {
+    func relativePath(from base: STFolder) -> String {
+        let destComponents = url.standardized.pathComponents
+        let baseComponents = base.url.standardized.pathComponents
+        // Find number of common path components:
+        var i = 0
+        while i < destComponents.count && i < baseComponents.count
+            && destComponents[i] == baseComponents[i] {
+                i += 1
+        }
+        // Build relative path:
+        var relComponents = Array(repeating: "..", count: baseComponents.count - i)
+        relComponents.append(contentsOf: destComponents[i...])
+        return relComponents.joined(separator: "/")
+    }
+    
+    static func standardizedPath(_ path: String) -> URL {
         if path == "~" {
             return STFolder.Sanbox.home.url
         } else if path.hasPrefix("~/") {
@@ -70,7 +89,6 @@ extension FilePathProtocol {
     
     private static func standardizedPath<S>(_ components: [S]) -> String where S: StringProtocol {
         var result = [S]()
-        
         for component in components {
             switch component {
             case "..":
@@ -81,7 +99,6 @@ extension FilePathProtocol {
                 result.append(component)
             }
         }
-        
         return "/" + result.joined(separator: "/")
     }
     

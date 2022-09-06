@@ -52,7 +52,7 @@ public extension RunTime.Print {
         let count = (strs.first?.count ?? 10) - 2
         debugPrint("+\([String](repeating: "-", count: count).joined())+")
         var title = [String](repeating: " ", count: (count - title.count) / 2).joined() + title
-        title = title + [String](repeating: " ", count: count - title.count).joined()
+        title = title + [String](repeating: " ", count: max(count - title.count, 0)).joined()
         debugPrint("|\(title)|")
         debugPrint("+\([String](repeating: "-", count: count).joined())+")
         
