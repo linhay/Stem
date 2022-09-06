@@ -24,7 +24,7 @@
 import Foundation
 import AppKit
 
-public extension FilePathProtocol {
+public extension STPathProtocol {
     
     func showInFinder() {
         guard let referenceType = STPath(url).referenceType else {

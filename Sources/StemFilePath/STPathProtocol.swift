@@ -22,7 +22,7 @@
 
 import Foundation
 
-public protocol FilePathProtocol: Identifiable, Hashable {
+public protocol STPathProtocol: Identifiable, Hashable {
     
     var type: FilePathItemType { get }
     var url: URL { get }
@@ -32,7 +32,7 @@ public protocol FilePathProtocol: Identifiable, Hashable {
     
 }
 
-extension FilePathProtocol {
+extension STPathProtocol {
     
     public var path: String { url.path }
     public var id: URL { url }
@@ -47,12 +47,12 @@ extension FilePathProtocol {
     
 }
 
-extension FilePathProtocol {
+extension STPathProtocol {
     var manager: FileManager { FileManager.default }
 }
 
 
-public extension FilePathProtocol {
+public extension STPathProtocol {
 
     func relativePath(from base: STFile) -> String {
         relativePath(from: base.parentFolder()!)
@@ -104,7 +104,7 @@ public extension FilePathProtocol {
     
 }
 
-public extension FilePathProtocol {
+public extension STPathProtocol {
     
     var eraseToFilePath: STPath { return .init(url) }
     

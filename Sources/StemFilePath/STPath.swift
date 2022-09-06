@@ -49,7 +49,7 @@ public enum FilePathReferenceType: Identifiable {
     
 }
 
-public struct STPath: FilePathProtocol {
+public struct STPath: STPathProtocol {
     
     public var id: URL { url }
     

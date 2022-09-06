@@ -22,7 +22,7 @@
 
 import Foundation
 
-public struct STFile: FilePathProtocol {
+public struct STFile: STPathProtocol {
     
     public let type: FilePathItemType = .file
     public let url: URL

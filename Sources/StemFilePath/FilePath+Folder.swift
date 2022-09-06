@@ -23,7 +23,7 @@
 import Foundation
 import Combine
 
-public struct STFolder: FilePathProtocol {
+public struct STFolder: STPathProtocol {
     
     public let type: FilePathItemType = .folder
     public let url: URL
@@ -177,7 +177,7 @@ extension Array where Element == STFolder.SearchPredicate {
 public extension STFolder {
 
     @inlinable
-    func contains<Element: FilePathProtocol>(_ predicate: Element) -> Bool {
+    func contains<Element: STPathProtocol>(_ predicate: Element) -> Bool {
         let components = self.url.pathComponents
         return Array(predicate.url.pathComponents.prefix(components.count)) == components
     }
