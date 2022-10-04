@@ -22,33 +22,6 @@
 
 import Foundation
 
-public enum FilePathItemType: Int, Equatable, Codable {
-    
-    case file
-    case folder
-    case notExist
-    
-    public var isFile: Bool { self == .file }
-    public var isFolder: Bool { self == .folder }
-    public var isExist: Bool { self != .notExist }
-}
-
-public enum FilePathReferenceType: Identifiable {
-    
-    case file(STFile)
-    case folder(STFolder)
-    
-    public var id: URL {
-        switch self {
-        case .file(let result):
-            return result.id
-        case .folder(let result):
-            return result.id
-        }
-    }
-    
-}
-
 public struct STPath: STPathProtocol {
     
     public var id: URL { url }
@@ -56,7 +29,7 @@ public struct STPath: STPathProtocol {
     private var manager: FileManager { FileManager.default }
     private static var manager: FileManager { FileManager.default }
     
-    public var type: FilePathItemType {
+    public var type: STFilePathItemType {
         if !isExist {
             return .notExist
         }
@@ -64,7 +37,7 @@ public struct STPath: STPathProtocol {
         return flag ? .folder : .file
     }
     
-    public var referenceType: FilePathReferenceType? {
+    public var referenceType: STFilePathReferenceType? {
         switch type {
         case .file:
             return .file(.init(url))

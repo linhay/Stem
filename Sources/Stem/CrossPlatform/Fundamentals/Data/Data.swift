@@ -25,12 +25,12 @@ import Foundation
 extension Data: StemValueCompatible { }
 
 extension StemValue where Base == Data {
-
+    
     /// get json
     var jsonObject: Any? {
         return try? JSONSerialization.jsonObject(with: base, options: [.allowFragments])
     }
-
+    
     /// 获取bytes 数组
     ///
     /// - Parameter _: 类型
@@ -39,7 +39,7 @@ extension StemValue where Base == Data {
         // http://stackoverflow.com/questions/38097710/swift-3-changes-for-getbytes-method
         return [UInt8](base)
     }
-
+    
     /// 获取对应编码类型字符串
     ///
     /// - Parameter using: 字符串编码类型 | default: utf8
@@ -47,5 +47,27 @@ extension StemValue where Base == Data {
     func string(encoding: String.Encoding = .utf8) -> String? {
         return String(data: base, encoding: encoding)
     }
-
+    
+    var hexString: String {
+        let hexLen = base.count * 2
+        let ptr = UnsafeMutablePointer<UInt8>.allocate(capacity: hexLen)
+        var offset = 0
+        
+        let charA = UInt8(UnicodeScalar("a").value)
+        let char0 = UInt8(UnicodeScalar("0").value)
+        
+        base.regions.forEach { (_) in
+            for i in base {
+                ptr[Int(offset * 2)] = itoh((i >> 4) & 0xF, charA: charA, char0: char0)
+                ptr[Int(offset * 2 + 1)] = itoh(i & 0xF, charA: charA, char0: char0)
+                offset += 1
+            }
+        }
+        return String(bytesNoCopy: ptr, length: hexLen, encoding: .utf8, freeWhenDone: true)!
+    }
+    
+    private func itoh(_ value: UInt8, charA: UInt8, char0: UInt8) -> UInt8 {
+        return (value > 9) ? (charA + value - 10) : (char0 + value)
+    }
+    
 }

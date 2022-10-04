@@ -24,7 +24,7 @@ import Foundation
 
 public struct STFile: STPathProtocol {
     
-    public let type: FilePathItemType = .file
+    public let type: STFilePathItemType = .file
     public let url: URL
     
     public init(_ url: URL) {

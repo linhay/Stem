@@ -24,7 +24,7 @@ import Foundation
 
 public protocol STPathProtocol: Identifiable, Hashable {
     
-    var type: FilePathItemType { get }
+    var type: STFilePathItemType { get }
     var url: URL { get }
     var id: URL {get }
     
@@ -108,10 +108,10 @@ public extension STPathProtocol {
     
     var eraseToFilePath: STPath { return .init(url) }
     
-    var attributes: FilePathAttributes { .init(path: url) }
+    var attributes: STFilePathAttributes { .init(path: url) }
     
     /// 文件权限
-    var permission: FilePathPermission { .init(url: url) }
+    var permission: STFilePathPermission { .init(url: url) }
     
     /// 当前路径是否存在
     var isExist: Bool { manager.fileExists(atPath: url.path) }

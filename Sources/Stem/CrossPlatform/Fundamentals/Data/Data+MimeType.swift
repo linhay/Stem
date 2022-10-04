@@ -253,18 +253,37 @@ public extension Data {
         return String(data: Data(data(8...11)), encoding: .utf8)?.trimmingCharacters(in: .whitespaces) ?? ""
     }
     
-    enum FileType: Int, CaseIterable, Equatable, Codable {
-        case unknown
+    struct FileTypeSet: ExpressibleByArrayLiteral {
         
-        public static let videos: [FileType] = [.mp4, .m4v, .m4p, .f4v, .f4p, .avi, .wmv, .flv, .quicktime]
-        public static let audios: [FileType] = [.amr, .mp3, .ogg, .flac, .wav, .mid, .m4a, .m4b, .f4a, .f4b, .opus]
-        public static let images: [FileType] = [.avif, .jxr, .flif, .pdf, .png, .jpeg, .gif, .webp, .tiff, .bmp, .psd,
+        public let rawValue: Set<FileType>
+        
+        public init(arrayLiteral elements: FileType...) {
+            self.rawValue = .init(elements)
+        }
+        
+        public init(rawValue: [FileType]) {
+            self.rawValue = .init(rawValue)
+        }
+        
+        public static let videos: FileTypeSet = [.mp4, .m4v, .m4p, .f4v, .f4p, .avi, .wmv, .flv, .quicktime]
+        public static let audios: FileTypeSet = [.amr, .mp3, .ogg, .flac, .wav, .mid, .m4a, .m4b, .f4a, .f4b, .opus]
+        public static let images: FileTypeSet = [.avif, .jxr, .flif, .pdf, .png, .jpeg, .gif, .webp, .tiff, .bmp, .psd,
                                                 .cr2, .cr3, .mif1, .msf1, .heic, .heix, .hevc, .hevx]
-        public static let applications: [FileType] = [.z, .ar, .rpm, .deb, .crx, .cab, .xz, .nes, .ps, .eot,
+        public static let applications: FileTypeSet = [.z, .ar, .rpm, .deb, .crx, .cab, .xz, .nes, .ps, .eot,
                                                       .ttf, .otf, .woff, .woff2, .rtf, .dmg, .bz2, ._7z, .gz,
                                                       .zip, .xpi, .epub, .ico, .sqlite, .tar, .rar, .gzip, .exe,
                                                       .swf, .lz, .msi, .mxf]
         
+    }
+    
+    enum FileType: Int, CaseIterable, Equatable, Codable {
+        
+       public func contains(in set: FileTypeSet) -> Bool {
+            set.rawValue.contains(self)
+        }
+        
+        case unknown
+                
         // MARK: - Video Types
         case mp4, m4v, m4p, f4v, f4p, avi, wmv, flv, quicktime
         

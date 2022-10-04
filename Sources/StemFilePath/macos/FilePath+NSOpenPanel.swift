@@ -39,7 +39,7 @@ public extension STPathProtocol {
     }
     
     static func selectInFinder(_ folder: URL,
-                               support: [FilePathItemType] = [.file, .folder],
+                               support: [STFilePathItemType] = [.file, .folder],
                                allowsMultipleSelection: Bool = true) -> [STPath] {
         let panel = NSOpenPanel()
         panel.canChooseFiles = support.contains(.file)
@@ -59,7 +59,7 @@ public extension STPathProtocol {
 @available(macCatalyst, unavailable)
 public extension STFolder {
     
-    func selectInFinder(support: [FilePathItemType] = [.file, .folder],
+    func selectInFinder(support: [STFilePathItemType] = [.file, .folder],
                         allowsMultipleSelection: Bool = true) -> [STPath] {
         return Self.selectInFinder(url,
                                    support: support,

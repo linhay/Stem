@@ -22,17 +22,17 @@
 
 import Foundation
 
-public struct FilePathPermission: OptionSet, Comparable {
+public struct STFilePathPermission: OptionSet, Comparable {
     
-    public static func < (lhs: FilePathPermission, rhs: FilePathPermission) -> Bool {
+    public static func < (lhs: STFilePathPermission, rhs: STFilePathPermission) -> Bool {
         lhs.rawValue < rhs.rawValue
     }
     
-    public static let exists     = FilePathPermission(rawValue: 1 << 0)
-    public static let readable   = FilePathPermission(rawValue: 1 << 1)
-    public static let writable   = FilePathPermission(rawValue: 1 << 2)
-    public static let executable = FilePathPermission(rawValue: 1 << 3)
-    public static let deletable  = FilePathPermission(rawValue: 1 << 4)
+    public static let exists     = STFilePathPermission(rawValue: 1 << 0)
+    public static let readable   = STFilePathPermission(rawValue: 1 << 1)
+    public static let writable   = STFilePathPermission(rawValue: 1 << 2)
+    public static let executable = STFilePathPermission(rawValue: 1 << 3)
+    public static let deletable  = STFilePathPermission(rawValue: 1 << 4)
     
     public let rawValue: Int
     
@@ -46,7 +46,7 @@ public struct FilePathPermission: OptionSet, Comparable {
     
     public init(path: String) {
         let manager = FileManager.default
-        var list = [FilePathPermission]()
+        var list = [STFilePathPermission]()
         
         guard manager.isExecutableFile(atPath: path) else {
             self.init(list)

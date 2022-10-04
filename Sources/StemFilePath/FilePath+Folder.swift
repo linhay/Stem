@@ -25,7 +25,7 @@ import Combine
 
 public struct STFolder: STPathProtocol {
     
-    public let type: FilePathItemType = .folder
+    public let type: STFilePathItemType = .folder
     public let url: URL
     
     public init(_ url: URL) {

@@ -78,7 +78,9 @@ public extension RunTime {
         /// 方法类型 | [类方法 | 对象方法]
         let kind: MethodKind
         
-        public init(selector: Selector, class classType: AnyClass, kind: MethodKind = .instance) {
+        public init(selector: Selector,
+                    class classType: AnyClass,
+                    kind: MethodKind = .instance) {
             self.selector = selector
             self.classType = classType
             self.kind = kind
@@ -143,8 +145,12 @@ public extension RunTime {
             return
         }
         
-        if class_addMethod(classType, original.selector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod)) {
-            class_replaceMethod(classType, swizzled.selector, method_getImplementation(method), method_getTypeEncoding(method))
+        if class_addMethod(classType, original.selector,
+                           method_getImplementation(newMethod),
+                           method_getTypeEncoding(newMethod)) {
+            class_replaceMethod(classType, swizzled.selector,
+                                method_getImplementation(method),
+                                method_getTypeEncoding(method))
         } else {
             method_exchangeImplementations(method, newMethod)
         }
