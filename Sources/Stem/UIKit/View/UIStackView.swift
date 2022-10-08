@@ -5,6 +5,7 @@
 //  Created by linhey on 2022/9/8.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public extension Stem where Base: UIStackView {
@@ -20,3 +21,4 @@ public extension Stem where Base: UIStackView {
     }
     
 }
+#endif
