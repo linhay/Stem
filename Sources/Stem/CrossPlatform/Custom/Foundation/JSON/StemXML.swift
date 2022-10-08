@@ -46,11 +46,11 @@ final public class StemXML: NSObject {
         guard let parser = XMLParser(contentsOf: url) else { return nil }
         self.init(parser: parser)
     }
-
+    
     public convenience init(data: Data) {
         self.init(parser: .init(data: data))
     }
-
+    
     public convenience init(stream: InputStream) {
         self.init(parser: .init(stream: stream))
     }
@@ -90,6 +90,28 @@ extension StemXML: XMLParserDelegate {
 }
 
 public extension StemXML.Item {
+    
+    func collection(prefix: String, separator: String = ":") -> StemXML.Item {
+        let items = self.items.filter({ result in
+            let tree = result.key.components(separatedBy: separator)
+            guard tree.count > 1,
+                  tree.first == prefix else {
+                return false
+            }
+            return true
+        })
+        
+        var result = [String: [StemXML.Item]]()
+        items.keys
+            .forEach { key in
+                let new = key.components(separatedBy: separator).dropFirst().joined()
+                result[new] = self.items[key]
+            }
+        return .init(name: prefix,
+                     attributes: [:],
+                     items: result,
+                     parent: self)
+    }
     
     subscript(_ name: String) -> StemXML.Item {
         self.items[name]?.first ?? .init()

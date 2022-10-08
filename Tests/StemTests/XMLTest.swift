@@ -12,8 +12,11 @@ import XCTest
 class XMLTest: XCTestCase {
     
     func test() {
-        let xml = StemXML(contentsOf: "https://www.ximalaya.com/album/3558668.xml")?.parse()
-        print(xml)
+        guard let xml = StemXML(contentsOf: "https://www.ximalaya.com/album/3558668.xml")?.parse() else {
+            return
+        }
+        let item = xml["channel"].collection(prefix: "itunes")
+        print(item)
     }
     
 }
