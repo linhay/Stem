@@ -123,6 +123,19 @@ public extension STPathProtocol {
         try manager.removeItem(at: url)
     }
     
+    /// 移动至目标路径
+    /// - Parameters:
+    ///   - folder: 目标路径
+    ///   - isOverlay: 目标目录存在相应文件, 是否覆盖
+    /// - Returns: FileManagerError
+    @discardableResult
+    func move(to path: Self, isOverlay: Bool = false) throws -> Self {
+        if isOverlay, path.isExist {
+            try path.delete()
+        }
+        try manager.moveItem(at: url, to: path.url)
+        return path
+    }
 
     /// 移动至目标路径
     /// - Parameters:

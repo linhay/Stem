@@ -90,6 +90,10 @@ extension StemXML: XMLParserDelegate {
 }
 
 public extension StemXML.Item {
+
+    func collection(by key: String) -> [StemXML.Item] {
+        items[key] ?? []
+    }
     
     func collection(prefix: String, separator: String = ":") -> StemXML.Item {
         let items = self.items.filter({ result in
@@ -117,12 +121,9 @@ public extension StemXML.Item {
         self.items[name]?.first ?? .init()
     }
     
-    var stringValue: String {
-        self.content
-    }
-    
-    var arrayValue: [StemXML.Item] {
-        self.parent?.items[name] ?? [self]
-    }
+    var stringValue: String { content }
+    var intValue: Int { Int(content) ?? 0 }
+    var boolValue: Bool { ["true", "y", "t", "yes", "1"].contains { content.caseInsensitiveCompare($0) == .orderedSame } }
+
     
 }
