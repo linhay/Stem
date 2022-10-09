@@ -20,6 +20,14 @@ public final class STFileDownloaderManager {
     public init() {}
     
     public func start() {
+        isStart = true
+        next()
+    }
+    
+    func next() {
+        guard isStart else {
+            return
+        }
         let starts = store.values.filter(\.isStart)
         guard starts.count < maxConcurrentOperationCount else {
             return
@@ -42,10 +50,10 @@ public final class STFileDownloaderManager {
             } receiveValue: { [weak self] downloader in
                 guard let self = self else { return }
                 self.store[downloader.downloadURL] = nil
-                self.start()
+                self.next()
             }
             cancellables.update(with: cancellable)
-            self.start()
+            self.next()
             return
         }
         
