@@ -63,6 +63,30 @@ public extension STFolder {
         STFolder(url.appendingPathComponent(name, isDirectory: true))
     }
     
+    /// 当前文件夹下的路径 (校验存在性)
+    /// - Parameter name: 文件名
+    /// - Returns: STFile
+    func subpathIfExist(name: String) -> STPath? {
+        let item = subpath(name: name)
+        return item.isExist ? item : nil
+    }
+    
+    /// 当前文件夹下的文件 (校验存在性)
+    /// - Parameter name: 文件名
+    /// - Returns: STFile
+    func fileIfExist(name: String) -> STFile? {
+        let item = file(name: name)
+        return item.isExist ? item : nil
+    }
+    
+    /// 当前文件夹下的文件夹 (校验存在性)
+    /// - Parameter name: 文件夹名
+    /// - Returns: STFile
+    func folderIfExist(name: String) -> STFolder? {
+        let item = folder(name: name)
+        return item.isExist ? item : nil
+    }
+    
     /// 当前文件夹下存在的文件 (不存在则创建空白文件)
     /// - Parameter name: 文件名
     /// - Returns: STFile

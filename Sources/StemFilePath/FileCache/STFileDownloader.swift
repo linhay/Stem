@@ -20,7 +20,10 @@ public final class STFileDownloader: NSObject {
     public let local: STFolder
     
     public private(set) lazy var finishPublisher   = finishSubject.eraseToAnyPublisher()
-    public private(set) lazy var progressPublisher = progressSubject.dropFirst().eraseToAnyPublisher()
+    public private(set) lazy var progressPublisher = progressSubject
+        .dropFirst()
+        .throttle(for: 0.3, scheduler: RunLoop.main, latest: true)
+        .eraseToAnyPublisher()
     public private(set) lazy var file = local.file(name: downloadURL.lastPathComponent)
     public private(set) lazy var isStart = false
 
@@ -52,7 +55,7 @@ public final class STFileDownloader: NSObject {
             return
         }
         var downloadTask: URLSessionDownloadTask
-        if let data = try? resumeFile.data() {
+        if resumeFile.isExist, let data = try? resumeFile.data() {
             downloadTask = urlSession.downloadTask(withResumeData: data)
         } else {
             downloadTask = urlSession.downloadTask(with: downloadURL)
@@ -97,6 +100,7 @@ extension STFileDownloader: URLSessionDownloadDelegate {
         } else {
             try? self.resumeFile.delete()
         }
+        self.isStart = false
     }
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {

@@ -54,15 +54,11 @@ public extension Dictionary {
     /// 格式化为Json
     ///
     /// - Returns: Json字符串
-    func formatJSON(prettify: Bool = false) -> String {
-        guard JSONSerialization.isValidJSONObject(self) else { return "{}" }
-        let options = prettify ? JSONSerialization.WritingOptions.prettyPrinted: JSONSerialization.WritingOptions()
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: self, options: options)
-            return String(data: jsonData, encoding: .utf8) ?? "{}"
-        } catch {
-            return "{}"
+    func formatJSON(options: JSONSerialization.WritingOptions) throws -> Data {
+        guard JSONSerialization.isValidJSONObject(self) else {
+            throw StemError("not valid json object")
         }
+        return try JSONSerialization.data(withJSONObject: self, options: options)
     }
     
 }

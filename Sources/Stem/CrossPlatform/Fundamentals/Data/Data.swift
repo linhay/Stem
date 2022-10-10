@@ -24,7 +24,7 @@ import Foundation
 
 extension Data: StemValueCompatible { }
 
-extension StemValue where Base == Data {
+public extension StemValue where Base == Data {
     
     /// get json
     var jsonObject: Any? {

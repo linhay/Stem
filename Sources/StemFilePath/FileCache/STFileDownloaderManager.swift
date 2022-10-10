@@ -7,6 +7,9 @@
 
 import Foundation
 import Combine
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public final class STFileDownloaderManager {
     
@@ -17,7 +20,14 @@ public final class STFileDownloaderManager {
     
     public var maxConcurrentOperationCount = 6
     
-    public init() {}
+    public init() {
+#if canImport(UIKit)
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { [weak self] _ in
+            guard let self = self else { return }
+            self.next()
+        }.store(in: &cancellables)
+#endif
+    }
     
     public func start() {
         isStart = true
@@ -35,8 +45,8 @@ public final class STFileDownloaderManager {
         store.values.filter({ !$0.isStart })
             .prefix(maxConcurrentOperationCount - starts.count)
             .forEach { item in
-            item.start()
-        }
+                item.start()
+            }
     }
     
     public func add(_ downloader: STFileDownloader) {
@@ -57,10 +67,9 @@ public final class STFileDownloaderManager {
             return
         }
         
-        store.progressPublisher.sink { [weak downloader] progress in
-            guard let downloader = downloader else { return }
-            downloader.progressSubject.send(progress)
-        }.store(in: &cancellables)
+        store.progressPublisher
+            .assign(to: \.value, on: downloader.progressSubject)
+            .store(in: &cancellables)
         
         store.finishPublisher.sink { [weak downloader, weak self] completion in
             guard let downloader = downloader, let self = self else { return }
@@ -74,7 +83,9 @@ public final class STFileDownloaderManager {
         } receiveValue: { [weak downloader] cache in
             guard let downloader = downloader else { return }
             do {
-                try cache.file.copy(to: downloader.file)
+                if downloader.file.isExist == false {
+                    try cache.file.copy(to: downloader.file)
+                }
                 downloader.finishSubject.send(downloader)
             } catch {
                 downloader.finishSubject.send(completion: .failure(error))
