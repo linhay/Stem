@@ -22,43 +22,19 @@
 
 #if canImport(UIKit)
 import UIKit
+import Combine
 
-public extension Stem where Base: UITextView {
-
-    /// 占位文本控件
-    var placeholderLabel: UILabel {
-        if let label = self.value(for: "_placeholderLabel") as UILabel? { return label }
-        let item = UILabel()
-        item.numberOfLines = 0
-        item.font = base.font
-        item.textColor = UIColor.gray.withAlphaComponent(0.7)
-        base.addSubview(item)
-        base.setValue(item, forKey: "_placeholderLabel")
-        /// 修正初始化时的偏移
-        let attr = base.attributedText
-        base.attributedText = NSAttributedString(string: "stem.placeholderLabel")
-        base.attributedText = attr
-        return item
+@available(iOS 13.0, *)
+extension Stem where Base: UITextView {
+    
+    public var textPublisher: AnyPublisher<String?, Never> {
+        NotificationCenter
+            .default
+            .publisher(for: UITextView.textDidChangeNotification, object: base)
+            .map { ($0.object as? UITextView)?.text }
+            .eraseToAnyPublisher()
     }
-
-    /// 占位颜色
-    var placeholderColor: UIColor {
-        set { self.placeholderLabel.textColor = newValue }
-        get { return self.placeholderLabel.textColor }
-    }
-
-    /// 占位富文本
-    var attributedPlaceholder: NSAttributedString? {
-        set { self.placeholderLabel.attributedText = newValue }
-        get { return self.placeholderLabel.attributedText }
-    }
-
-    /// 占位文本
-    var placeholder: String? {
-        set { self.placeholderLabel.text = newValue }
-        get { return self.placeholderLabel.text }
-    }
-
+    
 }
 
 public extension Stem where Base: UITextView {
