@@ -192,7 +192,7 @@ public extension Stem where Base: UIView {
 fileprivate extension UIView {
     
     struct ActionKey {
-        static var tap = UnsafeRawPointer(bitPattern: "view.stem.tap".hashValue)!
+        static var onTapGesture = UnsafeRawPointer(bitPattern: "view.stem.tap".hashValue)!
         static var tapGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.tapGestureRecognizer".hashValue)!
         static var pan = UnsafeRawPointer(bitPattern: "view.stem.pan".hashValue)!
         static var panGestureRecognizer = UnsafeRawPointer(bitPattern: "view.stem.panGestureRecognizer".hashValue)!
@@ -216,7 +216,7 @@ public extension Stem where Base: UIView {
     }
     
     fileprivate var tapAction: ((UITapGestureRecognizer) -> Void)? {
-        get { return self.getAssociated(for: UIView.ActionKey.tap) }
+        get { return self.getAssociated(for: UIView.ActionKey.onTapGesture) }
         set {
             if newValue != nil, tapGestureRecognizer == nil {
                 tapGestureRecognizer = UITapGestureRecognizer(target: base, action: #selector(UIView.stem_view_tapGesture_event(ges:)))
@@ -228,7 +228,7 @@ public extension Stem where Base: UIView {
                 tapGestureRecognizer = nil
             }
 
-            self.setAssociated(value: newValue, for: UIView.ActionKey.tap)
+            self.setAssociated(value: newValue, for: UIView.ActionKey.onTapGesture)
         }
     }
     
