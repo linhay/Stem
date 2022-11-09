@@ -26,9 +26,8 @@ extension Data: StemValueCompatible { }
 
 public extension StemValue where Base == Data {
     
-    /// get json
-    var jsonObject: Any? {
-        return try? JSONSerialization.jsonObject(with: base, options: [.allowFragments])
+    func jsonObject(options: JSONSerialization.ReadingOptions = []) throws -> Any {
+        return try JSONSerialization.jsonObject(with: base, options: options)
     }
     
     /// 获取bytes 数组

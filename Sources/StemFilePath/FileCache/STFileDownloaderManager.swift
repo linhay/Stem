@@ -13,6 +13,8 @@ import UIKit
 
 public final class STFileDownloaderManager {
     
+    public static let shared = STFileDownloaderManager()
+    
     private var store = [URL: STFileDownloader]()
     private var downloaders = Set<STFileDownloader>()
     private var cancellables = Set<AnyCancellable>()

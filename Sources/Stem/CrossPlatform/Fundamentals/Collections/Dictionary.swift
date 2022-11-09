@@ -54,7 +54,7 @@ public extension Dictionary {
     /// 格式化为Json
     ///
     /// - Returns: Json字符串
-    func formatJSON(options: JSONSerialization.WritingOptions) throws -> Data {
+    func formatJSON(options: JSONSerialization.WritingOptions = [.withoutEscapingSlashes, .fragmentsAllowed]) throws -> Data {
         guard JSONSerialization.isValidJSONObject(self) else {
             throw StemError("not valid json object")
         }
