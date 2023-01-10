@@ -24,10 +24,21 @@ public final class STWeak<WrappedValue: AnyObject> {
     
 }
 
-extension STWeak where WrappedValue: Equatable {
+extension STWeak: Equatable where WrappedValue: Equatable {
     
-    static func == (lhs: STWeak, rhs: STWeak) -> Bool {
+    public static func == (lhs: STWeak, rhs: STWeak) -> Bool {
         lhs.wrappedValue == rhs.wrappedValue
     }
     
+}
+
+extension STWeak: Hashable where WrappedValue: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        guard let wrappedValue = wrappedValue else {
+            return
+        }
+        hasher.combine(wrappedValue)
+    }
+
 }

@@ -41,7 +41,7 @@ public extension Stem where Base: AVAsset {
              error:          可选错误。如果发生错误，系统将提供一个错误对象，该对象提供故障的详细信息。
              */
             
-            var store = [TimeInterval: CGImage]()
+            var packages = [TimeInterval: CGImage]()
             var continuation: CheckedContinuation<[UIImage], Error>? = continuation
             
             generator.generateCGImagesAsynchronously(forTimes: values) { (requestedTime, image, actualTime, result, error) in
@@ -49,10 +49,10 @@ public extension Stem where Base: AVAsset {
                     continuation?.resume(throwing: error)
                     continuation = nil
                 } else if let image = image {
-                    store[requestedTime.seconds] = image
-                    if store.keys.count == seconds.count {
+                    packages[requestedTime.seconds] = image
+                    if packages.keys.count == seconds.count {
                         let images = seconds
-                            .compactMap({ store[$0] })
+                            .compactMap({ packages[$0] })
                             .map({ UIImage(cgImage: $0) })
                         continuation?.resume(returning: images)
                         continuation = nil
