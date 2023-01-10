@@ -5,18 +5,19 @@
 //  Created by linhey on 2022/11/17.
 //
 
+#if canImport(CoreLocation) && canImport(Combine)
 import Foundation
 import CoreLocation
 import Combine
 
 public extension Stem where Base: CLGeocoder {
     func reverseGeocode(location: CLLocation) -> any Publisher<[CLPlacemark], Error> {
-        Future { [weak self] promise in
-            guard let self = self else {
+        Future { [weak base] promise in
+            guard let base = base else {
                 promise(.success([]))
                 return
             }
-            self.base.reverseGeocodeLocation(location) { placemarks, error in
+            base.reverseGeocodeLocation(location) { placemarks, error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
@@ -38,3 +39,4 @@ public extension Stem where Base: CLGeocoder {
         }
     }
 }
+#endif
