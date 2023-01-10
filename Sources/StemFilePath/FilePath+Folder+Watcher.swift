@@ -75,6 +75,9 @@ public extension STFolder.Watcher {
             return
         }
         fileDescriptor = Darwin.open((url as NSURL).fileSystemRepresentation, O_EVTONLY)
+        guard fileDescriptor != -1 else {
+            return
+        }
         source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fileDescriptor, eventMask: eventMask, queue: queue)
         source?.setEventHandler { [weak self] in
             guard let self = self,
