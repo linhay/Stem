@@ -6,6 +6,7 @@
 //  Copyright © 2016 Ivan Kovacevic. All rights reserved.
 //
 
+#if canImport(UIKit) && canImport(Combine)
 import UIKit
 import Combine
 
@@ -41,7 +42,7 @@ public class STSwitch: UIControl {
     }
     
     public struct Configuration {
-        public var on  = Store(tintColor: UIColor(red: 144/255, green: 202/255, blue: 119/255, alpha: 1))
+        public var on  = Store(tintColor: UIColor(red: 144.0 / 255, green: 202/255, blue: 119/255, alpha: 1))
         public var off = Store(tintColor: .black)
         public var thumb = ThumbConfiguration()
         public var padding: CGFloat = 1
@@ -311,3 +312,4 @@ public extension STSwitch {
     }
     
 }
+#endif
