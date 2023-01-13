@@ -5,10 +5,11 @@
 //  Created by linhey on 2023/1/11.
 //
 
-#if canImport(AVFoundation)
+#if canImport(AVFoundation) && canImport(MediaPlayer)
 import Foundation
 import Combine
 import AVFoundation
+import MediaPlayer
 
 open class STAudioQueueService {
     
@@ -77,7 +78,8 @@ open class STAudioQueueService {
     public var current: Asset? { currentAssetSubject.value }
     public var items: [Asset] { itemsSubject.value }
     public var player: STAudioPlayer? { current?.player }
-    
+
+    public private(set) lazy var itemsPublisher = itemsSubject.eraseToAnyPublisher()
     /// Returns an array of the currently enqueued items.
     public private(set) lazy var currentAssetPublisher  = currentAssetSubject.eraseToAnyPublisher()
     public private(set) lazy var currentPlayerPublisher = currentAssetSubject.map(\.?.playerSubject.value).eraseToAnyPublisher()
@@ -91,7 +93,7 @@ open class STAudioQueueService {
     private lazy var currentAssetSubject  = CurrentValueSubject<Asset?, Never>(nil)
     private lazy var playModeSubject      = CurrentValueSubject<PlayMode, Never>(.advance)
     private lazy var cancellables = Set<AnyCancellable>()
-    
+    private lazy var playCommands = [Any]()
     
     public init(_ items: [Asset]) {
         self.itemsSubject = .init(items)
@@ -121,8 +123,17 @@ open class STAudioQueueService {
 
 public extension STAudioQueueService {
     
-    func play(_ item: Asset) throws {
-        historySubject.value.append(item)
+    func play(_ item: Asset) throws {        
+        if current == item, let player = item.player {
+            player.prepareToPlay()
+            _ = player.play(atTime: player.deviceCurrentTime)
+            return
+        }
+        
+        if historySubject.value.last != item {
+            historySubject.value.append(item)
+        }
+        
         player?.stop()
         current?.playerSubject.send(nil)
         cancellables.removeAll()
@@ -159,12 +170,6 @@ public extension STAudioQueueService {
     
     func playNextItem() throws {
         guard let next = nextItem else {
-            return
-        }
-        
-        if current == next, let player = player {
-            player.prepareToPlay()
-            _ = player.play(atTime: player.deviceCurrentTime)
             return
         }
         try play(next)
@@ -244,4 +249,60 @@ public extension STAudioQueueService {
     }
     
 }
+
+public extension STAudioQueueService {
+    
+    func setupRemoteCenterCommands() {
+        var commands = [Any]()
+        let center = MPRemoteCommandCenter.shared()
+        commands.append(center.playCommand.addTarget { [weak self] event in
+            guard let self = self else { return .noSuchContent }
+            if let player = self.player {
+                _ = player.play()
+            } else {
+                try? self.playNextItem()
+            }
+            return .success
+        })
+        
+        commands.append(center.pauseCommand.addTarget { [weak self] event in
+            guard let self = self else { return .noSuchContent }
+            self.player?.pause()
+            return .success
+        })
+        
+        commands.append(center.nextTrackCommand.addTarget { [weak self] event in
+            guard let self = self else { return .noSuchContent }
+            try? self.playNextItem()
+            return .success
+        })
+        
+        commands.append(center.previousTrackCommand.addTarget { [weak self] event in
+            guard let self = self else { return .noSuchContent }
+            try? self.playPreviousItem()
+            return .success
+        })
+        
+        commands.append(center.changePlaybackPositionCommand.addTarget { [weak self] event in
+            guard let self = self else { return .noSuchContent }
+            let currentTime = (event as! MPChangePlaybackPositionCommandEvent).positionTime
+            self.player?.currentTime = currentTime
+            return .success
+        })
+        
+        commands.append(center.togglePlayPauseCommand.addTarget { [weak self] event in
+            guard let self = self else { return .noSuchContent }
+            if self.player?.isPlaying == true {
+                self.player?.pause()
+            } else {
+                _ = self.player?.play()
+            }
+            return .success
+        })
+        
+        self.playCommands = commands
+    }
+    
+}
+
 #endif
