@@ -31,6 +31,12 @@ public extension RunTime {
         case instance
     }
     
+    enum Action {
+        case exchange
+        case replace
+        case auto
+    }
+    
     struct ExchangeMaker<T: NSObject> {
         /// 所属类型
         public let classType: T.Type
@@ -77,7 +83,7 @@ public extension RunTime {
         let classType: AnyClass
         /// 方法类型 | [类方法 | 对象方法]
         let kind: MethodKind
-        
+                
         public init(selector: Selector,
                     class classType: AnyClass,
                     kind: MethodKind = .instance) {
@@ -129,7 +135,9 @@ public extension RunTime {
      .forEach({ RunTime.exchange(new: $0.first!, with: $0.last!) })
      ```
      */
-    static func exchange(new swizzled: Exchange, with original: Exchange) {
+    static func exchange(new swizzled: Exchange,
+                         with original: Exchange,
+                         action: Action = .auto) {
         guard let classType = original.type else {
             assertionFailure("Runtime: 无法查询到类 \(original.classType)")
             return
@@ -145,14 +153,24 @@ public extension RunTime {
             return
         }
         
-        if class_addMethod(classType, original.selector,
-                           method_getImplementation(newMethod),
-                           method_getTypeEncoding(newMethod)) {
+        switch action {
+        case .auto:
+            let didAddMethod = class_addMethod(classType, original.selector,
+                                               method_getImplementation(newMethod),
+                                               method_getTypeEncoding(newMethod))
+            if didAddMethod {
+                class_replaceMethod(classType, swizzled.selector,
+                                    method_getImplementation(method),
+                                    method_getTypeEncoding(method))
+            } else {
+                method_exchangeImplementations(method, newMethod)
+            }
+        case .exchange:
+            method_exchangeImplementations(method, newMethod)
+        case .replace:
             class_replaceMethod(classType, swizzled.selector,
                                 method_getImplementation(method),
                                 method_getTypeEncoding(method))
-        } else {
-            method_exchangeImplementations(method, newMethod)
         }
     }
     

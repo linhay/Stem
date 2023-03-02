@@ -22,9 +22,9 @@
 
 import Foundation
 
-public struct STFile: STPathProtocol {
+public struct STFile: STPathProtocol, Codable {
     
-    public let type: STFilePathItemType = .file
+    public var type: STFilePathItemType = .file
     public let url: URL
     
     public init(_ url: URL) {

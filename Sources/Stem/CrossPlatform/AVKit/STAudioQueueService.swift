@@ -11,9 +11,11 @@ import Combine
 import AVFoundation
 import MediaPlayer
 
+@available(iOS 3.0, watchOS 2.0, tvOS 9.0, *)
+@available(macOS, unavailable)
 open class STAudioQueueService {
     
-    public enum PlayMode: Int, Codable {
+    public enum PlayMode: Int, Codable, CaseIterable {
         /// 下一首直至列表结束
         case advance
         /// 单曲循环
@@ -54,11 +56,28 @@ open class STAudioQueueService {
         public var id: UUID = .init()
         public let provider: DataProvider
         public var player: STAudioPlayer? { playerSubject.value }
+        public var isPlaying: Bool { playerSubject.value?.isPlaying == true }
+
         public private(set) lazy var playerPublisher = playerSubject.eraseToAnyPublisher()
-        fileprivate lazy var playerSubject = CurrentValueSubject<STAudioPlayer?, Never>(nil)
+        public private(set) lazy var timePublisher = timeSubject.eraseToAnyPublisher()
         
+        fileprivate lazy var playerSubject = CurrentValueSubject<STAudioPlayer?, Never>(nil)
+        private lazy var timeSubject = CurrentValueSubject<STAudioPlayer.Time?, Never>(nil)
+        
+        private var playerCancellable: AnyCancellable?
+        private var timeCancellable: AnyCancellable?
+
         public init(provider: DataProvider) {
             self.provider = provider
+            self.playerCancellable = self.playerPublisher.sink(on: self) { (self, player) in
+                if let player = player {
+                    self.timeCancellable = player.timePublisher
+                        .map({ Optional($0) })
+                        .assign(to: \.value, on: self.timeSubject)
+                } else {
+                    self.timeSubject.send(nil)
+                }
+            }
         }
         
         public convenience init(url: URL) {
@@ -89,14 +108,17 @@ open class STAudioQueueService {
     public private(set) var playerConfiguration: STAudioPlayer.Configuration = .init(timeSamplingInterval: nil)
 
     private let itemsSubject: CurrentValueSubject<[Asset], Never>
-    private lazy var historySubject       = CurrentValueSubject<[Asset], Never>([])
-    private lazy var currentAssetSubject  = CurrentValueSubject<Asset?, Never>(nil)
-    private lazy var playModeSubject      = CurrentValueSubject<PlayMode, Never>(.advance)
+    private let modes: [PlayMode]
+    
+    private lazy var historySubject      = CurrentValueSubject<[Asset], Never>([])
+    private lazy var currentAssetSubject = CurrentValueSubject<Asset?, Never>(nil)
+    private lazy var playModeSubject     = CurrentValueSubject<PlayMode, Never>(modes.first ?? .none)
     private lazy var cancellables = Set<AnyCancellable>()
     private lazy var playCommands = [Any]()
     
-    public init(_ items: [Asset]) {
+    public init(_ items: [Asset], modes: [PlayMode] = PlayMode.allCases) {
         self.itemsSubject = .init(items)
+        self.modes = modes
     }
     
     public convenience init() {
@@ -121,8 +143,11 @@ open class STAudioQueueService {
     
 }
 
+@available(iOS 3.0, watchOS 2.0, tvOS 9.0, *)
+@available(macOS, unavailable)
 public extension STAudioQueueService {
     
+    /// 播放特定曲目
     func play(_ item: Asset) throws {        
         if current == item, let player = item.player {
             player.prepareToPlay()
@@ -160,6 +185,7 @@ public extension STAudioQueueService {
         _ = player.play()
     }
     
+    /// 切换到上一首
     func playPreviousItem() throws {
         guard let previous = historySubject.value.dropLast().last else {
             return
@@ -168,6 +194,7 @@ public extension STAudioQueueService {
         try play(previous)
     }
     
+    /// 切换到下一首
     func playNextItem() throws {
         guard let next = nextItem else {
             return
@@ -175,8 +202,18 @@ public extension STAudioQueueService {
         try play(next)
     }
     
+    /// 切换到下一个播放模式
+    func switchNextMode() {
+        guard let index = modes.firstIndex(of: playModeSubject.value) else {
+            return
+        }
+        playModeSubject.send(modes.value(at: index + 1) ?? modes.first ?? .none)
+    }
+    
 }
 
+@available(iOS 3.0, watchOS 2.0, tvOS 9.0, *)
+@available(macOS, unavailable)
 public extension STAudioQueueService {
     
     func reset(_ items: [Asset]) {
@@ -250,6 +287,8 @@ public extension STAudioQueueService {
     
 }
 
+@available(iOS 3.0, watchOS 2.0, tvOS 9.0, *)
+@available(macOS, unavailable)
 public extension STAudioQueueService {
     
     func setupRemoteCenterCommands() {

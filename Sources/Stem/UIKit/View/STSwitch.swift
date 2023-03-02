@@ -132,7 +132,7 @@ private extension STSwitch {
         }
     }
     
-    public func setOn(on: Bool, animated: Bool) {
+    func setOn(on: Bool, animated: Bool) {
         switch animated {
         case true:
             self.animate(on: on)

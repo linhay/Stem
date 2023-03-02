@@ -46,7 +46,6 @@ public extension Stem where Base: UIImage {
 // MARK: - scale(缩放)
 public extension Stem where Base: UIImage {
     
-    
     func scale(size: CGSize, opaque: Bool = false) -> UIImage? {
         if #available(iOS 10.0, *) {
             let renderer = UIGraphicsImageRenderer(size: size)

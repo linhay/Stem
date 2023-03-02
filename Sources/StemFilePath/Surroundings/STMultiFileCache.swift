@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ 多文件组织缓存管理.
+ */
 public protocol STFileCacheReader {
     associatedtype Model
     func read(_ file: STFile) throws -> Model
@@ -25,7 +28,7 @@ public protocol STFileCacheKeyGenerator {
 
 public typealias STFilCacheCalculator = STFileCacheWriter & STFileCacheReader & STFileCacheKeyGenerator
 
-open class STFileCache<Calculator: STFilCacheCalculator> {
+open class STMultiFileCache<Calculator: STFilCacheCalculator> {
     
     public let pwd: STFolder
     public let calculator: Calculator
@@ -49,4 +52,3 @@ open class STFileCache<Calculator: STFilCacheCalculator> {
     }
     
 }
-

@@ -8,9 +8,29 @@
 import Foundation
 import XCTest
 import Stem
+import Vision
+import WebKit
 
 class Test_Combine: XCTestCase {
 
+    @available(macOS 13.0, *)
+    func testVNImage() throws {
+        let data = try Data(contentsOf: URL(filePath: "/Users/linhey/Downloads/list1.png"))
+        guard let image = NSImage(data: data)?.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return
+        }
+        let ciImage = CIImage(cgImage: image)
+        let handler = try VNImageRequestHandler(ciImage: ciImage)
+        let request = VNRecognizeTextRequest { request, error in
+            request.results?.forEach({ observation in
+                guard let observation = observation as? VNRecognizedTextObservation else { return }
+                print(observation.topCandidates(1).first?.string)
+            })
+        }
+        request.recognitionLevel = .accurate
+        try handler.perform([request])
+    }
+    
     func testNSOBject() {
 //        let obj = NSObject()
 //        Timer.publish(every: 1, tolerance: nil, on: .main, in: .common, options: nil).sink { date in
@@ -21,12 +41,12 @@ class Test_Combine: XCTestCase {
 //            print(cls)
 //        }
         
-//        Runtime.print.methods(from: UIPasteboard.self)
-//        Runtime.print.methods(from: Runtime.metaclass(from: UIPasteboard.self)!)
-//        Runtime.print.ivars(from: UIPasteboard.self)
-//        Runtime.print.properties(from: UIPasteboard.self)
-//        Runtime.print.protocols(from: UIPasteboard.self)
-//        
+        Runtime.print.methods(from: WKWebView.self)
+        Runtime.print.methods(from: Runtime.metaclass(from: WKWebView.self)!)
+        Runtime.print.ivars(from: WKWebView.self)
+        Runtime.print.properties(from: WKWebView.self)
+        Runtime.print.protocols(from: WKWebView.self)
+
 //        swizzleGeneralPasteboard()
 //        UIPasteboard().setItems([])
     }
