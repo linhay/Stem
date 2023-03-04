@@ -23,14 +23,13 @@
 import Foundation
 
 public extension StemColor {
-
     struct RYBSpace: StemColorSpace {
         public private(set) var ranges: [ClosedRange<Double>] = [0...1, 0...1, 0...1]
-
+        
         public let red: Double
         public let yellow: Double
         public let blue: Double
-
+        
         public init(red: Double, yellow: Double, blue: Double) {
             self.red = red
             self.yellow = yellow
@@ -90,9 +89,9 @@ public extension StemColor.RYBSpace {
 }
 
 extension StemColor.RYBSpace: StemColorSpaceRandom {
-
-    public static var random: Self { .init([Double.random(in: 0...1),
-                                            Double.random(in: 0...1),
-                                            Double.random(in: 0...1)]) }
-
+    public static var random: Self {
+        .init([Double(arc4random_uniform(UInt32.max)) / Double(UInt32.max),
+               Double(arc4random_uniform(UInt32.max)) / Double(UInt32.max),
+               Double(arc4random_uniform(UInt32.max)) / Double(UInt32.max)])
+    }
 }

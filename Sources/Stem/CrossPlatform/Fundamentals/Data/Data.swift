@@ -48,21 +48,11 @@ public extension StemValue where Base == Data {
     }
     
     var hexString: String {
-        let hexLen = base.count * 2
-        let ptr = UnsafeMutablePointer<UInt8>.allocate(capacity: hexLen)
-        var offset = 0
-        
-        let charA = UInt8(UnicodeScalar("a").value)
-        let char0 = UInt8(UnicodeScalar("0").value)
-        
-        base.regions.forEach { (_) in
-            for i in base {
-                ptr[Int(offset * 2)] = itoh((i >> 4) & 0xF, charA: charA, char0: char0)
-                ptr[Int(offset * 2 + 1)] = itoh(i & 0xF, charA: charA, char0: char0)
-                offset += 1
-            }
+        var hexString = ""
+        for byte in base {
+            hexString += String(format: "%02x", byte)
         }
-        return String(bytesNoCopy: ptr, length: hexLen, encoding: .utf8, freeWhenDone: true)!
+        return hexString
     }
     
     private func itoh(_ value: UInt8, charA: UInt8, char0: UInt8) -> UInt8 {

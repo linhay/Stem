@@ -8,7 +8,7 @@
 import Foundation
 
 public extension StemValue where Base == String {
-    
+    // 获取指向字符串C字符串表示形式的UnsafeMutablePointer
     var unsafePointer: UnsafeMutablePointer<Int8> {
         let count = base.utf8.count + 1
         let result = UnsafeMutablePointer<Int8>.allocate(capacity: count)

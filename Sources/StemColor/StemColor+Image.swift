@@ -6,27 +6,22 @@
 //
 
 public extension StemColor {
-    
+
     static func array(fromRGBAs pixels: [UInt8]) -> [StemColor] {
-        var list = [StemColor]()
-        for i in (0..<pixels.count/4) {
-            let rgb = RGBSpace(red: Double(pixels[i * 4 + 3]) / 255,
-                               green: Double(pixels[i * 4 + 2]) / 255,
-                               blue: Double(pixels[i * 4 + 1]) / 255)
-            list.append(.init(rgb: rgb, alpha: Double(pixels[i * 4]) / 255))
+        return stride(from: 0, to: pixels.count, by: 4)
+            .map { i in
+            let color = RGBSpace(red:   Double(pixels[i + 3]) / 255,
+                                 green: Double(pixels[i + 2]) / 255,
+                                 blue:  Double(pixels[i + 1]) / 255)
+            let alpha = Double(pixels[i]) / 255
+            return StemColor(rgb: color, alpha: alpha)
         }
-        return list
     }
     
     static func array(from image: StemColorImage, filter: ((StemColor) -> Bool)? = nil) -> [StemColor] {
         let colors = array(fromRGBAs: pixels(from: image))
-        if let filter = filter {
-            return colors.filter(filter)
-        } else {
-            return colors
-        }
+        return colors.map { $0 }.filter(filter ?? { _ in true })
     }
-    
 }
 
 public extension StemColor.RGBSpace.Unpack where T == UInt8 {

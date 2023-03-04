@@ -22,19 +22,35 @@
 
 import Foundation
 
+// STPathProtocol: 文件路径协议，定义文件路径所需的基本属性和方法。
 public protocol STPathProtocol: Identifiable, Hashable {
     
+    // 文件类型
+    // Type of file
     var type: STFilePathItemType { get }
+
+    // 文件路径的URL
+    // URL for the file path
     var url: URL { get }
+
+    // 文件id，方便在数组中处理重复数据
+    // Unique identifier for the file to handle duplicate data in an array
     var id: URL {get }
-    
+
+    // 使用文件路径的URL初始化协议
+    // Initialize the protocol using the URL for the file path
     init(_ url: URL) throws
     
 }
 
 extension STPathProtocol {
     
+    // path属性：返回文件路径的字符串
+    // path property: Returns the file path as a string
     public var path: String { url.path }
+    
+    // path属性：返回文件路径的字符串
+    // path property: Returns the file path as a string
     public var id: URL { url }
     
     public func hash(into hasher: inout Hasher) {

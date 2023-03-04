@@ -91,23 +91,23 @@ public extension Array where Element == StemColor {
     ///   - count: 中心点数量
     ///   - formula: 颜色差异公式
     /// - Returns: 聚类颜色与比例
-    func kmeansClusterAnalysis(count: Int, difference formula: StemColor.DifferenceFormula) -> [KmeansResult] {
-        let kmeas = KMeans(self.map(\.labSpace.simd))
-        return kmeas.train(k: count) { lhs, rhs in
-            switch formula {
-            case .cie76:
-                return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
-            case .cie94(let value):
-                return StemColor.difference(.cie94(.init(lhs), .init(rhs), value))
-            case .ciede2000:
-                return StemColor.difference(.ciede2000(.init(lhs), .init(rhs)))
-            case .euclidean:
-                /// 不划算
-                return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
-            }
-        }.map { result in
-            KmeansResult(center: StemColor(lab: .init(result.center)), size: result.size)
-        }.sorted(by: { $0.size > $1.size })
-    }
+//    func kmeansClusterAnalysis(count: Int, difference formula: StemColor.DifferenceFormula) -> [KmeansResult] {
+//        let kmeas = KMeans(self.map(\.labSpace.simd))
+//        return kmeas.train(k: count) { lhs, rhs in
+//            switch formula {
+//            case .cie76:
+//                return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
+//            case .cie94(let value):
+//                return StemColor.difference(.cie94(.init(lhs), .init(rhs), value))
+//            case .ciede2000:
+//                return StemColor.difference(.ciede2000(.init(lhs), .init(rhs)))
+//            case .euclidean:
+//                /// 不划算
+//                return StemColor.difference(.cie76(.init(lhs), .init(rhs)))
+//            }
+//        }.map { result in
+//            KmeansResult(center: StemColor(lab: .init(result.center)), size: result.size)
+//        }.sorted(by: { $0.size > $1.size })
+//    }
     
 }

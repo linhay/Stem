@@ -55,10 +55,11 @@ public extension Dictionary {
     ///
     /// - Returns: Json字符串
     func formatJSON(options: JSONSerialization.WritingOptions = [.withoutEscapingSlashes, .fragmentsAllowed]) throws -> Data {
-        guard JSONSerialization.isValidJSONObject(self) else {
+        do {
+            return try JSONSerialization.data(withJSONObject: self, options: options)
+        } catch {
             throw StemError("not valid json object")
         }
-        return try JSONSerialization.data(withJSONObject: self, options: options)
     }
     
 }
