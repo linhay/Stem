@@ -643,10 +643,10 @@ class KMeansTests: XCTestCase {
             .map({ StemColor.RGBSpace($0) })
             .map({ StemColor(rgb: $0) })
         
-        colors.kmeansClusterAnalysis(count: 16, difference: .ciede2000)
-            .forEach { result in
-                print(result.size, " : ", result.center.hexString())
-            }
+//        colors.kmeansClusterAnalysis(count: 16, difference: .ciede2000)
+//            .forEach { result in
+//                print(result.size, " : ", result.center.hexString())
+//            }
     }
     
 }
