@@ -31,9 +31,7 @@ public struct STFolder: STPathProtocol {
     public init(_ url: URL) {
         self.url = url.standardized
     }
-    
-    var _watcher: Watcher?
-    
+        
     public init(_ path: String) {
         self.init(Self.standardizedPath(path))
     }
