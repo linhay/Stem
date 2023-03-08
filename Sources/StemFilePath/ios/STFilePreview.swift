@@ -11,18 +11,23 @@ import QuickLook
 
 open class STFilePreview: NSObject, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     
-    public var paths: [STFilePathReferenceType]
+    public var urls: [URL]
     
-    public init(paths: [STFilePathReferenceType] = []) {
-        self.paths = paths
+    public init(urls: [URL] = []) {
+        self.urls = urls
     }
     
     open func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        paths.count
+        urls.count
     }
     
     open func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        paths[index].id as QLPreviewItem
+        urls[index] as QLPreviewItem
+    }
+
+    open func controller(url: URL?) -> QLPreviewController {
+        let index = url.flatMap(urls.firstIndex(of:)) ?? 0
+        return controller(index: index)
     }
     
     open func controller(index: Int = 0) -> QLPreviewController {
