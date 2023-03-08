@@ -26,11 +26,11 @@ class AttributeHtmlTests: XCTestCase {
         www.baidu.com
         """#
         
-        let htmlLinkRegex = try StemStringMarker.RegexMark(type: StringType.htmlLink, pattern: #"<a.*<\/a>"#)
-        let htmlDIVRegex = try StemStringMarker.RegexMark(type: StringType.htmlDIV, pattern: #"<.*?>.*<\/.*?>"#)
-        let linkRegex = try StemStringMarker.RegexMark(type: StringType.link, pattern: #"(?:https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"#)
+        let htmlLinkRegex = try STStringMarker.RegexMark(type: StringType.htmlLink, pattern: #"<a.*<\/a>"#)
+        let htmlDIVRegex = try STStringMarker.RegexMark(type: StringType.htmlDIV, pattern: #"<.*?>.*<\/.*?>"#)
+        let linkRegex = try STStringMarker.RegexMark(type: StringType.link, pattern: #"(?:https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"#)
         
-        let results = try StemStringMarker.matches(html, mark: [
+        let results = try STStringMarker.matches(html, mark: [
             .regex(htmlLinkRegex),
             .regex(htmlDIVRegex),
             .regex(linkRegex),
@@ -46,13 +46,13 @@ class AttributeHtmlTests: XCTestCase {
                     assert(["http://www.baidu.com", "www.baidu.com"].contains(payload))
                 case .htmlDIV:
                     assert(payload == #"<div class="more-txt" bosszone="dh_more">更多</div>"#)
-                    let content = try StemStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
+                    let content = try STStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
                     assert(content.last == #"更多"#)
                 case .htmlLink:
                     assert(payload == #"<a href="http://www.hairy.com" target="_blank" class="unline">测试</a>"#)
-                    let href = try StemStringMarker.extract(payload, pattern: #"(?:data-full-resolution|src|href|data)="(.*?)""#)
+                    let href = try STStringMarker.extract(payload, pattern: #"(?:data-full-resolution|src|href|data)="(.*?)""#)
                     assert(href.last == #"http://www.hairy.com"#)
-                    let content = try StemStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
+                    let content = try STStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
                     assert(content.last == #"测试"#)
                 }
             case let .unknown(payload):

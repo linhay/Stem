@@ -31,7 +31,9 @@ extension Stem where Base: UITextView {
         NotificationCenter
             .default
             .publisher(for: UITextView.textDidChangeNotification, object: base)
-            .map { ($0.object as? UITextView)?.text }
+            .compactMap { $0.object as? UITextView }
+            .filter { $0.markedTextRange == nil }
+            .map(\.text)
             .eraseToAnyPublisher()
     }
     

@@ -22,7 +22,7 @@ public extension StemStringMarkProtocol {
     ///   - text: 被标记字符串
     ///   - mark: 标记规则
     /// - Returns: 被标记与未标记的子串数组
-    func marked(_ text: String) throws -> [StemStringMarker.Marked<MarkType>] {
+    func marked(_ text: String) throws -> [STStringMarker.Marked<MarkType>] {
         guard !text.isEmpty else {
             return []
         }
@@ -30,7 +30,7 @@ public extension StemStringMarkProtocol {
         let matches = try self.matches(text)
         let ranges = matches.map(\.range)
         
-        var result = [StemStringMarker.Marked<MarkType>]()
+        var result = [STStringMarker.Marked<MarkType>]()
         var lastRange: Range<String.Index>
         
         if let nsrange = ranges.first, let range = Range(nsrange, in: text), range.lowerBound > text.startIndex {
@@ -61,7 +61,7 @@ public extension StemStringMarkProtocol {
     
 }
 
-public struct StemStringMarker {
+public struct STStringMarker {
     
     public enum MarkWapper<MarkType>: StemStringMarkProtocol {
         
@@ -126,7 +126,7 @@ public struct StemStringMarker {
     
 }
 
-public extension StemStringMarker {
+public extension STStringMarker {
     
     /// 提取符合规则的子串
     /// - Parameters:
@@ -151,7 +151,7 @@ public extension StemStringMarker {
     
 }
 
-extension StemStringMarker {
+extension STStringMarker {
     
     /// 标记字符串中符合规则的子串
     /// - Parameters:
@@ -176,7 +176,7 @@ extension StemStringMarker {
     
 }
 
-private extension StemStringMarker {
+private extension STStringMarker {
     
     static func _extract(_ text: String, _ matches: [NSTextCheckingResult]) -> [String] {
         return matches

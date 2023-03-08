@@ -23,13 +23,48 @@
 #if canImport(UIKit) && canImport(ImageIO)
 import UIKit
 import ImageIO
+import CoreVideo
+
+public extension Stem where Base: UIImage {
+    
+    func cvPixelBuffer() -> CVPixelBuffer? {
+        var pixelBuffer: CVPixelBuffer?
+        let width  = Int(base.size.width)
+        let height = Int(base.size.height)
+        let options: [String: Any] = [kCVPixelBufferCGImageCompatibilityKey as String: true,
+                                      kCVPixelBufferCGBitmapContextCompatibilityKey as String: true,
+                                      kCVPixelBufferWidthKey as String: width,
+                                      kCVPixelBufferHeightKey as String: height]
+        let status = CVPixelBufferCreate(kCFAllocatorDefault,
+                                         width,
+                                         height,
+                                         kCVPixelFormatType_32BGRA,
+                                         options as CFDictionary,
+                                         &pixelBuffer)
+        guard status == kCVReturnSuccess,
+              let buffer = pixelBuffer else {
+            return nil
+        }
+        CVPixelBufferLockBaseAddress(buffer, .init(rawValue: 0))
+        defer { CVPixelBufferUnlockBaseAddress(buffer, .init(rawValue: 0)) }
+        let context = CGContext(data: CVPixelBufferGetBaseAddress(buffer),
+                                width: width,
+                                height: height, bitsPerComponent: 8,
+                                bytesPerRow: CVPixelBufferGetBytesPerRow(buffer),
+                                space: CGColorSpaceCreateDeviceRGB(),
+                                bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)
+        context?.draw(base.cgImage!, in: CGRect(origin: .zero, size: base.size))
+        return buffer
+    }
+    
+}
 
 public extension UIImage {
     
     /// https://swiftsenpai.com/development/reduce-uiimage-memory-footprint/
     /// 使用 ImageIO 进行下采样
     convenience init?(imageAt imageURL: URL, size: CGSize, scale: CGFloat = UIScreen.main.scale) {
-
+        
         // Create an CGImageSource that represent an image
         let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
         guard let imageSource = CGImageSourceCreateWithURL(imageURL as CFURL, imageSourceOptions) else {
