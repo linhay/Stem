@@ -27,14 +27,19 @@ public struct STPath: STPathProtocol {
     public var id: URL { url }
     
     private var manager: FileManager { FileManager.default }
-    private static var manager: FileManager { FileManager.default }
     
     public var type: STFilePathItemType {
-        if !isExist {
+        guard isExist else {
             return .notExist
         }
-        let flag = (try? STPath.isFolder(url)) ?? false
-        return flag ? .folder : .file
+        if isExistFolder {
+            return .folder
+        }
+        if isExistFile {
+            return .file
+        }
+        
+        return .notExist
     }
     
     public var referenceType: STFilePathReferenceType? {
@@ -57,41 +62,4 @@ public struct STPath: STPathProtocol {
     public init(_ path: String) {
         self.init(Self.standardizedPath(path))
     }
-}
-
-public extension STPath {
-    
-    var asFile: STFile? {
-        type == .file ? .init(url) : nil
-    }
-    
-    var asFolder: STFolder? {
-        type == .folder ? .init(url) : nil
-    }
-    
-}
-
-private extension STPath {
-    
-    /// 文件/文件夹类型
-    /// - Parameter url: 文件路径
-    /// - Throws: FilePathError - "目标路径文件不存在: url"
-    /// - Returns: 类型
-    static func isFolder(_ url: URL) throws -> Bool {
-        return try isFolder(url.path)
-    }
-    
-    static func isFolder(_ path: String) throws -> Bool {
-        var isDir: ObjCBool = false
-        if manager.fileExists(atPath: path, isDirectory: &isDir) {
-            if isDir.boolValue {
-                return true
-            } else {
-                return false
-            }
-        } else {
-            throw Error(message: "目标路径文件不存在: \(path)")
-        }
-    }
-    
 }

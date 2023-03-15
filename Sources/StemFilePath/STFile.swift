@@ -86,7 +86,7 @@ public extension STFile {
     @discardableResult
     func create(with data: Data? = nil) throws -> STFile {
         if isExist {
-            throw STPath.Error(message: "文件存在, 无法创建: \(url.path)")
+            throw STPathError(message: "文件存在, 无法创建: \(url.path)")
         }
         try STFolder(url.deletingLastPathComponent()).create()
         manager.createFile(atPath: url.path, contents: data, attributes: nil)

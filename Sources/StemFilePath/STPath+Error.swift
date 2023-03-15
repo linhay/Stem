@@ -23,31 +23,28 @@
 import Foundation
 
 // MARK: - Error
-public extension STPath {
+public struct STPathError: LocalizedError {
     
-    struct Error: LocalizedError {
-    
-        public static func noSuchFile(_ path: String) throws -> Error {
-           throw Error(message: "no such file", code: 0)
-        }
-    
-        public let message: String
-        public let code: Int
-        public var errorDescription: String?
-        
-        public init(posix: Int32) {
-            guard let code = POSIXErrorCode(rawValue: posix) else {
-                self.init(message: "未知", code: -1)
-                return
-            }
-            self.init(message: POSIXError(code).localizedDescription, code: Int(code.rawValue))
-        }
-        
-        public init(message: String, code: Int = 0) {
-            self.message = message
-            self.errorDescription = message
-            self.code = code
-        }
+    public static func noSuchFile(_ path: String) throws -> Error {
+        throw STPathError(message: "no such file", code: 0)
     }
     
+    public let message: String
+    public let code: Int
+    public var errorDescription: String?
+    
+    public init(posix: Int32) {
+        guard let code = POSIXErrorCode(rawValue: posix) else {
+            self.init(message: "未知", code: -1)
+            return
+        }
+        self.init(message: POSIXError(code).localizedDescription, code: Int(code.rawValue))
+    }
+    
+    public init(message: String, code: Int = 0) {
+        self.message = message
+        self.errorDescription = message
+        self.code = code
+    }
 }
+

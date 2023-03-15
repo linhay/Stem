@@ -55,7 +55,7 @@ public extension STFolder {
     
     init(applicationGroup: String) throws {
         guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: applicationGroup) else {
-            throw STPath.Error(message: "applicationGroup 无法识别")
+            throw STPathError(message: "applicationGroup 无法识别")
         }
         self.init(url)
     }

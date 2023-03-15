@@ -47,7 +47,7 @@ public extension STFolderWatcher {
             .debounce(for: 0.2, scheduler: queue)
             .tryMap({ [weak self] _ in
                 guard let self = self else { return .init(new: .init(), deleted: .init(), current: .init()) }
-                let paths = Set(try STFolder(self.url).subFilePaths(predicates: predicates))
+                let paths = Set(try STFolder(self.url).subFilePaths(predicates))
                 self.snapshot = paths
                 let deleted = self.snapshot.subtracting(paths)
                 let new = paths.subtracting(self.snapshot)
@@ -58,7 +58,7 @@ public extension STFolderWatcher {
     // MARK: Monitoring
     func startMonitoring() throws {
         guard STFolder(url).isExist else {
-            throw try STPath.Error.noSuchFile(url.path)
+            throw try STPathError.noSuchFile(url.path)
         }
         guard source == nil, fileDescriptor == -1 else {
             return

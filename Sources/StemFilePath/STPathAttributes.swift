@@ -23,7 +23,7 @@
 import Foundation
 
 // MARK: - Type
-public struct STFilePathAttributes {
+public struct STPathAttributes {
     
     private let url: URL
     
@@ -33,7 +33,7 @@ public struct STFilePathAttributes {
     
 }
 
-public extension STFilePathAttributes {
+public extension STPathAttributes {
     
     func update(_ value: Any?, for key: FileAttributeKey) throws {
         var attributes = attributes
@@ -43,7 +43,7 @@ public extension STFilePathAttributes {
     
 }
 
-public extension STFilePathAttributes {
+public extension STPathAttributes {
     
     struct NameComponents {
         

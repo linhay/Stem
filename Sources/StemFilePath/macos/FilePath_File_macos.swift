@@ -8,7 +8,6 @@
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
 import Foundation
 import AppKit
-import SwiftUI
 
 public extension STFile {
     

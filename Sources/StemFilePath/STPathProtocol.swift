@@ -43,6 +43,84 @@ public protocol STPathProtocol: Identifiable, Hashable {
     
 }
 
+public extension STPathProtocol {
+    
+    var isExistFolder: Bool {
+        do {
+            return try Self.isFolder(url)
+        } catch {
+            return false
+        }
+    }
+    
+    var isExistFile: Bool {
+        do {
+            return try Self.isFile(url)
+        } catch {
+            return false
+        }
+    }
+
+    static func isFile(_ url: URL) throws -> Bool {
+        return try isFile(url.path)
+    }
+    
+    static func isFile(_ path: String) throws -> Bool {
+        var isDir: ObjCBool = false
+        if FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
+            if isDir.boolValue {
+                return false
+            } else {
+                return true
+            }
+        } else {
+            throw STPathError(message: "目标路径文件不存在: \(path)")
+        }
+    }
+    
+    static func isFolder(_ url: URL) throws -> Bool {
+        return try isFolder(url.path)
+    }
+    
+    static func isFolder(_ path: String) throws -> Bool {
+        var isDir: ObjCBool = false
+        if FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
+            if isDir.boolValue {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            throw STPathError(message: "目标路径文件不存在: \(path)")
+        }
+    }
+    
+}
+
+public extension STPathProtocol {
+    
+    var asFile: STFile? {
+        if let type = self as? STFile {
+            return type
+        } else if type == .file {
+            return .init(url)
+        } else {
+            return nil
+        }
+    }
+    
+    var asFolder: STFolder? {
+        if let type = self as? STFolder {
+            return type
+        } else if type == .folder {
+            return .init(url)
+        } else {
+            return nil
+        }
+    }
+    
+}
+
 extension STPathProtocol {
     
     // path属性：返回文件路径的字符串
@@ -124,13 +202,20 @@ public extension STPathProtocol {
     
     var eraseToFilePath: STPath { return .init(url) }
     
-    var attributes: STFilePathAttributes { .init(path: url) }
-    
+    var attributes: STPathAttributes { .init(path: url) }
+        
     /// 文件权限
-    var permission: STFilePathPermission { .init(url: url) }
+    var permission: STPathPermission { .init(url: url) }
     
     /// 当前路径是否存在
     var isExist: Bool { manager.fileExists(atPath: url.path) }
+    
+    /// 修改名称
+    func rename(_ name: String) throws -> Self {
+        let new = url.deletingLastPathComponent().appendingPathComponent(name)
+        try manager.moveItem(at: url, to: new)
+        return try .init(new)
+    }
     
     /// 删除
     /// - Throws: FileManager error
@@ -199,7 +284,7 @@ public extension STPathProtocol {
     /// - Returns: 所在文件夹
     func parentFolder() -> STFolder? {
         let parent = url.deletingLastPathComponent()
-        guard parent != url else {
+        guard Self.standardizedPath(parent.path) != Self.standardizedPath(url.path) else {
             return nil
         }
         return .init(parent)
