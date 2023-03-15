@@ -24,6 +24,41 @@
 import UIKit
 import Combine
 
+
+#if targetEnvironment(macCatalyst)
+extension UITextView {
+
+    public override var tintColor: UIColor? {
+        set {
+            super.tintColor = newValue
+        }
+        get {
+            let textInputTraits = value(forKey: "textInputTraits") as? NSObject
+            textInputTraits?.setValue(super.tintColor, forKey: "insertionPointColor")
+            return super.tintColor
+        }
+    }
+    
+}
+#endif
+
+public extension Stem where Base: UITextView {
+    
+    var tintColor: UIColor? {
+        set {
+            base.tintColor = newValue
+            #if targetEnvironment(macCatalyst)
+            let textInputTraits = base.value(forKey: "textInputTraits") as? NSObject
+            textInputTraits?.setValue(newValue, forKey: "insertionPointColor")
+            #endif
+        }
+        get {
+            base.tintColor
+        }
+    }
+    
+}
+
 @available(iOS 13.0, *)
 extension Stem where Base: UITextView {
     

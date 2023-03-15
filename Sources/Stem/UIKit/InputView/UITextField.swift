@@ -24,7 +24,37 @@
 import UIKit
 import Combine
 
+#if targetEnvironment(macCatalyst)
+extension UITextField {
+
+    public override var tintColor: UIColor? {
+        set {
+            super.tintColor = newValue
+        }
+        get {
+            let textInputTraits = value(forKey: "textInputTraits") as? NSObject
+            textInputTraits?.setValue(super.tintColor, forKey: "insertionPointColor")
+            return super.tintColor
+        }
+    }
+    
+}
+#endif
+
 public extension Stem where Base: UITextField {
+    
+    var tintColor: UIColor? {
+        set {
+            base.tintColor = newValue
+            #if targetEnvironment(macCatalyst)
+            let textInputTraits = base.value(forKey: "textInputTraits") as? NSObject
+            textInputTraits?.setValue(newValue, forKey: "insertionPointColor")
+            #endif
+        }
+        get {
+            base.tintColor
+        }
+    }
     
     var selectedRange: NSRange? {
         guard let selectedTextRange = base.selectedTextRange else { return nil }
