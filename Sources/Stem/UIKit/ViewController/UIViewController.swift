@@ -173,7 +173,19 @@ public extension Stem where Base: UIViewController {
     }
     
     func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
+#if targetEnvironment(macCatalyst)
+        if let completion = completion {
+            base.dismiss(animated: animated, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                    completion()
+                }
+            })
+        } else {
+            base.dismiss(animated: animated, completion: completion)
+        }
+#else
         base.dismiss(animated: animated, completion: completion)
+#endif
     }
     
 }

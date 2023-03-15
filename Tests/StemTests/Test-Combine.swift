@@ -15,20 +15,20 @@ class Test_Combine: XCTestCase {
 
     @available(macOS 13.0, *)
     func testVNImage() throws {
-        let data = try Data(contentsOf: URL(filePath: "/Users/linhey/Downloads/list1.png"))
-        guard let image = NSImage(data: data)?.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-            return
-        }
-        let ciImage = CIImage(cgImage: image)
-        let handler = try VNImageRequestHandler(ciImage: ciImage)
-        let request = VNRecognizeTextRequest { request, error in
-            request.results?.forEach({ observation in
-                guard let observation = observation as? VNRecognizedTextObservation else { return }
-                print(observation.topCandidates(1).first?.string)
-            })
-        }
-        request.recognitionLevel = .accurate
-        try handler.perform([request])
+//        let data = try Data(contentsOf: URL(filePath: "/Users/linhey/Downloads/list1.png"))
+//        guard let image = NSImage(data: data)?.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+//            return
+//        }
+//        let ciImage = CIImage(cgImage: image)
+//        let handler = try VNImageRequestHandler(ciImage: ciImage)
+//        let request = VNRecognizeTextRequest { request, error in
+//            request.results?.forEach({ observation in
+//                guard let observation = observation as? VNRecognizedTextObservation else { return }
+//                print(observation.topCandidates(1).first?.string)
+//            })
+//        }
+//        request.recognitionLevel = .accurate
+//        try handler.perform([request])
     }
     
     func testNSOBject() {
