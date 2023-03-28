@@ -6,6 +6,7 @@
 //  Copyright © 2016 Ivan Kovacevic. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
 import Combine
 
@@ -311,3 +312,4 @@ public extension STSwitch {
     }
     
 }
+#endif

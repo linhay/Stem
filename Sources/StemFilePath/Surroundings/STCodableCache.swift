@@ -31,19 +31,33 @@ public final class STCodableCache<Value: Codable>: Codable {
 
     private let entrySubject: CurrentValueSubject<Entry, Never>
     private var cancellable: AnyCancellable?
+    private var observableCancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
     
-    public init(file: STFile?,
-                default: Value,
+    public convenience init(file: STFile?,
+                            default: Value,
+                            decoder: CacheDecoder?,
+                            encoder: CacheEncoder?) {
+        self.init(file: file, default: .init(value: `default`), decoder: decoder, encoder: encoder)
+    }
+    
+    public convenience init(file: STFile?,
+                            default: Value,
+                            decoder: CacheDecoder?,
+                            encoder: CacheEncoder?) where Value: ObservableObject {
+        self.init(file: file, default: .init(value: `default`), decoder: decoder, encoder: encoder)
+    }
+    
+    public convenience init(file: STFile?,
+                default: STCodableCache<Value>.Entry,
                 decoder: CacheDecoder?,
-                encoder: CacheEncoder?) {
-        if let data = try? file?.data(), let entry = try? decoder?(data, Entry.self) {
-            self.entrySubject = .init(entry)
-        } else {
-            self.entrySubject = .init(.init(value: `default`))
-        }
-        self.file = file
-        self.encoder = encoder
-        self.decoder = decoder
+                encoder: CacheEncoder?) where Value: ObservableObject {
+        self.init(file: file, default: `default`, decoder: decoder, encoder: encoder)
+        entrySubject.sink { [weak self] entry in
+            self?.observableCancellable = entry.value.objectWillChange.sink { [weak self] _ in
+               try? self?.save(entry: entry, to: self?.file)
+            }
+        }.store(in: &cancellables)
     }
     
     public init(file: STFile?,
@@ -103,12 +117,17 @@ public final class STCodableCache<Value: Codable>: Codable {
             .filter { [weak self] _ in
                 self?.file != nil
             }
-            .sink { entry in
+            .sink { [weak self] entry in
+                guard let self = self else { return }
                 try? self.save(entry: entry, to: self.file)
             }
         return self
     }
     
+    public func disconnect() {
+        cancellable?.cancel()
+    }
+
 }
 
 extension STCodableCache {

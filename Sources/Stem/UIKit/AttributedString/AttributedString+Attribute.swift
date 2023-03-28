@@ -206,6 +206,7 @@ public extension NSAttributedString {
         case headIndent(CGFloat)
         case tailIndent(CGFloat)
         case lineBreakMode(NSLineBreakMode)
+        case lineHeight(CGFloat)
         case minimumLineHeight(CGFloat)
         case maximumLineHeight(CGFloat)
         case baseWritingDirection(NSWritingDirection)
@@ -256,6 +257,9 @@ public extension NSAttributedString {
                     result.defaultTabInterval = v
                 case .allowsDefaultTighteningForTruncation(let v):
                     result.allowsDefaultTighteningForTruncation = v
+                case .lineHeight(let v):
+                    result.maximumLineHeight = v
+                    result.minimumLineHeight = v
                 }
             }
 

@@ -71,13 +71,15 @@ public extension Stem where Base: UIApplication {
         }
     }
     
+    static var activeScene: UIWindowScene? {
+        UIApplication.shared.connectedScenes
+            .lazy
+            .filter { $0.activationState == .foregroundActive }
+            .compactMap { $0 as? UIWindowScene }.first
+    }
+    
     static var keyWindow: UIWindow? {
-        let connectedScenes = UIApplication.shared.connectedScenes
-        let scene = connectedScenes.first(where: { $0.activationState == .foregroundActive && $0 is UIWindowScene }) ?? connectedScenes.first(where: { $0.activationState == .foregroundInactive && $0 is UIWindowScene })
-        return scene
-            .flatMap({ $0 as? UIWindowScene })?
-            .windows
-            .first(where: { $0.isKeyWindow })
+        return activeScene?.windows.first(where: \.isKeyWindow)
     }
     
 }

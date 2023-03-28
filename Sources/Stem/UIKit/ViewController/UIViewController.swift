@@ -176,7 +176,7 @@ public extension Stem where Base: UIViewController {
 #if targetEnvironment(macCatalyst)
         if let completion = completion {
             base.dismiss(animated: animated, completion: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
                     completion()
                 }
             })

@@ -9,7 +9,17 @@
 import UIKit
 import QuickLook
 
+class STPreviewController: QLPreviewController {
+    
+    deinit {
+        STFilePreview.shared = nil
+    }
+    
+}
+
 open class STFilePreview: NSObject, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+    
+    public static var shared: STFilePreview?
     
     public var urls: [URL]
     
@@ -25,17 +35,15 @@ open class STFilePreview: NSObject, QLPreviewControllerDataSource, QLPreviewCont
         urls[index] as QLPreviewItem
     }
 
-    open func controller(url: URL?) -> QLPreviewController {
+    public static func show(urls: [URL], selected url: URL?, on controller: UIViewController?) {
+        let preview = STFilePreview(urls: urls)
         let index = url.flatMap(urls.firstIndex(of:)) ?? 0
-        return controller(index: index)
-    }
-    
-    open func controller(index: Int = 0) -> QLPreviewController {
-        let controller = QLPreviewController()
-        controller.delegate = self
-        controller.dataSource = self
-        controller.currentPreviewItemIndex = index
-        return controller
+        let previewController = QLPreviewController()
+        previewController.delegate = preview
+        previewController.dataSource = preview
+        previewController.currentPreviewItemIndex = index
+        STFilePreview.shared = preview
+        controller?.present(previewController, animated: true)
     }
     
 }
