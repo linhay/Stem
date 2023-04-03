@@ -5,6 +5,7 @@
 //  Created by linhey on 2023/3/8.
 //
 
+#if canImport(Darwin)
 import Foundation
 import Combine
 
@@ -96,3 +97,4 @@ public extension STFolderWatcher {
     }
     
 }
+#endif
