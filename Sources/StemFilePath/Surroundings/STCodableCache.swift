@@ -108,7 +108,9 @@ public final class STCodableCache<Value: Codable>: Codable {
     }
     
     deinit {
-        try? save(entry: entry, to: file)
+        if file?.isExist == true {
+            try? save(entry: entry, to: file)
+        }
     }
     
     @discardableResult
