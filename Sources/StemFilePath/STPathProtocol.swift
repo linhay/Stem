@@ -169,11 +169,19 @@ public extension STPathProtocol {
     
     static func standardizedPath(_ path: String) -> URL {
         if path == "~" {
+#if os(Linux)
+            return URL(filePath: "/", relativeTo: nil)
+#else
             return STFolder.Sanbox.home.url
+#endif
         } else if path.hasPrefix("~/") {
             var components = path.split(separator: "/").map({ $0.description })
             components = Array(components.dropFirst())
-            let home = STFolder.Sanbox.home.url.path.split(separator: "/").map({ $0.description })
+#if os(Linux)
+            let home = [String]()
+#else
+            let home = STFolder.Sanbox.home.url.path.split(separator: "/").map(\.description)
+#endif
             components.insert(contentsOf: home, at: 0)
             return URL(fileURLWithPath: Self.standardizedPath(components))
         } else {
