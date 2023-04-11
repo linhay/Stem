@@ -5,6 +5,7 @@
 //  Created by linhey on 2023/3/11.
 //
 
+#if canImport(Combine)
 import Foundation
 import Combine
 
@@ -164,3 +165,4 @@ extension STCodableCache {
     
 }
 
+#endif

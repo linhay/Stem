@@ -5,7 +5,7 @@
 //  Created by linhey on 2023/3/8.
 //
 
-#if canImport(Darwin)
+#if canImport(Combine) && canImport(Darwin)
 import Foundation
 import Combine
 

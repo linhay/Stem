@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 import Foundation
-import Combine
 
 public struct STFolder: STPathProtocol {
     

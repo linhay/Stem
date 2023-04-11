@@ -5,8 +5,8 @@
 //  Created by linhey on 2022/7/13.
 //
 
+#if canImport(Combine) && canImport(Darwin)
 import Foundation
-import Combine
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public extension STFolder {
@@ -18,3 +18,4 @@ public extension STFolder {
     }
     
 }
+#endif
