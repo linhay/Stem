@@ -116,9 +116,11 @@ public extension STPathAttributes {
     /// 文件属性字典中的键，其值指示文件的 Posix 权限。
     /// The key in a file attribute dictionary whose value indicates the file’s Posix permissions.
     var posixPermissions: Int { attribute(key: .posixPermissions, default: 0) }
+    #if !os(Linux)
     /// 文件属性字典中的键，其值标识此文件的保护级别。
     /// The key in a file attribute dictionary whose value identifies the protection level for this file.
     var protectionKey: Int { attribute(key: .protectionKey, default: 0) }
+    #endif
     /// 文件属性字典中的键，其值表示文件的引用计数。
     /// The key in a file attribute dictionary whose value indicates the file’s reference count.
     var referenceCount: Int { attribute(key: .referenceCount, default: 0) }
