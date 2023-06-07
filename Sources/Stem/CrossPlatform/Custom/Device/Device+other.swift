@@ -46,7 +46,7 @@ public extension Device {
               let result = dlsym(open, "ptrace") else {
             return
         }
-        unsafeBitCast(result, to: ptrace.self)(0x1F, 0, 0, 0)
+        _ = unsafeBitCast(result, to: ptrace.self)(0x1F, 0, 0, 0)
         #endif
     }
     

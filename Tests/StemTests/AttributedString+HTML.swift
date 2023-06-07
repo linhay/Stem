@@ -12,53 +12,30 @@ import Stem
 class AttributeHtmlTests: XCTestCase {
     
     enum StringType {
-        case htmlLink
-        case htmlDIV
-        case link
+        case htmlImage
     }
     
     func testParse() throws {
         let html = #"""
-        <a href="http://www.hairy.com" target="_blank" class="unline">测试</a>
-        <div class="more-txt" bosszone="dh_more">更多</div>
-        atthttp://www.baidu.com
-        前缀http://www.baidu.com
-        www.baidu.com
+        <em class=\"red\">继续</em><em class=\"red\">继续</em><em class=\"red\">继续</em><em class=\"red\">继续</em><em class=\"red\">继续</em><em class=\"red\">继续</em>将将d<em class=\"red\">继续</em>进行好想好想
         """#
-        
-        let htmlLinkRegex = try STStringMarker.RegexMark(type: StringType.htmlLink, pattern: #"<a.*<\/a>"#)
-        let htmlDIVRegex = try STStringMarker.RegexMark(type: StringType.htmlDIV, pattern: #"<.*?>.*<\/.*?>"#)
-        let linkRegex = try STStringMarker.RegexMark(type: StringType.link, pattern: #"(?:https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"#)
-        
-        let results = try STStringMarker.matches(html, mark: [
-            .regex(htmlLinkRegex),
-            .regex(htmlDIVRegex),
-            .regex(linkRegex),
-            .detector(.init(type: .link, pattern: .link))
-        ])
-
-        for result in results {
-            switch result {
-            case let .mark(mark, payload):
-                print(payload, mark)
-                switch mark {
-                case .link:
-                    assert(["http://www.baidu.com", "www.baidu.com"].contains(payload))
-                case .htmlDIV:
-                    assert(payload == #"<div class="more-txt" bosszone="dh_more">更多</div>"#)
-                    let content = try STStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
-                    assert(content.last == #"更多"#)
-                case .htmlLink:
-                    assert(payload == #"<a href="http://www.hairy.com" target="_blank" class="unline">测试</a>"#)
-                    let href = try STStringMarker.extract(payload, pattern: #"(?:data-full-resolution|src|href|data)="(.*?)""#)
-                    assert(href.last == #"http://www.hairy.com"#)
-                    let content = try STStringMarker.extract(payload, pattern: #"<.*?>(.*)<\/.*?>"#)
-                    assert(content.last == #"测试"#)
-                }
-            case let .unknown(payload):
-                print(payload)
-            }
-        }
+                
+       let result = try StringRender(string: html,
+                                     contenxt: .init(marker: [
+//                                        .htmlLink({ content, url in
+//                                            return NSAttributedString(string: content, attributes: [.link: url])
+//                                        }),
+                                        .htmlTagContent("em", { content in
+                                            return NSAttributedString(string: content)
+                                        }),
+//                                        .textLink({ url in
+//                                            return NSAttributedString(string: url.absoluteString, attributes: [.link: url])
+//                                        })
+                                     ], unknown: .init(render: { payload in
+                                         NSAttributedString(string: payload.match)
+                                     }), finish: nil))
+                    .render()
+        print(result)
     }
     
     

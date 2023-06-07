@@ -106,7 +106,7 @@ public extension STFolder {
     /// - Throws: FilePathError - "目标路径不是文件夹类型"
     /// - Parameter predicates: 查找条件
     /// - Returns: [FilePath]
-    func allSubFilePaths(_ predicates: [SearchPredicate]) throws -> [STPath] {
+    func allSubFilePaths(_ predicates: [SearchPredicate] = []) throws -> [STPath] {
         let (systemPredicates, customPredicates) = predicates.split()
         guard let enumerator = manager.enumerator(at: url,
                                                   includingPropertiesForKeys: [.nameKey, .isDirectoryKey],

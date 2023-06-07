@@ -53,11 +53,19 @@ public extension STFolder {
         STFile(url.appendingPathComponent(name, isDirectory: false))
     }
     
+    func file(_ name: String) -> STFile {
+        file(name: name)
+    }
+    
     /// 当前文件夹下的文件夹 (不校验存在性)
     /// - Parameter name: 文件夹名
     /// - Returns: STFile
     func folder(name: String) -> STFolder {
         STFolder(url.appendingPathComponent(name, isDirectory: true))
+    }
+    
+    func folder(_ name: String) -> STFolder {
+        folder(name: name)
     }
     
     /// 当前文件夹下的路径 (校验存在性)
@@ -107,6 +115,11 @@ public extension STFolder {
     @discardableResult
     func create() throws -> STFolder {
         try manager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        return self
+    }
+    
+    func createIfNotExists() -> STFolder {
+        _ = try? create()
         return self
     }
     

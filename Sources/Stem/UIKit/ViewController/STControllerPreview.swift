@@ -5,7 +5,7 @@
 //  Created by linhey on 2023/3/2.
 //
 
-#if DEBUG && canImport(UIKit) && canImport(SwiftUI)
+#if canImport(UIKit) && canImport(SwiftUI)
 import UIKit
 import SwiftUI
 

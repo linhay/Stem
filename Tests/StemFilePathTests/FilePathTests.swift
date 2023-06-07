@@ -15,6 +15,26 @@ final class FilePathTests: XCTestCase {
     
     private var cancellables = Set<AnyCancellable>()
     
+    func test2() async throws {
+        let folder = STFolder("/Users/linhey/Desktop/SectionKit")
+        let files = try folder.allSubFilePaths([.skipsHiddenFiles]).filter({
+            $0.attributes.nameComponents.extension?.lowercased() == "swift" &&
+            $0.attributes.nameComponents.name.uppercased() != "___FILEBASENAME___"
+        }).compactMap(\.asFile)
+        
+        for file in files {
+            guard let data = try? file.data(), var text = String(data: data, encoding: .utf8) else {
+                continue
+            }
+            if text.contains("import UIKit") {
+                text = text.replacingOccurrences(of: "import UIKit",
+                                                 with: "#if canImport(UIKit)\nimport UIKit")
+                text = text + "\n#endif"
+                try file.overlay(with: text.data(using: .utf8))
+            }
+        }
+    }
+    
     func test() async throws {
         var folder = STFolder("~/Desktop")
         try folder.watcher().publisher.sink { _ in
