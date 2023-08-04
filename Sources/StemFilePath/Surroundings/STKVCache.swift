@@ -14,15 +14,23 @@ public final class STKVCache<Key: Hashable, Value> {
     private let wrapped = NSCache<WrappedKey, Entry>()
     private let dateProvider: () -> Date
     private let keyTracker = KeyTracker()
-    
+        
     public init(dateProvider: @escaping () -> Date = Date.init,
-                maximumEntryCount: Int = 50) {
+                maximumEntryCount: Int = .max) {
         self.dateProvider = dateProvider
         wrapped.countLimit = maximumEntryCount
         wrapped.delegate = keyTracker
     }
+
+}
+
+public extension STKVCache {
     
-    public func insert(_ value: Value, forKey key: Key, lifeTime: TimeInterval? = nil) {
+     func value(of key: Key) -> Value? {
+        return entry(forKey: key)?.value
+    }
+    
+     func insert(_ value: Value, forKey key: Key, lifeTime: TimeInterval? = nil) {
         let date: Date?
         if let lifeTime = lifeTime {
             date = dateProvider().addingTimeInterval(lifeTime)
@@ -34,32 +42,27 @@ public final class STKVCache<Key: Hashable, Value> {
         keyTracker.keys.insert(key)
     }
     
-    public func update(_ value: Value, forKey key: Key) {
-        if self.value(forKey: key) != nil {
-            removeValue(forKey: key)
+     func update(_ value: Value, forKey key: Key) {
+        if self.value(of: key) != nil {
+            remove(by: key)
         }
         insert(value, forKey: key)
     }
     
-    public func value(forKey key: Key) -> Value? {
-        return entry(forKey: key)?.value
-    }
-    
-    public func removeValue(forKey key: Key) {
+     func remove(by key: Key) {
         wrapped.removeObject(forKey: WrappedKey(key))
     }
+    
 }
 
 // MARK: - Cache Subscript
-
 public extension STKVCache {
+    
     subscript(key: Key) -> Value? {
-        get { value(forKey: key) }
+        get { value(of: key) }
         set {
             guard let value = newValue else {
-                // If nil was assigned using our subscript,
-                // then we remove any value for that key:
-                removeValue(forKey: key)
+                remove(by: key)
                 return
             }
             
@@ -71,6 +74,7 @@ public extension STKVCache {
 // MARK: Cache.WrappedKey
 
 private extension STKVCache {
+    
     final class WrappedKey: NSObject {
         let key: Key
         
@@ -136,7 +140,7 @@ private extension STKVCache {
 
         if let expirationDate = entry.expirationDate,
            dateProvider() >= expirationDate {
-            removeValue(forKey: key)
+            remove(by: key)
             return nil
         }
         
@@ -171,12 +175,12 @@ extension STKVCache: Codable where Key: Codable, Value: Codable {
 
 public extension STKVCache where Key: Codable, Value: Codable {
     
-    func saveToDisk(with file: STFile, encoder: JSONEncoder) throws {
+    func saveToDisk(with file: STFile, encoder: JSONEncoder = .init()) throws {
         let data = try encoder.encode(self)
         try file.overlay(with: data)
     }
     
-    static func decode(from file: STFile, decoder: JSONDecoder = JSONDecoder()) throws -> Self {
+    static func decode(from file: STFile, decoder: JSONDecoder = .init()) throws -> Self {
         let data  = try file.data()
        return try decoder.decode(Self.self, from: data)
     }

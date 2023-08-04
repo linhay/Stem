@@ -81,6 +81,14 @@ public extension STFile {
         try Data(contentsOf: url, options: options)
     }
     
+    func createIfNotExists(with data: Data? = nil) throws -> STFile {
+        if isExist {
+            return self
+        } else {
+            return try create(with: data)
+        }
+    }
+    
     /// 根据当前[FilePath]创建文件/文件夹
     /// - Throws: FilePathError - 文件/文件夹 存在, 无法创建
     @discardableResult
@@ -102,6 +110,10 @@ public extension STFile {
         }
         try delete()
         try create(with: data)
+    }
+    
+    func overlay(with data: String?, using: String.Encoding = .utf8) throws {
+        try overlay(with: data?.data(using: using))
     }
     
     /// 追加数据到文件末尾(文件不存在则会创建文件)

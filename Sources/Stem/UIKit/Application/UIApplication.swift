@@ -123,15 +123,7 @@ public extension Stem where Base: UIApplication {
               options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:],
               completionHandler: ((Bool) -> Void)? = nil) {
         if isSafe, !UIApplication.shared.canOpenURL(url) { return }
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: options, completionHandler: completionHandler)
-        } else {
-            // https://stackoverflow.com/questions/19356488/openurl-freezes-app-for-over-10-seconds
-            // 解决打开 其他 app 慢
-            DispatchQueue.main.async {
-                completionHandler?(UIApplication.shared.openURL(url))
-            }
-        }
+        UIApplication.shared.open(url, options: options, completionHandler: completionHandler)
     }
 
 }

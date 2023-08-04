@@ -30,7 +30,9 @@ public struct TapticEngine {
     ///
     /// - Parameter params: level  (number)  0 ~ 3 表示振动等级
     public static func taptic(level: Int, isSupportTaptic: Bool = true) {
-        if #available(iOS 10.0, *), isSupportTaptic, let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
+        if #available(iOS 10.0, *),
+           isSupportTaptic,
+            let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: level) {
             let tapticEngine = UIImpactFeedbackGenerator(style: style)
             tapticEngine.prepare()
             tapticEngine.impactOccurred()
