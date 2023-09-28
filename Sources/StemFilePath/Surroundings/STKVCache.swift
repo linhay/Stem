@@ -20,6 +20,7 @@ public final class STKVCache<Key: Hashable, Value> {
         self.dateProvider = dateProvider
         wrapped.countLimit = maximumEntryCount
         wrapped.delegate = keyTracker
+        
     }
 
 }
@@ -86,7 +87,6 @@ private extension STKVCache {
             guard let value = object as? WrappedKey else {
                 return false
             }
-            
             return value.key == key
         }
     }

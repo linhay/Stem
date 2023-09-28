@@ -60,12 +60,10 @@ public extension Stem where Base: NumberFormatter {
         return base.string(from: .init(value: value))
     }
 
-    @available(macOS 10.5, *)
     func string(from value: Int) -> String? {
         return base.string(from: .init(value: value))
     }
 
-    @available(macOS 10.5, *)
     func string(from value: UInt) -> String? {
         return base.string(from: .init(value: value))
     }
