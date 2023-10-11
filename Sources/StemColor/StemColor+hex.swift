@@ -41,9 +41,6 @@ public extension StemColor {
         guard CharacterSet(charactersIn: cString).isSubset(of: .decimalDigits.union(.init(charactersIn: "A"..."F"))) else {
             throw ThrowError("StemColor: 无法解析, value: \(value)")
         }
-        guard cString.count == 6 || cString.count == 8 else {
-            throw ThrowError("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
-        }
         var value: UInt64 = 0x0
         Scanner(string: String(cString)).scanHexInt64(&value)
         self.init(Int(value))
@@ -61,23 +58,19 @@ public extension StemColor {
             count += 1
             if count > 8 { break }
         }
-
-        let divisor = Double(255)
-
-        if count <= 6 {
-            let red     = Double((value & 0xFF0000) >> 16) / divisor
-            let green   = Double((value & 0x00FF00) >>  8) / divisor
-            let blue    = Double( value & 0x0000FF       ) / divisor
-            self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: 1)
-        } else if count <= 8 {
-            let red     = Double((Int64(value) & 0xFF000000) >> 24) / divisor
-            let green   = Double((Int64(value) & 0x00FF0000) >> 16) / divisor
-            let blue    = Double((Int64(value) & 0x0000FF00) >>  8) / divisor
-            let alpha   = Double( Int64(value) & 0x000000FF       ) / divisor
-            self.init(rgb: RGBSpace(red: red, green: green, blue: blue), alpha: alpha)
-        } else {
-            throw ThrowError("StemColor: 位数错误, 只支持 6 或 8 位, value: \(value)")
+        
+        let a, r, g, b: Int
+        switch count {
+        case 3: // 0xRGB
+            (a, r, g, b) = (255, (hex >> 8) * 17, (hex >> 4 & 0xF) * 17, (hex & 0xF) * 17)
+        case 6: // 0xRRGGBB
+            (a, r, g, b) = (255, hex >> 16, hex >> 8 & 0xFF, hex & 0xFF)
+        case 8: // 0xRRGGBBAA
+            (r, g, b, a) = (hex >> 24, hex >> 16 & 0xFF, hex >> 8 & 0xFF, hex & 0xFF)
+        default:
+            throw ThrowError("StemColor: 位数错误, 只支持 3/6/8 位, value: \(value)")
         }
+        self.init(rgb: RGBSpace(red: Double(r), green: Double(g), blue: Double(b)), alpha: Double(a))
     }
 
 }
