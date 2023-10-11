@@ -218,25 +218,6 @@ public extension STPathProtocol {
     /// 当前路径是否存在
     var isExist: Bool { manager.fileExists(atPath: url.path) }
     
-    func accessingSecurityScopedResource<T>(task: () throws -> T) throws -> T {
-       try accessingSecurityScopedResource(url, task: task)
-    }
-    
-    func accessingSecurityScopedResource<T>(_ urls: URL..., task: () throws -> T) throws -> T {
-        for url in urls {
-            guard url.startAccessingSecurityScopedResource() else {
-                throw try STPathError.operationNotPermitted(url.path)
-            }
-        }
-        
-        let result = try task()
-        
-        for url in urls {
-            url.stopAccessingSecurityScopedResource()
-        }
-        
-        return result
-    }
     /// 修改名称
     func rename(_ name: String) throws -> Self {
         let new = url.deletingLastPathComponent().appendingPathComponent(name)
@@ -248,9 +229,7 @@ public extension STPathProtocol {
     /// - Throws: FileManager error
     func delete() throws {
         guard isExist else { return }
-        try accessingSecurityScopedResource(url) {
-            try manager.removeItem(at: url)
-        }
+        try manager.removeItem(at: url)
     }
     
     /// 移动至目标路径
@@ -260,13 +239,11 @@ public extension STPathProtocol {
     /// - Returns: FileManagerError
     @discardableResult
     func move(to path: Self, isOverlay: Bool = false) throws -> Self {
-        try accessingSecurityScopedResource(path.url, url) {
-            if isOverlay, path.isExist {
-                try path.delete()
-            }
-            try manager.moveItem(at: url, to: path.url)
-            return path
+        if isOverlay, path.isExist {
+            try path.delete()
         }
+        try manager.moveItem(at: url, to: path.url)
+        return path
     }
 
     /// 移动至目标路径
@@ -277,19 +254,17 @@ public extension STPathProtocol {
     @discardableResult
     func move(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
         let fileURL = folder.url.appendingPathComponent(attributes.name)
-        return try accessingSecurityScopedResource(folder.url, fileURL, url) {
-            if isOverlay {
-                let path = STPath(fileURL)
-                if path.isExist {
-                    try path.delete()
-                }
+        if isOverlay {
+            let path = STPath(fileURL)
+            if path.isExist {
+               try path.delete()
             }
-            if !folder.isExist {
-                try folder.create()
-            }
-            try manager.moveItem(at: url, to: fileURL)
-            return try .init(fileURL)
         }
+        if !folder.isExist {
+            try folder.create()
+        }
+        try manager.moveItem(at: url, to: fileURL)
+        return try .init(fileURL)
     }
     
     /// 复制至目标路径
@@ -300,19 +275,17 @@ public extension STPathProtocol {
     @discardableResult
     func copy(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
         let fileURL = folder.url.appendingPathComponent(url.lastPathComponent)
-        return try accessingSecurityScopedResource(folder.url, fileURL, url) {
-            if isOverlay {
-                let path = STPath(fileURL)
-                if path.isExist {
-                    try path.delete()
-                }
+        if isOverlay {
+            let path = STPath(fileURL)
+            if path.isExist {
+               try path.delete()
             }
-            if !folder.isExist {
-                try folder.create()
-            }
-            try manager.copyItem(at: url, to: fileURL)
-            return try .init(fileURL)
         }
+        if !folder.isExist {
+            try folder.create()
+        }
+        try manager.copyItem(at: url, to: fileURL)
+        return try .init(fileURL)
     }
     
     /// 获取所在文件夹

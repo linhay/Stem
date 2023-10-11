@@ -54,9 +54,7 @@ public extension STFile {
     /// - Throws: FileManagerError
     @discardableResult
     func copy(to file: STFile) throws -> STFile {
-        try accessingSecurityScopedResource {
-            try manager.copyItem(at: url, to: file.url)
-        }
+        try manager.copyItem(at: url, to: file.url)
         return file
     }
     
@@ -69,9 +67,7 @@ public extension STFile {
     }
     
     func write(_ data: Data) throws {
-        try accessingSecurityScopedResource {
-            try data.write(to: url)
-        }
+        try data.write(to: url)
     }
     
 }
@@ -82,9 +78,7 @@ public extension STFile {
     /// - Throws: Data error
     /// - Returns: data
     func data(options: Data.ReadingOptions = []) throws -> Data {
-        try accessingSecurityScopedResource {
-            try Data(contentsOf: url, options: options)
-        }
+        try Data(contentsOf: url, options: options)
     }
     
     func createIfNotExists(with data: Data? = nil) throws -> STFile {
@@ -102,10 +96,8 @@ public extension STFile {
         if isExist {
             throw STPathError(message: "文件存在, 无法创建: \(url.path)")
         }
-        try accessingSecurityScopedResource(url.deletingLastPathComponent(), url) {
-            try STFolder(url.deletingLastPathComponent()).create()
-            manager.createFile(atPath: url.path, contents: data, attributes: nil)
-        }
+        try STFolder(url.deletingLastPathComponent()).create()
+        manager.createFile(atPath: url.path, contents: data, attributes: nil)
         return self
     }
     
@@ -133,15 +125,13 @@ public extension STFile {
             return
         }
         
-        try accessingSecurityScopedResource {
-            guard let data = data,
-                  let handle = FileHandle(forWritingAtPath: path) else {
-                return
-            }
-            
-            try handle.seekToEnd()
-            try handle.write(contentsOf: data)
+        guard let data = data,
+              let handle = FileHandle(forWritingAtPath: path) else {
+            return
         }
+        
+        try handle.seekToEnd()
+        try handle.write(contentsOf: data)
     }
     
 }

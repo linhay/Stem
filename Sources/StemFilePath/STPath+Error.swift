@@ -29,10 +29,6 @@ public struct STPathError: LocalizedError {
         throw STPathError(message: "no such file", code: 0)
     }
     
-    public static func operationNotPermitted(_ path: String) throws -> Error {
-        throw STPathError(message: "Operation not permitted", code: 1)
-    }
-    
     public let message: String
     public let code: Int
     public var errorDescription: String?
