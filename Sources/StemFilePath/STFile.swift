@@ -40,7 +40,7 @@ public struct STFile: STPathProtocol, Codable {
 public extension STFile {
     
     @discardableResult
-    func move(_ file: STFile) throws -> STFile {
+    func move(to file: STFile) throws -> STFile {
         try manager.moveItem(at: url, to: file.url)
         return file
     }
