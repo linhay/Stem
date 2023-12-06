@@ -39,6 +39,12 @@ public struct STFile: STPathProtocol, Codable {
 
 public extension STFile {
     
+    @discardableResult
+    func move(_ file: STFile) throws -> STFile {
+        try manager.moveItem(at: url, to: file.url)
+        return file
+    }
+    
     /// 替换目标文件夹中指定文件
     /// - Parameter file: 指定文件路径
     /// - Throws: FileManagerError

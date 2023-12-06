@@ -30,26 +30,20 @@ public protocol STUserDefaultsValue {
 public struct STUserDefaults<T: STUserDefaultsValue> {
     
     let key: STUserDefaultsKeys
-    let defaultValue: T?
+    let defaultValue: T
     let userDefault: UserDefaults
     
     public init(_ key: STUserDefaultsKeys,
-                default: T? = nil,
+                default: T,
                 userDefault: UserDefaults = .standard) {
         self.key = key
         self.defaultValue = `default`
         self.userDefault = userDefault
     }
     
-    public var wrappedValue: T? {
+    public var wrappedValue: T {
         get { return T.read(from: userDefault, for: key.value) ?? defaultValue }
-        set {
-            if let newValue {
-                newValue.write(to: userDefault, for: key.value)
-            } else {
-                userDefault.set(nil, forKey: key.value)
-            }
-        }
+        set { newValue.write(to: userDefault, for: key.value) }
     }
     
 }
@@ -58,6 +52,23 @@ extension STUserDefaults: Equatable where T: Equatable {
     
     public static func == (lhs: STUserDefaults, rhs: STUserDefaults) -> Bool {
         lhs.wrappedValue == rhs.wrappedValue
+    }
+    
+}
+
+extension Optional: STUserDefaultsValue where Wrapped: STUserDefaultsValue {
+    
+    public func write(to userDefault: UserDefaults, for key: String) {
+        if let value = self {
+            userDefault.set(value, forKey: key)
+        } else {
+            userDefault.set(nil, forKey: key)
+        }
+    }
+    
+    public static func read(from userDefault: UserDefaults, for key: String) -> Optional<Wrapped>? {
+        guard let _ = userDefault.object(forKey: key) else { return nil }
+        return Wrapped.read(from: userDefault, for: key)
     }
     
 }

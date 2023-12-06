@@ -22,19 +22,29 @@
 
 import Foundation
 
+
+
 public extension StemValue where Base == String {
 
     // 生成指定长度的随机字符串
     // Generate a random string of a specified length.
-    static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: Int) -> String {
-        let count = Swift.max(length, 0)
-        return String((0..<count).map { _ in characters.randomElement()! })
+    static func random(characters: String? = nil,
+                       length: Int,
+                       repeat: Int) -> [String] {
+        return (0..<`repeat`).map({ _ in random(characters: characters, length: length)})
     }
-
+    
     // 生成指定长度范围的随机字符串
     // Generate a random string of a specified length range.
-    static func random(characters: String = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", length: ClosedRange<Int>) -> String {
-        let count = Int.random(in: length)
+    static func random(characters: String? = nil, length: ClosedRange<Int>) -> String {
+        return random(characters: characters, length: Int.random(in: length))
+    }
+    
+    // 生成指定长度的随机字符串
+    // Generate a random string of a specified length.
+    static func random(characters: String? = nil, length: Int) -> String {
+        let count = Swift.max(length, 0)
+        let characters = characters ?? "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         return String((0..<count).map { _ in characters.randomElement()! })
     }
     

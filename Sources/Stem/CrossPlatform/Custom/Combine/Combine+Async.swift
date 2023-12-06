@@ -9,7 +9,7 @@ import Combine
 
 private var cancellables = Set<AnyCancellable>()
 
-public extension AnyPublisher {
+public extension Publisher {
     
     func async() async throws -> Output {
         try await withCheckedThrowingContinuation({ continuation in
@@ -32,6 +32,50 @@ public extension AnyPublisher {
                 cancellables.update(with: cancellable)
             }
         })
+    }
+    
+    func asyncThrowingStream() -> AsyncThrowingStream<Output, Swift.Error> {
+        AsyncThrowingStream<Output, Swift.Error>(Output.self) { continuation in
+            let cancellable = self
+                .sink(
+                    receiveCompletion: { completion in
+                        switch completion {
+                        case .finished:
+                            continuation.finish()
+                        case let .failure(error):
+                            continuation.yield(with: .failure(error))
+                        }
+                    },
+                    receiveValue: { output in
+                        continuation.yield(output)
+                    }
+                )
+
+            continuation.onTermination = { @Sendable _ in
+                withExtendedLifetime(cancellable, {})
+            }
+        }
+    }
+    
+    func asyncStream() -> AsyncStream<Output> where Failure == Never {
+        AsyncStream(Output.self) { continuation in
+            let cancellable = self
+                .sink(
+                    receiveCompletion: { completion in
+                        switch completion {
+                        case .finished:
+                            continuation.finish()
+                        }
+                    },
+                    receiveValue: { output in
+                        continuation.yield(output)
+                    }
+                )
+
+            continuation.onTermination = { @Sendable _ in
+                withExtendedLifetime(cancellable, {})
+            }
+        }
     }
     
 }

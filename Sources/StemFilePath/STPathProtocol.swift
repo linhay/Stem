@@ -147,6 +147,44 @@ extension STPathProtocol {
 
 
 public extension STPathProtocol {
+    
+    func stopAccessingSecurityScopedResource() -> Self {
+        url.stopAccessingSecurityScopedResource()
+        return self
+    }
+    
+    func startAccessingSecurityScopedResource() throws -> Self {
+        guard url.startAccessingSecurityScopedResource() else {
+            throw try STPathError.operationNotPermitted(url.path)
+        }
+        return self
+    }
+    
+    func accessingSecurityScopedResource<T>(task: (_ path: Self) throws -> T) throws -> T {
+        try accessingSecurityScopedResource(url) {
+           try task(self)
+        }
+    }
+    
+    func accessingSecurityScopedResource<T>(_ urls: URL..., task: () throws -> T) throws -> T {
+        for url in urls {
+            guard url.startAccessingSecurityScopedResource() else {
+                throw try STPathError.operationNotPermitted(url.path)
+            }
+        }
+        
+        let result = try task()
+        
+        for url in urls {
+            url.stopAccessingSecurityScopedResource()
+        }
+        
+        return result
+    }
+    
+}
+
+public extension STPathProtocol {
 
     func relativePath(from base: STFile) -> String {
         relativePath(from: base.parentFolder()!)
