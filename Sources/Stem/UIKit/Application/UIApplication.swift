@@ -84,6 +84,31 @@ public extension Stem where Base: UIApplication {
     
 }
 
+public enum STReturnToMainScreenKind {
+    /// 挂起 app
+    case suspend
+    /// 退出 app
+    case exit
+    case abort
+}
+
+// MARK: - open
+public extension Stem where Base: UIApplication {
+
+    /// 返回主屏幕
+    func returnToMainScreen(_ kind: STReturnToMainScreenKind) {
+        switch kind {
+        case .suspend:
+            UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+        case .exit:
+            exit(0)
+        case .abort:
+            abort()
+        }
+    }
+    
+}
+
 // MARK: - open
 public extension Stem where Base: UIApplication {
     
