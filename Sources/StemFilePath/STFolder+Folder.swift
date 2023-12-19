@@ -42,37 +42,29 @@ public extension STFolder {
     /// 当前文件夹下的路径 (不校验存在性)
     /// - Parameter name: 文件名
     /// - Returns: STFile
-    func subpath(name: String) -> STPath {
+    func subpath(_ name: String) -> STPath {
         STPath(url.appendingPathComponent(name))
     }
     
     /// 当前文件夹下的文件 (不校验存在性)
     /// - Parameter name: 文件名
     /// - Returns: STFile
-    func file(name: String) -> STFile {
-        STFile(url.appendingPathComponent(name, isDirectory: false))
-    }
-    
     func file(_ name: String) -> STFile {
-        file(name: name)
+        STFile(url.appendingPathComponent(name, isDirectory: false))
     }
     
     /// 当前文件夹下的文件夹 (不校验存在性)
     /// - Parameter name: 文件夹名
     /// - Returns: STFile
-    func folder(name: String) -> STFolder {
-        STFolder(url.appendingPathComponent(name, isDirectory: true))
-    }
-    
     func folder(_ name: String) -> STFolder {
-        folder(name: name)
+        STFolder(url.appendingPathComponent(name, isDirectory: true))
     }
     
     /// 当前文件夹下的路径 (校验存在性)
     /// - Parameter name: 文件名
     /// - Returns: STFile
     func subpathIfExist(name: String) -> STPath? {
-        let item = subpath(name: name)
+        let item = subpath(name)
         return item.isExist ? item : nil
     }
     
@@ -80,7 +72,7 @@ public extension STFolder {
     /// - Parameter name: 文件名
     /// - Returns: STFile
     func fileIfExist(name: String) -> STFile? {
-        let item = file(name: name)
+        let item = file(name)
         return item.isExist ? item : nil
     }
     
@@ -88,7 +80,7 @@ public extension STFolder {
     /// - Parameter name: 文件夹名
     /// - Returns: STFile
     func folderIfExist(name: String) -> STFolder? {
-        let item = folder(name: name)
+        let item = folder(name)
         return item.isExist ? item : nil
     }
     

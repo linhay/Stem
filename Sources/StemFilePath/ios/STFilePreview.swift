@@ -9,42 +9,51 @@
 import UIKit
 import QuickLook
 
-class STPreviewController: QLPreviewController {
+class STPathPreviewItem: NSObject, QLPreviewItem {
     
-    deinit {
-        STFilePreview.shared = nil
+    var previewItemURL: URL?
+    
+    init(_ path: any STPathProtocol) {
+        self.previewItemURL = path.url
     }
     
 }
 
-open class STFilePreview: NSObject, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+open class STPathQuickLookController: QLPreviewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     
-    public static var shared: STFilePreview?
+    let paths: [STPathPreviewItem]
+
+    public init(_ paths: any STPathProtocol) {
+        self.paths = [STPathPreviewItem(paths)]
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    public var urls: [URL]
+    public init(_ paths: [any STPathProtocol], selected: (any STPathProtocol)? = nil) {
+        self.paths = paths.map(STPathPreviewItem.init)
+        super.init(nibName: nil, bundle: nil)
+        if let selected {
+            self.currentPreviewItemIndex = paths.map(\.url).firstIndex(of: selected.url) ?? 0
+        }
+    }
     
-    public init(urls: [URL] = []) {
-        self.urls = urls
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        delegate = self
+        dataSource = self
     }
     
     open func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        urls.count
+        paths.count
     }
     
     open func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        urls[index] as QLPreviewItem
-    }
-
-    public static func show(urls: [URL], selected url: URL?, on controller: UIViewController?) {
-        let preview = STFilePreview(urls: urls)
-        let index = url.flatMap(urls.firstIndex(of:)) ?? 0
-        let previewController = QLPreviewController()
-        previewController.delegate = preview
-        previewController.dataSource = preview
-        previewController.currentPreviewItemIndex = index
-        STFilePreview.shared = preview
-        controller?.present(previewController, animated: true)
+        paths[index] as QLPreviewItem
     }
     
 }
+
 #endif

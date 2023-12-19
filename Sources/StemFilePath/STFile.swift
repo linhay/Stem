@@ -109,13 +109,15 @@ public extension STFile {
     
     /// 覆盖文件内容(文件不存在则会创建文件)
     /// - Parameter with: 数据
-    func overlay(with data: Data?) throws {
+    @discardableResult
+    func overlay(with data: Data?) throws -> Self {
         if !isExist {
             try create(with: data)
-            return
+            return self
         }
         try delete()
         try create(with: data)
+        return self
     }
     
     func overlay(with data: String?, using: String.Encoding = .utf8) throws {

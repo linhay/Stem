@@ -148,38 +148,14 @@ extension STPathProtocol {
 
 public extension STPathProtocol {
     
-    func stopAccessingSecurityScopedResource() -> Self {
+    @discardableResult
+    func stopAccessingSecurityScopedResource() {
         url.stopAccessingSecurityScopedResource()
-        return self
     }
-    
-    func startAccessingSecurityScopedResource() throws -> Self {
-        guard url.startAccessingSecurityScopedResource() else {
-            throw try STPathError.operationNotPermitted(url.path)
-        }
-        return self
-    }
-    
-    func accessingSecurityScopedResource<T>(task: (_ path: Self) throws -> T) throws -> T {
-        try accessingSecurityScopedResource(url) {
-           try task(self)
-        }
-    }
-    
-    func accessingSecurityScopedResource<T>(_ urls: URL..., task: () throws -> T) throws -> T {
-        for url in urls {
-            guard url.startAccessingSecurityScopedResource() else {
-                throw try STPathError.operationNotPermitted(url.path)
-            }
-        }
-        
-        let result = try task()
-        
-        for url in urls {
-            url.stopAccessingSecurityScopedResource()
-        }
-        
-        return result
+   
+    @discardableResult
+    func startAccessingSecurityScopedResource() throws -> Bool {
+        return url.startAccessingSecurityScopedResource()
     }
     
 }
@@ -190,7 +166,7 @@ public extension STPathProtocol {
         relativePath(from: base.parentFolder()!)
     }
     
-    func relativePath(from base: STFolder) -> String {
+    func relativePath(from base: STFolder, prefix: String = "") -> String {
         let destComponents = url.standardized.pathComponents
         let baseComponents = base.url.standardized.pathComponents
         // Find number of common path components:
@@ -202,7 +178,7 @@ public extension STPathProtocol {
         // Build relative path:
         var relComponents = Array(repeating: "..", count: baseComponents.count - i)
         relComponents.append(contentsOf: destComponents[i...])
-        return relComponents.joined(separator: "/")
+        return prefix + relComponents.joined(separator: "/")
     }
     
     static func standardizedPath(_ path: String) -> URL {
@@ -222,6 +198,10 @@ public extension STPathProtocol {
 #endif
             components.insert(contentsOf: home, at: 0)
             return URL(fileURLWithPath: Self.standardizedPath(components))
+        } else if let url = URL(string: path),
+                  url.scheme != nil,
+                  !url.isFileURL {
+            return url
         } else {
             return URL(fileURLWithPath: path)
         }
@@ -246,7 +226,7 @@ public extension STPathProtocol {
 
 public extension STPathProtocol {
     
-    var eraseToFilePath: STPath { return .init(url) }
+    var eraseToAnyPath: STPath { return .init(url) }
     
     var attributes: STPathAttributes { .init(path: url) }
         
