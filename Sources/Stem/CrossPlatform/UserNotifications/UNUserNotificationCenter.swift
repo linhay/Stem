@@ -13,7 +13,7 @@ import Combine
 
 public extension Stem where Base: UNUserNotificationCenter {
     
-    func requestAuthorization(options: UNAuthorizationOptions = []) -> any Publisher<Bool, Error> {
+    func requestAuthorization(options: UNAuthorizationOptions = []) -> AnyPublisher<Bool, Error> {
         Future { [weak base] promise in
             guard let base = base else {
                 promise(.success(false))
@@ -27,6 +27,8 @@ public extension Stem where Base: UNUserNotificationCenter {
                 }
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
 }

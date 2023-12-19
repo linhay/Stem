@@ -33,6 +33,36 @@ public extension Stem where Base: NSItemProvider {
         }
     }
     
+    @available(macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0, *)
+    func loadFileRepresentation(for type: UTType) async throws -> URL? {
+       try await loadFileRepresentation(for: type.identifier)
+    }
+    
+    func loadFileRepresentation(for typeIdentifier: String) async throws -> URL? {
+        try await withUnsafeThrowingContinuation { continuation in
+            base.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { url, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let url = url else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                
+                let localURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
+                try? FileManager.default.removeItem(at: localURL)
+                do {
+                    try FileManager.default.copyItem(at: url, to: localURL)
+                } catch {
+                    return continuation.resume(throwing: error)
+                }
+                continuation.resume(returning: localURL)
+            }
+        }
+    }
+    
 }
 
 @available(macOS 10.13, iOS 11.0, watchOS 4.0, tvOS 11.0, *)

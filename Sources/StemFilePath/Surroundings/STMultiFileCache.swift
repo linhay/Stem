@@ -41,13 +41,13 @@ open class STMultiFileCache<Calculator: STFilCacheCalculator> {
     
     open func save(_ model: Calculator.Model, for token: Calculator.Token) throws {
         let key = try calculator.key(pwd: pwd, token: token)
-        let file = pwd.file(name: key)
+        let file = pwd.file(key)
         try calculator.write(model, to: file)
     }
     
     open func get(_ token: Calculator.Token) throws -> Calculator.Model {
         let key = try calculator.key(pwd: pwd, token: token)
-        let file = pwd.file(name: key)
+        let file = pwd.file(key)
         return try calculator.read(file)
     }
     
