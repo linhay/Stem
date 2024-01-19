@@ -37,7 +37,7 @@ public extension String {
     /// - Parameter index: 指定位置
     subscript(_ index: Int) -> String? {
         if index < 0 || index >= count { return nil }
-        let index = self.index(startIndex, offsetBy: String.IndexDistance(index))
+        let index = String.Index(utf16Offset: index, in: self)
         return String(self[index])
     }
     

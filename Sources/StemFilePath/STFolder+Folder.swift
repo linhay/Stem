@@ -35,6 +35,16 @@ public struct STFolder: STPathProtocol {
         self.init(Self.standardizedPath(path))
     }
     
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.url = try container.decode(URL.self)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.url)
+    }
+    
 }
 
 public extension STFolder {

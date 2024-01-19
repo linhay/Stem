@@ -35,6 +35,16 @@ public struct STFile: STPathProtocol, Codable {
         self.init(Self.standardizedPath(path))
     }
     
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.url = try container.decode(URL.self)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.url)
+    }
+    
 }
 
 public extension STFile {
@@ -85,6 +95,22 @@ public extension STFile {
     /// - Returns: data
     func data(options: Data.ReadingOptions = []) throws -> Data {
         try Data(contentsOf: url, options: options)
+    }
+    
+    @available(macOS 10.15.4, iOS 13.4, watchOS 6.2, tvOS 13.4, *)
+    func data(range: ClosedRange<Int>) throws -> Data? {
+        guard self.isExist else {
+            return nil
+        }
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        // 计算要读取的数据的大小
+        let length = range.upperBound - range.lowerBound + 1
+        // 移动到文件的开始位置
+        handle.seek(toFileOffset: UInt64(range.lowerBound))
+        // 读取指定范围的数据
+        let data = handle.readData(ofLength: length)
+        return data.isEmpty ? nil : data
     }
     
     func createIfNotExists(with data: Data? = nil) throws -> STFile {

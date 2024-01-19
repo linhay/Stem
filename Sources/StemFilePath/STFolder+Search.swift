@@ -137,7 +137,7 @@ public extension STFolder {
             .contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: systemPredicates)
             .compactMap({ STPath($0) })
             .filter({ item -> Bool in
-                try customPredicates.contains(where: { try $0(item) == false }) == false
+               return try customPredicates.contains(where: { try $0(item) == false }) == false
             })
     }
     

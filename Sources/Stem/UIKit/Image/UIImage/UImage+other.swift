@@ -59,7 +59,6 @@ public extension Stem where Base: UIImage {
     
 }
 
-#if !os(xrOS)
 public extension UIImage {
     
     /// https://swiftsenpai.com/development/reduce-uiimage-memory-footprint/
@@ -92,6 +91,4 @@ public extension UIImage {
     }
     
 }
-#endif
-
 #endif

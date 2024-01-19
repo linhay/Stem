@@ -40,8 +40,8 @@ final class FilePathTests: XCTestCase {
         try folder.watcher().publisher.sink { _ in
             print("===>")
         }.store(in: &cancellables)
-        let file1 = folder.file(name: "test1.txt")
-        let file2 = folder.file(name: "test2.txt")
+        let file1 = folder.file("test1.txt")
+        let file2 = folder.file("test2.txt")
         try? file1.delete()
         try? file2.delete()
         try file1.create()

@@ -114,10 +114,6 @@ public class STKeyboardManager {
     }
     
     private static let shared = STKeyboardManager(state: .master)
-    
-    @available(iOS, introduced: 8.0, deprecated: 13.0, message: "No longer supported; use keyboardInfoPublisher")
-    public let frameChanged = Delegate<CGRect, Void>()
-    
     private let keyboardInfoSubject: CurrentValueSubject<STKeyboardInfo, Never> = .init(.init())
     private var slaveCancellable: AnyCancellable?
     
@@ -141,7 +137,6 @@ public class STKeyboardManager {
             slaveCancellable = STKeyboardManager.shared.keyboardInfoPublisher.sink { [weak self] info in
                 guard let self = self else { return }
                 self.keyboardInfoSubject.send(info)
-                self.frameChanged.call(info.endFrame)
             }
         }
     }

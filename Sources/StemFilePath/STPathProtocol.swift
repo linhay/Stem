@@ -226,10 +226,15 @@ public extension STPathProtocol {
 
 public extension STPathProtocol {
     
-    var eraseToAnyPath: STPath { return .init(url) }
-    
     var attributes: STPathAttributes { .init(path: url) }
-        
+
+}
+
+
+public extension STPathProtocol {
+    
+    var eraseToAnyPath: STPath { return .init(url) }
+            
     /// 文件权限
     var permission: STPathPermission { .init(url: url) }
     

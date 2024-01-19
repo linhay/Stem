@@ -30,6 +30,13 @@ open class STLayerView<Layer: CALayer>: UIView {
         return Layer.self
     }
     
+    open var wrappedValue: Layer { self.layer as! Layer }
+
+    open subscript<T>(dynamicMember keyPath: KeyPath<Layer, T>) -> T {
+        let layer = layer as! Layer
+        return layer[keyPath: keyPath]
+    }
+    
     open subscript<T>(dynamicMember keyPath: WritableKeyPath<Layer, T>) -> T {
         get {
             let layer = layer as! Layer
@@ -37,6 +44,17 @@ open class STLayerView<Layer: CALayer>: UIView {
         }
         set {
             var layer = layer as! Layer
+            layer[keyPath: keyPath] = newValue
+        }
+    }
+    
+    open subscript<T>(dynamicMember keyPath: ReferenceWritableKeyPath<Layer, T>) -> T {
+        get {
+            let layer = layer as! Layer
+            return layer[keyPath: keyPath]
+        }
+        set {
+            let layer = layer as! Layer
             layer[keyPath: keyPath] = newValue
         }
     }

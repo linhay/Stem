@@ -37,13 +37,17 @@ public extension UIImage {
     ///
     /// - Parameter systemSymbol: The `SFSymbol` describing this image.
     /// - Parameter configuration: The `UIImage.Configuration` applied to this system image.
-    convenience init(sfSymbol: SFSymbol, with configuration: UIImage.SymbolConfiguration) {
+    convenience init(sfSymbol: SFSymbol, with configuration: UIImage.Configuration) {
         self.init(systemName: sfSymbol.rawValue, withConfiguration: configuration)!
     }
 }
 
 @available(iOS 13.0, *)
 public extension SFSymbol {
+    
+    func convert(_ configuration: UIImage.Configuration) -> UIImage {
+        return UIImage.init(sfSymbol: self, with: configuration)
+    }
     
     func convert() -> UIImage {
         return UIImage(self)

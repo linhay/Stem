@@ -22,12 +22,23 @@
 
 import Foundation
 
-extension Date: StemValueCompatible { }
+extension Date: StemValueCompatible {
+    
+    public init?(_ value: String, format: String) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        guard let date = formatter.date(from: value) else {
+            return nil
+        }
+        self = date
+    }
+    
+}
 
 public
 extension StemValue where Base == Date {
     
-    func stringWith(dateFormat: String) -> String {
+    func string(of dateFormat: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
         return formatter.string(from: base)

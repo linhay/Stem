@@ -30,7 +30,7 @@ extension Stem where Base: UIControl {
     /// - Parameters:
     ///   - event: 响应事件类型
     ///   - action: 响应事件
-    public func add(for event: UIControl.Event, action: ((_: UIControl) -> Void)?) {
+    public func on(_ event: UIControl.Event, action: (() -> Void)?) {
         guard let selector = base.selector(event: event) else { return }
         base.actionStore[event.rawValue] = action
 
@@ -47,7 +47,7 @@ extension Stem where Base: UIControl {
     ///
     /// - Parameter event: 响应事件类型
     public func remove(for event: UIControl.Event) {
-        self.add(for: event, action: nil)
+        self.on(event, action: nil)
     }
 
 }
@@ -64,9 +64,9 @@ extension UIControl {
 // MARK: - target
 extension UIControl {
 
-    fileprivate var actionStore: [UInt: (_: UIControl) -> Void] {
+    fileprivate var actionStore: [UInt: () -> Void] {
         get {
-            if let value: [UInt: (_: UIControl) -> Void] = st.getAssociated(for: UIControl.ActionKey.actionStore) {
+            if let value: [UInt: () -> Void] = st.getAssociated(for: UIControl.ActionKey.actionStore) {
                 return value
             } else {
                 self.actionStore = [:]
@@ -78,7 +78,7 @@ extension UIControl {
 
     fileprivate func triggerAction(for: UIControl, event: UIControl.Event) {
         guard let action = actionStore[event.rawValue] else { return }
-        action(self)
+        action()
     }
 
     fileprivate func selector(event: UIControl.Event) -> Selector? {
@@ -145,9 +145,7 @@ extension UIControl {
         triggerAction(for: sender, event: .valueChanged)
     }
     @objc fileprivate func primaryActionTriggered(sender: UIControl) {
-        if #available(iOS 9.0, *) {
-            triggerAction(for: sender, event: .primaryActionTriggered)
-        }
+        triggerAction(for: sender, event: .primaryActionTriggered)
     }
     @objc fileprivate func editingDidBegin(sender: UIControl) {
         triggerAction(for: sender, event: .editingDidBegin)

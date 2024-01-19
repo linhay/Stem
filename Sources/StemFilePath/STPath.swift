@@ -22,7 +22,7 @@
 
 import Foundation
 
-public struct STPath: STPathProtocol {
+public struct STPath: STPathProtocol, Codable {
     
     public var id: URL { url }
     
@@ -62,4 +62,15 @@ public struct STPath: STPathProtocol {
     public init(_ path: String) {
         self.init(Self.standardizedPath(path))
     }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.url = try container.decode(URL.self)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.url)
+    }
+    
 }
