@@ -22,18 +22,22 @@ class STPathPreviewItem: NSObject, QLPreviewItem {
 open class STPathQuickLookController: QLPreviewController, QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     
     let paths: [STPathPreviewItem]
-
+    let selected: Int?
+    
     public init(_ paths: any STPathProtocol) {
         self.paths = [STPathPreviewItem(paths)]
+        self.selected = 0
         super.init(nibName: nil, bundle: nil)
     }
     
     public init(_ paths: [any STPathProtocol], selected: (any STPathProtocol)? = nil) {
         self.paths = paths.map(STPathPreviewItem.init)
-        super.init(nibName: nil, bundle: nil)
         if let selected {
-            self.currentPreviewItemIndex = paths.map(\.url).firstIndex(of: selected.url) ?? 0
+            self.selected = paths.map(\.url).firstIndex(of: selected.url) ?? 0
+        } else {
+            self.selected = nil
         }
+        super.init(nibName: nil, bundle: nil)
     }
     
     required public init?(coder: NSCoder) {
@@ -44,6 +48,8 @@ open class STPathQuickLookController: QLPreviewController, QLPreviewControllerDa
         super.viewDidLoad()
         delegate = self
         dataSource = self
+        self.reloadData()
+        self.currentPreviewItemIndex = selected ?? 0
     }
     
     open func numberOfPreviewItems(in controller: QLPreviewController) -> Int {

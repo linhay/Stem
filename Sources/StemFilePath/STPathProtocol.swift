@@ -261,11 +261,26 @@ public extension STPathProtocol {
     ///   - isOverlay: 目标目录存在相应文件, 是否覆盖
     /// - Returns: FileManagerError
     @discardableResult
-    func move(to path: Self, isOverlay: Bool = false) throws -> Self {
+    func move<Item: STPathProtocol>(to path: Item, isOverlay: Bool = false) throws -> Item {
         if isOverlay, path.isExist {
             try path.delete()
         }
+        if path.parentFolder()?.isExist == false {
+            try path.parentFolder()?.create()
+        }
         try manager.moveItem(at: url, to: path.url)
+        return path
+    }
+    
+    @discardableResult
+    func copy<Item: STPathProtocol>(to path: Item, isOverlay: Bool = false) throws -> Item {
+        if isOverlay, path.isExist {
+            try path.delete()
+        }
+        if path.parentFolder()?.isExist == false {
+            try path.parentFolder()?.create()
+        }
+        try manager.copyItem(at: url, to: path.url)
         return path
     }
 
@@ -276,18 +291,9 @@ public extension STPathProtocol {
     /// - Returns: FileManagerError
     @discardableResult
     func move(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
-        let fileURL = folder.url.appendingPathComponent(attributes.name)
-        if isOverlay {
-            let path = STPath(fileURL)
-            if path.isExist {
-               try path.delete()
-            }
-        }
-        if !folder.isExist {
-            try folder.create()
-        }
-        try manager.moveItem(at: url, to: fileURL)
-        return try .init(fileURL)
+        let path = folder.subpath(attributes.name)
+        let result = try move(to: path, isOverlay: isOverlay)
+        return try .init(result.url)
     }
     
     /// 复制至目标路径
@@ -297,18 +303,9 @@ public extension STPathProtocol {
     /// - Returns: FileManagerError
     @discardableResult
     func copy(into folder: STFolder, isOverlay: Bool = false) throws -> Self {
-        let fileURL = folder.url.appendingPathComponent(url.lastPathComponent)
-        if isOverlay {
-            let path = STPath(fileURL)
-            if path.isExist {
-               try path.delete()
-            }
-        }
-        if !folder.isExist {
-            try folder.create()
-        }
-        try manager.copyItem(at: url, to: fileURL)
-        return try .init(fileURL)
+        let path = folder.subpath(attributes.name)
+        let result = try copy(to: path, isOverlay: isOverlay)
+        return try .init(result.url)
     }
     
     /// 获取所在文件夹

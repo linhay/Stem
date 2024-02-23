@@ -61,5 +61,16 @@ public extension STFolder {
         self.init(url)
     }
     
+    init(ubiquityContainerIdentifier: String) throws {
+        guard let url = FileManager.default.url(forUbiquityContainerIdentifier: ubiquityContainerIdentifier) else {
+            throw STPathError(message: "iCloud 不可用")
+        }
+        self.init(url)
+    }
+    
+    init(iCloud identifier: String) throws {
+        try self.init(ubiquityContainerIdentifier: identifier)
+    }
+    
 }
 #endif

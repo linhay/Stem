@@ -22,6 +22,25 @@
 
 import Foundation
 
+public struct STPathNameComponents {
+    
+    public var name: String
+    public var `extension`: String?
+    public var filename: String { [name, self.extension].compactMap({ $0 }).joined(separator: ".") }
+    
+    public init(_ name: String) {
+        let list = name.split(separator: ".")
+        guard list.count > 1, let `extension` = list.last else {
+            self.name = name
+            self.extension = nil
+            return
+        }
+        
+        self.name = String(list.dropLast().joined(separator: "."))
+        self.`extension` = String(`extension`)
+    }
+}
+
 // MARK: - Type
 public class STPathAttributes {
     
@@ -35,29 +54,10 @@ public class STPathAttributes {
 
 public extension STPathAttributes {
     
-    struct NameComponents {
-        
-        public var name: String
-        public var `extension`: String?
-        public var filename: String { [name, self.extension].compactMap({ $0 }).joined(separator: ".") }
-        
-        init(_ name: String) {
-            let list = name.split(separator: ".")
-            guard list.count > 1, let `extension` = list.last else {
-                self.name = name
-                self.extension = nil
-                return
-            }
-            
-            self.name = String(list.dropLast().joined(separator: "."))
-            self.`extension` = String(`extension`)
-        }
-    }
-    
     /// 文件名
     var name: String { url.lastPathComponent.replacingOccurrences(of: ":", with: "/") }
     
-    var nameComponents: NameComponents { .init(name) }
+    var nameComponents: STPathNameComponents { .init(name) }
    
     // isApplicationKey
     var attributes: [FileAttributeKey: Any] {
@@ -250,9 +250,12 @@ public extension STPathAttributes {
     
     func get<Value>(_ key: FileAttributeKey) -> Value? {
         do {
-            if let value = try FileManager.default.attributesOfItem(atPath: url.path)[key] as? Value {
+            let manager =  FileManager.default
+            if !manager.isReadableFile(atPath: url.path) {
+                return nil
+            } else if let value = try manager.attributesOfItem(atPath: url.path)[key] as? Value {
                 return value
-            } else if let value = try FileManager.default.attributesOfFileSystem(forPath: url.path)[key] as? Value {
+            } else if let value = try manager.attributesOfFileSystem(forPath: url.path)[key] as? Value {
                 return value
             } else {
                 return nil
