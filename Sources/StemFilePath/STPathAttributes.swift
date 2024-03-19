@@ -29,17 +29,33 @@ public struct STPathNameComponents {
     public var filename: String { [name, self.extension].compactMap({ $0 }).joined(separator: ".") }
     
     public init(_ name: String) {
-        let list = name.split(separator: ".")
-        guard list.count > 1, let `extension` = list.last else {
-            self.name = name
-            self.extension = nil
-            return
+        let lastPathComponent = name.split(separator: "/", omittingEmptySubsequences: true).last ?? ""
+        let components = lastPathComponent.split(separator: ".", maxSplits: 1, omittingEmptySubsequences: false)
+
+        // 检查是否是以点开头的隐藏文件
+        if lastPathComponent.hasPrefix(".") {
+            // 如果是隐藏文件且只有一个点，那么整个 lastPathComponent 是文件名
+            if components.count == 1 {
+                self.name = String(lastPathComponent)
+                self.extension = nil
+            } else {
+                // 否则，除去第一个点的剩余部分是文件名，第二部分是扩展名
+                self.name = String(components[0])
+                self.extension = components[1].isEmpty ? nil : String(components[1])
+            }
+        } else {
+            // 非隐藏文件的处理逻辑
+            if components.count > 1 {
+                self.name = String(components[0])
+                self.extension = components[1].isEmpty ? nil : String(components[1])
+            } else {
+                self.name = String(lastPathComponent)
+                self.extension = nil
+            }
         }
-        
-        self.name = String(list.dropLast().joined(separator: "."))
-        self.`extension` = String(`extension`)
     }
 }
+
 
 // MARK: - Type
 public class STPathAttributes {

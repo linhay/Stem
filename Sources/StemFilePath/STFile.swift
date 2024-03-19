@@ -169,3 +169,19 @@ public extension STFile {
     }
     
 }
+
+
+public extension STFile {
+    
+    func handle(_ kind: STFileOpenKind) throws -> FileHandle {
+        switch kind {
+        case .writing:
+            return try .init(forWritingTo: url)
+        case .reading:
+            return try .init(forReadingFrom: url)
+        case .updating:
+            return try .init(forUpdating: url)
+        }
+    }
+    
+}
