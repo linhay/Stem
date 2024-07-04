@@ -40,7 +40,14 @@ extension Stem where Base: UIControl {
         } else if base.actions(forTarget: base, forControlEvent: event) == nil {
             base.addTarget(base, action: selector, for: event)
         }
-
+    }
+    
+    public func onAsync(_ event: UIControl.Event, action: @escaping () async throws -> Void) {
+        self.on(event) {
+            Task { @MainActor in
+                  try await action()
+            }
+        }
     }
 
     /// 移除响应事件

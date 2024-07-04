@@ -44,8 +44,8 @@ public extension UIImage {
 
 @available(iOS 13.0, *)
 public extension SFSymbol {
-    
-    func convert(_ configuration: UIImage.Configuration) -> UIImage {
+
+    func convert(_ configuration: UIImage.SymbolConfiguration) -> UIImage {
         return UIImage.init(sfSymbol: self, with: configuration)
     }
     

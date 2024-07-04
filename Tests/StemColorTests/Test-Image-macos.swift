@@ -10,7 +10,6 @@ import XCTest
 import Stem
 import Darwin
 import ReplayKit
-import StemFilePath
 import StemColor
 
 class TestImageColor: XCTestCase {
@@ -25,37 +24,6 @@ class TestImageColor: XCTestCase {
         let colors = StemColor.array(from: image)
         assert(colors.count == 512 * 512)
     }
-    
-#if canImport(AppKit) && !targetEnvironment(macCatalyst)
-    func testSize() throws {
-        let size = CGSize(width: 1024, height: 1024)
-        let data = Resource.svg
-            .st.scale(size: size)?
-            .st.data(using: .jpeg, properties: [.compressionFactor: 1])
-        let file = STFile("~/Downloads/test-size.jpg")
-        _ = try? file.delete()
-        try file.create(with: data)
-        assert(file.isExist)
-        guard let image = NSImage(data: try file.data()) else {
-            assertionFailure()
-            return
-        }
-        assert(image.size == size)
-    }
-    
-    func testMacIcons() throws {
-        try [16,32,64, 128,256,512,1024]
-            .map({ CGSize(width: $0, height: $0) })
-            .forEach { size in
-                let data = Resource.svg
-                    .st.scale(size: size)?
-                    .st.data(using: .png, properties: [.compressionFactor: 1])
-                let file = STFile("~/Downloads/icons/icon_\(Int(size.width))_\(Int(size.height)).png")
-                _ = try? file.delete()
-                try file.create(with: data)
-            }
-    }
-#endif
     
     func test() {
         let data = """

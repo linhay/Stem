@@ -45,7 +45,7 @@ public extension Stem where Base: NSObject {
 
 public extension Stem where Base: NSObject {
 
-    func value<T>(for key: String) -> T? {
+    func value<T>(for key: String, as kind: T.Type = T.self) -> T? {
         guard let ivar = class_getInstanceVariable(type(of: base), key) else { return nil }
         return object_getIvar(base, ivar) as? T
     }

@@ -15,6 +15,7 @@ class Test_Combine: XCTestCase {
 
     @available(macOS 13.0, *)
     func testVNImage() throws {
+        
 //        let data = try Data(contentsOf: URL(filePath: "/Users/linhey/Downloads/list1.png"))
 //        guard let image = NSImage(data: data)?.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
 //            return

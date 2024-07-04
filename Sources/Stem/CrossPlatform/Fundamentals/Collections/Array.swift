@@ -236,6 +236,31 @@ extension Array where Element: Hashable {
 
 public extension Array {
     
+    struct STKeyPathComparator {
+        
+        let compare: (Element, Element) throws -> Bool?
+        
+        /// Comparator for custom comparison closure
+        public init(_ compare: @escaping (Element, Element) -> Bool) {
+            self.compare = compare
+        }
+        
+        /// Comparator for key path with ascending order
+        public init<Key: Comparable>(_ keyPath: KeyPath<Element, Key>, ascending: Bool) {
+            self.compare = { lhs, rhs in
+                let lhsValue = lhs[keyPath: keyPath]
+                let rhsValue = rhs[keyPath: keyPath]
+                if lhsValue == rhsValue {
+                    return nil
+                } else if ascending {
+                    return lhsValue < rhsValue
+                } else {
+                    return lhsValue > rhsValue
+                }
+            }
+        }
+    }
+    
     @inlinable
     func sorted<Key: Comparable>(by key: KeyPath<Element, Key>, _ areInIncreasingOrder: (Key, Key) throws -> Bool) rethrows -> Self {
         try self.sorted { (lhs, rhs) in
@@ -243,6 +268,17 @@ public extension Array {
         }
     }
     
+    /// Sorts the array using multiple comparators
+    func sorted(by comparators: [STKeyPathComparator]) throws -> [Element] {
+        return try self.sorted { lhs, rhs in
+            for comparator in comparators {
+                if let result = try comparator.compare(lhs, rhs) {
+                    return result
+                }
+            }
+            return false
+        }
+    }
     
     @inlinable
     func decompose<Key: Hashable, Value>(key: KeyPath<Element, Key>, value: KeyPath<Element, Value>) -> [Key: [Value]] {
@@ -306,6 +342,43 @@ public extension Array {
         for item in self {
             if let key = try key(item) {
                 result[key] = try value(item)
+            }
+        }
+        return result
+    }
+    
+    /// 在数组的每个元素之间插入一个指定的对象数组。
+    /// - Parameter separator: 要插入的对象数组。
+    /// - Returns: 插入对象后的新数组。
+    func inserted(separator: () -> [Element]) -> [Element] {
+        guard !self.isEmpty else { return [] }
+        var result: [Element] = []
+        for (index, element) in self.enumerated() {
+            result.append(element)
+            if index < self.count - 1 {
+                result.append(contentsOf: separator())
+            }
+        }
+        return result
+    }
+    
+    func inserted(separator: [Element]) -> [Element] {
+        inserted(separator: { separator })
+    }
+    
+    func inserted(separator: Element?) -> [Element] {
+        inserted(separator: { separator })
+    }
+    
+    func inserted(separator: () -> Element?) -> [Element] {
+        guard !self.isEmpty else { return [] }
+        var result: [Element] = []
+        for (index, element) in self.enumerated() {
+            result.append(element)
+            if index < self.count - 1 {
+                if let item = separator() {
+                    result.append(item)
+                }
             }
         }
         return result

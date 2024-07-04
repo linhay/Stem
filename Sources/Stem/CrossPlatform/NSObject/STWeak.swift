@@ -22,6 +22,16 @@ public final class STWeak<WrappedValue: AnyObject> {
         set { wrappedValue?[keyPath: keyPath] = newValue }
     }
     
+    public subscript<T>(dynamicMember keyPath: ReferenceWritableKeyPath<WrappedValue, T?>) -> T? {
+        get { wrappedValue?[keyPath: keyPath] }
+        set { wrappedValue?[keyPath: keyPath] = newValue }
+    }
+    
+    public subscript<T>(dynamicMember keyPath: KeyPath<WrappedValue, T?>) -> T? {
+         wrappedValue?[keyPath: keyPath]
+    }
+    
+    
 }
 
 extension STWeak: Equatable where WrappedValue: Equatable {
