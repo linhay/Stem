@@ -10,7 +10,7 @@ public extension StemShell {
     
     struct Context {
         
-        public var environment: [String: String]
+        public var environment: [String: String] = [:]
         public var currentDirectory: URL?
         
         public let standardOutput: PassthroughSubject<Data, Never>?
@@ -20,30 +20,13 @@ public extension StemShell {
                     at currentDirectory: URL? = nil,
                     standardOutput: PassthroughSubject<Data, Never>? = .init(),
                     standardError: PassthroughSubject<Data, Never>? = .init()) {
-            self.environment = environment
             self.currentDirectory = currentDirectory
             self.standardOutput = standardOutput
             self.standardError = standardError
-            
-            var processInfo = ProcessInfo.processInfo.environment
-            var paths = ["/bin", "/sbin",
-                         "/usr/bin", "/usr/sbin",
-                         "/opt/homebrew/bin", "/opt/homebrew/sbin",
-                         "/usr/local/bin", "/usr/local/sbin",
-                         "/usr/local/opt/ruby/bin", "/Library/Apple/usr/bin"]
-            if let items = processInfo["PATH"]?.split(separator: ":").map({ String($0) }) {
-                paths.append(contentsOf: items)
-            }
-            if let items = environment["PATH"]?.split(separator: ":").map({ String($0) }) {
-                paths.append(contentsOf: items)
-            }
-            self.environment["PATH"] = Set(paths).joined(separator: ":")
-            if self.environment["LANG"] == nil { self.environment["LANG"] = processInfo["LANG"] ?? "en_US.UTF-8" }
-            if self.environment["HOME"] == nil { self.environment["HOME"] = processInfo["HOME"] }
-#if arch(arm64)
-#elseif arch(x86_64)
-            if self.environment["SSH_AUTH_SOCK"] == nil { self.environment["SSH_AUTH_SOCK"] = processInfo["SSH_AUTH_SOCK"] }
-#endif
+            var placehoder = ProcessInfo.processInfo.environment
+            placehoder["PATH"] = (placehoder["PATH"] ?? "") + ":" + (environment["PATH"] ?? "") + ":/usr/local/bin/pod"
+            self.environment = environment.merging(placehoder, uniquingKeysWith: { $1 })
+            self.environment["LANG"] = "en_US.UTF-8"
         }
     }
     
@@ -173,13 +156,13 @@ public extension StemShell {
     @discardableResult
     static func zsh(string command: String, context: Context? = nil) async throws -> String? {
         let data = try await zsh(command, context: context)
-        return String(data: data, encoding: .utf8)
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     @discardableResult
     static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) async throws -> String {
         let data = try await data(exec, commands, context: context)
-        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines) ?? ""
+        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     }
     
     @discardableResult
