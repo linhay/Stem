@@ -24,9 +24,8 @@ public extension StemShell {
             self.standardOutput = standardOutput
             self.standardError = standardError
             var placehoder = ProcessInfo.processInfo.environment
-            placehoder["PATH"] = (placehoder["PATH"] ?? "") + ":" + (environment["PATH"] ?? "") + ":/usr/local/bin/pod"
+            placehoder["PATH"] = (placehoder["PATH"] ?? "") + ":" + (environment["PATH"] ?? "")
             self.environment = environment.merging(placehoder, uniquingKeysWith: { $1 })
-            self.environment["LANG"] = "en_US.UTF-8"
         }
     }
     
