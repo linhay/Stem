@@ -5,6 +5,10 @@ import Combine
 @available(macOS 11, *)
 public struct StemShell { }
 
+protocol AnyShellArguments {
+    var arguments: StemShell.Arguments { get }
+}
+
 @available(macOS 11, *)
 public extension StemShell {
     
@@ -70,64 +74,109 @@ public extension StemShell {
         }
     }
     
+    enum Shell: String {
+        case zsh = "/bin/zsh"
+    }
+    
+    struct ShellArguments: AnyShellArguments {
+        
+        public var kind: Shell?
+        public var command: String
+        public var context: Context? = nil
+        
+        public init(kind: Shell? = nil, command: String, context: Context? = nil) {
+            self.kind = kind
+            self.command = command
+            self.context = context
+        }
+        
+        var arguments: StemShell.Arguments {
+            let path = kind?.rawValue ?? context?.environment["SHELL"] ?? "/bin/zsh"
+            let exec = URL(fileURLWithPath: path)
+            return .init(exec: exec, commands: ["-c", command], context: context)
+        }
+        
+    }
+    
+    struct Arguments: AnyShellArguments {
+        
+        public var exec: URL?
+        public var commands: [String]
+        public var context: Context? = nil
+        
+        public init(exec: URL? = nil, commands: [String], context: Context? = nil) {
+            self.exec = exec
+            self.commands = commands
+            self.context = context
+        }
+        
+        var arguments: StemShell.Arguments { self }
+    }
+    
+    struct Instance {
+        
+        public var changedArgsBeforeRun: ((_ args: inout Arguments) -> Void)?
+        
+        public init() {}
+    }
+    
 }
 
-public extension StemShell {
+public extension StemShell.Instance {
     
     @discardableResult
-    static func zsh(_ command: String, context: Context? = nil) throws -> Data {
-        let path = ProcessInfo.processInfo.environment["SHELL"] ?? "/bin/zsh"
-        return try data(URL(fileURLWithPath: path), ["-c", command], context: context)
+    func shell(_ args: StemShell.ShellArguments) throws -> Data {
+        return try data(args.arguments)
     }
     
     @discardableResult
-    static func zsh(string command: String, context: Context? = nil) throws -> String? {
-        let data = try zsh(command, context: context)
+    func shell(string args: StemShell.ShellArguments) throws -> String? {
+        let data = try shell(args)
         return String.init(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines)
     }
     
     @discardableResult
-    static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> String {
-        let data = try data(exec, commands, context: context)
+    func string(_ args: StemShell.Arguments) throws -> String {
+        let data = try data(args)
         return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .newlines) ?? ""
     }
     
     @discardableResult
-    static func data(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> Data {
-        let process = self.setupProcess(exec, commands, context: context)
-        let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
-        let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
+    func data(_ args: StemShell.Arguments) throws -> Data {
+        var args = args
+        changedArgsBeforeRun?(&args)
+        let process = self.setupProcess(args.exec, args.commands, context: args.context)
+        let output = StemShell.Standard(publisher: args.context?.standardOutput).append(to: &process.standardOutput)
+        let error  = StemShell.Standard(publisher: args.context?.standardError).append(to: &process.standardError)
         try process.run()
         process.waitUntilExit()
         return try result(process, output: output.availableData, error: error.availableData).get()
     }
     
-}
-
-public extension StemShell {
-    
     @discardableResult
-    static func zshPublisher(_ command: String, context: Context? = nil) -> AnyPublisher<Data, Error> {
-        dataPublisher(URL(fileURLWithPath: "/bin/zsh"), ["-c", command], context: context)
+    func zshPublisher(_ args: StemShell.ShellArguments) -> AnyPublisher<Data, Error> {
+        dataPublisher(args.arguments)
     }
     
     @discardableResult
-    static func zshPublisher(string command: String, context: Context? = nil) -> AnyPublisher<String?, Error> {
-        return zshPublisher(command, context: context).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
+    func zshPublisher(string args: StemShell.ShellArguments) -> AnyPublisher<String?, Error> {
+        return zshPublisher(args).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
     }
     
     @discardableResult
-    static func stringPublisher(_ exec: URL?, _ commands: [String], context: Context? = nil) -> AnyPublisher<String?, Error> {
-        return dataPublisher(exec, commands, context: context).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
+    func stringPublisher(_ args: StemShell.Arguments) -> AnyPublisher<String?, Error> {
+        return dataPublisher(args).map { String(data: $0, encoding: .utf8) }.eraseToAnyPublisher()
     }
     
     @discardableResult
-    static func dataPublisher(_ exec: URL?, _ commands: [String], context: Context? = nil) -> AnyPublisher<Data, Error> {
+    func dataPublisher(_ args: StemShell.Arguments) -> AnyPublisher<Data, Error> {
         Future<Data, Error> { promise in
             do {
-                let process = self.setupProcess(exec, commands, context: context)
-                let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
-                let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
+                var args = args
+                changedArgsBeforeRun?(&args)
+                let process = setupProcess(args.exec, args.commands, context: args.context)
+                let output = StemShell.Standard(publisher: args.context?.standardOutput).append(to: &process.standardOutput)
+                let error  = StemShell.Standard(publisher: args.context?.standardError).append(to: &process.standardError)
                 try process.run()
                 process.terminationHandler = { process in
                     do {
@@ -143,54 +192,7 @@ public extension StemShell {
         }.eraseToAnyPublisher()
     }
     
-}
-
-public extension StemShell {
-    
-    @discardableResult
-    static func zsh(_ command: String, context: Context? = nil) async throws -> Data {
-        try await data(URL(fileURLWithPath: "/bin/zsh"), ["-c", command], context: context)
-    }
-    
-    @discardableResult
-    static func zsh(string command: String, context: Context? = nil) async throws -> String? {
-        let data = try await zsh(command, context: context)
-        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
-    @discardableResult
-    static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) async throws -> String {
-        let data = try await data(exec, commands, context: context)
-        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-    }
-    
-    @discardableResult
-    static func data(_ exec: URL?, _ commands: [String], context: Context? = nil) async throws -> Data {
-        try await withUnsafeThrowingContinuation { continuation in
-            do {
-                let process = self.setupProcess(exec, commands, context: context)
-                let output = Standard(publisher: context?.standardOutput).append(to: &process.standardOutput)
-                let error  = Standard(publisher: context?.standardError).append(to: &process.standardError)
-                try process.run()
-                process.terminationHandler = { process in
-                    do {
-                        let data = try result(process, output: output.availableData, error: error.availableData).get()
-                        continuation.resume(with: .success(data))
-                    } catch {
-                        continuation.resume(throwing: error)
-                    }
-                }
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
-    }
-    
-}
-
-private extension StemShell {
-    
-    static func result(_ process: Process, output: Data?, error: Data?) -> Result<Data, Error> {
+    func result(_ process: Process, output: Data?, error: Data?) -> Result<Data, Error> {
         if process.terminationStatus != .zero {
             if let data = error, let message = String(data: data, encoding: .utf8) {
                 return .failure(StemError(message))
@@ -211,16 +213,41 @@ private extension StemShell {
         return .success(output ?? Data())
     }
     
-    static func setupProcess(_ exec: URL?, _ commands: [String], context: Context? = nil) -> Process {
+    func setupProcess(_ exec: URL?, _ commands: [String], context: StemShell.Context? = nil) -> Process {
         let process = Process()
         process.executableURL = exec
         process.arguments = commands
         process.currentDirectoryURL = context?.currentDirectory
-        
         if let environment = context?.environment, !environment.isEmpty {
             process.environment = environment
         }
         return process
+    }
+    
+    
+}
+public extension StemShell {
+    
+    private static var shared: Instance { .init() }
+    
+    @discardableResult
+    static func zsh(_ command: String, context: Context? = nil) throws -> Data {
+        try shared.shell(.init(kind: .zsh, command: command, context: context))
+    }
+    
+    @discardableResult
+    static func zsh(string command: String, context: Context? = nil) throws -> String? {
+        try shared.shell(string: .init(kind: .zsh, command: command, context: context))
+    }
+    
+    @discardableResult
+    static func string(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> String {
+        try shared.string(.init(exec: exec, commands: commands, context: context))
+    }
+    
+    @discardableResult
+    static func data(_ exec: URL?, _ commands: [String], context: Context? = nil) throws -> Data {
+        try shared.data(.init(exec: exec, commands: commands, context: context))
     }
     
 }
