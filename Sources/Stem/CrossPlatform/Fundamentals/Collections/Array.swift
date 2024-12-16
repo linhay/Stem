@@ -259,6 +259,21 @@ public extension Array {
                 }
             }
         }
+        
+        /// Comparator for key path with ascending order
+        public init<Key: Comparable>(_ keyPath: KeyPath<Element, Key?>, default: Key, ascending: Bool) {
+            self.compare = { lhs, rhs in
+                let lhsValue = lhs[keyPath: keyPath] ?? `default`
+                let rhsValue = rhs[keyPath: keyPath] ?? `default`
+                if lhsValue == rhsValue {
+                    return nil
+                } else if ascending {
+                    return lhsValue < rhsValue
+                } else {
+                    return lhsValue > rhsValue
+                }
+            }
+        }
     }
     
     @inlinable
@@ -266,6 +281,10 @@ public extension Array {
         try self.sorted { (lhs, rhs) in
             try areInIncreasingOrder(lhs[keyPath: key], rhs[keyPath: key])
         }
+    }
+    
+    func sorted(by comparators: STKeyPathComparator) throws -> [Element] {
+        try sorted(by: [comparators])
     }
     
     /// Sorts the array using multiple comparators

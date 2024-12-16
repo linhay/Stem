@@ -11,27 +11,9 @@ private var cancellables = Set<AnyCancellable>()
 
 public extension Publisher {
     
-    func async() async throws -> Output {
-        try await withCheckedThrowingContinuation({ continuation in
-            var cancellable: AnyCancellable?
-            cancellable = first()
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        continuation.resume(with: .failure(error))
-                    }
-                    if let cancellable = cancellable{
-                        cancellables.remove(cancellable)
-                    }
-                }, receiveValue: { value in
-                    continuation.resume(with: .success(value))
-                })
-            if let cancellable {
-                cancellables.update(with: cancellable)
-            }
-        })
+    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    func async(where predicate: (Self.Output) async throws -> Bool) async throws -> Output? {
+        return try await self.values.first(where: predicate)
     }
     
     func asyncThrowingStream() -> AsyncThrowingStream<Output, Swift.Error> {

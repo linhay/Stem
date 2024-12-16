@@ -23,6 +23,54 @@
 import Foundation
 import UniformTypeIdentifiers
 
+public struct STFileTypeSet: ExpressibleByArrayLiteral {
+    
+    public let rawValue: Set<STFileType>
+    
+    public init(arrayLiteral elements: STFileType...) {
+        self.rawValue = .init(elements)
+    }
+    
+    public init(rawValue: [STFileType]) {
+        self.rawValue = .init(rawValue)
+    }
+    
+    public static let videos: STFileTypeSet = [.mp4, .m4v, .m4p, .f4v, .f4p, .avi, .wmv, .flv, .quicktime]
+    public static let audios: STFileTypeSet = [.amr, .mp3, .ogg, .flac, .wav, .mid, .m4a, .m4b, .f4a, .f4b, .opus]
+    public static let images: STFileTypeSet = [.avif, .jxr, .flif, .pdf, .png, .jpeg, .gif, .webp, .tiff, .bmp, .psd,
+                                            .cr2, .cr3, .mif1, .msf1, .heic, .heix, .hevc, .hevx]
+    public static let applications: STFileTypeSet = [.z, .ar, .rpm, .deb, .crx, .cab, .xz, .nes, .ps, .eot,
+                                                  .ttf, .otf, .woff, .woff2, .rtf, .dmg, .bz2, ._7z, .gz,
+                                                  .zip, .xpi, .epub, .ico, .sqlite, .tar, .rar, .gzip, .exe,
+                                                  .swf, .lz, .msi, .mxf]
+    
+}
+
+public enum STFileType: Int, CaseIterable, Equatable, Codable {
+    
+   public func contains(in set: STFileTypeSet) -> Bool {
+        set.rawValue.contains(self)
+    }
+    
+    case unknown
+            
+    // MARK: - Video Types
+    case mp4, m4v, m4p, f4v, f4p, avi, wmv, flv, quicktime
+    
+    // MARK: - Audio Types
+    // case aac
+    case amr, mp3, ogg, flac, wav, mid, m4a, m4b, f4a, f4b, opus
+    
+    // MARK: - Image Types
+    case avif, jxr, flif, pdf, png, jpeg, gif, webp, tiff,
+         bmp, psd, cr2, cr3, mif1, msf1, heic, heix, hevc, hevx
+    
+    // MARK: - Application Types
+    case z, ar, rpm, deb, crx, cab, xz, nes, ps, eot, ttf,
+         otf, woff, woff2, rtf, dmg, bz2, _7z, gz, zip, xpi,
+         epub, ico, sqlite, tar, rar, gzip, exe, swf, lz, msi, mxf
+}
+
 public extension Data {
     
     struct MimeType: Equatable {
@@ -33,7 +81,7 @@ public extension Data {
             && lhs.ext == rhs.ext
         }
         
-        public let fileType: FileType
+        public let fileType: STFileType
         public let mime: String
         public let ext: String
         public let condition: ((ClosedRange<Int>) -> [UInt8]) -> Bool
@@ -45,21 +93,21 @@ public extension Data {
             self = item
         }
         
-        public init(_ fileType: FileType, mime: String, ext: String, _ condition: @escaping ((ClosedRange<Int>) -> [UInt8]) -> Bool) {
+        public init(_ fileType: STFileType, mime: String, ext: String, _ condition: @escaping ((ClosedRange<Int>) -> [UInt8]) -> Bool) {
             self.fileType = fileType
             self.condition = condition
             self.mime = mime
             self.ext = ext
         }
         
-        public init(_ fileType: FileType, mime: String, ext: String, _ condition: [UInt8], at: Int) {
+        public init(_ fileType: STFileType, mime: String, ext: String, _ condition: [UInt8], at: Int) {
             self.init(fileType, mime: mime, ext: ext) { data in
                 let bytes = data(at...at+condition.count-1)
                 return bytes == condition
             }
         }
         
-        public init(_ fileType: FileType, mime: String, ext: String, _ condition: [UInt8]) {
+        public init(_ fileType: STFileType, mime: String, ext: String, _ condition: [UInt8]) {
             self.init(fileType, mime: mime, ext: ext, condition, at: 0)
         }
         
@@ -253,60 +301,12 @@ public extension Data {
         return String(data: Data(data(8...11)), encoding: .utf8)?.trimmingCharacters(in: .whitespaces) ?? ""
     }
     
-    struct FileTypeSet: ExpressibleByArrayLiteral {
-        
-        public let rawValue: Set<FileType>
-        
-        public init(arrayLiteral elements: FileType...) {
-            self.rawValue = .init(elements)
-        }
-        
-        public init(rawValue: [FileType]) {
-            self.rawValue = .init(rawValue)
-        }
-        
-        public static let videos: FileTypeSet = [.mp4, .m4v, .m4p, .f4v, .f4p, .avi, .wmv, .flv, .quicktime]
-        public static let audios: FileTypeSet = [.amr, .mp3, .ogg, .flac, .wav, .mid, .m4a, .m4b, .f4a, .f4b, .opus]
-        public static let images: FileTypeSet = [.avif, .jxr, .flif, .pdf, .png, .jpeg, .gif, .webp, .tiff, .bmp, .psd,
-                                                .cr2, .cr3, .mif1, .msf1, .heic, .heix, .hevc, .hevx]
-        public static let applications: FileTypeSet = [.z, .ar, .rpm, .deb, .crx, .cab, .xz, .nes, .ps, .eot,
-                                                      .ttf, .otf, .woff, .woff2, .rtf, .dmg, .bz2, ._7z, .gz,
-                                                      .zip, .xpi, .epub, .ico, .sqlite, .tar, .rar, .gzip, .exe,
-                                                      .swf, .lz, .msi, .mxf]
-        
-    }
-    
-    enum FileType: Int, CaseIterable, Equatable, Codable {
-        
-       public func contains(in set: FileTypeSet) -> Bool {
-            set.rawValue.contains(self)
-        }
-        
-        case unknown
-                
-        // MARK: - Video Types
-        case mp4, m4v, m4p, f4v, f4p, avi, wmv, flv, quicktime
-        
-        // MARK: - Audio Types
-        // case aac
-        case amr, mp3, ogg, flac, wav, mid, m4a, m4b, f4a, f4b, opus
-        
-        // MARK: - Image Types
-        case avif, jxr, flif, pdf, png, jpeg, gif, webp, tiff,
-             bmp, psd, cr2, cr3, mif1, msf1, heic, heix, hevc, hevx
-        
-        // MARK: - Application Types
-        case z, ar, rpm, deb, crx, cab, xz, nes, ps, eot, ttf,
-             otf, woff, woff2, rtf, dmg, bz2, _7z, gz, zip, xpi,
-             epub, ico, sqlite, tar, rar, gzip, exe, swf, lz, msi, mxf
-    }
-    
 }
 
 public extension StemValue where Base == Data {
     
     var mimeType: Data.MimeType? { .init(base) }
-    var fileType: Data.FileType { Data.MimeType(base)?.fileType ?? .unknown }
+    var fileType: STFileType { Data.MimeType(base)?.fileType ?? .unknown }
     @available(macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0, *)
     var utType: UTType? { UTType(mimeType: mimeType?.mime ?? "") }
     
